@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max)](LICENSE)
 [![dsh-plugin](https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue)](https://github.com/topics/dsh-plugin)
 
-> 🎨 UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**, adapted and
+> UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**, adapted and
 > optimized from the open-source project
 > [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 > (MIT License). Bundles **67 design styles, 161 color palettes, 57 font pairings,
@@ -57,15 +57,6 @@ entry above, or launch with `pnpm dsh web --patch ./cordis.patch.yml`.
 
 Peer dependencies (`@deepseek-ai/cordis`, `dsh-tools`, `dsh-skill`) are
 resolved from the host runtime — no extra npm installs.
-
-## Development
-
-```bash
-node scripts/build-data.mjs [source-data-dir]   # rebuild bundled JSON from source CSVs
-node tests/smoke.mjs                            # offline acceptance tests
-node --import ./tests/register-loader.mjs tests/validate-tools.mjs   # real dsh-tools schema checks
-node --import ./tests/register-loader.mjs tests/validate-apply.mjs   # apply() lifecycle checks
-```
 
 ## Credits
 
