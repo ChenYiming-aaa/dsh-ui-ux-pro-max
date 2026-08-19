@@ -14,8 +14,6 @@
     "data",
     "skills",
     "references",
-    "scripts",
-    "tests",
     "cordis.patch.yml",
     "README.md",
     "README.en.md",
@@ -55,9 +53,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max.git"
-  },
-  "scripts": {
-    "build:data": "node scripts/build-data.mjs",
-    "test": "node tests/smoke.mjs"
   }
 }
