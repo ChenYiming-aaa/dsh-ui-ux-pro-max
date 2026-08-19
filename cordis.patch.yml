@@ -1,0 +1,8 @@
+# dsh-ui-ux-pro-max bundle: registers the host tools (design_recommend /
+# design_review / design_search), the bundled ui-ux-pro-max skill, and the
+# client settings panel. Applied after @deepseek-ai/dsh-base, which already
+# mounts the tool registry, skill registry, and harness seam.
+- insert:
+    - id: ui-ux-pro-max
+      name: dsh-ui-ux-pro-max
+      config: {}

@@ -1,0 +1,20 @@
+# 本地备份与构建产物
+*.bak
+*.log
+
+# 依赖与包管理器
+node_modules/
+.pnpm-store/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# 编辑器与系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# 本地安装残留（不应入库）
+install.log

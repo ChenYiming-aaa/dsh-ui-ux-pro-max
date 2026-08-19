@@ -1,0 +1,63 @@
+{
+  "name": "dsh-ui-ux-pro-max",
+  "version": "1.0.0",
+  "description": "UI/UX 设计智能库插件：内置 67 种设计风格、161 个调色板、57 组字体搭配、99 条 UX 规范、25 种图表类型与 22 个技术栈，提供 design_recommend / design_review / design_search 三个模型工具。数据库完全内置、离线可用、中文优先。 / UI/UX design intelligence plugin for DeepSeek Harness: 67 styles, 161 palettes, 57 font pairings, 99 UX guidelines, 25 chart types, 22 stacks. Offline-first, Chinese-first design_recommend / design_review / design_search tools.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "data",
+    "skills",
+    "references",
+    "scripts",
+    "tests",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-skill": "*",
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "ui-ux-pro-max",
+    "design-system",
+    "ui-ux",
+    "design-tokens",
+    "ux-review",
+    "color-palette",
+    "typography",
+    "accessibility",
+    "charts",
+    "offline",
+    "中文"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max.git"
+  },
+  "scripts": {
+    "build:data": "node scripts/build-data.mjs",
+    "test": "node tests/smoke.mjs"
+  }
+}
