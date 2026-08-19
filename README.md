@@ -58,17 +58,34 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 ## 内置数据库
 
-style: 84 · color: 192 · typography: 74 · ux-guidelines: 99 · charts: 25 · products: 192 · landing: 34 · icons: 105 · motion: 16 · react-performance: 44 · app-interface: 30 · ui-reasoning: 161 · google-fonts: 1923（懒加载）· stacks: 22
+全部数据随插件离线打包，零网络依赖：
+
+| 类别 | 内容 |
+|------|------|
+| 🎨 设计素材 | 风格 **84** · 调色板 **192** · 字体搭配 **74** · 图表 **25** · 落地页模式 **34** |
+| 🧩 组件与动效 | 图标 **105** · GSAP 动效 **16** |
+| 📋 审查规范 | UX 规范 **99** · React 性能 **44** · 移动端接口 **30** · 推理规则 **161** |
+| 📚 检索支撑 | 产品类型 **192** · 技术栈 **22** · Google 字体 **1923**（懒加载） |
 
 ## 使用示例
 
-```
-design_recommend(query: "金融 SaaS 数据看板", projectName: "金融智控台", stack: "react", variance: 8, density: 8)
-design_review(target: "移动端登录表单", platform: "mobile")
-design_search(query: "list 性能 导航", stack: "react-native")
-```
+### 场景 1 · 新项目设计方案
 
-`design_recommend` 返回中文优先的结构化建议：推荐风格（rank+理由）→ 配色 HEX 与 CSS 变量 → 字体搭配 → 落地页模式 → 反模式清单 → UX 规范要点 → 技术栈规范。
+> 你：帮我的**金融 SaaS 数据看板**出一套设计方案
+
+模型调用 `design_recommend`，返回：推荐风格（rank 1-3 + 理由）→ 配色 HEX 与 CSS 变量 → 字体搭配 → 落地页模式 → 反模式清单 → UX 规范要点 → 技术栈规范。
+
+### 场景 2 · 审查现有 UI
+
+> 你：**检查一下**我的移动端登录表单有什么 UX 问题
+
+模型调用 `design_review`，按严重度返回问题清单与修改建议，附交付前通用检查清单。
+
+### 场景 3 · 检索设计灵感
+
+> 你：想要**毛玻璃 深色**风格；React Native 列表导航性能怎么做
+
+模型调用 `design_search`，分别命中风格条目与 React 性能规范。
 
 ## 目录结构
 
