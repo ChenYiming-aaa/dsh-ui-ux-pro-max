@@ -1,6 +1,6 @@
 <h1 align="center">dsh-ui-ux-pro-max</h1>
 
-> DeepSeek Harness 的 UI/UX 设计智能库插件：内置 67 种风格、161 个调色板、57 组字体、99 条 UX 规范、25 种图表与 22 个技术栈，全部离线可用、中文优先。
+> DeepSeek Harness 的 UI/UX 设计智能库插件：内置 84 种风格、192 个调色板、74 组字体、99 条 UX 规范、25 种图表与 22 个技术栈，全部离线可用、中文优先。
 
 <p align="center">
   <img src="https://img.shields.io/github/stars/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="stars" />

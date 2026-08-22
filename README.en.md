@@ -7,7 +7,7 @@
 > UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**, adapted and
 > optimized from the open-source project
 > [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
-> (MIT License). Bundles **67 design styles, 161 color palettes, 57 font pairings,
+> (MIT License). Bundles **84 design styles, 192 color palettes, 74 font pairings,
 > 99 UX guidelines, 25 chart types** across **22 technology stacks** plus 1900+
 > Google Fonts records — fully offline, zero network, Chinese-first structured output.
 >
