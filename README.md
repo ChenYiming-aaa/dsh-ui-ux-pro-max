@@ -5,9 +5,12 @@
 <p align="center">
   <img src="https://img.shields.io/github/stars/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="stars" />
   <img src="https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="license" />
+  <img src="https://img.shields.io/npm/v/dsh-ui-ux-pro-max" alt="npm" />
   <img src="https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue" alt="dsh-plugin" />
   <img src="https://img.shields.io/badge/Node-%3E%3D22-green" alt="Node" />
 </p>
+
+已发布到 npm：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)，可通过 DSH Desktop 插件市场一键安装。
 
 ## 功能特性
 
@@ -19,7 +22,15 @@
 
 ## 快速开始
 
-### 方式一：一键安装（推荐）
+### 方式一：插件市场安装（推荐）
+
+插件已发布到 npm（`dsh-ui-ux-pro-max@1.0.0`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
+
+```powershell
+dsh plugin add --save-exact dsh-ui-ux-pro-max@1.0.0
+```
+
+### 方式二：一键安装
 
 ```powershell
 git clone https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max.git
@@ -29,7 +40,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 脚本自动完成：将插件复制到 profile 的共享 `node_modules`（默认 `C:\Users\<用户名>\.dsh\profiles\node_modules\dsh-ui-ux-pro-max\`）、备份并追加 `cordis.patch.yml`，重复执行不会重复添加。
 
-### 方式二：手动安装
+### 方式三：手动安装
 
 1. 克隆仓库，把整个 `dsh-ui-ux-pro-max` 目录放入 profile 的共享 node_modules（DSH Desktop 与 Web 端共用此层）：
    ```

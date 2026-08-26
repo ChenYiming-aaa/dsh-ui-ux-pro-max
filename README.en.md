@@ -2,6 +2,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/ChenYiming-aaa/dsh-ui-ux-pro-max)](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/stargazers)
 [![License](https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max)](LICENSE)
+[![npm](https://img.shields.io/npm/v/dsh-ui-ux-pro-max)](https://www.npmjs.com/package/dsh-ui-ux-pro-max)
 [![dsh-plugin](https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue)](https://github.com/topics/dsh-plugin)
 
 > UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**, adapted and
@@ -27,7 +28,16 @@ when and how to use each tool. The plugin is **host-only** (no client UI).
 
 ## Install
 
-### DSH Desktop (recommended)
+### Plugin market / npm (recommended)
+
+Published on npm as `dsh-ui-ux-pro-max@1.0.0`. Install from the **DSH Desktop
+plugin market**, or with the CLI:
+
+```powershell
+dsh plugin add --save-exact dsh-ui-ux-pro-max@1.0.0
+```
+
+### DSH Desktop (from source)
 
 1. Copy this package into the profile's shared `node_modules`:
    `<profile>\node_modules\dsh-ui-ux-pro-max\`
