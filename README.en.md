@@ -34,8 +34,15 @@ Published on npm as `dsh-ui-ux-pro-max@1.0.0`. Install from the **DSH Desktop
 plugin market**, or with the CLI:
 
 ```powershell
-dsh plugin add --save-exact dsh-ui-ux-pro-max@1.0.0
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.0   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.0   # dsh web
 ```
+
+> 💡 Note: DSH Desktop does not put the `dsh` command on PATH — open a **new
+> terminal** (the desktop app ships its own host-commands); if the command is
+> still missing, run `npm install -g @deepseek-ai/dsh` first.
+
+> Verified against DSH 0.1.1-rc.2 (`@deepseek-ai/dsh`, `dsh-tools`, `dsh-skill`).
 
 ### DSH Desktop (from source)
 

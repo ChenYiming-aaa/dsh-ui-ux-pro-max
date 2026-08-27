@@ -12,6 +12,8 @@
 
 已发布到 npm：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)，可通过 DSH Desktop 插件市场一键安装。
 
+> 兼容性：已验证于 DSH 0.1.1-rc.2（`@deepseek-ai/dsh`、`dsh-tools`、`dsh-skill` 0.1.1-rc.2）。
+
 ## 功能特性
 
 - **三个模型工具** — `design_recommend` 生成完整设计系统、`design_review` 按 99 条 UX 规范审查 UI、`design_search` 检索领域/技术栈数据库
@@ -27,8 +29,11 @@
 插件已发布到 npm（`dsh-ui-ux-pro-max@1.0.0`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
 
 ```powershell
-dsh plugin add --save-exact dsh-ui-ux-pro-max@1.0.0
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.0   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.0   # dsh web
 ```
+
+> 💡 提示：DSH Desktop 不把 `dsh` 命令加入 PATH——请**新开一个终端**（桌面版自带 host-commands）；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
 
 ### 方式二：一键安装
 
