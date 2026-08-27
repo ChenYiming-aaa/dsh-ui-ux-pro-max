@@ -26,11 +26,11 @@
 
 ### 方式一：插件市场安装（推荐）
 
-插件已发布到 npm（`dsh-ui-ux-pro-max@1.0.0`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
+插件已发布到 npm（`dsh-ui-ux-pro-max@1.0.2`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.0   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.0   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.2   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.2   # dsh web
 ```
 
 > 💡 提示：DSH Desktop 不把 `dsh` 命令加入 PATH——请**新开一个终端**（桌面版自带 host-commands）；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
