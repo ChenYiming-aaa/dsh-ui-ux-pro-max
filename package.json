@@ -1,60 +1,60 @@
-﻿{
-    "name":  "dsh-ui-ux-pro-max",
-    "version":  "1.0.1",
-    "description":  "UI/UX 璁捐鏅鸿兘搴撴彃浠讹細鍐呯疆 84 绉嶈璁￠鏍笺€?92 涓皟鑹叉澘銆?4 缁勫瓧浣撴惌閰嶃€?9 鏉?UX 瑙勮寖銆?5 绉嶅浘琛ㄧ被鍨嬩笌 22 涓妧鏈爤锛屾彁渚?design_recommend / design_review / design_search 涓変釜妯″瀷宸ュ叿銆傛暟鎹簱瀹屽叏鍐呯疆銆佺绾垮彲鐢ㄣ€佷腑鏂囦紭鍏堛€?/ UI/UX design intelligence plugin for DeepSeek Harness: 84 styles, 192 palettes, 74 font pairings, 99 UX guidelines, 25 chart types, 22 stacks. Offline-first, Chinese-first design_recommend / design_review / design_search tools.",
-    "type":  "module",
-    "main":  "index.js",
-    "exports":  {
-                    ".":  "./index.js",
-                    "./package.json":  "./package.json"
-                },
-    "files":  [
-                  "index.js",
-                  "lib",
-                  "data",
-                  "skills",
-                  "references",
-                  "cordis.patch.yml",
-                  "README.md",
-                  "README.en.md",
-                  "LICENSE",
-                  "THIRD_PARTY_NOTICES.md"
-              ],
-    "engines":  {
-                    "node":  "^22.19.0 || \u003e=24.0.0"
-                },
-    "publishConfig":  {
-                          "access":  "public"
-                      },
-    "dsh":  {
-                "bundle":  {
-                               "patch":  "./cordis.patch.yml"
-                           }
-            },
-    "peerDependencies":  {
-                             "@deepseek-ai/cordis":  "*",
-                             "@deepseek-ai/dsh-skill":  "\u003e=0.0.1-rc.1 \u003c0.1.0 || \u003e=0.1.0-rc.1 \u003c0.2.0-0",
-                             "@deepseek-ai/dsh-tools":  "\u003e=0.0.1-rc.1 \u003c0.1.0 || \u003e=0.1.0-rc.1 \u003c0.2.0-0"
-                         },
-    "keywords":  [
-                     "dsh-plugin",
-                     "deepseek-harness",
-                     "ui-ux-pro-max",
-                     "design-system",
-                     "ui-ux",
-                     "design-tokens",
-                     "ux-review",
-                     "color-palette",
-                     "typography",
-                     "accessibility",
-                     "charts",
-                     "offline",
-                     "涓枃"
-                 ],
-    "license":  "MIT",
-    "homepage":  "https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max",
-    "repository":  {
-                       "type":  "git",
-                       "url":  "git+https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max.git"
-                   }
+{
+  "name": "dsh-ui-ux-pro-max",
+  "version": "1.0.2",
+  "description": "UI/UX 设计智能库插件：内置 84 种设计风格、192 个调色板、74 组字体搭配、99 条 UX 规范、25 种图表类型与 22 个技术栈，提供 design_recommend / design_review / design_search 三个模型工具。数据库完全内置、离线可用、中文优先。 / UI/UX design intelligence plugin for DeepSeek Harness: 84 styles, 192 palettes, 74 font pairings, 99 UX guidelines, 25 chart types, 22 stacks. Offline-first, Chinese-first design_recommend / design_review / design_search tools.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "data",
+    "skills",
+    "references",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-skill": ">=0.0.1-rc.1 <0.1.0 || >=0.1.0-rc.1 <0.2.0-0",
+    "@deepseek-ai/dsh-tools": ">=0.0.1-rc.1 <0.1.0 || >=0.1.0-rc.1 <0.2.0-0"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "ui-ux-pro-max",
+    "design-system",
+    "ui-ux",
+    "design-tokens",
+    "ux-review",
+    "color-palette",
+    "typography",
+    "accessibility",
+    "charts",
+    "offline",
+    "中文"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max.git"
+  }
 }
