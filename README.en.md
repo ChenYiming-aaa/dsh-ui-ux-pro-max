@@ -3,6 +3,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/ChenYiming-aaa/dsh-ui-ux-pro-max)](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/stargazers)
 [![License](https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max)](LICENSE)
 [![npm](https://img.shields.io/npm/v/dsh-ui-ux-pro-max)](https://www.npmjs.com/package/dsh-ui-ux-pro-max)
+[![CI](https://img.shields.io/github/actions/workflow/status/ChenYiming-aaa/dsh-ui-ux-pro-max/ci.yml?label=CI)](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/actions)
 [![dsh-plugin](https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue)](https://github.com/topics/dsh-plugin)
 
 > UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**, adapted and
@@ -30,12 +31,12 @@ when and how to use each tool. The plugin is **host-only** (no client UI).
 
 ### Plugin market / npm (recommended)
 
-Published on npm as `dsh-ui-ux-pro-max@1.0.2`. Install from the **DSH Desktop
+Published on npm as `dsh-ui-ux-pro-max@1.0.3`. Install from the **DSH Desktop
 plugin market**, or with the CLI:
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.2   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.2   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.3   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.3   # dsh web
 ```
 
 > 💡 Note: DSH Desktop does not put the `dsh` command on PATH — open a **new
@@ -74,6 +75,30 @@ entry above, or launch with `pnpm dsh web --patch ./cordis.patch.yml`.
 
 Peer dependencies (`@deepseek-ai/cordis`, `dsh-tools`, `dsh-skill`) are
 resolved from the host runtime — no extra npm installs.
+
+## Testing
+
+No network and no DSH runtime required (CI runs these on Node 22 and 24):
+
+```bash
+node tests/check-package.mjs   # manifest + bundled-data integrity
+node tests/smoke.mjs           # offline behaviour check (30 assertions)
+```
+
+`check-package.mjs` guards the failure modes actually hit in this project: a
+UTF-8 BOM in `package.json` (breaks the DSH CLI's `JSON.parse`), a missing
+`dsh.bundle.patch`, `files[]` entries that do not exist, lifecycle scripts
+(rejected by the market), the `cordis.patch.yml` insert shape, and the
+parseability/consistency of `data/*.json`.
+
+`smoke.mjs` covers plugin behaviour: bundled database, `design_recommend`
+(Chinese query → full design system), `design_review` (severity ordering),
+`design_search` (domain/stack/Chinese mapping), and Chinese structured output.
+
+> Runtime compatibility is verified separately against a real DSH install
+> (tool schema compilation, output schema, `render`/`presentCall`, and the
+> `apply()` registration path); that harness depends on local install paths and
+> is therefore not shipped in this repository.
 
 ## Credits
 

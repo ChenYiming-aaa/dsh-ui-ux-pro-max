@@ -1,16 +1,15 @@
 /**
  * dsh-ui-ux-pro-max — UI/UX 设计智能库插件（宿主端）
  *
- * 将 ui-ux-pro-max 设计智能库（67 种风格 / 161 个调色板 / 57 组字体搭配 /
+ * 将 ui-ux-pro-max 设计智能库（84 种风格 / 192 个调色板 / 74 组字体搭配 /
  * 99 条 UX 规范 / 25 种图表类型 / 22 个技术栈）封装为 DSH 离线工具：
  *
  *   - design_recommend  产品类型 + 关键词 → 完整设计系统建议（风格/配色/字体/UX 规范 + 理由）
  *   - design_review     按 UX 规范清单审查现有 UI（严重度优先）
  *   - design_search     按领域 / 技术栈搜索数据库
  *
- * 同时：
- *   - 注册内置技能 ui-ux-pro-max（中文优先的使用指南）
- *   - 注册 Host RPC「ui-ux-pro-max/design-system」，供客户端 Web UI 面板调用
+ * 同时注册内置技能 ui-ux-pro-max（中文优先的使用指南）。
+ * 纯宿主端形态：不声明 dsh.client，也不需要浏览器端代码。
  *
  * 数据完全内置（data/index.json + data/fonts.json），零网络依赖。
  * @module dsh-ui-ux-pro-max
@@ -21,10 +20,10 @@ import { fileURLToPath } from 'node:url'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import { BUNDLED_SKILL_RANK } from '@deepseek-ai/dsh-skill'
 import { search, searchStack, DOMAIN_KEYS, STACKS } from './lib/database.js'
-import { generateDesignSystem, summarizeDesignSystem } from './lib/design-system.js'
+import { generateDesignSystem } from './lib/design-system.js'
 import { buildReview } from './lib/review.js'
 import { formatDesignSystem, formatReview, formatSearchResult } from './lib/format.js'
-import { DOMAIN_LABELS, SEVERITY_LABELS } from './lib/zh.js'
+import { DOMAIN_LABELS } from './lib/zh.js'
 
 export const name = 'ui-ux-pro-max'
 export const inject = ['tools']
@@ -313,34 +312,5 @@ export function apply(ctx, _config) {
   // 注册三个设计工具
   for (const tool of buildTools()) {
     ctx.tools.register(tool)
-  }
-
-  // ---- Host RPC（保留，供未来客户端面板使用） ----
-  // 当前插件为纯宿主端形态（无 client bundle）。若日后以动态 Cordis 插件
-  // （cordis_define 的 code.client）提供 Web UI 面板，可经 host.call
-  // ('ui-ux-pro-max/design-system', {...}) 调用这里拿到设计令牌摘要。
-  if (typeof harness !== 'undefined' && harness && typeof harness.handle === 'function') {
-    harness.handle('ui-ux-pro-max/design-system', async (args) => {
-      const ds = generateDesignSystem({
-        query: args?.query,
-        projectName: args?.projectName,
-        variance: args?.variance,
-        motion: args?.motion,
-        density: args?.density,
-        stack: args?.stack,
-      })
-      return {
-        designSystem: ds,
-        summary: summarizeDesignSystem(ds),
-      }
-    })
-    // 附带一个可发现性 RPC：返回插件元信息
-    harness.handle('ui-ux-pro-max/meta', async () => ({
-      name: 'dsh-ui-ux-pro-max',
-      description: 'UI/UX 设计智能库：67 种设计风格、161 个调色板、57 组字体搭配、99 条 UX 规范、25 种图表类型、22 个技术栈',
-      domains: Object.keys(DOMAIN_LABELS),
-      stacks: STACKS,
-      severityLevels: Object.keys(SEVERITY_LABELS),
-    }))
   }
 }

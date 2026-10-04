@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # 清单与数据完整性：BOM、dsh.bundle.patch、files[] 存在性、
+      # 生命周期脚本、peerDependencies、cordis.patch.yml、data/*.json
+      - name: Check manifest and bundled data
+        run: node tests/check-package.mjs
+
+      # 离线自检：数据库、设计系统生成、UX 审查、检索、中文输出
+      - name: Offline smoke test
+        run: node tests/smoke.mjs

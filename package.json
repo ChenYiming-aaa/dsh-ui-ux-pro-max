@@ -1,6 +1,6 @@
 {
   "name": "dsh-ui-ux-pro-max",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "UI/UX 设计智能库插件：内置 84 种设计风格、192 个调色板、74 组字体搭配、99 条 UX 规范、25 种图表类型与 22 个技术栈，提供 design_recommend / design_review / design_search 三个模型工具。数据库完全内置、离线可用、中文优先。 / UI/UX design intelligence plugin for DeepSeek Harness: 84 styles, 192 palettes, 74 font pairings, 99 UX guidelines, 25 chart types, 22 stacks. Offline-first, Chinese-first design_recommend / design_review / design_search tools.",
   "type": "module",
   "main": "index.js",

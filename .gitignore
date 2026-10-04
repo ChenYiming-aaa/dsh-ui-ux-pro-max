@@ -1,6 +1,7 @@
 # 本地备份与构建产物
 *.bak
 *.log
+*.tgz
 
 # 依赖与包管理器
 node_modules/
@@ -18,3 +19,11 @@ Thumbs.db
 
 # 本地安装残留（不应入库）
 install.log
+
+# 机器相关的本地开发辅助（依赖本机 DSH 安装路径，不入库）
+tests/dsh-loader.mjs
+tests/register-loader.mjs
+tests/validate-tools.mjs
+tests/validate-apply.mjs
+tests/verify-market-install.mjs
+scripts/clean-market-cache.ps1

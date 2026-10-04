@@ -6,13 +6,14 @@
   <img src="https://img.shields.io/github/stars/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="stars" />
   <img src="https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="license" />
   <img src="https://img.shields.io/npm/v/dsh-ui-ux-pro-max" alt="npm" />
+  <img src="https://img.shields.io/github/actions/workflow/status/ChenYiming-aaa/dsh-ui-ux-pro-max/ci.yml?label=CI" alt="CI" />
   <img src="https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue" alt="dsh-plugin" />
   <img src="https://img.shields.io/badge/Node-%3E%3D22-green" alt="Node" />
 </p>
 
 已发布到 npm：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)，可通过 DSH Desktop 插件市场一键安装。
 
-> 兼容性：已验证于 DSH 0.1.1-rc.2（`@deepseek-ai/dsh`、`dsh-tools`、`dsh-skill` 0.1.1-rc.2）。
+> 兼容性：已在 **DSH 0.1.1-rc.2**（`@deepseek-ai/dsh`、`dsh-tools`、`dsh-skill` 0.1.1-rc.2）上实际验证——三个工具的定义编译、执行、输出 schema、render、presentCall 与内置技能注册全部通过。
 
 ## 功能特性
 
@@ -26,11 +27,11 @@
 
 ### 方式一：插件市场安装（推荐）
 
-插件已发布到 npm（`dsh-ui-ux-pro-max@1.0.2`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
+插件已发布到 npm（`dsh-ui-ux-pro-max@1.0.3`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.2   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.2   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.0.3   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.3   # dsh web
 ```
 
 > 💡 提示：DSH Desktop 不把 `dsh` 命令加入 PATH——请**新开一个终端**（桌面版自带 host-commands）；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
@@ -112,9 +113,25 @@ dsh-ui-ux-pro-max/
 ├── data/                  # 内置数据库（index.json / fonts.json / meta.json）
 ├── skills/ui-ux-pro-max/  # 模型使用指南（中文 SKILL.md）
 ├── references/            # 交付前检查清单
+├── tests/                 # 离线自检 + 清单完整性检查（CI 执行）
 ├── install.ps1            # 一键安装
 └── cordis.patch.yml       # bundle 注册
 ```
+
+## 测试与验证
+
+无需网络、无需 DSH 运行时即可复现全部检查（CI 在 Node 22 / 24 上运行）：
+
+```bash
+node tests/check-package.mjs   # 清单与数据完整性
+node tests/smoke.mjs           # 离线自检（30 项断言）
+```
+
+**`check-package.mjs`** 覆盖历史上真实踩过的坑：`package.json` 的 UTF-8 BOM（会导致 DSH CLI `JSON.parse` 崩溃）、`dsh.bundle.patch` 缺失、`files[]` 指向不存在的文件、生命周期脚本（市场会拒绝安装）、`cordis.patch.yml` 的 insert 形状、`data/*.json` 可解析性与计数一致性。
+
+**`smoke.mjs`** 覆盖插件行为：数据库完整性、`design_recommend`（中文查询 → 完整设计系统）、`design_review`（严重度排序）、`design_search`（领域/技术栈/中文映射）、中文结构化输出。
+
+> 运行时兼容性另有一层验证：在真实 DSH 上校验工具定义编译、输出 schema、`render`/`presentCall` 与 `apply()` 注册（依赖本机 DSH 安装路径，故不随仓库分发）。
 
 ## 致谢
 
