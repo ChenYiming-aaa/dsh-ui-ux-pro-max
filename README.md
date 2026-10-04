@@ -113,10 +113,24 @@ dsh-ui-ux-pro-max/
 ├── data/                  # 内置数据库（index.json / fonts.json / meta.json）
 ├── skills/ui-ux-pro-max/  # 模型使用指南（中文 SKILL.md）
 ├── references/            # 交付前检查清单
-├── tests/                 # 离线自检 + 清单完整性检查（CI 执行）
+├── examples/              # 设计系统落地示例（单文件、零依赖、可离线打开）
+├── tests/                 # 离线自检 + 清单/示例校验（CI 执行）
 ├── install.ps1            # 一键安装
 └── cordis.patch.yml       # bundle 注册
 ```
+
+## 示例：把设计系统做成可运行的页面
+
+[`examples/fintech-dashboard.html`](examples/fintech-dashboard.html) 是 `design_recommend("金融 SaaS 数据看板", stack: react)` 输出的**落地示例**：单文件、零第三方依赖（图表为手写 SVG / CSS）、可离线直接打开。
+
+它演示了设计系统如何被真正遵守，而不是只写在文档里：
+
+- **风格**：Data-Dense Dashboard + Heat Map —— 12 列栅格、KPI 卡、趋势面积图、环形配置图、行业热力图、可排序表格
+- **令牌**：全部颜色/间距走 CSS 变量，浅深两套主题（正文对比度均 ≥ 4.5:1），页面内附「设计令牌」面板可展开核对
+- **字体**：Fira Code（数字/等宽对齐）+ Fira Sans（正文），离线自动回退系统字体栈
+- **状态完备**：加载骨架屏、空状态、状态提示条、禁用态
+- **无障碍**：语义地标、图标按钮 `aria-label`、表格 `aria-sort`/`scope`、图表无障碍名称、`focus-visible` 焦点环、`prefers-reduced-motion`、≥44px 触摸目标、安全区内边距
+- **规范禁止项**：无 emoji 图标（全部内联 SVG）
 
 ## 测试与验证
 
@@ -125,11 +139,14 @@ dsh-ui-ux-pro-max/
 ```bash
 node tests/check-package.mjs   # 清单与数据完整性
 node tests/smoke.mjs           # 离线自检（30 项断言）
+node tests/check-example.mjs   # 示例页面规范校验（22 项）
 ```
 
 **`check-package.mjs`** 覆盖历史上真实踩过的坑：`package.json` 的 UTF-8 BOM（会导致 DSH CLI `JSON.parse` 崩溃）、`dsh.bundle.patch` 缺失、`files[]` 指向不存在的文件、生命周期脚本（市场会拒绝安装）、`cordis.patch.yml` 的 insert 形状、`data/*.json` 可解析性与计数一致性。
 
 **`smoke.mjs`** 覆盖插件行为：数据库完整性、`design_recommend`（中文查询 → 完整设计系统）、`design_review`（严重度排序）、`design_search`（领域/技术栈/中文映射）、中文结构化输出。
+
+**`check-example.mjs`** 覆盖示例页面：脚本可编译、无障碍要点、令牌化程度、状态完备性、无 emoji 图标。
 
 > 运行时兼容性另有一层验证：在真实 DSH 上校验工具定义编译、输出 schema、`render`/`presentCall` 与 `apply()` 注册（依赖本机 DSH 安装路径，故不随仓库分发）。
 

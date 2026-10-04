@@ -31,3 +31,7 @@ jobs:
       # 离线自检：数据库、设计系统生成、UX 审查、检索、中文输出
       - name: Offline smoke test
         run: node tests/smoke.mjs
+
+      # 示例页面：脚本可编译、无障碍要点、令牌化、状态完备性
+      - name: Check example pages
+        run: node tests/check-example.mjs

@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>金融智控台 · 数据看板（设计系统示例）</title>
+<meta name="description" content="由 dsh-ui-ux-pro-max 的 design_recommend 生成的设计系统落地示例：Data-Dense Dashboard + Heat Map，Fira Code / Fira Sans，双模式令牌。" />
+<!-- 字体：离线时自动回退到系统等宽/无衬线字体栈 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   1. 设计令牌（Design Tokens）
+   来源：design_recommend("金融 SaaS 数据看板", stack: react)
+   浅色为设计系统原值；深色为同色系推导值，均满足 WCAG AA
+   ============================================================ */
+:root {
+  /* 品牌与语义色（设计系统原值） */
+  --color-primary: #1E40AF;
+  --color-on-primary: #FFFFFF;
+  --color-secondary: #3B82F6;
+  --color-accent: #D97706;          /* CTA / 强调（WCAG 3:1 调整版） */
+  --color-on-accent: #FFFFFF;
+  --color-background: #F8FAFC;
+  --color-foreground: #1E3A8A;      /* 正文（对比度 ≥ 4.5:1） */
+  --color-card: #FFFFFF;
+  --color-muted: #E9EEF6;           /* 弱化表面 */
+  --color-muted-foreground: #5B6B8C;/* 次要文字（推导，≥ 4.5:1） */
+  --color-border: #DBEAFE;
+  --color-destructive: #DC2626;
+  --color-ring: #1E40AF;            /* 焦点环 */
+  /* 看板扩展语义色（仅在需要时使用） */
+  --color-success: #0F766E;
+  --color-warning: #B45309;
+  --chart-1: #1E40AF;
+  --chart-2: #3B82F6;
+  --chart-3: #D97706;
+  --chart-4: #0F766E;
+  --color-on-strong: #FFFFFF;   /* 高饱和色块上的文字 */
+
+  /* 间距刻度：4/8 节奏（density 标准档） */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+  /* 圆角与阴影 */
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, .08);
+  --shadow-lg: 0 12px 28px rgba(15, 23, 42, .12);
+
+  /* 字体 */
+  --font-sans: "Fira Sans", -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "Fira Code", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --topbar-h: 56px;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --color-primary: #5B8DEF;
+  --color-on-primary: #06101F;
+  --color-secondary: #7CA5F5;
+  --color-accent: #F59E0B;
+  --color-on-accent: #1A1203;
+  --color-background: #0B1220;
+  --color-foreground: #E8EEF9;
+  --color-card: #121B2E;
+  --color-muted: #1B2740;
+  --color-muted-foreground: #9FB0CC;
+  --color-border: #24324D;
+  --color-destructive: #F87171;
+  --color-ring: #7CA5F5;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --chart-1: #5B8DEF;
+  --chart-2: #7CA5F5;
+  --chart-3: #F59E0B;
+  --chart-4: #34D399;
+  --color-on-strong: #FFFFFF;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, .45);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, .55);
+  color-scheme: dark;
+}
+
+/* ============================================================
+   2. 基础样式
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
+p { margin: 0; }
+a { color: var(--color-primary); }
+
+/* 键盘焦点始终可见 */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* 尊重「减少动态」偏好 */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* 仅供屏幕阅读器 */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* 等宽数字：金融数据对齐 */
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   3. 顶栏
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  height: var(--topbar-h);
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: 0 var(--space-5);
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+}
+.brand { display: flex; align-items: center; gap: var(--space-2); font-weight: 700; font-size: 15px; }
+.brand .mark {
+  width: 28px; height: 28px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  display: grid; place-items: center; color: var(--color-on-primary); flex: none;
+}
+.brand small { display: block; font-weight: 400; font-size: 11px; color: var(--color-muted-foreground); letter-spacing: .02em; }
+.topnav { display: flex; gap: var(--space-1); margin-left: var(--space-5); }
+.topnav a {
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm);
+  color: var(--color-muted-foreground); text-decoration: none; font-size: 13px;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.topnav a:hover { background: var(--color-muted); color: var(--color-foreground); }
+.topnav a[aria-current="page"] { background: var(--color-muted); color: var(--color-primary); font-weight: 600; }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: var(--space-2); }
+
+/* 按钮：min-height 44px 保证触摸目标 */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 44px; padding: 0 var(--space-4);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-card); color: var(--color-foreground);
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease, box-shadow 150ms ease;
+}
+.btn:hover { background: var(--color-muted); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.btn-primary:hover { background: var(--color-secondary); border-color: var(--color-secondary); }
+.btn-accent { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+.btn-accent:hover { filter: brightness(1.06); }
+.btn-icon { width: 44px; padding: 0; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ============================================================
+   4. 布局骨架：12 列栅格
+   ============================================================ */
+.wrap {
+  max-width: 1440px; margin: 0 auto;
+  padding: var(--space-5);
+  padding-bottom: max(var(--space-7), env(safe-area-inset-bottom));
+}
+.page-head { display: flex; align-items: flex-end; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
+.page-head h1 { font-size: 20px; }
+.page-head .sub { color: var(--color-muted-foreground); font-size: 13px; margin-top: var(--space-1); }
+.page-head .refresh-info { margin-left: auto; text-align: right; font-size: 12px; color: var(--color-muted-foreground); }
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-4); }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-6 { grid-column: span 6; }
+.col-8 { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+}
+.card-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+.card-head h2 { font-size: 14px; }
+.card-head .hint { font-size: 12px; color: var(--color-muted-foreground); }
+.card-head .right { margin-left: auto; display: flex; gap: var(--space-2); }
+
+/* ============================================================
+   5. 筛选栏
+   ============================================================ */
+.filters {
+  display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap;
+  padding: var(--space-3); margin-bottom: var(--space-4);
+  background: var(--color-card); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+}
+.segmented { display: inline-flex; background: var(--color-muted); border-radius: var(--radius-md); padding: 3px; }
+.segmented button {
+  min-height: 38px; padding: 0 var(--space-3);
+  border: 0; border-radius: var(--radius-sm); background: transparent;
+  color: var(--color-muted-foreground); font: inherit; font-size: 13px; cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.segmented button[aria-pressed="true"] { background: var(--color-card); color: var(--color-primary); font-weight: 600; box-shadow: var(--shadow-sm); }
+.field { display: flex; flex-direction: column; gap: var(--space-1); }
+.field label { font-size: 11px; color: var(--color-muted-foreground); }
+.field input, .field select {
+  min-height: 40px; padding: 0 var(--space-3);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-card); color: var(--color-foreground);
+  font: inherit; font-size: 13px; cursor: pointer;
+}
+.field input { cursor: text; min-width: 200px; }
+.filters .spacer { margin-left: auto; }
+
+/* ============================================================
+   6. KPI 卡片
+   ============================================================ */
+.kpi { display: flex; flex-direction: column; gap: var(--space-2); }
+.kpi .kpi-label { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--color-muted-foreground); }
+.kpi .kpi-value { font-family: var(--font-mono); font-size: 24px; font-weight: 600; letter-spacing: -.02em; }
+.kpi .kpi-value .unit { font-size: 13px; font-weight: 400; color: var(--color-muted-foreground); margin-left: 2px; }
+.kpi .kpi-foot { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; }
+.delta { display: inline-flex; align-items: center; gap: 2px; font-family: var(--font-mono); font-weight: 600; }
+.delta.up { color: var(--color-success); }
+.delta.down { color: var(--color-destructive); }
+.delta.flat { color: var(--color-muted-foreground); }
+.kpi .vs { color: var(--color-muted-foreground); }
+.spark { margin-top: var(--space-1); }
+
+/* ============================================================
+   7. 图表（纯 SVG，无第三方依赖）
+   ============================================================ */
+.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.axis-line { stroke: var(--color-border); stroke-width: 1; }
+.grid-line { stroke: var(--color-border); stroke-width: 1; stroke-dasharray: 3 4; opacity: .8; }
+.axis-label { fill: var(--color-muted-foreground); font-size: 10px; font-family: var(--font-mono); }
+.series-area { fill: url(#areaGradient); }
+.series-line { fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.series-dot { fill: var(--color-card); stroke: var(--color-primary); stroke-width: 2; }
+.crosshair { stroke: var(--color-muted-foreground); stroke-width: 1; stroke-dasharray: 3 3; opacity: .7; }
+.tooltip-box { fill: var(--color-foreground); opacity: .94; rx: 6; }
+.tooltip-text { fill: var(--color-background); font-size: 10px; font-family: var(--font-mono); }
+
+.legend { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+.legend li { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; list-style: none; }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.legend .val { font-family: var(--font-mono); color: var(--color-muted-foreground); }
+.donut-center { fill: var(--color-foreground); font-family: var(--font-mono); font-size: 15px; font-weight: 600; }
+.donut-center-sub { fill: var(--color-muted-foreground); font-size: 9px; font-family: var(--font-sans); }
+
+/* 热力图：色阶矩阵（强度可视化） */
+.heat-scroll { overflow-x: auto; padding-bottom: var(--space-1); }
+.heatmap { display: grid; grid-template-columns: 72px repeat(12, minmax(0, 1fr)); gap: 2px; min-width: 440px; }
+.heatmap .row-label, .heatmap .col-label {
+  display: flex; align-items: center; font-size: 11px; color: var(--color-muted-foreground);
+}
+.heatmap .col-label { justify-content: center; font-family: var(--font-mono); }
+.heatmap .cell {
+  aspect-ratio: 1 / 1; border-radius: 3px; display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  border: 1px solid transparent; cursor: default;
+  transition: transform 120ms ease, border-color 120ms ease;
+}
+.heatmap .cell:hover { transform: scale(1.06); border-color: var(--color-foreground); }
+.heat-legend { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); font-size: 11px; color: var(--color-muted-foreground); }
+.heat-legend .bar { width: 120px; height: 8px; border-radius: 999px;
+  background: linear-gradient(90deg, rgba(30,64,175,.12), rgba(30,64,175,.55)); }
+
+/* ============================================================
+   8. 表格
+   ============================================================ */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+caption { text-align: left; font-size: 12px; color: var(--color-muted-foreground); padding-bottom: var(--space-2); }
+th, td { text-align: left; padding: var(--space-3) var(--space-3); border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+th { font-size: 12px; color: var(--color-muted-foreground); font-weight: 500; position: sticky; top: 0; background: var(--color-card); }
+th button {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  min-height: 32px; padding: 0; border: 0; background: none;
+  color: inherit; font: inherit; cursor: pointer;
+}
+th button:hover { color: var(--color-primary); }
+th[aria-sort] button { color: var(--color-primary); font-weight: 600; }
+tbody tr { transition: background-color 120ms ease; }
+tbody tr:hover { background: var(--color-muted); }
+td.amount { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.pill {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  padding: 2px var(--space-2); border-radius: 999px; font-size: 11px; font-weight: 500;
+}
+.pill.ok { background: color-mix(in srgb, var(--color-success) 14%, transparent); color: var(--color-success); }
+.pill.warn { background: color-mix(in srgb, var(--color-warning) 16%, transparent); color: var(--color-warning); }
+.pill.bad { background: color-mix(in srgb, var(--color-destructive) 14%, transparent); color: var(--color-destructive); }
+.pill.info { background: color-mix(in srgb, var(--color-secondary) 16%, transparent); color: var(--color-primary); }
+.row-action {
+  min-height: 32px; padding: 0 var(--space-2); border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border); background: var(--color-card);
+  color: var(--color-primary); font: inherit; font-size: 12px; cursor: pointer;
+}
+.row-action:hover { background: var(--color-muted); }
+.table-foot { display: flex; align-items: center; gap: var(--space-3); padding-top: var(--space-3); font-size: 12px; color: var(--color-muted-foreground); }
+.table-foot .spacer { margin-left: auto; }
+
+/* ============================================================
+   9. 状态：加载 / 空 / 错误
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-muted) 25%, color-mix(in srgb, var(--color-muted) 60%, var(--color-card)) 37%, var(--color-muted) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+  color: transparent;
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.state {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+  padding: var(--space-7) var(--space-4); text-align: center;
+}
+.state .state-icon { color: var(--color-muted-foreground); }
+.state h3 { font-size: 14px; }
+.state p { font-size: 13px; color: var(--color-muted-foreground); max-width: 46ch; }
+.banner {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4); margin-bottom: var(--space-4);
+  border-radius: var(--radius-lg); border: 1px solid var(--color-border);
+  background: var(--color-muted); font-size: 13px;
+}
+.banner[hidden] { display: none; }
+.banner .banner-actions { margin-left: auto; display: flex; gap: var(--space-2); }
+
+/* ============================================================
+   10. 令牌面板 / 页脚
+   ============================================================ */
+details.tokens { margin-top: var(--space-5); background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+details.tokens > summary {
+  cursor: pointer; padding: var(--space-4); font-size: 13px; font-weight: 600;
+  min-height: 44px; display: flex; align-items: center;
+}
+.token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-2); padding: 0 var(--space-4) var(--space-4); }
+.token { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.token .chip { width: 22px; height: 22px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); flex: none; }
+.token code { font-family: var(--font-mono); font-size: 11px; }
+.token .role { font-size: 11px; color: var(--color-muted-foreground); }
+
+footer.site-foot {
+  margin-top: var(--space-5); padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  display: flex; gap: var(--space-4); flex-wrap: wrap;
+  font-size: 12px; color: var(--color-muted-foreground);
+}
+footer.site-foot p { max-width: 70ch; }
+footer.site-foot .spacer { margin-left: auto; }
+
+/* ============================================================
+   11. 响应式：1440 / 1024 / 768 / 375
+   ============================================================ */
+@media (max-width: 1200px) {
+  .col-3 { grid-column: span 6; }
+  .col-8 { grid-column: span 12; }
+  .col-4 { grid-column: span 6; }
+}
+@media (max-width: 900px) {
+  .topnav { display: none; }
+  .page-head .refresh-info { margin-left: 0; text-align: left; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: var(--space-4); }
+  .col-3, .col-4, .col-6, .col-8 { grid-column: span 12; }
+  .filters .spacer { margin-left: 0; }
+  .field input { min-width: 100%; }
+  .heatmap { grid-template-columns: 56px repeat(12, minmax(0, 1fr)); }
+}
+@media (max-width: 420px) {
+  .topbar { padding: 0 var(--space-3); gap: var(--space-2); }
+  .brand small { display: none; }
+  .kpi .kpi-value { font-size: 20px; }
+  .heatmap .cell { font-size: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== 顶栏 ===================== -->
+<header class="topbar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 20h18M6 20V10M11 20V4M16 20v-7M21 20v-4" />
+      </svg>
+    </span>
+    <span>金融智控台<small>FINTECH CONTROL DESK</small></span>
+  </div>
+  <nav class="topnav" aria-label="主导航">
+    <a href="#overview" aria-current="page">总览</a>
+    <a href="#allocation">资产配置</a>
+    <a href="#heatmap">行业热力</a>
+    <a href="#trades">交易明细</a>
+  </nav>
+  <div class="topbar-actions">
+    <button class="btn" id="btn-refresh" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
+      </svg>
+      刷新
+    </button>
+    <button class="btn btn-icon" id="btn-theme" type="button" aria-label="切换深色 / 浅色模式" title="切换深色 / 浅色模式">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+      </svg>
+    </button>
+    <button class="btn btn-accent" id="btn-export-top" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" />
+      </svg>
+      导出
+    </button>
+  </div>
+</header>
+
+<main class="wrap" id="overview">
+  <div class="page-head">
+    <div>
+      <h1>资产与交易总览</h1>
+      <p class="sub">Data-Dense Dashboard · 12 列栅格 · 双模式令牌（由 dsh-ui-ux-pro-max 生成的设计系统示例）</p>
+    </div>
+    <div class="refresh-info">
+      <div id="last-updated" aria-live="polite" class="num">数据时间 2026-08-27 16:40:12</div>
+      <div>数据源：内部清算网关（示例数据）</div>
+    </div>
+  </div>
+
+  <!-- 状态提示（加载 / 错误） -->
+  <div class="banner" id="banner" role="status" hidden>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+      <path d="M12 8v5m0 3h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+    </svg>
+    <span id="banner-text">正在加载数据…</span>
+    <span class="banner-actions">
+      <button class="btn" id="btn-banner-action" type="button" hidden>重试</button>
+      <button class="btn" id="btn-banner-close" type="button" aria-label="关闭提示">关闭</button>
+    </span>
+  </div>
+
+  <!-- ===================== 筛选栏 ===================== -->
+  <section class="filters" aria-label="筛选条件">
+    <div class="segmented" role="group" aria-label="时间范围">
+      <button type="button" data-range="7" aria-pressed="false">近 7 天</button>
+      <button type="button" data-range="30" aria-pressed="true">近 30 天</button>
+      <button type="button" data-range="90" aria-pressed="false">近 90 天</button>
+    </div>
+    <div class="field">
+      <label for="filter-product">产品类型</label>
+      <select id="filter-product">
+        <option value="">全部</option>
+        <option value="债券">债券</option>
+        <option value="权益">权益</option>
+        <option value="现金">现金</option>
+        <option value="另类">另类</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="filter-status">状态</label>
+      <select id="filter-status">
+        <option value="">全部</option>
+        <option value="已成交">已成交</option>
+        <option value="待复核">待复核</option>
+        <option value="已拒绝">已拒绝</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="filter-q">搜索（交易编号 / 对手方）</label>
+      <input id="filter-q" type="search" placeholder="如 TRX-20431 或 华泰资管" />
+    </div>
+    <div class="spacer"></div>
+    <button class="btn" id="btn-reset" type="button">重置筛选</button>
+  </section>
+
+  <!-- ===================== KPI 行 ===================== -->
+  <section class="grid" id="kpi-row" aria-label="关键指标">
+    <article class="card col-3 kpi">
+      <div class="kpi-label">管理资产规模（AUM）</div>
+      <div class="kpi-value" data-kpi="aum">¥128.64<span class="unit">亿</span></div>
+      <div class="kpi-foot">
+        <span class="delta up" data-kpi="aum-delta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 14l5-5 5 5" /></svg>
+          2.4%
+        </span>
+        <span class="vs">较上期</span>
+      </div>
+      <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="AUM 近 30 天走势：整体上行">
+        <polyline points="0,22 12,20 24,21 36,17 48,18 60,14 72,15 84,11 96,12 108,8 120,7" fill="none" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </article>
+
+    <article class="card col-3 kpi">
+      <div class="kpi-label">今日交易额</div>
+      <div class="kpi-value" data-kpi="turnover">¥3.42<span class="unit">亿</span></div>
+      <div class="kpi-foot">
+        <span class="delta down" data-kpi="turnover-delta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5" /></svg>
+          1.2%
+        </span>
+        <span class="vs">较昨日</span>
+      </div>
+      <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="交易额近 30 天走势：小幅波动">
+        <polyline points="0,12 12,15 24,11 36,16 48,13 60,17 72,14 84,18 96,15 108,19 120,17" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </article>
+
+    <article class="card col-3 kpi">
+      <div class="kpi-label">活跃账户</div>
+      <div class="kpi-value" data-kpi="accounts">18,429</div>
+      <div class="kpi-foot">
+        <span class="delta up" data-kpi="accounts-delta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 14l5-5 5 5" /></svg>
+          5.8%
+        </span>
+        <span class="vs">较上期</span>
+      </div>
+      <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="活跃账户近 30 天走势：稳步上升">
+        <polyline points="0,24 12,22 24,20 36,21 48,17 60,15 72,16 84,12 96,10 108,9 120,6" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </article>
+
+    <article class="card col-3 kpi">
+      <div class="kpi-label">风险预警</div>
+      <div class="kpi-value" data-kpi="alerts">7<span class="unit">项</span></div>
+      <div class="kpi-foot">
+        <span class="delta flat" data-kpi="alerts-delta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+          3 项
+        </span>
+        <span class="vs">较昨日已处置</span>
+      </div>
+      <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="风险预警近 30 天走势：持续下降">
+        <polyline points="0,6 12,9 24,8 36,12 48,11 60,15 72,14 84,18 96,17 108,21 120,22" fill="none" stroke="var(--color-destructive)" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </article>
+  </section>
+
+  <!-- ===================== 图表行 ===================== -->
+  <section class="grid" style="margin-top: var(--space-4)">
+    <!-- 趋势折线 / 面积图 -->
+    <article class="card col-8" id="trend-card">
+      <div class="card-head">
+        <h2>资产规模趋势</h2>
+        <span class="hint">单位：亿元 · 悬停查看单点数值</span>
+        <span class="right">
+          <button class="btn" id="btn-export-trend" type="button">导出 CSV</button>
+        </span>
+      </div>
+      <svg class="chart" id="trend" viewBox="0 0 720 260" role="img" aria-labelledby="trend-title trend-desc">
+        <title id="trend-title">资产规模趋势折线图</title>
+        <desc id="trend-desc">近 30 天管理资产规模走势，起点 122.4 亿元，终点 128.6 亿元，整体上行，最大回撤出现在第 9 天。</desc>
+        <defs>
+          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--color-primary)" stop-opacity=".28" />
+            <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g id="trend-grid"></g>
+        <path class="series-area" id="trend-area" d="" />
+        <path class="series-line" id="trend-line" d="" />
+        <g id="trend-dots"></g>
+        <g id="trend-hover" hidden>
+          <line class="crosshair" id="trend-cross" x1="0" y1="0" x2="0" y2="0" />
+          <circle class="series-dot" id="trend-hover-dot" r="4" cx="0" cy="0" />
+          <rect class="tooltip-box" id="trend-tip-box" x="0" y="0" width="104" height="22" rx="6" />
+          <text class="tooltip-text" id="trend-tip-text" x="0" y="0">—</text>
+        </g>
+        <line class="axis-line" x1="44" y1="220" x2="700" y2="220" />
+        <g id="trend-x-labels"></g>
+        <g id="trend-y-labels"></g>
+      </svg>
+    </article>
+
+    <!-- 环形图：资产配置 -->
+    <article class="card col-4" id="allocation">
+      <div class="card-head">
+        <h2>资产配置</h2>
+        <span class="hint">占比</span>
+      </div>
+      <div style="display:flex; gap: var(--space-5); align-items:center; flex-wrap:wrap">
+        <svg width="150" height="150" viewBox="0 0 42 42" role="img" aria-label="资产配置环形图：债券 42%、权益 31%、现金 17%、另类 10%">
+          <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--color-muted)" stroke-width="6" />
+          <circle id="arc-1" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-1)" stroke-width="6"
+                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+          <circle id="arc-2" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-2)" stroke-width="6"
+                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+          <circle id="arc-3" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-3)" stroke-width="6"
+                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+          <circle id="arc-4" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-4)" stroke-width="6"
+                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+          <text class="donut-center" x="21" y="20.5" text-anchor="middle">¥128.6</text>
+          <text class="donut-center-sub" x="21" y="25" text-anchor="middle">亿 · 总规模</text>
+        </svg>
+        <ul class="legend" style="margin:0">
+          <li><span class="swatch" style="background: var(--chart-1)"></span>债券 <span class="val num">42%</span></li>
+          <li><span class="swatch" style="background: var(--chart-2)"></span>权益 <span class="val num">31%</span></li>
+          <li><span class="swatch" style="background: var(--chart-3)"></span>现金 <span class="val num">17%</span></li>
+          <li><span class="swatch" style="background: var(--chart-4)"></span>另类 <span class="val num">10%</span></li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== 热力图 ===================== -->
+  <section class="grid" style="margin-top: var(--space-4)">
+    <article class="card col-12" id="heatmap">
+      <div class="card-head">
+        <h2>行业持仓热力图</h2>
+        <span class="hint">色深 = 涨跌幅强度 · 数值为日涨跌 %</span>
+        <span class="right"><span class="hint" id="heat-note">按 12 个交易日展示</span></span>
+      </div>
+      <div class="heat-scroll">
+        <div class="heatmap" id="heat-grid" role="img" aria-label="行业持仓热力图：半导体、新能源、医药等 6 个行业在 12 个交易日的涨跌幅，颜色越深波动越大"></div>
+      </div>
+      <div class="heat-legend">
+        <span>-5%</span><span class="bar"></span><span>+5%</span>
+        <span style="margin-left: auto">数据延迟 ≤ 15 分钟</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== 交易明细表 ===================== -->
+  <section class="grid" style="margin-top: var(--space-4)">
+    <article class="card col-12" id="trades">
+      <div class="card-head">
+        <h2>交易明细</h2>
+        <span class="hint">点击表头排序 · 支持筛选与导出</span>
+        <span class="right">
+          <button class="btn" id="btn-export-table" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" />
+            </svg>
+            导出 CSV
+          </button>
+        </span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="trades-table">
+          <caption id="trades-caption">当前共 12 笔交易（示例数据）</caption>
+          <thead>
+            <tr>
+              <th scope="col" aria-sort="descending"><button type="button" data-sort="time">时间 <span aria-hidden="true">↓</span></button></th>
+              <th scope="col"><button type="button" data-sort="id">交易编号 <span aria-hidden="true">↕</span></button></th>
+              <th scope="col"><button type="button" data-sort="product">产品 <span aria-hidden="true">↕</span></button></th>
+              <th scope="col"><button type="button" data-sort="counterparty">对手方 <span aria-hidden="true">↕</span></button></th>
+              <th scope="col" style="text-align:right"><button type="button" data-sort="amount">金额（万元） <span aria-hidden="true">↕</span></button></th>
+              <th scope="col"><button type="button" data-sort="status">状态 <span aria-hidden="true">↕</span></button></th>
+              <th scope="col"><span class="sr-only">操作</span></th>
+            </tr>
+          </thead>
+          <tbody id="trades-body"></tbody>
+        </table>
+      </div>
+
+      <!-- 空状态（无筛选结果时显示） -->
+      <div class="state" id="trades-empty" hidden>
+        <span class="state-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h10M4 18h7" />
+          </svg>
+        </span>
+        <h3>没有符合条件的交易</h3>
+        <p>请放宽筛选条件，或清空搜索关键词后重试。</p>
+        <button class="btn btn-primary" id="btn-empty-reset" type="button">清空筛选</button>
+      </div>
+
+      <div class="table-foot">
+        <span id="trades-count" class="num">显示 12 / 12 笔</span>
+        <span class="spacer"></span>
+        <span>金额单位：万元（按成交价折算）</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== 设计令牌面板 ===================== -->
+  <details class="tokens">
+    <summary>查看本页使用的设计令牌（design_recommend 输出）</summary>
+    <div class="token-grid" id="token-grid"></div>
+    <p style="padding: 0 var(--space-4) var(--space-4); font-size: 12px; color: var(--color-muted-foreground)">
+      风格：Data-Dense Dashboard + Heat Map · 字体：Fira Code / Fira Sans · 主色 #1E40AF · 强调色 #D97706（WCAG 3:1 调整）。
+      深色模式为同色系推导值，两套主题的正文对比度均 ≥ 4.5:1。
+    </p>
+  </details>
+
+  <footer class="site-foot">
+    <p>示例数据仅用于展示设计系统与交互规范，不构成任何投资建议。本页为单文件、零依赖、可离线打开的演示（图表与热力图均为手写 SVG / CSS）。</p>
+    <span class="spacer"></span>
+    <p>由 <strong>dsh-ui-ux-pro-max</strong> 的 design_recommend 生成设计系统后落地实现。</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ==========================================================
+     设计令牌清单（与 CSS 变量一一对应，用于令牌面板展示）
+     ========================================================== */
+  var TOKENS = [
+    ['主色 primary', '--color-primary', '#1E40AF', '#5B8DEF'],
+    ['主色前景 on-primary', '--color-on-primary', '#FFFFFF', '#06101F'],
+    ['次色 secondary', '--color-secondary', '#3B82F6', '#7CA5F5'],
+    ['强调色 / CTA', '--color-accent', '#D97706', '#F59E0B'],
+    ['背景 background', '--color-background', '#F8FAFC', '#0B1220'],
+    ['前景文字 foreground', '--color-foreground', '#1E3A8A', '#E8EEF9'],
+    ['卡片 card', '--color-card', '#FFFFFF', '#121B2E'],
+    ['弱化 muted', '--color-muted', '#E9EEF6', '#1B2740'],
+    ['次要文字 muted-fg', '--color-muted-foreground', '#5B6B8C', '#9FB0CC'],
+    ['边框 border', '--color-border', '#DBEAFE', '#24324D'],
+    ['危险 destructive', '--color-destructive', '#DC2626', '#F87171'],
+    ['成功 success', '--color-success', '#0F766E', '#34D399'],
+    ['焦点环 ring', '--color-ring', '#1E40AF', '#7CA5F5']
+  ];
+
+  /* ==========================================================
+     数据（按时间范围提供三组，切换筛选即换数据）
+     ========================================================== */
+  var DATASETS = {
+    7: {
+      aum: '¥128.64', aumDelta: ['up', '1.1%'], turnover: '¥3.42', turnoverDelta: ['down', '0.4%'],
+      accounts: '18,429', accountsDelta: ['up', '1.9%'], alerts: '7', alertsDelta: ['flat', '1 项'],
+      series: [126.8, 127.1, 126.9, 127.4, 127.8, 128.1, 128.64]
+    },
+    30: {
+      aum: '¥128.64', aumDelta: ['up', '2.4%'], turnover: '¥3.42', turnoverDelta: ['down', '1.2%'],
+      accounts: '18,429', accountsDelta: ['up', '5.8%'], alerts: '7', alertsDelta: ['flat', '3 项'],
+      series: [122.4, 123.1, 122.8, 123.6, 124.9, 124.2, 125.4, 126.1, 125.2, 126.4,
+               127.0, 126.6, 127.4, 128.1, 127.6, 128.4, 128.64]
+    },
+    90: {
+      aum: '¥128.64', aumDelta: ['up', '9.7%'], turnover: '¥3.42', turnoverDelta: ['up', '4.1%'],
+      accounts: '18,429', accountsDelta: ['up', '12.3%'], alerts: '7', alertsDelta: ['flat', '18 项'],
+      series: [112.6, 114.2, 113.1, 115.8, 117.4, 116.2, 118.9, 120.4, 119.1, 121.6,
+               123.2, 122.4, 124.1, 125.8, 124.9, 126.7, 127.2, 126.4, 127.8, 128.64]
+    }
+  };
+
+  var TRADES = [
+    { time: '16:38:02', id: 'TRX-20431', product: '权益', counterparty: '华泰资管', amount: 4820.5, status: '已成交' },
+    { time: '16:22:47', id: 'TRX-20430', product: '债券', counterparty: '中金固收', amount: 12600.0, status: '已成交' },
+    { time: '16:05:19', id: 'TRX-20429', product: '现金', counterparty: '招商银行', amount: 320.4, status: '待复核' },
+    { time: '15:58:33', id: 'TRX-20428', product: '另类', counterparty: '国泰君安', amount: 2150.0, status: '已成交' },
+    { time: '15:41:08', id: 'TRX-20427', product: '权益', counterparty: '广发基金', amount: 3675.2, status: '已拒绝' },
+    { time: '15:22:55', id: 'TRX-20426', product: '债券', counterparty: '中信证券', amount: 9800.0, status: '已成交' },
+    { time: '14:59:12', id: 'TRX-20425', product: '现金', counterparty: '工商银行', amount: 180.0, status: '已成交' },
+    { time: '14:33:41', id: 'TRX-20424', product: '权益', counterparty: '易方达', amount: 5240.8, status: '待复核' },
+    { time: '14:11:26', id: 'TRX-20423', product: '另类', counterparty: '平安信托', amount: 1420.0, status: '已成交' },
+    { time: '13:48:09', id: 'TRX-20422', product: '债券', counterparty: '国寿资产', amount: 15600.0, status: '已成交' },
+    { time: '13:20:37', id: 'TRX-20421', product: '权益', counterparty: '南方基金', amount: 2980.6, status: '已成交' },
+    { time: '11:05:14', id: 'TRX-20420', product: '现金', counterparty: '建设银行', amount: 640.0, status: '已拒绝' }
+  ];
+
+  var HEAT_ROWS = ['半导体', '新能源', '医药', '消费', '金融', '地产'];
+
+  var HEAT = [
+    [ 3.2,  1.8, -0.9,  2.4,  4.1,  1.2, -1.6,  2.8,  0.7,  3.5, -2.1,  1.4],
+    [ 2.1, -1.4,  2.8,  3.6,  0.9, -2.3,  1.7,  4.2,  2.5, -0.8,  1.9,  3.1],
+    [-0.6,  2.2,  1.4, -1.8,  3.3,  2.7, -0.4,  1.1,  4.6,  1.8,  0.5, -1.2],
+    [ 1.4,  0.9,  2.6,  1.2, -1.5,  3.1,  2.2,  0.4,  1.6,  2.9,  1.1,  0.8],
+    [ 0.8,  2.4,  1.1,  3.4,  1.6,  0.6,  2.9, -1.1,  1.3,  2.1,  3.8,  1.7],
+    [-2.4, -1.1,  0.6, -3.2,  1.2, -0.7,  2.4,  0.9, -1.9,  1.4, -2.6,  0.4]
+  ];
+
+  /* ==========================================================
+     工具函数
+     ========================================================== */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function fmt(n, digits) {
+    var d = digits === undefined ? 2 : digits;
+    return n.toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+  function heatColor(pct) {
+    // 色阶走令牌（color-mix），避免在演示里硬编码 hex：正为品牌蓝、负为危险色
+    var intensity = Math.round(12 + Math.min(Math.abs(pct) / 5, 1) * 50);
+    var token = pct >= 0 ? 'var(--color-primary)' : 'var(--color-destructive)';
+    return 'color-mix(in srgb, ' + token + ' ' + intensity + '%, transparent)';
+  }
+
+  /* ==========================================================
+     1. 主题切换（含系统偏好 + 本地记忆）
+     ========================================================== */
+  var btnTheme = $('#btn-theme');
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('uiux-demo-theme', theme); } catch (e) { /* 隐私模式忽略 */ }
+  }
+  (function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('uiux-demo-theme'); } catch (e) { /* ignore */ }
+    if (saved === 'light' || saved === 'dark') { applyTheme(saved); return; }
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  })();
+  btnTheme.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  });
+
+  /* ==========================================================
+     2. 令牌面板
+     ========================================================== */
+  var tokenGrid = $('#token-grid');
+  TOKENS.forEach(function (t) {
+    var el = document.createElement('div');
+    el.className = 'token';
+    el.innerHTML =
+      '<span class="chip" style="background: var(' + t[1] + ')"></span>' +
+      '<span><code>var(' + t[1] + ')</code><span class="role">' + t[0] + ' · 浅色 ' + t[2] + ' / 深色 ' + t[3] + '</span></span>';
+    tokenGrid.appendChild(el);
+  });
+
+  /* ==========================================================
+     3. 趋势图（手写 SVG，含悬停十字与提示）
+     ========================================================== */
+  var PAD_L = 44, PAD_R = 20, PAD_T = 16, PAD_B = 40;
+  var W = 720, H = 260;
+  var plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+  function renderTrend(values) {
+    var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
+    var span = (max - min) || 1;
+    var stepY = span > 12 ? 4 : (span > 6 ? 2 : 1);
+    var belowMin = Math.floor(min / stepY) * stepY - (max - min < stepY * 3 ? stepY : 0);
+    var top = Math.floor(max / stepY) * stepY + stepY;
+    var yMin = Math.min(belowMin, min - stepY);
+    var yMax = Math.max(top, max + stepY * 0.2);
+    var xAt = function (i) { return PAD_L + (values.length === 1 ? 0 : (plotW * i) / (values.length - 1)); };
+    var yAt = function (v) { return PAD_T + plotH - ((v - yMin) / (yMax - yMin)) * plotH; };
+
+    // 网格与 Y 轴刻度
+    var grid = $('#trend-grid'), yLabels = $('#trend-y-labels'), xLabels = $('#trend-x-labels');
+    grid.innerHTML = ''; yLabels.innerHTML = ''; xLabels.innerHTML = '';
+    var ticks = 4;
+    for (var t = 0; t <= ticks; t++) {
+      var val = yMin + ((yMax - yMin) * t) / ticks;
+      var y = yAt(val);
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('class', 'grid-line');
+      line.setAttribute('x1', PAD_L); line.setAttribute('x2', W - PAD_R);
+      line.setAttribute('y1', y); line.setAttribute('y2', y);
+      grid.appendChild(line);
+      var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('class', 'axis-label');
+      label.setAttribute('x', PAD_L - 8); label.setAttribute('y', y + 3);
+      label.setAttribute('text-anchor', 'end');
+      label.textContent = fmt(val, 0);
+      yLabels.appendChild(label);
+    }
+    // X 轴：首 / 中 / 末
+    [0, Math.floor((values.length - 1) / 2), values.length - 1].forEach(function (i) {
+      var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('class', 'axis-label');
+      label.setAttribute('x', xAt(i)); label.setAttribute('y', H - PAD_B + 18);
+      label.setAttribute('text-anchor', i === 0 ? 'start' : (i === values.length - 1 ? 'end' : 'middle'));
+      label.textContent = 'D' + (i + 1);
+      xLabels.appendChild(label);
+    });
+
+    // 面积 + 折线 + 数据点
+    var linePath = '', areaPath = '';
+    values.forEach(function (v, i) {
+      var x = xAt(i), y = yAt(v);
+      linePath += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    });
+    areaPath = linePath + 'L' + xAt(values.length - 1).toFixed(1) + ' ' + (PAD_T + plotH) + ' L' + PAD_L + ' ' + (PAD_T + plotH) + ' Z';
+    $('#trend-line').setAttribute('d', linePath.trim());
+    $('#trend-area').setAttribute('d', areaPath.trim());
+    var dots = $('#trend-dots');
+    dots.innerHTML = '';
+    values.forEach(function (v, i) {
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('class', 'series-dot');
+      c.setAttribute('cx', xAt(i)); c.setAttribute('cy', yAt(v)); c.setAttribute('r', 2.5);
+      dots.appendChild(c);
+    });
+
+    // 悬停交互
+    var hover = $('#trend-hover'), cross = $('#trend-cross'), dot = $('#trend-hover-dot');
+    var tipBox = $('#trend-tip-box'), tipText = $('#trend-tip-text');
+    var svg = $('#trend');
+    function moveHover(evt) {
+      var rect = svg.getBoundingClientRect();
+      var scale = W / rect.width;
+      var localX = (evt.clientX - rect.left) * scale;
+      var ratio = (localX - PAD_L) / plotW;
+      var idx = Math.max(0, Math.min(values.length - 1, Math.round(ratio * (values.length - 1))));
+      var x = xAt(idx), y = yAt(values[idx]);
+      hover.hidden = false;
+      cross.setAttribute('x1', x); cross.setAttribute('x2', x);
+      cross.setAttribute('y1', PAD_T); cross.setAttribute('y2', PAD_T + plotH);
+      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      var text = 'D' + (idx + 1) + '  ' + fmt(values[idx], 2) + ' 亿';
+      tipText.textContent = text;
+      var boxW = Math.max(104, text.length * 6.2);
+      var boxX = Math.min(Math.max(x - boxW / 2, PAD_L), W - PAD_R - boxW);
+      tipBox.setAttribute('x', boxX); tipBox.setAttribute('width', boxW);
+      tipBox.setAttribute('y', Math.max(PAD_T, y - 34));
+      tipText.setAttribute('x', boxX + 8); tipText.setAttribute('y', Math.max(PAD_T + 14, y - 20));
+    }
+    svg.addEventListener('mousemove', moveHover);
+    svg.addEventListener('mouseleave', function () { hover.hidden = true; });
+    svg.addEventListener('touchmove', function (e) { if (e.touches[0]) moveHover(e.touches[0]); }, { passive: true });
+    svg.addEventListener('touchend', function () { hover.hidden = true; });
+  }
+
+  /* ==========================================================
+     4. 环形图（stroke-dasharray 计算）
+     ========================================================== */
+  function renderDonut(parts) {
+    var offset = 25; // 起点在 12 点方向
+    parts.forEach(function (p, i) {
+      var el = document.getElementById('arc-' + (i + 1));
+      if (!el) return;
+      el.setAttribute('stroke-dasharray', p + ' ' + (100 - p));
+      el.setAttribute('stroke-dashoffset', offset);
+      offset = (offset - p + 100) % 100;
+    });
+  }
+
+  /* ==========================================================
+     5. 热力图
+     ========================================================== */
+  function renderHeatmap() {
+    var grid = $('#heat-grid');
+    grid.innerHTML = '';
+    // 列标签（交易日 D1..D12）
+    var corner = document.createElement('div');
+    corner.className = 'col-label';
+    corner.textContent = '行业';
+    grid.appendChild(corner);
+    for (var d = 0; d < 12; d++) {
+      var colLabel = document.createElement('div');
+      colLabel.className = 'col-label';
+      colLabel.textContent = 'D' + (d + 1);
+      grid.appendChild(colLabel);
+    }
+    HEAT_ROWS.forEach(function (row, r) {
+      var rowLabel = document.createElement('div');
+      rowLabel.className = 'row-label';
+      rowLabel.textContent = row;
+      grid.appendChild(rowLabel);
+      for (var c = 0; c < 12; c++) {
+        var val = HEAT[r][c];
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.style.background = heatColor(val);
+        cell.style.color = Math.abs(val) > 2.4 ? 'var(--color-on-strong)' : 'var(--color-foreground)';
+        cell.textContent = (val > 0 ? '+' : '') + val.toFixed(1);
+        cell.title = row + ' D' + (c + 1) + '：' + (val > 0 ? '+' : '') + val.toFixed(1) + '%';
+        grid.appendChild(cell);
+      }
+    });
+  }
+
+  /* ==========================================================
+     6. 交易表格：筛选 / 排序 / 导出
+     ========================================================== */
+  var state = { range: 30, product: '', status: '', q: '', sort: 'time', dir: 'desc' };
+
+  function visibleTrades() {
+    var rows = TRADES.filter(function (t) {
+      if (state.product && t.product !== state.product) return false;
+      if (state.status && t.status !== state.status) return false;
+      if (state.q) {
+        var q = state.q.toLowerCase();
+        if (t.id.toLowerCase().indexOf(q) === -1 && t.counterparty.toLowerCase().indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+    rows.sort(function (a, b) {
+      var x = a[state.sort], y = b[state.sort];
+      var cmp = typeof x === 'number' ? x - y : String(x).localeCompare(String(y), 'zh-CN');
+      return state.dir === 'asc' ? cmp : -cmp;
+    });
+    return rows;
+  }
+
+  var STATUS_CLASS = { '已成交': 'ok', '待复核': 'warn', '已拒绝': 'bad' };
+
+  function renderTable() {
+    var rows = visibleTrades();
+    var body = $('#trades-body');
+    body.innerHTML = '';
+    rows.forEach(function (t) {
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td class="num">' + t.time + '</td>' +
+        '<td class="num">' + t.id + '</td>' +
+        '<td>' + t.product + '</td>' +
+        '<td>' + t.counterparty + '</td>' +
+        '<td class="amount">' + fmt(t.amount, 1) + '</td>' +
+        '<td><span class="pill ' + STATUS_CLASS[t.status] + '">' + t.status + '</span></td>' +
+        '<td><button class="row-action" type="button" aria-label="查看交易 ' + t.id + ' 详情">详情</button></td>';
+      body.appendChild(tr);
+    });
+    $('#trades-empty').hidden = rows.length !== 0;
+    $('#trades-table').hidden = rows.length === 0;
+    $('#trades-count').textContent = '显示 ' + rows.length + ' / ' + TRADES.length + ' 笔';
+    $('#trades-caption').textContent = '当前共 ' + rows.length + ' 笔交易（示例数据）';
+  }
+
+  // 表头排序 + aria-sort 同步
+  $$('th button[data-sort]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-sort');
+      if (state.sort === key) state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+      else { state.sort = key; state.dir = 'asc'; }
+      $$('th').forEach(function (th) {
+        th.removeAttribute('aria-sort');
+        var b = th.querySelector('button[data-sort]');
+        if (b) b.querySelector('span').textContent = '↕';
+      });
+      var th = btn.closest('th');
+      th.setAttribute('aria-sort', state.dir === 'asc' ? 'ascending' : 'descending');
+      btn.querySelector('span').textContent = state.dir === 'asc' ? '↑' : '↓';
+      renderTable();
+    });
+  });
+
+  // CSV 导出（BOM + CRLF，Excel 中文不乱码）
+  function downloadCsv(filename, rows) {
+    var csv = rows.map(function (r) {
+      return r.map(function (cell) {
+        var s = String(cell);
+        return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      }).join(',');
+    }).join('\r\n');
+    var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportTable() {
+    var rows = [['时间', '交易编号', '产品', '对手方', '金额（万元）', '状态']];
+    visibleTrades().forEach(function (t) { rows.push([t.time, t.id, t.product, t.counterparty, t.amount, t.status]); });
+    downloadCsv('交易明细.csv', rows);
+  }
+
+  function exportTrend() {
+    var series = DATASETS[state.range].series;
+    var rows = [['交易日', '资产规模（亿元）']];
+    series.forEach(function (v, i) { rows.push(['D' + (i + 1), v]); });
+    downloadCsv('资产规模趋势.csv', rows);
+  }
+
+  /* ==========================================================
+     7. 筛选交互
+     ========================================================== */
+  $$('.segmented button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      $$('.segmented button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      state.range = Number(btn.getAttribute('data-range'));
+      applyDataset();
+    });
+  });
+
+  function applyDataset() {
+    var d = DATASETS[state.range];
+    setKpi('aum', d.aum, d.aumDelta);
+    setKpi('turnover', d.turnover, d.turnoverDelta);
+    setKpi('accounts', d.accounts, d.accountsDelta);
+    setKpi('alerts', d.alerts, d.alertsDelta);
+    renderTrend(d.series);
+    $('#heat-note').textContent = '按 ' + state.range + ' 天窗口取样展示 12 个交易日';
+  }
+
+  function setKpi(key, value, delta) {
+    var valueEl = document.querySelector('[data-kpi="' + key + '"]');
+    var unit = valueEl.querySelector('.unit');
+    var unitHtml = unit ? unit.outerHTML : '';
+    valueEl.innerHTML = value + unitHtml;
+    var deltaEl = document.querySelector('[data-kpi="' + key + '-delta"]');
+    if (deltaEl && delta) {
+      deltaEl.className = 'delta ' + delta[0];
+      var icon = deltaEl.querySelector('svg');
+      deltaEl.innerHTML = (icon ? icon.outerHTML : '') + ' ' + delta[1];
+    }
+  }
+
+  $('#filter-product').addEventListener('change', function (e) { state.product = e.target.value; renderTable(); });
+  $('#filter-status').addEventListener('change', function (e) { state.status = e.target.value; renderTable(); });
+  $('#filter-q').addEventListener('input', function (e) { state.q = e.target.value.trim(); renderTable(); });
+
+  function resetFilters() {
+    state.product = ''; state.status = ''; state.q = '';
+    $('#filter-product').value = ''; $('#filter-status').value = ''; $('#filter-q').value = '';
+    renderTable();
+  }
+  $('#btn-reset').addEventListener('click', resetFilters);
+  $('#btn-empty-reset').addEventListener('click', resetFilters);
+
+  /* ==========================================================
+     8. 加载状态（模拟一次取数，展示骨架与提示条）
+     ========================================================== */
+  var banner = $('#banner'), bannerText = $('#banner-text');
+  var btnBannerAction = $('#btn-banner-action'), btnBannerClose = $('#btn-banner-close');
+  var lastUpdated = $('#last-updated');
+
+  function setLoading(on) {
+    $('#btn-refresh').disabled = on;
+    banner.hidden = !on;
+    if (on) {
+      bannerText.textContent = '正在刷新数据…';
+      btnBannerAction.hidden = true;
+      document.querySelectorAll('.kpi .kpi-value').forEach(function (el) { el.classList.add('skeleton'); });
+    } else {
+      document.querySelectorAll('.kpi .kpi-value').forEach(function (el) { el.classList.remove('skeleton'); });
+    }
+  }
+
+  function stamp() {
+    var d = new Date();
+    var p = function (n) { return String(n).padStart(2, '0'); };
+    lastUpdated.textContent = '数据时间 ' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+      ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+  }
+
+  $('#btn-refresh').addEventListener('click', function () {
+    setLoading(true);
+    window.setTimeout(function () {
+      setLoading(false);
+      applyDataset();
+      stamp();
+    }, 900);
+  });
+
+  btnBannerClose.addEventListener('click', function () { banner.hidden = true; });
+  btnBannerAction.addEventListener('click', function () { $('#btn-refresh').click(); });
+
+  /* ==========================================================
+     9. 导出入口
+     ========================================================== */
+  $('#btn-export-table').addEventListener('click', exportTable);
+  $('#btn-export-top').addEventListener('click', exportTable);
+  $('#btn-export-trend').addEventListener('click', exportTrend);
+
+  /* ==========================================================
+     10. 初始化
+     ========================================================== */
+  applyDataset();
+  renderDonut([42, 31, 17, 10]);
+  renderHeatmap();
+  renderTable();
+  stamp();
+})();
+</script>
+</body>
+</html>
