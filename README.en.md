@@ -43,7 +43,8 @@ dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.0.3   # dsh we
 > terminal** (the desktop app ships its own host-commands); if the command is
 > still missing, run `npm install -g @deepseek-ai/dsh` first.
 
-> Verified against DSH 0.1.1-rc.2 (`@deepseek-ai/dsh`, `dsh-tools`, `dsh-skill`).
+> Verified against **DSH 0.2.0-rc.2** and **0.1.1-rc.2** (`@deepseek-ai/dsh`, `dsh-tools`, `dsh-skill`).
+> The host requirement is declared as `>=0.0.1-rc.1 <0.3.0-0`, covering both the 0.1.x and 0.2.x release lines.
 
 ### DSH Desktop (from source)
 

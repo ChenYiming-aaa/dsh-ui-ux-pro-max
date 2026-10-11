@@ -50,6 +50,18 @@ const dshPeers = Object.entries(peers).filter(([k]) => k.startsWith('@deepseek-a
 assert(dshPeers.every(([, v]) => typeof v === 'string' && v.length > 0), `DSH peer 区间: ${dshPeers.map(([k, v]) => `${k}@${v}`).join(', ')}`)
 assert(typeof pkg.engines?.node === 'string', `engines.node = ${pkg.engines?.node}`)
 
+// 回归保护：宿主 boot gate 会跳过「声明区间不含当前运行时」的插件（表现为
+// 「对当前 DSH 不兼容」且技能/工具全部消失）。声明区间的上限必须高于我们
+// 已验证过的宿主版本线——历史上正是 `<0.2.0-0` 把 0.2.0-rc.2 挡在门外。
+const VERIFIED_HOST = '0.2.0-rc.2'
+const hostTuple = VERIFIED_HOST.split('.').slice(0, 2).map(Number)
+for (const [name, range] of dshPeers) {
+  const bounds = [...String(range).matchAll(/<\s*(\d+)\.(\d+)\.(\d+)/g)].map(m => m.slice(1, 3).map(Number))
+  assert(bounds.length > 0, `${name} 声明了上界`)
+  const coversHost = bounds.some(([maj, min]) => maj > hostTuple[0] || (maj === hostTuple[0] && min > hostTuple[1]))
+  assert(coversHost, `${name} 区间 ${range} 的上界高于已验证宿主线 ${VERIFIED_HOST}（避免 boot gate 跳过）`)
+}
+
 console.log('\n===== 3. files[] 条目存在性 =====')
 for (const entry of pkg.files ?? []) {
   assert(existsSync(`${root}${entry}`), `存在: ${entry}`)

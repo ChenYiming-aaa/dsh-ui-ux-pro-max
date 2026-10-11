@@ -13,7 +13,7 @@
 
 已发布到 npm：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)，可通过 DSH Desktop 插件市场一键安装。
 
-> 兼容性：已在 **DSH 0.1.1-rc.2**（`@deepseek-ai/dsh`、`dsh-tools`、`dsh-skill` 0.1.1-rc.2）上实际验证——三个工具的定义编译、执行、输出 schema、render、presentCall 与内置技能注册全部通过。
+> 兼容性：覆盖 **DSH 0.1.x 与 0.2.x 两条版本线**（`@deepseek-ai/dsh-skill` / `dsh-tools` 声明为 `>=0.0.1-rc.1 <0.3.0-0`）。已在 **0.2.0-rc.2** 与 **0.1.1-rc.2** 两个真实运行时上验证——三个工具的定义编译、执行、输出 schema、render、presentCall 与内置技能注册全部通过；代码层无需随宿主版本改动。
 
 ## 功能特性
 
