@@ -13,7 +13,7 @@
  */
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const args = process.argv.slice(2)
@@ -28,7 +28,11 @@ try {
   // CI 用独立目录安装 jsdom（避免连带安装本插件的 peer 依赖），经环境变量告知入口
   const alt = process.env.DOM_SMOKE_JSDOM
   if (alt) {
-    try { ({ JSDOM } = await import(alt)) } catch { /* 落到跳过分支 */ }
+    // 允许传入 file:// URL 或普通路径；注意 Windows 盘符（C:\）不是 URL scheme
+    const isWindowsPath = /^[a-zA-Z]:[\\/]/.test(alt)
+    const isUrl = !isWindowsPath && /^[a-z][a-z0-9+.-]*:\/\//i.test(alt)
+    const spec = isUrl ? alt : pathToFileURL(alt).href
+    try { ({ JSDOM } = await import(spec)) } catch (e) { console.log('⚠ 指定路径的 jsdom 加载失败: ' + e.message) }
   }
   if (!JSDOM) {
     console.log('⚠ 未安装 jsdom，跳过 DOM 执行验证（CI 中会安装后运行）。')
