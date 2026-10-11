@@ -121,16 +121,28 @@ dsh-ui-ux-pro-max/
 
 ## 示例：把设计系统做成可运行的页面
 
-[`examples/fintech-dashboard.html`](examples/fintech-dashboard.html) 是 `design_recommend("金融 SaaS 数据看板", stack: react)` 输出的**落地示例**：单文件、零第三方依赖（图表为手写 SVG / CSS）、可离线直接打开。
+两个示例都是**单文件、零第三方依赖、可离线直接打开**，用来证明设计系统被真正遵守，而不是只写在文档里。
 
-它演示了设计系统如何被真正遵守，而不是只写在文档里：
+### 1. `examples/fintech-dashboard.html` —— 金融数据看板
 
-- **风格**：Data-Dense Dashboard + Heat Map —— 12 列栅格、KPI 卡、趋势面积图、环形配置图、行业热力图、可排序表格
-- **令牌**：全部颜色/间距走 CSS 变量，浅深两套主题（正文对比度均 ≥ 4.5:1），页面内附「设计令牌」面板可展开核对
+来自 `design_recommend("金融 SaaS 数据看板", stack: react)`：Data-Dense Dashboard + Heat Map。
+
+- **风格**：12 列栅格、KPI 卡、趋势面积图、环形配置图、行业热力图、可排序表格
+- **令牌**：全部颜色/间距走 CSS 变量，浅深两套主题（正文对比度均 ≥ 4.5:1），页内附「设计令牌」面板可展开核对
 - **字体**：Fira Code（数字/等宽对齐）+ Fira Sans（正文），离线自动回退系统字体栈
-- **状态完备**：加载骨架屏、空状态、状态提示条、禁用态
-- **无障碍**：语义地标、图标按钮 `aria-label`、表格 `aria-sort`/`scope`、图表无障碍名称、`focus-visible` 焦点环、`prefers-reduced-motion`、≥44px 触摸目标、安全区内边距
-- **规范禁止项**：无 emoji 图标（全部内联 SVG）
+
+### 2. `examples/trip-planner-workbench.html` —— 行程编排工作台
+
+来自 `design_recommend("旅游行程规划工作台…", stack: react, variance 2 / motion 2 / density 8)`：Minimalism & Swiss + Financial Dashboard（企业级专业工具基调）。
+
+把 [better-trip-planner](https://github.com/ChenYiming-aaa/better-trip-planner) 的技能能力映射成三栏工作台：
+
+- **左栏**：行程结构（按天导航 + 城际交通分隔 + 花费小计）
+- **中栏**：逐小时时间轴（拖拽排序 + 键盘上下移动 + 删除 + 高德深链）；**四种模式**——整趟旅行 / 单日规划 / 空档填充（15 分钟步行半径候选）/ 临场重排（原方案 vs 重排结果 diff，可一键应用）
+- **右栏**：地图（示意走向 + 真实高德深链）/ 预算（分类占比 + 预算健康度）/ 预订（按截止日排序 + 实时倒计时 + 官方深链）/ 行前简报 / 渲染（7 套主题 + 门禁状态）
+- **信任设计**：`已核实 / 估算 / 需官方核对` 三态徽标；`AMAP_KEY` 缺失时**全局降级提示**并标注估算；底栏常驻内容门禁与数据源状态；明示**不代订、不付款、不收集个人信息**
+
+两个示例共同遵守的规范：状态完备（骨架屏 / 空态 / 提示条）、无障碍（语义地标、`aria-sort`/`scope`/`caption`、标签页方向键导航、图表无障碍名称、`focus-visible`、`prefers-reduced-motion`、≥44px 触摸目标、安全区内边距）、**无 emoji 图标**（全部内联 SVG）。
 
 ## 测试与验证
 
@@ -139,7 +151,8 @@ dsh-ui-ux-pro-max/
 ```bash
 node tests/check-package.mjs   # 清单与数据完整性
 node tests/smoke.mjs           # 离线自检（30 项断言）
-node tests/check-example.mjs   # 示例页面规范校验（22 项）
+node tests/check-example.mjs   # 示例页面规范校验（每个示例 22 项）
+node tests/dom-smoke.mjs       # 示例页真实 DOM 执行与交互验证（需 jsdom，缺失则跳过）
 ```
 
 **`check-package.mjs`** 覆盖历史上真实踩过的坑：`package.json` 的 UTF-8 BOM（会导致 DSH CLI `JSON.parse` 崩溃）、`dsh.bundle.patch` 缺失、`files[]` 指向不存在的文件、生命周期脚本（市场会拒绝安装）、`cordis.patch.yml` 的 insert 形状、`data/*.json` 可解析性与计数一致性。

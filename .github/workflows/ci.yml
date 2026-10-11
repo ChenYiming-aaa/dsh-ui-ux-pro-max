@@ -35,3 +35,16 @@ jobs:
       # 示例页面：脚本可编译、无障碍要点、令牌化、状态完备性
       - name: Check example pages
         run: node tests/check-example.mjs
+
+      # 真实 DOM 执行验证：渲染结果、预算/倒计时计算、模式切换、排序与编辑
+      # jsdom 装在独立目录，避免连带解析本插件的 peerDependencies
+      - name: DOM smoke test (jsdom, isolated install)
+        env:
+          DOM_SMOKE_JSDOM: ${{ runner.temp }}/domdeps/node_modules/jsdom/lib/api.js
+        run: |
+          mkdir -p "$RUNNER_TEMP/domdeps"
+          cd "$RUNNER_TEMP/domdeps"
+          npm init -y > /dev/null
+          npm install --no-audit --no-fund jsdom
+          cd "$GITHUB_WORKSPACE"
+          node tests/dom-smoke.mjs

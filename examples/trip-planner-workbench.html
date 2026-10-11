@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Trip Planner 工作台 · 行程编排示例</title>
+<meta name="description" content="由 dsh-ui-ux-pro-max 生成设计系统后落地：旅行行程编排工作台（时间轴 + 地图 + 预算 + 预订 + 行前简报 + 主题渲染），单文件、零依赖、离线可用。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   1. 设计令牌
+   风格：Minimalism & Swiss（企业级/专业工具）
+   配色：天空蓝 + 冒险橙（旅行语义）；预算区借 Financial Dashboard
+   密度：density 7（紧凑工作台）· 动效 motion 2-3（克制）
+   ============================================================ */
+:root {
+  /* 品牌与语义 */
+  --color-primary: #0EA5E9;
+  --color-on-primary: #0F172A;
+  --color-secondary: #38BDF8;
+  --color-accent: #EA580C;          /* 唯一行动色：主 CTA / 地图停靠点 */
+  --color-on-accent: #FFFFFF;
+  --color-background: #F0F9FF;
+  --color-foreground: #0C4A6E;
+  --color-card: #FFFFFF;
+  --color-muted: #E8F2F8;
+  --color-muted-foreground: #4A6B85;
+  --color-border: #BAE6FD;
+  --color-destructive: #DC2626;
+  --color-ring: #0EA5E9;
+  /* 工作台扩展语义：决定「信息能不能信」 */
+  --color-verified: #047857;        /* 已核实 */
+  --color-estimated: #B45309;       /* 估算 */
+  --color-link: #0369A1;            /* 官方深链 */
+  --color-warning-surface: #FEF3C7;
+  --color-verified-surface: #D1FAE5;
+  --color-estimated-surface: #FEF3C7;
+  --color-danger-surface: #FEE2E2;
+
+  /* 间距：4/8 节奏（density 7-8） */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(12, 74, 110, .07);
+  --shadow-md: 0 4px 12px rgba(12, 74, 110, .09);
+
+  --font-sans: Inter, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "Fira Code", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --topbar-h: 56px;
+  --statusbar-h: 34px;
+  --pane-left-w: 264px;
+  --pane-right-w: 360px;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --color-primary: #38BDF8;
+  --color-on-primary: #04121F;
+  --color-secondary: #7DD3FC;
+  --color-accent: #FB923C;
+  --color-on-accent: #1A1005;
+  --color-background: #020617;
+  --color-foreground: #F8FAFC;
+  --color-card: #0E1223;
+  --color-muted: #1A1E2F;
+  --color-muted-foreground: #94A3B8;
+  --color-border: #334155;
+  --color-destructive: #EF4444;
+  --color-ring: #38BDF8;
+  --color-verified: #34D399;
+  --color-estimated: #FBBF24;
+  --color-link: #7DD3FC;
+  --color-warning-surface: #2A2410;
+  --color-verified-surface: #0C2A22;
+  --color-estimated-surface: #2A2410;
+  --color-danger-surface: #2C1416;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, .45);
+  color-scheme: dark;
+}
+
+/* ============================================================
+   2. 基础
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
+p { margin: 0; }
+a { color: var(--color-link); }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; border-radius: var(--radius-sm); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ============================================================
+   3. 通用控件
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 44px; padding: 0 var(--space-4);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-card); color: var(--color-foreground);
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 120ms ease;
+}
+.btn:hover { background: var(--color-muted); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+.btn-primary:hover { filter: brightness(1.06); background: var(--color-accent); }
+.btn-sky { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.btn-sky:hover { background: var(--color-secondary); border-color: var(--color-secondary); }
+.btn-icon { width: 44px; padding: 0; flex: none; }
+.btn-sm { min-height: 36px; padding: 0 var(--space-3); font-size: 12.5px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* 密集行内按钮：视觉紧凑，热区仍够点 */
+.icon-btn {
+  position: relative; width: 34px; height: 34px; flex: none;
+  display: inline-grid; place-items: center;
+  border: 1px solid transparent; border-radius: var(--radius-sm);
+  background: transparent; color: var(--color-muted-foreground); cursor: pointer;
+}
+.icon-btn::after { content: ""; position: absolute; inset: -5px; }
+.icon-btn:hover { background: var(--color-muted); color: var(--color-foreground); }
+.icon-btn[aria-pressed="true"] { color: var(--color-primary); }
+
+.segmented { display: inline-flex; background: var(--color-muted); border-radius: var(--radius-md); padding: 3px; gap: 2px; }
+.segmented button {
+  min-height: 38px; padding: 0 var(--space-3);
+  border: 0; border-radius: var(--radius-sm); background: transparent;
+  color: var(--color-muted-foreground); font: inherit; font-size: 12.5px; cursor: pointer;
+  white-space: nowrap; transition: background-color 140ms ease, color 140ms ease;
+}
+.segmented button[aria-pressed="true"] { background: var(--color-card); color: var(--color-foreground); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 1px 6px; border-radius: 999px; font-size: 11px; font-weight: 500; white-space: nowrap;
+}
+.badge-verified { background: var(--color-verified-surface); color: var(--color-verified); }
+.badge-estimated { background: var(--color-estimated-surface); color: var(--color-estimated); }
+.badge-booking { background: var(--color-muted); color: var(--color-link); }
+.badge-danger { background: var(--color-danger-surface); color: var(--color-destructive); }
+
+/* 外链：明确「将离开本应用」 */
+.link-ext { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--color-link); text-decoration: none; }
+.link-ext:hover { text-decoration: underline; }
+.link-ext svg { flex: none; }
+
+/* ============================================================
+   4. 外壳：顶栏 / 三栏 / 底栏
+   ============================================================ */
+.shell { display: flex; flex-direction: column; min-height: 100vh; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  height: var(--topbar-h); flex: none;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 0 var(--space-4);
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+  background: var(--color-card); border-bottom: 1px solid var(--color-border);
+}
+.brand { display: flex; align-items: center; gap: var(--space-2); font-weight: 700; font-size: 14px; white-space: nowrap; }
+.brand .mark {
+  width: 26px; height: 26px; border-radius: var(--radius-sm); flex: none;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: grid; place-items: center; color: #FFFFFF;
+}
+.trip-name { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.trip-name strong { font-size: 13.5px; }
+.trip-name span { font-size: 11.5px; color: var(--color-muted-foreground); }
+.topbar .spacer { margin-left: auto; }
+.topbar-tools { display: flex; align-items: center; gap: var(--space-2); }
+
+.workbench {
+  flex: 1 1 auto; min-height: 0;
+  display: grid;
+  grid-template-columns: var(--pane-left-w) minmax(0, 1fr) var(--pane-right-w);
+  gap: var(--space-3);
+  padding: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+.pane {
+  background: var(--color-card); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; min-height: 0; min-width: 0;
+}
+.pane-head {
+  flex: none; display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3); border-bottom: 1px solid var(--color-border);
+}
+.pane-head h2 { font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--color-muted-foreground); font-weight: 600; }
+.pane-head .spacer { margin-left: auto; }
+.pane-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: var(--space-3); }
+.pane-foot { flex: none; padding: var(--space-3); border-top: 1px solid var(--color-border); display: flex; gap: var(--space-2); }
+
+.statusbar {
+  flex: none; min-height: var(--statusbar-h);
+  display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;
+  padding: 6px var(--space-4);
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
+  background: var(--color-card); border-top: 1px solid var(--color-border);
+  font-size: 11.5px; color: var(--color-muted-foreground);
+}
+.status-item { display: inline-flex; align-items: center; gap: 5px; }
+.status-ok { color: var(--color-verified); }
+.status-warn { color: var(--color-estimated); }
+.statusbar .spacer { margin-left: auto; }
+
+/* 降级/状态提示条 */
+.banner {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin: var(--space-3) var(--space-3) 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border); border-left: 3px solid var(--color-estimated);
+  border-radius: var(--radius-md); background: var(--color-estimated-surface);
+  font-size: 12.5px; color: var(--color-foreground);
+}
+.banner[hidden] { display: none; }
+.banner .spacer { margin-left: auto; }
+.banner-demo { border-left-color: var(--color-link); background: var(--color-muted); }
+
+/* ============================================================
+   5. 左栏：行程结构
+   ============================================================ */
+.trip-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3); margin-bottom: var(--space-3); }
+.trip-card dl { display: grid; grid-template-columns: auto 1fr; gap: 4px var(--space-3); margin: var(--space-2) 0 0; font-size: 12px; }
+.trip-card dt { color: var(--color-muted-foreground); }
+.trip-card dd { margin: 0; }
+.daylist { display: flex; flex-direction: column; gap: 2px; }
+.day-item {
+  display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: var(--space-2);
+  width: 100%; min-height: 46px; padding: var(--space-2);
+  border: 1px solid transparent; border-radius: var(--radius-md);
+  background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+.day-item:hover { background: var(--color-muted); }
+.day-item[aria-current="true"] { background: var(--color-muted); border-color: var(--color-border); }
+.day-item .d-idx { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--color-primary); }
+.day-item .d-main { min-width: 0; }
+.day-item .d-city { font-size: 12.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.day-item .d-date { font-size: 11px; color: var(--color-muted-foreground); }
+.day-item .d-cost { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-muted-foreground); }
+.transit-sep {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: 2px var(--space-2) 2px 12px; font-size: 11px; color: var(--color-muted-foreground);
+}
+.transit-sep::before { content: ""; flex: 1; height: 1px; background: var(--color-border); }
+
+/* ============================================================
+   6. 中栏：时间轴
+   ============================================================ */
+.canvas-head { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; padding: var(--space-3); border-bottom: 1px solid var(--color-border); }
+.canvas-head h2 { font-size: 15px; }
+.canvas-head .sub { font-size: 12px; color: var(--color-muted-foreground); }
+.canvas-head .spacer { margin-left: auto; }
+
+.day-block + .day-block { margin-top: var(--space-5); }
+.day-block > header { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: var(--space-2); }
+.day-block > header h3 { font-size: 13.5px; }
+.day-block > header .meta { font-size: 11.5px; color: var(--color-muted-foreground); }
+
+.timeline { position: relative; padding-left: 76px; }
+.timeline::before { content: ""; position: absolute; left: 62px; top: 4px; bottom: 4px; width: 2px; background: var(--color-border); }
+.stop { position: relative; display: flex; gap: var(--space-3); padding: var(--space-2) 0; }
+.stop + .stop { margin-top: 2px; }
+.stop-time { position: absolute; left: -76px; top: var(--space-2); width: 52px; text-align: right; font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--color-foreground); }
+.stop::before {
+  content: ""; position: absolute; left: -18px; top: 15px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--color-card); border: 2px solid var(--color-primary);
+}
+.stop[data-status="booking"]::before { border-color: var(--color-accent); }
+.stop[data-status="estimated"]::before { border-color: var(--color-estimated); }
+.stop-card {
+  flex: 1; min-width: 0;
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-card); padding: var(--space-3);
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+.stop-card:hover { border-color: var(--color-primary); box-shadow: var(--shadow-sm); }
+.stop[data-dragging="true"] .stop-card { opacity: .55; }
+.stop[data-dropzone="true"] .stop-card { border-color: var(--color-accent); border-style: dashed; }
+.stop[data-changed="true"] .stop-card { border-left: 3px solid var(--color-accent); }
+.stop-title { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.stop-title h4 { font-size: 13.5px; }
+.stop-meta { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; margin-top: 4px; font-size: 12px; color: var(--color-muted-foreground); }
+.stop-meta .cost { font-family: var(--font-mono); }
+.stop-note { margin-top: 6px; font-size: 12px; color: var(--color-muted-foreground); }
+.stop-actions { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-2); flex-wrap: wrap; }
+.stop-actions .spacer { margin-left: auto; }
+.drag-handle { cursor: grab; }
+.drag-handle:active { cursor: grabbing; }
+
+/* 空档块（未安排时间） */
+.gap-card {
+  border: 1px dashed var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-muted); padding: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
+  font-size: 12.5px; color: var(--color-muted-foreground);
+}
+.gap-card .spacer { margin-left: auto; }
+
+/* 空档模式的候选选项 */
+.option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-3); }
+.option-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3); background: var(--color-card); }
+.option-card h4 { font-size: 13px; }
+.option-card .opt-meta { font-size: 11.5px; color: var(--color-muted-foreground); margin-top: 4px; }
+.option-card .opt-actions { margin-top: var(--space-3); display: flex; gap: var(--space-2); }
+
+/* 重排 diff */
+.diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.diff-col { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+.diff-col > header { padding: var(--space-2) var(--space-3); background: var(--color-muted); font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: var(--space-2); }
+.diff-list { padding: var(--space-2); display: flex; flex-direction: column; gap: 4px; }
+.diff-row { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-2); align-items: baseline; padding: 6px var(--space-2); border-radius: var(--radius-sm); font-size: 12.5px; }
+.diff-row .t { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-muted-foreground); }
+.diff-row[data-keep="false"] { background: var(--color-danger-surface); text-decoration: line-through; text-decoration-color: var(--color-destructive); }
+.diff-row[data-added="true"] { background: var(--color-verified-surface); }
+
+/* ============================================================
+   7. 右栏：标签页与各面板
+   ============================================================ */
+.tabs { display: flex; gap: 2px; padding: var(--space-2) var(--space-3) 0; border-bottom: 1px solid var(--color-border); overflow-x: auto; }
+.tab {
+  min-height: 38px; padding: 0 var(--space-3); border: 0; border-bottom: 2px solid transparent;
+  background: transparent; color: var(--color-muted-foreground);
+  font: inherit; font-size: 12.5px; cursor: pointer; white-space: nowrap;
+}
+.tab[aria-selected="true"] { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
+.tabpanel[hidden] { display: none; }
+.panel-note { font-size: 11.5px; color: var(--color-muted-foreground); margin-top: var(--space-2); }
+
+/* 地图（示意 + 真实深链） */
+.map-frame { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-muted); padding: var(--space-2); }
+.route-svg { width: 100%; height: auto; display: block; }
+.route-line { fill: none; stroke: var(--color-primary); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.route-dash { fill: none; stroke: var(--color-border); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.route-pin { fill: var(--color-accent); }
+.route-pin-label { fill: #FFFFFF; font-family: var(--font-mono); font-size: 8px; font-weight: 600; }
+.poi-dot { fill: var(--color-card); stroke: var(--color-primary); stroke-width: 1.5; }
+
+/* 预算 */
+.budget-total { display: flex; align-items: baseline; gap: var(--space-2); }
+.budget-total strong { font-family: var(--font-mono); font-size: 22px; }
+.budget-bar { height: 10px; border-radius: 999px; background: var(--color-muted); overflow: hidden; margin-top: var(--space-2); }
+.budget-bar > span { display: block; height: 100%; background: var(--color-verified); }
+.budget-bar[data-health="tight"] > span { background: var(--color-estimated); }
+.budget-bar[data-health="over"] > span { background: var(--color-destructive); }
+.budget-rows { margin-top: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+.budget-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2); align-items: center; font-size: 12.5px; }
+.budget-row .track { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: var(--color-muted); overflow: hidden; }
+.budget-row .track > span { display: block; height: 100%; background: var(--color-primary); }
+.budget-row .amt { font-family: var(--font-mono); }
+
+/* 表格（预订清单） */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+caption { text-align: left; font-size: 11.5px; color: var(--color-muted-foreground); padding-bottom: var(--space-2); }
+th, td { text-align: left; padding: var(--space-2) var(--space-2); border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+th { font-size: 11.5px; color: var(--color-muted-foreground); font-weight: 500; white-space: nowrap; }
+th button { display: inline-flex; align-items: center; gap: 3px; min-height: 28px; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+th button:hover { color: var(--color-primary); }
+th[aria-sort] button { color: var(--color-primary); font-weight: 600; }
+tbody tr:hover { background: var(--color-muted); }
+.countdown { font-family: var(--font-mono); font-size: 11.5px; }
+.countdown[data-urgent="true"] { color: var(--color-destructive); font-weight: 600; }
+.countdown[data-soon="true"] { color: var(--color-estimated); }
+
+/* 简报 */
+.brief-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.brief-item { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3); }
+.brief-item h4 { display: flex; align-items: center; gap: var(--space-2); font-size: 12.5px; }
+.brief-item ul { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--color-muted-foreground); }
+.brief-item li { display: flex; gap: var(--space-2); }
+.brief-item .k { flex: none; min-width: 68px; color: var(--color-foreground); font-weight: 500; }
+.tel { font-family: var(--font-mono); }
+
+/* 渲染主题 */
+.theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--space-2); }
+.theme-card {
+  border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden;
+  background: var(--color-card); padding: 0; cursor: pointer; font: inherit; color: inherit; text-align: left;
+}
+.theme-card[aria-pressed="true"] { border-color: var(--color-primary); box-shadow: 0 0 0 1px var(--color-primary); }
+.theme-thumb { height: 56px; display: block; }
+.theme-card .t-name { display: block; padding: 6px var(--space-2); font-size: 11.5px; }
+.t-illustrated { background: linear-gradient(135deg, #FDE68A, #93C5FD 60%, #6EE7B7); }
+.t-clay { background: linear-gradient(135deg, #FDBA74, #F87171 55%, #C084FC); }
+.t-noir { background: linear-gradient(135deg, #111827, #374151 60%, #9CA3AF); }
+.t-glass { background: linear-gradient(135deg, #BAE6FD, #E0F2FE 50%, #F0F9FF); }
+.t-journal { background: linear-gradient(135deg, #FEF3C7, #FDE68A 60%, #D6D3D1); }
+.t-zine { background: linear-gradient(135deg, #F43F5E, #FACC15 55%, #22D3EE); }
+.t-splash { background: linear-gradient(135deg, #0EA5E9, #6366F1 55%, #EA580C); }
+
+/* 状态：骨架 / 空态 */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-muted) 25%, var(--color-card) 37%, var(--color-muted) 63%);
+  background-size: 400% 100%; animation: shimmer 1.4s ease infinite;
+  border-radius: var(--radius-sm); color: transparent;
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.state { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-6) var(--space-3); text-align: center; }
+.state .state-icon { color: var(--color-muted-foreground); }
+.state h3 { font-size: 13px; }
+.state p { font-size: 12px; color: var(--color-muted-foreground); max-width: 40ch; }
+.empty { border: 1px dashed var(--color-border); border-radius: var(--radius-md); }
+
+/* 页脚声明 */
+.disclaimer { padding: var(--space-4) var(--space-3) var(--space-6); font-size: 11.5px; color: var(--color-muted-foreground); max-width: 88ch; }
+
+/* ============================================================
+   8. 响应式：1440 / 1280 / 900 / 640
+   ============================================================ */
+@media (max-width: 1440px) { :root { --pane-right-w: 330px; --pane-left-w: 248px; } }
+@media (max-width: 1280px) {
+  .workbench { grid-template-columns: var(--pane-left-w) minmax(0, 1fr); }
+  .pane-right { grid-column: 1 / -1; }
+  .pane-right .pane-body { max-height: 60vh; }
+  .diff-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .workbench { grid-template-columns: 1fr; }
+  .pane-left .pane-body { max-height: 240px; }
+  .topbar { flex-wrap: wrap; height: auto; padding-top: 8px; padding-bottom: 8px; }
+  .trip-name { flex: 1 1 auto; }
+}
+@media (max-width: 640px) {
+  .timeline { padding-left: 58px; }
+  .timeline::before { left: 46px; }
+  .stop-time { left: -58px; width: 40px; font-size: 11px; }
+  .tabs { gap: 0; }
+  .option-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- 图标精灵（统一描边，禁止 emoji 结构图标） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19a3 3 0 1 0 0-6h12a3 3 0 1 0 0-6H6"/><circle cx="6" cy="16" r="1"/><circle cx="18" cy="8" r="1"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5m0 3h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5h5v5M19 5l-7 7M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 10 6 6 6-6"/></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm0 0 2.5-3h10L18 7M16 13h2"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4Z"/><path d="M12 7v10" stroke-dasharray="2 2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h9a4 4 0 0 0 .8-7.9A5 5 0 0 0 7.2 9 3.5 3.5 0 0 0 7 18Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Zm9 9-9 5-9-5m18 4-9 5-9-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell">
+  <!-- ===================== 顶栏 ===================== -->
+  <header class="topbar">
+    <span class="brand">
+      <span class="mark" aria-hidden="true"><svg width="15" height="15"><use href="#i-route"/></svg></span>
+      行程工作台
+    </span>
+
+    <div class="trip-name">
+      <strong>杭州 → 青岛 · 秋日海岸线</strong>
+      <span class="num">2026-10-26 ~ 10-30 · 5 天 4 晚 · 2 人 · 中等预算</span>
+    </div>
+
+    <div class="segmented" role="group" aria-label="工作模式">
+      <button type="button" data-mode="full" aria-pressed="true">整趟旅行</button>
+      <button type="button" data-mode="day" aria-pressed="false">单日规划</button>
+      <button type="button" data-mode="gap" aria-pressed="false">空档填充</button>
+      <button type="button" data-mode="replan" aria-pressed="false">临场重排</button>
+    </div>
+
+    <span class="spacer"></span>
+
+    <div class="topbar-tools">
+      <span class="badge badge-booking" id="budget-chip" title="人均预算余量">
+        <svg width="12" height="12" aria-hidden="true"><use href="#i-wallet"/></svg>
+        <span class="num" id="budget-chip-text">余量计算中</span>
+      </span>
+      <button class="btn btn-sm" id="btn-gate" type="button">
+        <svg width="14" height="14" aria-hidden="true"><use href="#i-refresh"/></svg>
+        重新校验
+      </button>
+      <button class="btn btn-sm" id="btn-export" type="button">
+        <svg width="14" height="14" aria-hidden="true"><use href="#i-download"/></svg>
+        导出 CSV
+      </button>
+      <button class="btn btn-icon" id="btn-theme" type="button" aria-label="切换深色 / 浅色模式" title="切换深色 / 浅色模式">
+        <svg width="16" height="16" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== 状态提示 ===================== -->
+  <div class="banner" id="banner-degraded" role="status">
+    <svg width="16" height="16" aria-hidden="true"><use href="#i-alert"/></svg>
+    <span><strong>降级提示：</strong>未配置 <code class="num">AMAP_KEY</code>，静态路线图隐藏、站点间时距为<strong>估算值</strong>（已标注「估算」徽标）。配置后可切换为实时时距。</span>
+    <span class="spacer"></span>
+    <button class="btn btn-sm" id="btn-banner-close" type="button">知道了</button>
+  </div>
+  <div class="banner banner-demo" id="banner-demo" role="status">
+    <svg width="16" height="16" aria-hidden="true"><use href="#i-info"/></svg>
+    <span><strong>示例数据：</strong>本页为设计示例，营业时间 / 价格 / 预约政策均为演示值。真实行程由 <code class="num">trip-planner-cn</code> 技能用工具核实后写入。</span>
+    <span class="spacer"></span>
+    <button class="btn btn-sm" id="btn-banner-demo-close" type="button">关闭</button>
+  </div>
+
+  <!-- ===================== 三栏工作台 ===================== -->
+  <main class="workbench">
+    <!-- ---------- 左：行程结构 ---------- -->
+    <aside class="pane pane-left" aria-label="行程结构">
+      <div class="pane-head">
+        <h2>行程结构</h2>
+        <span class="spacer"></span>
+        <span class="badge badge-verified" id="stop-count-badge">— 站</span>
+      </div>
+      <div class="pane-body">
+        <div class="trip-card">
+          <strong style="font-size:13px">行前简报摘要</strong>
+          <dl>
+            <dt>出发</dt><dd class="num">10-26 周一 08:40</dd>
+            <dt>返程</dt><dd class="num">10-30 周五 16:30</dd>
+            <dt>住宿</dt><dd>市南区 · 香港中路（4 晚）</dd>
+            <dt>人均预算</dt><dd class="num">¥5,200</dd>
+          </dl>
+        </div>
+
+        <nav aria-label="按天导航">
+          <ol class="daylist" id="daylist"></ol>
+        </nav>
+      </div>
+      <div class="pane-foot">
+        <button class="btn btn-sm" id="btn-add-gap" type="button" style="flex:1">
+          <svg width="14" height="14" aria-hidden="true"><use href="#i-plus"/></svg>
+          插入空档
+        </button>
+        <a class="btn btn-sm" href="https://uri.amap.com/search?keyword=%E9%9D%92%E5%B2%9B%E5%B8%82%E5%8D%97%E5%8C%BA&city=%E9%9D%92%E5%B2%9B" target="_blank" rel="noopener noreferrer">
+          <svg width="14" height="14" aria-hidden="true"><use href="#i-ext"/></svg>
+          在高德打开
+        </a>
+      </div>
+    </aside>
+
+    <!-- ---------- 中：时间轴画布 ---------- -->
+    <section class="pane pane-center" aria-label="行程时间轴">
+      <div class="canvas-head">
+        <div>
+          <h2 id="canvas-title">整趟行程</h2>
+          <p class="sub" id="canvas-sub">5 天 · 逐小时安排 · 拖拽或用上下按钮调整顺序</p>
+        </div>
+        <span class="spacer"></span>
+        <button class="btn btn-sm" id="btn-expand" type="button" aria-pressed="false">
+          <svg width="14" height="14" aria-hidden="true"><use href="#i-layers"/></svg>
+          <span id="btn-expand-label">展开全部天数</span>
+        </button>
+      </div>
+      <div class="pane-body" id="canvas-body"></div>
+    </section>
+
+    <!-- ---------- 右：上下文面板 ---------- -->
+    <aside class="pane pane-right" aria-label="上下文面板">
+      <div class="tabs" role="tablist" aria-label="上下文面板">
+        <button class="tab" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="true" type="button">地图</button>
+        <button class="tab" role="tab" id="tab-budget" aria-controls="panel-budget" aria-selected="false" type="button">预算</button>
+        <button class="tab" role="tab" id="tab-booking" aria-controls="panel-booking" aria-selected="false" type="button">预订</button>
+        <button class="tab" role="tab" id="tab-brief" aria-controls="panel-brief" aria-selected="false" type="button">简报</button>
+        <button class="tab" role="tab" id="tab-render" aria-controls="panel-render" aria-selected="false" type="button">渲染</button>
+      </div>
+      <div class="pane-body">
+        <!-- 地图 -->
+        <div class="tabpanel" role="tabpanel" id="panel-map" aria-labelledby="tab-map" tabindex="0">
+          <div class="map-frame">
+            <svg class="route-svg" id="route-svg" viewBox="0 0 320 200" role="img" aria-label="当日路线示意图：按编号顺序连接各站点，为示意走向，非真实地图"></svg>
+          </div>
+          <p class="panel-note" id="map-note">示意走向 · 静态地图需 <code class="num">AMAP_KEY</code></p>
+          <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap">
+            <a class="btn btn-sm" id="map-link-day" href="https://uri.amap.com/search?keyword=%E9%9D%92%E5%B2%9B&city=%E9%9D%92%E5%B2%9B" target="_blank" rel="noopener noreferrer">
+              <svg width="14" height="14" aria-hidden="true"><use href="#i-ext"/></svg>
+              在高德打开当日路线
+            </a>
+            <button class="btn btn-sm" id="btn-map-next" type="button">切换下一天</button>
+          </div>
+        </div>
+
+        <!-- 预算 -->
+        <div class="tabpanel" role="tabpanel" id="panel-budget" aria-labelledby="tab-budget" tabindex="0" hidden>
+          <div class="budget-total">
+            <strong class="num" id="budget-per-person">¥0</strong>
+            <span style="font-size:12px; color:var(--color-muted-foreground)">人均合计 / 预算 <span class="num">¥5,200</span></span>
+          </div>
+          <div class="budget-bar" id="budget-bar" data-health="ok" role="img" aria-label="人均预算使用进度">
+            <span style="width:0%"></span>
+          </div>
+          <p class="panel-note" id="budget-health-note">—</p>
+          <div class="budget-rows" id="budget-rows"></div>
+        </div>
+
+        <!-- 预订 -->
+        <div class="tabpanel" role="tabpanel" id="panel-booking" aria-labelledby="tab-booking" tabindex="0" hidden>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+            <label class="sr-only" for="booking-filter">按状态筛选预订</label>
+            <select id="booking-filter" class="btn btn-sm" style="padding:0 8px">
+              <option value="">全部状态</option>
+              <option value="todo">待办</option>
+              <option value="done">已完成</option>
+            </select>
+            <span class="spacer" style="margin-left:auto"></span>
+            <span class="badge badge-booking" id="booking-count">—</span>
+          </div>
+          <div class="table-wrap" style="margin-top:12px">
+            <table id="booking-table">
+              <caption>按截止日排序 · 深链仅跳转官方页面核对，本工作台<strong>不代订、不付款、不收集个人信息</strong></caption>
+              <thead>
+                <tr>
+                  <th scope="col" aria-sort="ascending"><button type="button" data-sort="deadline">截止日 <span aria-hidden="true">↑</span></button></th>
+                  <th scope="col"><button type="button" data-sort="title">事项 <span aria-hidden="true">↕</span></button></th>
+                  <th scope="col"><button type="button" data-sort="channel">通道 <span aria-hidden="true">↕</span></button></th>
+                  <th scope="col"><button type="button" data-sort="status">状态 <span aria-hidden="true">↕</span></button></th>
+                </tr>
+              </thead>
+              <tbody id="booking-body"></tbody>
+            </table>
+          </div>
+          <div class="state empty" id="booking-empty" hidden>
+            <span class="state-icon" aria-hidden="true"><svg width="26" height="26"><use href="#i-ticket"/></svg></span>
+            <h3>无符合条件的预订</h3>
+            <p>换个状态筛选，或清空筛选查看全部预订事项。</p>
+            <button class="btn btn-sm" id="btn-booking-reset" type="button">清空筛选</button>
+          </div>
+        </div>
+
+        <!-- 简报 -->
+        <div class="tabpanel" role="tabpanel" id="panel-brief" aria-labelledby="tab-brief" tabindex="0" hidden>
+          <div class="brief-list" id="brief-list"></div>
+        </div>
+
+        <!-- 渲染 -->
+        <div class="tabpanel" role="tabpanel" id="panel-render" aria-labelledby="tab-render" tabindex="0" hidden>
+          <p class="panel-note" style="margin-top:0">同一份行程可渲染成 7 套主题，渲染前后均过内容门禁。</p>
+          <div class="theme-grid" id="theme-grid"></div>
+          <div class="brief-item" style="margin-top:12px">
+            <h4><svg width="14" height="14" aria-hidden="true"><use href="#i-check"/></svg>门禁状态</h4>
+            <ul>
+              <li><span class="k">内容门禁</span><span><code class="num">plan_lint --strict</code> <span class="badge badge-verified" id="render-lint">通过</span></span></li>
+              <li><span class="k">页面质检</span><span><code class="num">qc.py</code> <span class="badge badge-verified" id="render-qc">退出码 0</span></span></li>
+              <li><span class="k">成品形态</span><span>自包含 HTML · 双击即开 · 离线可看</span></li>
+            </ul>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap">
+            <button class="btn btn-sm btn-sky" id="btn-preview" type="button">预览选中主题</button>
+            <span class="panel-note" id="render-selected">已选：插画（theme2）</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <p class="disclaimer">
+    <strong>关于本页：</strong>示例数据仅用于演示设计系统与交互规范，营业时间 / 价格 / 预约政策均需由技能用工具核实。所有票务与地图按钮仅<strong>跳转官方页面核对</strong>，本工作台不代订、不付款、不填个人信息。
+    设计系统来自 <strong>dsh-ui-ux-pro-max</strong> 的 <code class="num">design_recommend</code>（Minimalism &amp; Swiss + Financial Dashboard）。
+  </p>
+
+  <!-- ===================== 底栏：门禁与数据源 ===================== -->
+  <footer class="statusbar">
+    <span class="status-item" id="status-gate">
+      <svg width="13" height="13" aria-hidden="true"><use href="#i-check"/></svg>
+      内容门禁 <span class="num" id="status-gate-text">plan_lint --strict 通过</span>
+    </span>
+    <span class="status-item status-warn" id="status-source">
+      <svg width="13" height="13" aria-hidden="true"><use href="#i-alert"/></svg>
+      数据源：AMAP_KEY 缺失 → 时距估算
+    </span>
+    <span class="status-item">
+      <svg width="13" height="13" aria-hidden="true"><use href="#i-check"/></svg>
+      已核实 <span class="num" id="status-verified-count">0</span> / 估算 <span class="num" id="status-estimated-count">0</span>
+    </span>
+    <span class="spacer"></span>
+    <span class="status-item">更新于 <span class="num" id="status-updated">—</span></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ==========================================================
+     1. 数据（示例）：行程 / 预算 / 预订 / 简报 / 主题
+     ========================================================== */
+  var TRIP = { budgetPerPerson: 5200, travelers: 2 };
+
+  // status: verified 已核实 · estimated 估算 · booking 需跳官方核对
+  var DAYS = [
+    {
+      id: 'd1', date: '10-26', weekday: '周一', city: '杭州 → 青岛', transit: '飞机 1h45m',
+      stops: [
+        { time: '06:40', title: '杭州萧山机场 T4 值机', dur: '1h20m', cost: null, status: 'booking', note: '建议提前 100 分钟到达；值机口以航司短信为准', map: '杭州萧山国际机场' },
+        { time: '08:40', title: '航班 杭州 → 青岛', dur: '1h45m', cost: 680, status: 'booking', note: '价格需在携程 / 航司官网核对，本页不代订', map: '青岛胶东国际机场' },
+        { time: '10:40', title: '机场 → 市区（地铁 8 号线 → 3 号线）', dur: '1h10m', cost: 8, status: 'estimated', note: '时距为估算值（未配置 AMAP_KEY）', map: '青岛胶东国际机场' },
+        { time: '12:30', title: '午餐 · 云霄路海鲜', dur: '1h', cost: 120, status: 'verified', note: '营业 10:30–21:30，人均参考价', map: '青岛云霄路美食街' },
+        { time: '14:00', title: '酒店入住 · 市南区香港中路', dur: '40m', cost: 380, status: 'booking', note: '免费取消截止 10-23，需在预订平台核对', map: '青岛市南区香港中路' },
+        { time: '15:30', title: '栈桥 & 回澜阁', dur: '1h30m', cost: 0, status: 'verified', note: '开放 全天；旺季人流大，建议早到', map: '青岛栈桥' },
+        { time: '17:15', title: '中山路 & 圣弥厄尔教堂（外观）', dur: '1h', cost: 0, status: 'verified', note: '教堂内部开放时间需当日核对', map: '青岛圣弥厄尔教堂' },
+        { time: '18:45', title: '晚餐 · 劈柴院', dur: '1h30m', cost: 90, status: 'verified', note: '营业 10:00–21:30', map: '青岛劈柴院' },
+        { time: '20:30', title: '台东步行街夜市', dur: '1h30m', cost: 60, status: 'verified', note: '夜市 17:00–23:00', map: '青岛台东步行街' }
+      ]
+    },
+    {
+      id: 'd2', date: '10-27', weekday: '周二', city: '老城与海岸线', transit: '步行 + 打车',
+      stops: [
+        { time: '08:30', title: '八大关 · 花石楼', dur: '1h30m', cost: 8.5, status: 'verified', note: '花石楼 08:00–18:00，票价已核实', map: '青岛八大关花石楼' },
+        { time: '10:15', title: '第二海水浴场', dur: '1h', cost: 0, status: 'verified', note: '10 月水温偏低，以观景为主', map: '青岛第二海水浴场' },
+        { time: '11:30', title: '小鱼山公园', dur: '1h', cost: 15, status: 'verified', note: '06:00–21:00，登顶看老城全景', map: '青岛小鱼山公园' },
+        { time: '12:45', title: '午餐 · 大学路', dur: '1h', cost: 80, status: 'verified', note: '小店多，午后可能排队', map: '青岛市南大学路' },
+        { time: '14:00', title: '大学路网红墙 & 老舍故居', dur: '1h30m', cost: 0, status: 'verified', note: '老舍故居周一闭馆，周二正常开放', map: '青岛老舍故居' },
+        { time: '15:45', title: '信号山公园（日落）', dur: '1h30m', cost: 15, status: 'verified', note: '观景台 07:00–18:30，日落前 40 分钟上山', map: '青岛信号山公园' },
+        { time: '18:00', title: '晚餐 · 登州路啤酒街', dur: '1h30m', cost: 130, status: 'verified', note: '营业至 22:00 前后', map: '青岛登州路啤酒街' }
+      ]
+    },
+    {
+      id: 'd3', date: '10-28', weekday: '周三', city: '崂山一日', transit: '地铁 11 号线 + 景区车',
+      stops: [
+        { time: '07:30', title: '出发 · 市区 → 仰口', dur: '1h30m', cost: 12, status: 'estimated', note: '换乘时距为估算值', map: '青岛崂山仰口景区' },
+        { time: '09:00', title: '崂山仰口景区（觅天洞 · 狮子峰）', dur: '3h', cost: 90, status: 'verified', note: '需提前预约；索道另计', map: '青岛崂山仰口景区' },
+        { time: '12:15', title: '午餐 · 王哥庄（崂山菇炖鸡）', dur: '1h', cost: 90, status: 'verified', note: '景区外用餐更实惠', map: '青岛王哥庄' },
+        { time: '13:45', title: '太清宫', dur: '2h', cost: 27, status: 'verified', note: '08:00–17:00，票价已核实', map: '青岛崂山太清宫' },
+        { time: '16:30', title: '返程 · 崂山 → 市区', dur: '1h30m', cost: 12, status: 'estimated', note: '晚高峰时距为估算值', map: '青岛市南区' },
+        { time: '19:00', title: '晚餐 · 石老人海边', dur: '1h30m', cost: 140, status: 'verified', note: '海边风大，注意保暖', map: '青岛石老人海水浴场' }
+      ]
+    },
+    {
+      id: 'd4', date: '10-29', weekday: '周四', city: '城市与啤酒', transit: '地铁 + 步行',
+      stops: [
+        { time: '09:00', title: '青岛啤酒博物馆', dur: '2h', cost: 60, status: 'verified', note: '需预约；09:00–17:00', map: '青岛啤酒博物馆' },
+        { time: '11:30', title: '午餐 · 台东', dur: '1h', cost: 70, status: 'verified', note: '可选小吃组合', map: '青岛台东' },
+        { time: '13:00', title: '五四广场 & 奥帆中心', dur: '2h', cost: 0, status: 'verified', note: '海滨步道全程约 3km', map: '青岛奥帆中心' },
+        { time: '15:15', title: '燕儿岛山公园', dur: '1h30m', cost: 0, status: 'verified', note: '环山步道，日落机位', map: '青岛燕儿岛山公园' },
+        { time: '17:00', title: '极地海洋世界（可选）', dur: '2h', cost: 200, status: 'booking', note: '可选项目；票价与场次需官网核对', map: '青岛极地海洋世界' },
+        { time: '19:30', title: '晚餐 · 云霄路', dur: '1h30m', cost: 120, status: 'verified', note: '与 D1 同片区，可换店', map: '青岛云霄路' }
+      ]
+    },
+    {
+      id: 'd5', date: '10-30', weekday: '周五', city: '补漏与返程', transit: '地铁 8 号线',
+      stops: [
+        { time: '09:00', title: '中山路 · 里院街区', dur: '2h', cost: 0, status: 'verified', note: '适合买伴手礼', map: '青岛中山路里院' },
+        { time: '11:15', title: '退房 & 行李寄存', dur: '45m', cost: 0, status: 'booking', note: '寄存以酒店前台口径为准', map: '青岛市南区香港中路' },
+        { time: '12:15', title: '午餐 · 香港中路', dur: '1h', cost: 80, status: 'verified', note: '离酒店近，便于取行李', map: '青岛市南区香港中路' },
+        { time: '14:00', title: '市区 → 胶东机场', dur: '1h20m', cost: 8, status: 'estimated', note: '时距为估算值，建议留足 2h', map: '青岛胶东国际机场' },
+        { time: '16:30', title: '航班 青岛 → 杭州', dur: '1h45m', cost: 680, status: 'booking', note: '价格需在携程 / 航司官网核对', map: '杭州萧山国际机场' }
+      ]
+    }
+  ];
+
+  // 预算（人均，元）
+  var BUDGET = [
+    { key: '交通', amount: 1540, note: '往返机票 1360 + 市内 180' },
+    { key: '住宿', amount: 760, note: '4 晚 × ¥380，双人分摊' },
+    { key: '门票', amount: 415, note: '崂山 / 太清宫 / 啤酒博物馆 / 小鱼山 / 信号山 / 花石楼' },
+    { key: '餐饮', amount: 900, note: '5 天 × ¥180' },
+    { key: '其他', amount: 300, note: '伴手礼 / 打车补差' }
+  ];
+
+  // 预订清单（截止日示例：2026 年 10 月）
+  var BOOKINGS = [
+    { deadline: '2026-10-12', title: '机票价格复核（出票前）', channel: '携程 / 航司官网', status: 'todo', url: 'https://www.ctrip.com/' },
+    { deadline: '2026-10-19', title: '机票出票', channel: '携程 / 航司官网', status: 'todo', url: 'https://www.ctrip.com/' },
+    { deadline: '2026-10-23', title: '酒店免费取消截止', channel: '预订平台', status: 'todo', url: 'https://www.ctrip.com/' },
+    { deadline: '2026-10-25', title: '崂山仰口门票预约', channel: '景区官方渠道', status: 'todo', url: 'https://www.ly.com/' },
+    { deadline: '2026-10-25', title: '青岛啤酒博物馆预约', channel: '博物馆官方渠道', status: 'todo', url: 'https://www.tsingtao.com.cn/' },
+    { deadline: '2026-10-28', title: '极地海洋世界（可选）', channel: '官网票务', status: 'todo', url: 'https://www.qd-polar.com/' },
+    { deadline: '2026-10-11', title: '身份证 / 证件有效期检查', channel: '自助', status: 'done', url: '' }
+  ];
+
+  var BRIEF = [
+    { icon: 'i-phone', title: '应急号码', items: [['报警', '110'], ['急救', '120'], ['交通事故', '122'], ['铁路客服', '12306'], ['政务热线', '12345'], ['景区救援', '0532-96616']] },
+    { icon: 'i-cloud', title: '天气与预警', items: [['气温', '10 月下旬 12–19°C，海风大，昼夜温差约 8°C'], ['关注', '大风蓝色预警（海边体感更低）'], ['装备', '防风外套 + 舒适步行鞋']] },
+    { icon: 'i-info', title: '假日与客流', items: [['假期', '10 月无法定长假，10-26 起为普通工作日'], ['客流', '周末景区较工作日约 +40%，建议错峰'], ['闭馆', '多数博物馆周一闭馆，已避开']] },
+    { icon: 'i-wallet', title: '支付分层', items: [['通用', '微信 / 支付宝'], ['备用', '老城区小店可能只收现金，备 ¥200'], ['核验', '景区门票多需身份证实名核验']] },
+    { icon: 'i-layers', title: '离线准备', items: [['地图', '高德下载青岛离线地图包'], ['车票', '12306 行程单截图 + 取票信息'], ['地址', '酒店地址存中文与拼音各一份']] }
+  ];
+
+  var THEMES = [
+    { key: 'theme2', name: '插画', cls: 't-illustrated' },
+    { key: 'clay2', name: '黏土', cls: 't-clay' },
+    { key: 'noir2', name: '夜航', cls: 't-noir' },
+    { key: 'glass2', name: '玻璃', cls: 't-glass' },
+    { key: 'journal', name: '手账', cls: 't-journal' },
+    { key: 'zine', name: '杂志', cls: 't-zine' },
+    { key: 'splash', name: '闪屏', cls: 't-splash' }
+  ];
+
+  // 空档候选（15 分钟步行半径）
+  var GAP_OPTIONS = [
+    { title: '大学路独立咖啡馆', meta: '步行 8 分钟 · 人均 ¥38 · 营业 09:00–22:00', status: 'verified' },
+    { title: '老舍故居', meta: '步行 11 分钟 · 免费 · 09:00–17:00（周一闭馆）', status: 'verified' },
+    { title: '德国总督楼旧址博物馆', meta: '步行 14 分钟 · ¥20 · 08:30–17:30', status: 'estimated' }
+  ];
+
+  // 重排对照（暴雨：崂山一日 → 市内室内线）
+  var REPLAN = {
+    from: { title: '原方案 · 10-28 崂山一日', rows: [['07:30', '出发 → 仰口', 'keep'], ['09:00', '崂山仰口景区', 'keep'], ['12:15', '午餐 · 王哥庄', 'drop'], ['13:45', '太清宫', 'drop'], ['16:30', '返程', 'keep'], ['19:00', '晚餐 · 石老人', 'drop']] },
+    to: { title: '重排后 · 10-28 市内室内线', rows: [['09:00', '青岛啤酒博物馆', 'add'], ['11:30', '午餐 · 台东', 'keep'], ['13:00', '德国总督楼旧址博物馆', 'add'], ['15:00', '青岛书房 / 咖啡馆避雨', 'add'], ['17:30', '万象城晚餐', 'keep']] }
+  };
+
+  /* ==========================================================
+     2. 工具函数
+     ========================================================== */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function svgIcon(id, size) {
+    var s = size || 14;
+    return '<svg width="' + s + '" height="' + s + '" aria-hidden="true"><use href="#' + id + '"/></svg>';
+  }
+  function cny(n) {
+    if (n == null) return '—';
+    var digits = Number.isInteger(n) ? 0 : 1;
+    return '¥' + n.toLocaleString('zh-CN', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  }
+  function today() {
+    var d = new Date(); d.setHours(0, 0, 0, 0); return d;
+  }
+  function daysUntil(iso) {
+    var target = new Date(iso + 'T00:00:00');
+    return Math.round((target - today()) / 86400000);
+  }
+  function stamp() {
+    var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  /* ==========================================================
+     3. 主题（浅 / 深，跟随系统偏好）
+     ========================================================== */
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('tp-workbench-theme', t); } catch (e) { /* 隐私模式忽略 */ }
+  }
+  (function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('tp-workbench-theme'); } catch (e) { /* ignore */ }
+    if (saved === 'light' || saved === 'dark') { applyTheme(saved); return; }
+    applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  })();
+  $('#btn-theme').addEventListener('click', function () {
+    applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ==========================================================
+     4. 状态
+     ========================================================== */
+  var state = { mode: 'full', activeDay: DAYS[0].id, expandAll: false, selectedTheme: 'theme2', bookingFilter: '', bookingSort: 'deadline', bookingDir: 'asc', replanShift: false };
+  var showAllDays = function () { return state.expandAll || state.mode === 'full' || state.mode === 'replan'; };
+
+  /* ==========================================================
+     5. 左栏：行程结构
+     ========================================================== */
+  function dayStats(day) {
+    var cost = day.stops.reduce(function (a, s) { return a + (s.cost || 0); }, 0);
+    return { count: day.stops.length, cost: cost };
+  }
+
+  function renderDaylist() {
+    var list = $('#daylist');
+    list.innerHTML = '';
+    DAYS.forEach(function (day, i) {
+      var st = dayStats(day);
+      var li = el('li');
+      var btn = el('button', 'day-item');
+      btn.type = 'button';
+      btn.setAttribute('aria-current', String(day.id === state.activeDay));
+      btn.innerHTML =
+        '<span class="d-idx">D' + (i + 1) + '</span>' +
+        '<span class="d-main"><span class="d-city">' + day.city + '</span><span class="d-date">' + day.date + ' ' + day.weekday + ' · ' + st.count + ' 站</span></span>' +
+        '<span class="d-cost">' + cny(st.cost) + '</span>';
+      btn.addEventListener('click', function () {
+        state.activeDay = day.id;
+        // 整趟模式下点击某天只滚动定位，不改变视图；其余模式切到单日
+        if (state.mode !== 'full') { state.mode = 'day'; syncModeButtons(); }
+        renderAll();
+        var block = document.getElementById('block-' + day.id);
+        if (block && block.scrollIntoView) block.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      });
+      li.appendChild(btn);
+      // 城际交通段分隔（首日不重复提示）
+      if (i > 0 && day.transit) {
+        var sep = el('li', 'transit-sep', svgIcon('i-route', 12) + ' ' + day.transit);
+        list.appendChild(sep);
+      }
+      list.appendChild(li);
+    });
+    var total = DAYS.reduce(function (a, d) { return a + d.stops.length; }, 0);
+    $('#stop-count-badge').textContent = total + ' 站';
+  }
+
+  /* ==========================================================
+     6. 中栏：时间轴渲染
+     ========================================================== */
+  function stopCard(day, stop, idx, dayIndex) {
+    var li = el('li', 'stop');
+    li.dataset.status = stop.status;
+    li.dataset.id = day.id + '-' + idx;
+    if (stop.changed) li.dataset.changed = 'true';
+    li.draggable = true;
+
+    var badges = '';
+    if (stop.status === 'verified') badges = '<span class="badge badge-verified">' + svgIcon('i-check', 11) + '已核实</span>';
+    if (stop.status === 'estimated') badges = '<span class="badge badge-estimated">' + svgIcon('i-alert', 11) + '估算</span>';
+    if (stop.status === 'booking') badges = '<span class="badge badge-booking">' + svgIcon('i-ext', 11) + '需官方核对</span>';
+
+    li.innerHTML =
+      '<span class="stop-time num">' + stop.time + '</span>' +
+      '<div class="stop-card">' +
+        '<div class="stop-title"><h4>' + stop.title + '</h4>' + badges + '</div>' +
+        '<div class="stop-meta">' +
+          '<span>' + svgIcon('i-clock', 12) + ' ' + stop.dur + '</span>' +
+          (stop.cost != null ? '<span class="cost">' + cny(stop.cost) + '</span>' : '') +
+          '<span>' + svgIcon('i-pin', 12) + ' ' + stop.map + '</span>' +
+        '</div>' +
+        (stop.note ? '<p class="stop-note">' + stop.note + '</p>' : '') +
+        '<div class="stop-actions">' +
+          '<button class="icon-btn drag-handle" type="button" aria-label="拖拽调整「' + stop.title + '」的顺序（也可用上下按钮）" title="拖拽排序">' + svgIcon('i-grip', 14) + '</button>' +
+          '<button class="icon-btn" type="button" data-act="up" aria-label="上移「' + stop.title + '」">' + svgIcon('i-up', 14) + '</button>' +
+          '<button class="icon-btn" type="button" data-act="down" aria-label="下移「' + stop.title + '」">' + svgIcon('i-down', 14) + '</button>' +
+          '<a class="link-ext" href="https://uri.amap.com/search?keyword=' + encodeURIComponent(stop.map) + '&city=' + encodeURIComponent('青岛') + '" target="_blank" rel="noopener noreferrer">高德导航' + svgIcon('i-ext', 12) + '</a>' +
+          '<span class="spacer"></span>' +
+          '<button class="icon-btn" type="button" data-act="del" aria-label="移除「' + stop.title + '」">' + svgIcon('i-trash', 14) + '</button>' +
+        '</div>' +
+      '</div>';
+
+    $$('[data-act]', li).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var act = b.getAttribute('data-act');
+        var arr = day.stops;
+        if (act === 'del') arr.splice(idx, 1);
+        if (act === 'up' && idx > 0) { var a = arr[idx - 1]; arr[idx - 1] = arr[idx]; arr[idx] = a; }
+        if (act === 'down' && idx < arr.length - 1) { var c = arr[idx + 1]; arr[idx + 1] = arr[idx]; arr[idx] = c; }
+        renderAll();
+      });
+    });
+
+    // HTML5 拖拽排序（键盘等价操作由上下按钮提供）
+    li.addEventListener('dragstart', function (e) {
+      li.dataset.dragging = 'true';
+      if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(idx)); }
+    });
+    li.addEventListener('dragend', function () { li.dataset.dragging = 'false'; $$('.stop').forEach(function (n) { n.dataset.dropzone = 'false'; }); });
+    li.addEventListener('dragover', function (e) { e.preventDefault(); li.dataset.dropzone = 'true'; });
+    li.addEventListener('dragleave', function () { li.dataset.dropzone = 'false'; });
+    li.addEventListener('drop', function (e) {
+      e.preventDefault();
+      li.dataset.dropzone = 'false';
+      var from = parseInt(e.dataTransfer ? e.dataTransfer.getData('text/plain') : '', 10);
+      if (isNaN(from) || from === idx) return;
+      var moved = day.stops.splice(from, 1)[0];
+      day.stops.splice(idx, 0, moved);
+      renderAll();
+    });
+    return li;
+  }
+
+  function dayBlock(day, i) {
+    var wrap = el('section', 'day-block');
+    wrap.id = 'block-' + day.id;
+    var head = el('header');
+    head.innerHTML = '<h3>D' + (i + 1) + ' · ' + day.city + '</h3><span class="meta num">' + day.date + ' ' + day.weekday + ' · ' + day.stops.length + ' 站' + (day.transit ? ' · ' + day.transit : '') + '</span>';
+    wrap.appendChild(head);
+
+    var ol = el('ol', 'timeline');
+    ol.setAttribute('aria-label', 'D' + (i + 1) + ' ' + day.city + ' 逐小时安排');
+    day.stops.forEach(function (s, idx) { ol.appendChild(stopCard(day, s, idx, i)); });
+    wrap.appendChild(ol);
+    return wrap;
+  }
+
+  function renderCanvas() {
+    var body = $('#canvas-body');
+    body.innerHTML = '';
+    $('#canvas-title').textContent = state.mode === 'gap' ? '空档填充 · 15 分钟步行半径' : (state.mode === 'replan' ? '临场重排 · 10-28 暴雨' : (state.mode === 'day' ? '单日计划 · ' + activeDayObj().city : '整趟行程'));
+    $('#canvas-sub').textContent = state.mode === 'gap'
+      ? '在青岛市南区有 2 小时空档，以下是步行可达的候选（含来源标注）'
+      : (state.mode === 'replan'
+        ? '只重建受影响的一天，其余天数不动 · 左列为原方案，右列为重排结果'
+        : (state.mode === 'day'
+          ? '单日视图 · 拖拽卡片或用上下按钮调整顺序 · 点击左栏可切换天数'
+          : '5 天 · 逐小时安排 · 拖拽或用上下按钮调整顺序'));
+
+    if (state.mode === 'gap') {
+      var grid = el('div', 'option-grid');
+      GAP_OPTIONS.forEach(function (o) {
+        var card = el('article', 'option-card');
+        var badge = o.status === 'verified'
+          ? '<span class="badge badge-verified">' + svgIcon('i-check', 11) + '已核实</span>'
+          : '<span class="badge badge-estimated">' + svgIcon('i-alert', 11) + '估算</span>';
+        card.innerHTML = '<h4>' + o.title + '</h4><p class="opt-meta">' + o.meta + '</p>' +
+          '<div style="margin-top:6px">' + badge + '</div>' +
+          '<div class="opt-actions"><button class="btn btn-sm btn-sky" type="button" data-insert="' + o.title + '">插入 D2 空档</button>' +
+          '<a class="link-ext" style="align-self:center" href="https://uri.amap.com/search?keyword=' + encodeURIComponent(o.title) + '&city=' + encodeURIComponent('青岛') + '" target="_blank" rel="noopener noreferrer">导航' + svgIcon('i-ext', 12) + '</a></div>';
+        grid.appendChild(card);
+      });
+      body.appendChild(grid);
+      $$('[data-insert]', body).forEach(function (b) {
+        b.addEventListener('click', function () {
+          var title = b.getAttribute('data-insert');
+          var d2 = DAYS[1];
+          d2.stops.push({ time: '16:00', title: title + '（空档插入）', dur: '1h', cost: 40, status: 'verified', note: '由空档填充模式插入，位于信号山之前', map: title });
+          d2.stops.sort(function (a, b2) { return a.time.localeCompare(b2.time); });
+          bumpGate('空档已插入 D2，内容门禁需重新校验');
+          state.mode = 'day'; state.activeDay = d2.id; syncModeButtons(); renderAll();
+        });
+      });
+      return;
+    }
+
+    if (state.mode === 'replan') {
+      var dg = el('div', 'diff-grid');
+      [REPLAN.from, REPLAN.to].forEach(function (col, ci) {
+        var box = el('div', 'diff-col');
+        var h = el('header');
+        h.innerHTML = (ci === 0 ? svgIcon('i-alert', 13) : svgIcon('i-check', 13)) + ' ' + col.title;
+        box.appendChild(h);
+        var list = el('div', 'diff-list');
+        col.rows.forEach(function (row) {
+          var r = el('div', 'diff-row');
+          r.dataset.keep = String(row[2] !== 'drop');
+          r.dataset.added = String(row[2] === 'add');
+          r.innerHTML = '<span class="t num">' + row[0] + '</span><span>' + row[1] + '</span>';
+          list.appendChild(r);
+        });
+        box.appendChild(list);
+        dg.appendChild(box);
+      });
+      body.appendChild(dg);
+      var gap = el('div', 'gap-card');
+      gap.style.marginTop = '12px';
+      gap.innerHTML = svgIcon('i-info', 14) + ' <span>重排理由：10-28 大风蓝色预警 + 降雨，崂山索道可能停运，改为市内室内线；预算减少约 <span class="num">¥120</span>。</span>' +
+        '<span class="spacer"></span><button class="btn btn-sm btn-sky" type="button" id="btn-apply-replan">应用到行程</button>';
+      body.appendChild(gap);
+      $('#btn-apply-replan').addEventListener('click', function () {
+        var d3 = DAYS[2];
+        d3.city = '市内室内线（重排）';
+        d3.transit = '地铁 + 步行';
+        d3.stops = [
+          { time: '09:00', title: '青岛啤酒博物馆', dur: '2h', cost: 60, status: 'verified', note: '需预约；室内为主', map: '青岛啤酒博物馆', changed: true },
+          { time: '11:30', title: '午餐 · 台东', dur: '1h', cost: 70, status: 'verified', note: '由重排生成', map: '青岛台东', changed: true },
+          { time: '13:00', title: '德国总督楼旧址博物馆', dur: '1h30m', cost: 20, status: 'verified', note: '室内展馆', map: '青岛德国总督楼旧址', changed: true },
+          { time: '15:00', title: '青岛书房 / 咖啡馆避雨', dur: '2h', cost: 50, status: 'verified', note: '备选：若雨停可改燕儿岛山', map: '青岛市南咖啡馆', changed: true },
+          { time: '17:30', title: '万象城晚餐', dur: '1h30m', cost: 120, status: 'verified', note: '室内商业体', map: '青岛万象城', changed: true }
+        ];
+        bumpGate('D3 已按重排结果更新，内容门禁需重新校验');
+        state.mode = 'full'; syncModeButtons(); renderAll();
+      });
+      return;
+    }
+
+    // 整趟 / 单日
+    var days = showAllDays() ? DAYS : DAYS.filter(function (d) { return d.id === state.activeDay; });
+    days.forEach(function (day) { body.appendChild(dayBlock(day, DAYS.indexOf(day))); });
+  }
+
+  function activeDayObj() {
+    return DAYS.filter(function (d) { return d.id === state.activeDay; })[0] || DAYS[0];
+  }
+
+  /* ==========================================================
+     7. 右栏：地图
+     ========================================================== */
+  function renderMap() {
+    var day = activeDayObj();
+    var svg = $('#route-svg');
+    var all = day.stops;
+    var mapCap = 12;
+    var stops = all.slice(0, mapCap);
+    var truncated = all.length > mapCap;
+    var W = 320, H = 200, pad = 26;
+    // 示意布局：沿对角线做锯齿排布，避免真实坐标依赖
+    var pts = stops.map(function (s, i) {
+      var t = stops.length === 1 ? 0 : i / (stops.length - 1);
+      var x = pad + t * (W - pad * 2);
+      var y = H / 2 + Math.sin(i * 1.15) * (H / 2 - pad * 1.4);
+      return { x: Math.round(x), y: Math.round(y), s: s, i: i };
+    });
+    var d = pts.map(function (p, i) { return (i === 0 ? 'M' : 'L') + p.x + ' ' + p.y; }).join(' ');
+    var inner = '<path class="route-dash" d="M' + pad + ' ' + (H - pad) + ' H' + (W - pad) + ' M' + pad + ' ' + (H / 2) + ' H' + (W - pad) + ' M' + pad + ' ' + pad + ' H' + (W - pad) + '" />';
+    inner += '<path class="route-line" d="' + d + '" />';
+    pts.forEach(function (p) {
+      inner += '<circle class="route-pin" cx="' + p.x + '" cy="' + p.y + '" r="8" />';
+      inner += '<text class="route-pin-label" x="' + p.x + '" y="' + (p.y + 2.6) + '" text-anchor="middle">' + (p.i + 1) + '</text>';
+    });
+    svg.innerHTML = inner;
+    svg.setAttribute('aria-label', '当日路线示意图：' + day.city + '，共 ' + stops.length + ' 个站点按编号顺序连接，为示意走向，非真实地图' + (truncated ? '（仅显示前 ' + mapCap + ' 站）' : ''));
+    $('#map-note').innerHTML = '示意走向 · 静态地图需 <code class="num">AMAP_KEY</code> · 当前展示 <strong>' + day.city + '</strong>（' + all.length + ' 站' + (truncated ? '，示意图仅前 ' + mapCap + ' 站' : '') + '）';
+    $('#map-link-day').href = 'https://uri.amap.com/search?keyword=' + encodeURIComponent(day.stops[0] ? day.stops[0].map : '青岛') + '&city=' + encodeURIComponent('青岛');
+  }
+
+  /* ==========================================================
+     8. 右栏：预算
+     ========================================================== */
+  function renderBudget() {
+    var total = BUDGET.reduce(function (a, b) { return a + b.amount; }, 0);
+    var budget = TRIP.budgetPerPerson;
+    var pct = clamp(Math.round((total / budget) * 100), 0, 100);
+    var health = total > budget ? 'over' : (total / budget > 0.9 ? 'tight' : 'ok');
+    $('#budget-per-person').textContent = cny(total);
+    var bar = $('#budget-bar');
+    bar.dataset.health = health;
+    $('span', bar).style.width = pct + '%';
+    bar.setAttribute('aria-label', '人均预算使用 ' + pct + '%，' + cny(total) + ' / ' + cny(budget));
+    var left = budget - total;
+    $('#budget-health-note').textContent = health === 'ok'
+      ? '预算健康：已用 ' + pct + '%，剩余 ' + cny(left) + '（' + Math.round(100 - pct) + '%）'
+      : (health === 'tight' ? '接近预算上限：已用 ' + pct + '%，剩余仅 ' + cny(left) : '已超预算 ' + cny(-left));
+    $('#budget-chip-text').textContent = '人均余 ' + cny(left);
+    $('#budget-chip').className = 'badge ' + (health === 'ok' ? 'badge-verified' : (health === 'tight' ? 'badge-estimated' : 'badge-danger'));
+
+    var rows = $('#budget-rows');
+    rows.innerHTML = '';
+    BUDGET.forEach(function (b) {
+      var share = Math.round((b.amount / total) * 100);
+      var row = el('div', 'budget-row');
+      row.innerHTML = '<span>' + b.key + ' <span style="color:var(--color-muted-foreground); font-size:11.5px">' + b.note + '</span></span>' +
+        '<span class="amt">' + cny(b.amount) + ' · ' + share + '%</span>' +
+        '<span class="track"><span style="width:' + share + '%"></span></span>';
+      rows.appendChild(row);
+    });
+  }
+
+  /* ==========================================================
+     9. 右栏：预订清单（按截止日 + 倒计时）
+     ========================================================== */
+  function bookingRows() {
+    var rows = BOOKINGS.filter(function (b) { return !state.bookingFilter || b.status === state.bookingFilter; });
+    rows.sort(function (a, b) {
+      var x = a[state.bookingSort], y = b[state.bookingSort];
+      var cmp = state.bookingSort === 'deadline' ? String(x).localeCompare(String(y)) : String(x).localeCompare(String(y), 'zh-CN');
+      return state.bookingDir === 'asc' ? cmp : -cmp;
+    });
+    return rows;
+  }
+
+  function renderBookings() {
+    var rows = bookingRows();
+    var body = $('#booking-body');
+    body.innerHTML = '';
+    rows.forEach(function (b) {
+      var dd = daysUntil(b.deadline);
+      var cls = dd < 0 ? 'countdown' : (dd <= 2 ? 'countdown' : (dd <= 7 ? 'countdown' : 'countdown'));
+      var urgent = dd <= 2;
+      var soon = !urgent && dd <= 7;
+      var tr = el('tr');
+      tr.innerHTML =
+        '<td><span class="num">' + b.deadline.slice(5) + '</span><br><span class="' + cls + '" data-urgent="' + urgent + '" data-soon="' + soon + '">' +
+          (dd < 0 ? '已逾期 ' + (-dd) + ' 天' : (dd === 0 ? '今天截止' : '剩 ' + dd + ' 天')) + '</span></td>' +
+        '<td>' + b.title + '</td>' +
+        '<td>' + (b.url ? '<a class="link-ext" href="' + b.url + '" target="_blank" rel="noopener noreferrer">' + b.channel + svgIcon('i-ext', 11) + '</a>' : b.channel) + '</td>' +
+        '<td>' + (b.status === 'done' ? '<span class="badge badge-verified">' + svgIcon('i-check', 11) + '已完成</span>' : '<span class="badge badge-estimated">待办</span>') + '</td>';
+      body.appendChild(tr);
+    });
+    $('#booking-empty').hidden = rows.length !== 0;
+    $('#booking-table').hidden = rows.length === 0;
+    $('#booking-count').textContent = rows.length + ' / ' + BOOKINGS.length + ' 项';
+  }
+
+  /* ==========================================================
+     10. 右栏：简报 / 渲染
+     ========================================================== */
+  function renderBrief() {
+    var wrap = $('#brief-list');
+    wrap.innerHTML = '';
+    BRIEF.forEach(function (b) {
+      var item = el('div', 'brief-item');
+      item.innerHTML = '<h4>' + svgIcon(b.icon, 14) + b.title + '</h4><ul>' +
+        b.items.map(function (kv) { return '<li><span class="k">' + kv[0] + '</span><span class="' + (/^[0-9-]+$/.test(kv[1]) ? 'tel' : '') + '">' + kv[1] + '</span></li>'; }).join('') +
+        '</ul>';
+      wrap.appendChild(item);
+    });
+  }
+
+  function renderThemes() {
+    var grid = $('#theme-grid');
+    grid.innerHTML = '';
+    THEMES.forEach(function (t) {
+      var card = el('button', 'theme-card');
+      card.type = 'button';
+      card.setAttribute('aria-pressed', String(t.key === state.selectedTheme));
+      card.innerHTML = '<span class="theme-thumb ' + t.cls + '" aria-hidden="true"></span><span class="t-name">' + t.name + '<br><span class="num" style="color:var(--color-muted-foreground)">' + t.key + '</span></span>';
+      card.addEventListener('click', function () {
+        state.selectedTheme = t.key;
+        renderThemes();
+        $('#render-selected').textContent = '已选：' + t.name + '（' + t.key + '）';
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  /* ==========================================================
+     11. 顶栏 / 状态栏 / 模式
+     ========================================================== */
+  function syncModeButtons() {
+    $$('.segmented button[data-mode]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === state.mode));
+    });
+  }
+
+  function renderStatus() {
+    var v = 0, e = 0;
+    DAYS.forEach(function (d) { d.stops.forEach(function (s) { if (s.status === 'verified') v++; if (s.status === 'estimated') e++; }); });
+    $('#status-verified-count').textContent = v;
+    $('#status-estimated-count').textContent = e;
+    $('#status-updated').textContent = stamp();
+  }
+
+  var gateTimer = null;
+  function bumpGate(msg) {
+    var gate = $('#status-gate');
+    $('#status-gate-text').textContent = 'plan_lint 待重新校验';
+    gate.className = 'status-item status-warn';
+    gate.title = msg || '';
+    $('#render-lint').className = 'badge badge-estimated';
+    $('#render-lint').textContent = '待校验';
+    $('#render-qc').className = 'badge badge-estimated';
+    $('#render-qc').textContent = '待校验';
+  }
+
+  function runGate() {
+    var btn = $('#btn-gate');
+    btn.disabled = true;
+    $('#status-gate-text').innerHTML = '<span class="skeleton" style="display:inline-block; width:132px; height:12px">&nbsp;</span>';
+    window.clearTimeout(gateTimer);
+    gateTimer = window.setTimeout(function () {
+      btn.disabled = false;
+      $('#status-gate-text').textContent = 'plan_lint --strict 通过 · qc.py 退出码 0';
+      $('#status-gate').className = 'status-item status-ok';
+      $('#render-lint').className = 'badge badge-verified';
+      $('#render-lint').textContent = '通过';
+      $('#render-qc').className = 'badge badge-verified';
+      $('#render-qc').textContent = '退出码 0';
+      $('#status-updated').textContent = stamp();
+    }, 900);
+  }
+
+  /* ==========================================================
+     12. 导出 CSV（BOM + CRLF，Excel 中文不乱码）
+     ========================================================== */
+  function downloadCsv(filename, rows) {
+    var csv = rows.map(function (r) {
+      return r.map(function (c) { var s = String(c == null ? '' : c); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(',');
+    }).join('\r\n');
+    var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function exportItinerary() {
+    var rows = [['天', '时间', '安排', '时长', '费用(元)', '来源', '位置']];
+    DAYS.forEach(function (d, i) {
+      d.stops.forEach(function (s) {
+        var label = s.status === 'verified' ? '已核实' : (s.status === 'estimated' ? '估算' : '需官方核对');
+        rows.push(['D' + (i + 1) + ' ' + d.date, s.time, s.title, s.dur, s.cost == null ? '' : s.cost, label, s.map]);
+      });
+    });
+    downloadCsv('杭州-青岛-行程.csv', rows);
+  }
+
+  /* ==========================================================
+     13. 事件绑定
+     ========================================================== */
+  $$('.segmented button[data-mode]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.mode = b.getAttribute('data-mode');
+      if (state.mode === 'day' || state.mode === 'gap') state.activeDay = 'd2';
+      syncModeButtons();
+      renderAll();
+    });
+  });
+
+  // 标签页（含方向键导航）
+  var tabs = $$('.tab');
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = !on;
+    });
+    if (tab.id === 'tab-map') renderMap();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(t); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        var next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        next.focus(); selectTab(next);
+      }
+    });
+  });
+
+  $('#btn-theme').addEventListener('click', function () { renderMap(); });
+  $('#btn-expand').addEventListener('click', function () {
+    state.expandAll = !state.expandAll;
+    $('#btn-expand').setAttribute('aria-pressed', String(state.expandAll));
+    $('#btn-expand-label').textContent = state.expandAll ? '收起其余天数' : '展开全部天数';
+    if (state.expandAll) state.mode = 'full'; else if (state.mode === 'full') state.mode = 'day';
+    syncModeButtons();
+    renderCanvas();
+  });
+  $('#btn-add-gap').addEventListener('click', function () {
+    var d = activeDayObj();
+    var last = d.stops[d.stops.length - 1];
+    var t = last ? last.time : '12:00';
+    var hh = String(Math.min(23, parseInt(t.slice(0, 2), 10) + 1)).padStart(2, '0');
+    d.stops.push({ time: hh + ':00', title: '自由活动（空档）', dur: '1h', cost: null, status: 'estimated', note: '手动插入的空档，可拖拽调整位置', map: '青岛市南区' });
+    d.stops.sort(function (a, b) { return a.time.localeCompare(b.time); });
+    bumpGate('已插入空档');
+    renderAll();
+  });
+  $('#btn-export').addEventListener('click', exportItinerary);
+  $('#btn-gate').addEventListener('click', runGate);
+  $('#btn-banner-close').addEventListener('click', function () { $('#banner-degraded').hidden = true; });
+  $('#btn-banner-demo-close').addEventListener('click', function () { $('#banner-demo').hidden = true; });
+  $('#btn-map-next').addEventListener('click', function () {
+    var i = DAYS.indexOf(activeDayObj());
+    state.activeDay = DAYS[(i + 1) % DAYS.length].id;
+    renderDaylist(); renderMap();
+  });
+  $('#btn-preview').addEventListener('click', function () { runGate(); });
+  $('#btn-booking-reset').addEventListener('click', function () {
+    state.bookingFilter = '';
+    $('#booking-filter').value = '';
+    renderBookings();
+  });
+  $('#booking-filter').addEventListener('change', function (e) { state.bookingFilter = e.target.value; renderBookings(); });
+
+  $$('th button[data-sort]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-sort');
+      if (state.bookingSort === key) state.bookingDir = state.bookingDir === 'asc' ? 'desc' : 'asc';
+      else { state.bookingSort = key; state.bookingDir = 'asc'; }
+      $$('th').forEach(function (th) {
+        th.removeAttribute('aria-sort');
+        var b = $('button[data-sort]', th);
+        if (b) $('span', b).textContent = '↕';
+      });
+      var th = btn.closest('th');
+      th.setAttribute('aria-sort', state.bookingDir === 'asc' ? 'ascending' : 'descending');
+      $('span', btn).textContent = state.bookingDir === 'asc' ? '↑' : '↓';
+      renderBookings();
+    });
+  });
+
+  /* ==========================================================
+     14. 渲染入口
+     ========================================================== */
+  function renderAll() {
+    renderDaylist();
+    renderCanvas();
+    renderMap();
+    renderBudget();
+    renderBookings();
+    renderBrief();
+    renderThemes();
+    renderStatus();
+  }
+  syncModeButtons();
+  renderAll();
+  runGate();
+})();
+</script>
+</body>
+</html>

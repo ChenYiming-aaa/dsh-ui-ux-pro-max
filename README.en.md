@@ -77,6 +77,23 @@ entry above, or launch with `pnpm dsh web --patch ./cordis.patch.yml`.
 Peer dependencies (`@deepseek-ai/cordis`, `dsh-tools`, `dsh-skill`) are
 resolved from the host runtime — no extra npm installs.
 
+## Examples
+
+Both are single-file, dependency-free and open offline — they show the generated
+design system actually being honoured rather than only described:
+
+- **`examples/fintech-dashboard.html`** — from `design_recommend("金融 SaaS 数据看板", stack: react)`:
+  Data-Dense Dashboard + Heat Map (KPI cards, trend chart, donut, heat map, sortable table).
+- **`examples/trip-planner-workbench.html`** — from
+  `design_recommend("旅游行程规划工作台…", stack: react, variance 2 / motion 2 / density 8)`:
+  Minimalism & Swiss + Financial Dashboard as a three-pane travel-planning workbench
+  (day list · hour-by-hour timeline with drag/keyboard reorder · map, budget, bookings
+  with live countdowns, pre-trip briefing, 7-theme render preview), four modes
+  (full trip / single day / gap filling / live re-plan with diff), and the product's
+  trust rules: `verified / estimated / needs official check` badges, a global
+  degradation banner when `AMAP_KEY` is missing, and no booking or payment actions.
+  Built for [better-trip-planner](https://github.com/ChenYiming-aaa/better-trip-planner).
+
 ## Testing
 
 No network and no DSH runtime required (CI runs these on Node 22 and 24):
@@ -84,6 +101,8 @@ No network and no DSH runtime required (CI runs these on Node 22 and 24):
 ```bash
 node tests/check-package.mjs   # manifest + bundled-data integrity
 node tests/smoke.mjs           # offline behaviour check (30 assertions)
+node tests/check-example.mjs   # example-page conformance (22 checks per example)
+node tests/dom-smoke.mjs       # renders examples in jsdom (skips when jsdom is absent)
 ```
 
 `check-package.mjs` guards the failure modes actually hit in this project: a
