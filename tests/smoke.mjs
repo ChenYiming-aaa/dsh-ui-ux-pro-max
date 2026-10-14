@@ -15,7 +15,7 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { generateDesignSystem, summarizeDesignSystem } from '../lib/design-system.js'
-import { buildReview } from '../lib/review.js'
+import { buildReview, QUICK_REFERENCE_CHECKLIST } from '../lib/review.js'
 import { search, searchStack, getDb, getFontRows, detectDomain } from '../lib/database.js'
 import { expandQuery } from '../lib/zh.js'
 import { formatDesignSystem, formatReview, formatSearchResult, formatTokenSummary } from '../lib/format.js'
@@ -92,6 +92,17 @@ assert(md.includes('设计系统建议') && md.includes('推荐风格') && md.in
 assert(formatReview(review).includes('UX 审查清单'), '审查 Markdown')
 assert(formatSearchResult(search('毛玻璃 深色', 'style', 2)).includes('设计数据库检索'), '检索 Markdown')
 assert(formatTokenSummary(summarizeDesignSystem(ds)).includes('设计令牌摘要'), '令牌摘要 Markdown')
+
+// ---------- 6. 交付前清单一式两源同步 ----------
+section('6. 清单一源同步（review.js vs references/quick-reference.md）')
+const quickRefMd = readFileSync(new URL('../references/quick-reference.md', import.meta.url), 'utf8')
+// 按 §N 标题切块，统计每块的 `- [ ]` 条目数（色彩专项等非 § 小节无勾选项，不影响）
+const mdSectionCounts = quickRefMd.split(/^## §\d+/m).slice(1).map(chunk => (chunk.match(/- \[ \]/g) || []).length)
+const jsSectionCounts = QUICK_REFERENCE_CHECKLIST.map(s => s.checks.length)
+assert(mdSectionCounts.length === jsSectionCounts.length,
+  `清单章节数一致（md ${mdSectionCounts.length} / js ${jsSectionCounts.length}）`)
+assert(JSON.stringify(mdSectionCounts) === JSON.stringify(jsSectionCounts),
+  `各章节条目数一致（md [${mdSectionCounts}] / js [${jsSectionCounts}]）`)
 
 // ---------- 汇总 ----------
 console.log('\n========================================')
