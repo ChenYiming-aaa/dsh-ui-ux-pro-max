@@ -41,23 +41,31 @@ try {
   }
 }
 
-/** 各示例的针对性期望：{ 文件: [描述, 断言函数, ...] } */
+/**
+ * 各示例的针对性期望：{ 文件: [描述, 断言函数, ...] }
+ *
+ * 注意：期望值（33 站、¥3,915 等）是**有意硬编码的回归基线**——修改示例
+ * 数据时本测试会失败，这是在强制同步确认，而非测试脆弱。确需改数据时，
+ * 请连同这里的期望值一起更新。
+ * 断言函数可返回 true / false，或用 expect(实际, 期望) 返回带诊断信息的失败。
+ */
+const expect = (actual, expected) => actual === expected ? true : `${JSON.stringify(actual)} ≠ 期望 ${JSON.stringify(expected)}`
 const EXPECTATIONS = {
   'trip-planner-workbench.html': [
-    ['站点总数徽标 = 33 站', d => d.$('#stop-count-badge').textContent.trim() === '33 站'],
-    ['左栏天数 = 5', d => d.$$('#daylist .day-item').length === 5],
-    ['城际交通分隔 = 4（首日不重复）', d => d.$$('#daylist .transit-sep').length === 4],
-    ['整趟模式渲染 5 天', d => d.$$('#canvas-body .day-block').length === 5],
-    ['时间轴站点卡片 = 33', d => d.$$('#canvas-body .stop').length === 33],
-    ['人均合计 = ¥3,915', d => d.$('#budget-per-person').textContent.trim() === '¥3,915'],
-    ['预算健康度 = ok', d => d.$('#budget-bar').dataset.health === 'ok'],
-    ['余量 ¥1,285 / 25%', d => /剩余\s*¥1,285/.test(d.$('#budget-health-note').textContent)],
+    ['站点总数徽标 = 33 站', d => expect(d.$('#stop-count-badge').textContent.trim(), '33 站')],
+    ['左栏天数 = 5', d => expect(d.$$('#daylist .day-item').length, 5)],
+    ['城际交通分隔 = 4（首日不重复）', d => expect(d.$$('#daylist .transit-sep').length, 4)],
+    ['整趟模式渲染 5 天', d => expect(d.$$('#canvas-body .day-block').length, 5)],
+    ['时间轴站点卡片 = 33', d => expect(d.$$('#canvas-body .stop').length, 33)],
+    ['人均合计 = ¥3,915', d => expect(d.$('#budget-per-person').textContent.trim(), '¥3,915')],
+    ['预算健康度 = ok', d => expect(d.$('#budget-bar').dataset.health, 'ok')],
+    ['余量 ¥1,285 / 25%', d => /剩余\s*¥1,285/.test(d.$('#budget-health-note').textContent) || d.$('#budget-health-note').textContent],
     ['预订行数 = 7 且首行按截止日升序', d => d.$$('#booking-body tr').length === 7 && d.$('#booking-body tr td .num').textContent === '10-11'],
     ['每行有倒计时；已完成项无深链', d => d.$$('#booking-body .countdown').length === 7 && d.$$('#booking-body .link-ext').length === 6],
     ['caption 明示不代订/不付款', d => /不代订、不付款/.test(d.$('#booking-table caption').textContent)],
     ['简报 5 组 / 主题 7 张', d => d.$$('#brief-list .brief-item').length === 5 && d.$$('#theme-grid .theme-card').length === 7],
-    ['地图停靠点 = 当日全部 9 站', d => d.$('#route-svg').querySelectorAll('.route-pin').length === 9],
-    ['底栏统计 已核实 23 / 估算 4', d => d.$('#status-verified-count').textContent === '23' && d.$('#status-estimated-count').textContent === '4'],
+    ['地图停靠点 = 当日全部 9 站', d => expect(d.$('#route-svg').querySelectorAll('.route-pin').length, 9)],
+    ['底栏统计 已核实 23 / 估算 4', d => expect(d.$('#status-verified-count').textContent + '/' + d.$('#status-estimated-count').textContent, '23/4')],
     ['空档模式 3 个候选', d => { d.mode('gap'); return d.$$('#canvas-body .option-card').length === 3 }],
     ['重排 diff：2 列 + 3 行标记删除', d => { d.mode('replan'); return d.$$('#canvas-body .diff-col').length === 2 && d.$$('#canvas-body .diff-row[data-keep="false"]').length === 3 }],
     ['单日模式只渲染 1 天', d => { d.mode('day'); return d.$$('#canvas-body .day-block').length === 1 }],
@@ -88,9 +96,9 @@ const EXPECTATIONS = {
     }],
   ],
   'fintech-dashboard.html': [
-    ['KPI 卡 4 张', d => d.$$('#kpi-row .kpi').length === 4],
-    ['热力图 6 行 × 12 列', d => d.$$('#heat-grid .cell').length === 72],
-    ['交易表 12 行', d => d.$$('#trades-body tr').length === 12],
+    ['KPI 卡 4 张', d => expect(d.$$('#kpi-row .kpi').length, 4)],
+    ['热力图 6 行 × 12 列', d => expect(d.$$('#heat-grid .cell').length, 72)],
+    ['交易表 12 行', d => expect(d.$$('#trades-body tr').length, 12)],
     ['点数/表格/图例渲染完成', d => d.$('#trend-line').getAttribute('d').length > 0 && d.$$('#token-grid .token').length >= 13],
     ['时间范围切换后热力图数据随之变化', d => {
       const first = d.$('#heat-grid .cell').textContent;
@@ -168,7 +176,12 @@ for (const file of files) {
 
   console.log(`\n===== ${name} =====`)
   await new Promise(r => setTimeout(r, 1100)) // 等模拟门禁/加载的 setTimeout 完成
-  const ok = (cond, label) => { if (cond) console.log(`  ✅ ${label}`); else { failures++; console.log(`  ❌ FAIL: ${label}`) } }
+  // 断言函数可返回 true / false / 字符串（字符串 = 失败并附实际值，便于诊断）
+  const ok = (res, label) => {
+    if (res === true) { console.log(`  ✅ ${label}`); return }
+    failures++
+    console.log(`  ❌ FAIL: ${label}${typeof res === 'string' && res ? ` → 实际: ${res}` : ''}`)
+  }
 
   ok(errors.length === 0, errors.length ? `脚本报错: ${errors.join(' | ')}` : '脚本在真实 DOM 中无运行时错误')
   // 通用不变量：标签页状态与面板可见性一致
@@ -182,9 +195,9 @@ for (const file of files) {
   ok(pressedOk, 'aria-pressed 取值均为 true/false')
 
   for (const [label, fn] of EXPECTATIONS[name] ?? []) {
-    let passed = false
-    try { passed = !!fn(api) } catch (e) { passed = false; console.log(`     （异常: ${e.message}）`) }
-    ok(passed, label)
+    let res = false
+    try { res = fn(api) } catch (e) { res = `异常: ${e.message}` }
+    ok(res, label)
   }
 }
 
