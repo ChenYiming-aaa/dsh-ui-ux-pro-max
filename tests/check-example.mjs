@@ -111,6 +111,24 @@ for (const file of files) {
   assert(/role="status"/.test(html), '具备状态提示通道')
 }
 
+// ---------- 跨示例一致性：共享脚手架的核心 helper 与主题键 ----------
+// 两示例有意保持单文件自包含（见 examples/README.md），共用行为需手动同步；
+// 这里守护最容易漂移的部分：核心工具函数与 localStorage 主题键。
+const SHARED_CORE = [
+  [/function\s+\$\s*\(/, '$()'],
+  [/function\s+\$\$\s*\(/, '$$()'],
+  [/function\s+applyTheme\s*\(/, 'applyTheme()'],
+  [/function\s+stamp\s*\(/, 'stamp()'],
+  [/function\s+downloadCsv\s*\(/, 'downloadCsv()'],
+]
+for (const file of files) {
+  const html = readFileSync(`${dir}/${file}`, 'utf8')
+  for (const [re, name] of SHARED_CORE) {
+    assert(re.test(html), `${file} 定义共享工具 ${name}`)
+  }
+  assert(html.includes("'uiux-demo-theme'"), `${file} 使用统一主题键 uiux-demo-theme`)
+}
+
 console.log('\n========================================')
 if (failures === 0) {
   console.log('✅ 示例页面检查全部通过。')
