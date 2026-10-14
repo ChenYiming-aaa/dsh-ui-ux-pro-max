@@ -20,7 +20,7 @@
   --color-primary: #1E40AF;
   --color-on-primary: #FFFFFF;
   --color-secondary: #3B82F6;
-  --color-accent: #D97706;          /* CTA / 强调（WCAG 3:1 调整版） */
+  --color-accent: #B45309;          /* CTA / 强调（白字对比度 ≥ 4.5:1） */
   --color-on-accent: #FFFFFF;
   --color-background: #F8FAFC;
   --color-foreground: #1E3A8A;      /* 正文（对比度 ≥ 4.5:1） */
@@ -313,7 +313,7 @@ td.amount { text-align: right; font-family: var(--font-mono); font-variant-numer
 }
 .pill.ok { background: color-mix(in srgb, var(--color-success) 14%, transparent); color: var(--color-success); }
 .pill.warn { background: color-mix(in srgb, var(--color-warning) 16%, transparent); color: var(--color-warning); }
-.pill.bad { background: color-mix(in srgb, var(--color-destructive) 14%, transparent); color: var(--color-destructive); }
+.pill.bad { background: color-mix(in srgb, var(--color-destructive) 10%, transparent); color: var(--color-destructive); }
 .pill.info { background: color-mix(in srgb, var(--color-secondary) 16%, transparent); color: var(--color-primary); }
 .row-action {
   min-height: 32px; padding: 0 var(--space-2); border-radius: var(--radius-sm);
@@ -704,7 +704,7 @@ footer.site-foot .spacer { margin-left: auto; }
     <summary>查看本页使用的设计令牌（design_recommend 输出）</summary>
     <div class="token-grid" id="token-grid"></div>
     <p style="padding: 0 var(--space-4) var(--space-4); font-size: 12px; color: var(--color-muted-foreground)">
-      风格：Data-Dense Dashboard + Heat Map · 字体：Fira Code / Fira Sans · 主色 #1E40AF · 强调色 #D97706（WCAG 3:1 调整）。
+      风格：Data-Dense Dashboard + Heat Map · 字体：Fira Code / Fira Sans · 主色 #1E40AF · 强调色 #B45309（白字对比度 ≥ 4.5:1）。
       涨跌配色遵循中国证券惯例：涨=红（--color-gain）、跌=绿（--color-loss）；状态徽章（已成交/待复核/已拒绝）仍用交通灯语义，不与涨跌混用。
       深色模式为同色系推导值，两套主题的正文对比度均 ≥ 4.5:1。
     </p>
@@ -728,7 +728,7 @@ footer.site-foot .spacer { margin-left: auto; }
     ['主色 primary', '--color-primary', '#1E40AF', '#5B8DEF'],
     ['主色前景 on-primary', '--color-on-primary', '#FFFFFF', '#06101F'],
     ['次色 secondary', '--color-secondary', '#3B82F6', '#7CA5F5'],
-    ['强调色 / CTA', '--color-accent', '#D97706', '#F59E0B'],
+    ['强调色 / CTA', '--color-accent', '#B45309', '#F59E0B'],
     ['背景 background', '--color-background', '#F8FAFC', '#0B1220'],
     ['前景文字 foreground', '--color-foreground', '#1E3A8A', '#E8EEF9'],
     ['卡片 card', '--color-card', '#FFFFFF', '#121B2E'],
