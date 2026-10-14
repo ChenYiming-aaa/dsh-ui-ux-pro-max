@@ -906,7 +906,7 @@ tbody tr:hover { background: var(--color-muted); }
         state.activeDay = day.id;
         // 整趟模式下点击某天只滚动定位，不改变视图；其余模式切到单日
         if (state.mode !== 'full') { state.mode = 'day'; syncModeButtons(); }
-        renderAll();
+        renderDaylist(); renderCanvas(); renderMap();
         var block = document.getElementById('block-' + day.id);
         if (block && block.scrollIntoView) block.scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
@@ -964,7 +964,7 @@ tbody tr:hover { background: var(--color-muted); }
         if (act === 'del') arr.splice(idx, 1);
         if (act === 'up' && idx > 0) { var a = arr[idx - 1]; arr[idx - 1] = arr[idx]; arr[idx] = a; }
         if (act === 'down' && idx < arr.length - 1) { var c = arr[idx + 1]; arr[idx + 1] = arr[idx]; arr[idx] = c; }
-        renderAll();
+        withPreservedView(renderItinerary);
       });
     });
 
@@ -983,7 +983,7 @@ tbody tr:hover { background: var(--color-muted); }
       if (isNaN(from) || from === idx) return;
       var moved = day.stops.splice(from, 1)[0];
       day.stops.splice(idx, 0, moved);
-      renderAll();
+      withPreservedView(renderItinerary);
     });
     return li;
   }
@@ -1035,7 +1035,7 @@ tbody tr:hover { background: var(--color-muted); }
           d2.stops.push({ time: '16:00', title: title + '（空档插入）', dur: '1h', cost: 40, status: 'verified', note: '由空档填充模式插入，位于信号山之前', map: title });
           d2.stops.sort(function (a, b2) { return a.time.localeCompare(b2.time); });
           bumpGate('空档已插入 D2，内容门禁需重新校验');
-          state.mode = 'day'; state.activeDay = d2.id; syncModeButtons(); renderAll();
+          state.mode = 'day'; state.activeDay = d2.id; syncModeButtons(); renderDaylist(); renderCanvas(); renderMap();
         });
       });
       return;
@@ -1077,7 +1077,7 @@ tbody tr:hover { background: var(--color-muted); }
           { time: '17:30', title: '万象城晚餐', dur: '1h30m', cost: 120, status: 'verified', note: '室内商业体', map: '青岛万象城', changed: true }
         ];
         bumpGate('D3 已按重排结果更新，内容门禁需重新校验');
-        state.mode = 'full'; syncModeButtons(); renderAll();
+        state.mode = 'full'; syncModeButtons(); renderDaylist(); renderCanvas(); renderMap(); renderStatus();
       });
       return;
     }
@@ -1301,7 +1301,7 @@ tbody tr:hover { background: var(--color-muted); }
       state.mode = b.getAttribute('data-mode');
       if (state.mode === 'day' || state.mode === 'gap') state.activeDay = 'd2';
       syncModeButtons();
-      renderAll();
+      renderDaylist(); renderCanvas(); renderMap();
     });
   });
 
@@ -1344,7 +1344,7 @@ tbody tr:hover { background: var(--color-muted); }
     d.stops.push({ time: hh + ':00', title: '自由活动（空档）', dur: '1h', cost: null, status: 'estimated', note: '手动插入的空档，可拖拽调整位置', map: '青岛市南区' });
     d.stops.sort(function (a, b) { return a.time.localeCompare(b.time); });
     bumpGate('已插入空档');
-    renderAll();
+    withPreservedView(renderItinerary);
   });
   $('#btn-export').addEventListener('click', exportItinerary);
   $('#btn-gate').addEventListener('click', runGate);
@@ -1381,8 +1381,47 @@ tbody tr:hover { background: var(--color-muted); }
   });
 
   /* ==========================================================
-     14. 渲染入口
+     14. 渲染入口：分区渲染 + 焦点/滚动保持
      ========================================================== */
+  // 行程三区：站点增删改会同时影响左栏统计、中栏时间轴与底栏计数
+  function renderItinerary() {
+    renderDaylist();
+    renderCanvas();
+    renderStatus();
+  }
+
+  // 分区重渲染时保留键盘焦点与滚动位置。
+  // 整区重建 DOM 会销毁焦点元素并把滚动重置到顶部；这里用「站点标题 + 按钮动作」
+  // 作为焦点锚点（站点顺序变化后 data-id 会变，标题才是稳定标识）。
+  function withPreservedView(fn) {
+    var body = $('#canvas-body');
+    var scrollTop = body ? body.scrollTop : 0;
+    var anchor = null;
+    var active = document.activeElement;
+    if (active && body && body.contains(active)) {
+      var stop = active.closest ? active.closest('.stop') : null;
+      var titleEl = stop ? stop.querySelector('.stop-title h4') : null;
+      anchor = { act: active.getAttribute('data-act') || '', title: titleEl ? titleEl.textContent : '' };
+    }
+    fn();
+    if (body) body.scrollTop = scrollTop;
+    if (!anchor) return;
+    var stops = $$('#canvas-body .stop');
+    var target = null;
+    for (var i = 0; i < stops.length; i++) {
+      var t = stops[i].querySelector('.stop-title h4');
+      if (t && t.textContent === anchor.title) { target = stops[i]; break; }
+    }
+    if (target) {
+      var btn = anchor.act ? target.querySelector('[data-act="' + anchor.act + '"]') : null;
+      if (btn) btn.focus();
+    } else if (anchor.act === 'del') {
+      // 删除后原站点不存在：焦点落到当天在左栏的入口，避免焦点丢失到 body
+      var dayBtn = $('#daylist .day-item[aria-current="true"]');
+      if (dayBtn) dayBtn.focus();
+    }
+  }
+
   function renderAll() {
     renderDaylist();
     renderCanvas();
