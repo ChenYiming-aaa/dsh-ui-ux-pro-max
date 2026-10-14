@@ -293,8 +293,12 @@ a { color: var(--color-primary); }
 .legend li { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; list-style: none; }
 .legend .swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
 .legend .val { font-family: var(--font-mono); color: var(--color-muted-foreground); }
-.donut-center { fill: var(--color-foreground); font-family: var(--font-mono); font-size: 15px; font-weight: 600; }
-.donut-center-sub { fill: var(--color-muted-foreground); font-size: 9px; font-family: var(--font-sans); }
+/* 注意：SVG 内的 font-size 是 viewBox 用户单位（42 单位 → 150px，×3.571），不是屏幕像素。
+   原值 15/9 单位实际渲染为 54/32px，文字宽出内孔（直径 25.8 单位）近一倍，
+   整体压在环上且触到裁剪边界。现按内孔直径反推：主数字 5 单位（≈18px）、
+   副标签 3 单位（≈11px），两侧各留约 2.4 单位余量。 */
+.donut-center { fill: var(--color-foreground); font-family: var(--font-mono); font-size: 5px; font-weight: 600; }
+.donut-center-sub { fill: var(--color-muted-foreground); font-size: 3px; font-family: var(--font-sans); }
 
 /* 热力图：色阶矩阵（强度可视化） */
 .heat-scroll { overflow-x: auto; padding-bottom: var(--space-1); }
@@ -668,8 +672,8 @@ footer.site-foot .spacer { margin-left: auto; }
                   stroke-dasharray="0 100" stroke-dashoffset="25" />
           <circle id="arc-4" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-4)" stroke-width="6"
                   stroke-dasharray="0 100" stroke-dashoffset="25" />
-          <text class="donut-center" x="21" y="20.5" text-anchor="middle">¥128.6</text>
-          <text class="donut-center-sub" x="21" y="25" text-anchor="middle">亿 · 总规模</text>
+          <text class="donut-center" x="21" y="20" text-anchor="middle">¥128.6</text>
+          <text class="donut-center-sub" x="21" y="24.8" text-anchor="middle">亿 · 总规模</text>
         </svg>
         <ul class="legend" style="margin:0">
           <li><span class="swatch" style="background: var(--chart-1)"></span>债券 <span class="val num">42%</span></li>

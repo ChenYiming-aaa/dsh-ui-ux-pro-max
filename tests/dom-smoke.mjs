@@ -98,6 +98,13 @@ const EXPECTATIONS = {
         .reduce((s, id) => s + Number(d.doc.getElementById(id).getAttribute('stroke-dasharray').split(' ')[0]), 0)
       return total === 100
     }],
+    // SVG 内 font-size 是 viewBox 用户单位：内孔直径仅 25.8 单位，曾因写成
+    // 15 单位（≈54px）导致中心文字整体溢出、压在环上并触到裁剪边界
+    ['环形图中心文字字号与内孔相称（viewBox 单位制）', d => {
+      const vb = (d.$('#allocation svg[role="img"]').getAttribute('viewBox') || '0 0 42 42').split(/\s+/).map(Number)
+      const fs = parseFloat(d.win.getComputedStyle(d.doc.querySelector('.donut-center')).fontSize)
+      return fs > 0 && fs <= vb[2] / 7  // ≤6 单位（≈21px）；回归到 15 会判失败
+    }],
   ],
 }
 
