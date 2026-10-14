@@ -297,6 +297,14 @@ table { width: 100%; border-collapse: collapse; font-size: 13px; }
 caption { text-align: left; font-size: 12px; color: var(--color-muted-foreground); padding-bottom: var(--space-2); }
 th, td { text-align: left; padding: var(--space-3) var(--space-3); border-bottom: 1px solid var(--color-border); white-space: nowrap; }
 th { font-size: 12px; color: var(--color-muted-foreground); font-weight: 500; position: sticky; top: 0; background: var(--color-card); }
+/* 宽屏：撤销 .table-wrap 的滚动容器身份（overflow-x:auto 会使 overflow-y 计算为 auto，
+   粘性表头将被限制在该容器内而永不生效），使其相对页面滚动生效；
+   同时把表头压在粘性顶栏下方（top: 顶栏高 + 1px，z-index 低于顶栏的 20）。
+   窄屏保留横向滚动能力（此时粘性让位，移动端优先保证表格可完整查看）。 */
+@media (min-width: 1024px) {
+  .table-wrap { overflow-x: visible; }
+  th { top: calc(var(--topbar-h) + 1px); z-index: 5; }
+}
 th button {
   display: inline-flex; align-items: center; gap: var(--space-1);
   min-height: 32px; padding: 0; border: 0; background: none;
