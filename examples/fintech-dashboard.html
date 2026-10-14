@@ -16,10 +16,10 @@
     } catch (e) { /* 隐私模式等：保持默认 light */ }
   })();
 </script>
-<!-- 字体：离线时自动回退到系统等宽/无衬线字体栈 -->
+<!-- 字体：异步加载不阻塞首屏渲染；离线时请求失败自动回退系统等宽/无衬线字体栈 -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
 <style>
 /* ============================================================
    1. 设计令牌（Design Tokens）
