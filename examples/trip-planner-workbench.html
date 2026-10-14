@@ -1353,7 +1353,7 @@ tbody tr:hover { background: var(--color-muted); }
   $('#btn-map-next').addEventListener('click', function () {
     var i = DAYS.indexOf(activeDayObj());
     state.activeDay = DAYS[(i + 1) % DAYS.length].id;
-    renderDaylist(); renderMap();
+    renderDaylist(); renderCanvas(); renderMap();
   });
   $('#btn-preview').addEventListener('click', function () { runGate(); });
   $('#btn-booking-reset').addEventListener('click', function () {
