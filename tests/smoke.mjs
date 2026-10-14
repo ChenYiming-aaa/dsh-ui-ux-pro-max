@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url'
 import { generateDesignSystem, summarizeDesignSystem } from '../lib/design-system.js'
 import { buildReview } from '../lib/review.js'
 import { search, searchStack, getDb, getFontRows, detectDomain } from '../lib/database.js'
+import { expandQuery } from '../lib/zh.js'
 import { formatDesignSystem, formatReview, formatSearchResult, formatTokenSummary } from '../lib/format.js'
 
 const quiet = process.argv.includes('--quiet')
@@ -80,6 +81,9 @@ assert(search('实时仪表盘 趋势', 'chart', 3).count > 0, '中文检索（c
 assert(searchStack('list performance navigation', 'react-native', 3).count > 0, '技术栈检索（react-native）')
 assert(search('金融 数据看板', 'product', 3).count > 0, '中文别名映射')
 assert(detectDomain('做一个 landing page 落地页') === 'landing', '领域自动检测（landing）')
+const expandedGlass = expandQuery('毛玻璃').split(' ')
+assert(new Set(expandedGlass).size === expandedGlass.length, '中文查询扩展无重复关键词（跨别名去重）')
+assert(expandedGlass.length > 1, `「毛玻璃」扩展到英文关键词：${expandedGlass.slice(1).join(' / ')}`)
 
 // ---------- 5. 中文输出 ----------
 section('5. 中文结构化输出')
