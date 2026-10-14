@@ -72,6 +72,12 @@ const EXPECTATIONS = {
     ['热力图 6 行 × 12 列', d => d.$$('#heat-grid .cell').length === 72],
     ['交易表 12 行', d => d.$$('#trades-body tr').length === 12],
     ['点数/表格/图例渲染完成', d => d.$('#trend-line').getAttribute('d').length > 0 && d.$$('#token-grid .token').length >= 13],
+    ['时间范围切换后热力图数据随之变化', d => {
+      const first = d.$('#heat-grid .cell').textContent;
+      const btn = d.$$('.segmented button').find(b => b.dataset.range === '7');
+      d.click(btn);
+      return d.$('#heat-grid .cell').textContent !== first && /7 天/.test(d.$('#heat-note').textContent);
+    }],
     ['按状态筛选后行数减少', d => { const before = d.$$('#trades-body tr').length; const sel = d.$('#filter-status'); sel.value = '已成交'; sel.dispatchEvent(new d.win.Event('change', { bubbles: true })); return d.$$('#trades-body tr').length < before }],
     ['无结果时显示空状态', d => { const q = d.$('#filter-q'); q.value = '不存在的编号'; q.dispatchEvent(new d.win.Event('input', { bubbles: true })); return d.$('#trades-empty').hidden === false }],
     ['表头排序同步 aria-sort', d => { d.click(d.$('th button[data-sort="amount"]')); return d.$('th[aria-sort] button[data-sort="amount"]') !== null }],
