@@ -951,7 +951,11 @@ tbody tr:hover { background: var(--color-muted); }
         if (state.mode !== 'full') { state.mode = 'day'; syncModeButtons(); }
         renderDaylist(); renderCanvas(); renderMap();
         var block = document.getElementById('block-' + day.id);
-        if (block && block.scrollIntoView) block.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        if (block && block.scrollIntoView) {
+          // 尊重「减少动态」偏好：关闭平滑滚动
+          var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          block.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
       });
       li.appendChild(btn);
       // 城际交通段分隔（首日不重复提示）
