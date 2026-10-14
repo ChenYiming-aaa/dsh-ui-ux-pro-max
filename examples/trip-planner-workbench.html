@@ -9,7 +9,7 @@
 <script>
   (function () {
     try {
-      var saved = localStorage.getItem('tp-workbench-theme');
+      var saved = localStorage.getItem('uiux-demo-theme');
       var dark = saved ? saved === 'dark'
         : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
@@ -906,11 +906,11 @@ tbody tr:hover { background: var(--color-muted); }
      ========================================================== */
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
-    try { localStorage.setItem('tp-workbench-theme', t); } catch (e) { /* 隐私模式忽略 */ }
+    try { localStorage.setItem('uiux-demo-theme', t); } catch (e) { /* 隐私模式忽略 */ }
   }
   (function initTheme() {
     var saved = null;
-    try { saved = localStorage.getItem('tp-workbench-theme'); } catch (e) { /* ignore */ }
+    try { saved = localStorage.getItem('uiux-demo-theme'); } catch (e) { /* ignore */ }
     if (saved === 'light' || saved === 'dark') { applyTheme(saved); return; }
     applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   })();
