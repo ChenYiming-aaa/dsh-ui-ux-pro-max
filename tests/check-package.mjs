@@ -37,6 +37,16 @@ assert(/^\d+\.\d+\.\d+$/.test(pkg.version), `稳定版本号 ${pkg.version}`)
 assert(pkg.type === 'module' && pkg.main === 'index.js', 'ESM 入口 index.js')
 assert(Array.isArray(pkg.keywords) && pkg.keywords.includes('dsh-plugin'), '含 dsh-plugin 关键词')
 assert(pkg.license, `许可证 ${pkg.license}`)
+// 版本号一致性：README（中英）的版本引用必须与 package.json 同版本，防止发布漂移
+for (const readme of ['README.md', 'README.en.md']) {
+  const text = readFileSync(`${root}${readme}`, 'utf8')
+  const refs = [...text.matchAll(/dsh-ui-ux-pro-max@(\d+\.\d+\.\d+)/g)].map(m => m[1])
+  const stale = [...new Set(refs.filter(v => v !== pkg.version))]
+  assert(refs.length >= 2 && stale.length === 0,
+    refs.length < 2 ? `${readme} 版本引用不足（${refs.length} 处）` :
+      stale.length ? `${readme} 版本引用过期 → [${stale}] vs 包 ${pkg.version}` :
+        `${readme} 版本引用与 package.json 一致（${pkg.version}，${refs.length} 处）`)
+}
 
 console.log('\n===== 2. DSH bundle 清单 =====')
 const patch = pkg.dsh?.bundle?.patch
