@@ -122,6 +122,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 :focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; border-radius: var(--radius-sm); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/* 跳转到主内容：键盘用户绕过顶栏（WCAG 2.4.1） */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 50;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-card); color: var(--color-link);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  font-size: 12.5px; text-decoration: none;
+}
+.skip-link:focus { left: var(--space-3); top: var(--space-3); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
 /* ============================================================
@@ -481,6 +490,10 @@ tbody tr:hover { background: var(--color-muted); }
 </head>
 <body>
 
+<a class="skip-link" href="#workbench">跳到主内容</a>
+<noscript>
+  <div class="banner" style="margin: var(--space-3);">本页交互（拖拽 / 模式切换 / 筛选 / 导出）需要 JavaScript；行程结构与静态内容仍可查看。</div>
+</noscript>
 <!-- 图标精灵（统一描边，禁止 emoji 结构图标） -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -564,7 +577,7 @@ tbody tr:hover { background: var(--color-muted); }
   </div>
 
   <!-- ===================== 三栏工作台 ===================== -->
-  <main class="workbench">
+  <main class="workbench" id="workbench">
     <!-- ---------- 左：行程结构 ---------- -->
     <aside class="pane pane-left" aria-label="行程结构">
       <div class="pane-head">
