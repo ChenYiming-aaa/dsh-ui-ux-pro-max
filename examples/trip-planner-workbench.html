@@ -11,8 +11,14 @@
 <style>
 /* ============================================================
    1. 设计令牌
-   风格：Minimalism & Swiss（企业级/专业工具）
-   配色：天空蓝 + 冒险橙（旅行语义）；预算区借 Financial Dashboard
+   风格基座：design_recommend("旅游行程规划工作台", stack: react,
+     variance 2 / motion 2 / density 8)
+   与当前工具真实输出的差异（人工演化，有意保留，详见 README）：
+     · 风格：工具 rank1 = Exaggerated Minimalism、rank2 = Minimalism & Swiss，
+       本页取 Swiss 一支（企业级专业工具基调）
+     · 配色：工具主色为暖橙 #EA580C / 背景 #FFF7ED；本页按「旅行 = 天空蓝」
+       的场景语义改为主色 #0EA5E9 / 背景 #F0F9FF，accent 保留橙作唯一行动色
+     · 字体：工具输出 Inter / Inter；本页一致，等宽数字场景叠加 Fira Code
    密度：density 7（紧凑工作台）· 动效 motion 2-3（克制）
    ============================================================ */
 :root {

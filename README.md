@@ -123,6 +123,8 @@ dsh-ui-ux-pro-max/
 
 两个示例都是**单文件、零第三方依赖、可离线直接打开**，用来证明设计系统被真正遵守，而不是只写在文档里。
 
+> **关于令牌来源**：两个示例的令牌基座来自 `design_recommend` 的真实输出，但部分令牌按场景语义做了**人工演化**（风格取舍、旅行场景的天空蓝主色等）。每个示例的 CSS 头部注释都列出了与工具当前输出的具体差异——示例因此同时演示「机器输出」与「人工打磨」两条链路。重新生成示例前请先读这些注释。
+
 ### 1. `examples/fintech-dashboard.html` —— 金融数据看板
 
 来自 `design_recommend("金融 SaaS 数据看板", stack: react)`：Data-Dense Dashboard + Heat Map。
