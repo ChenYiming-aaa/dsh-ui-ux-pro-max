@@ -64,7 +64,22 @@ const EXPECTATIONS = {
     ['下移按钮改变站点顺序', d => { d.mode('full'); const a = d.firstStop(); d.click(d.$('#canvas-body .day-block .stop [data-act="down"]')); return d.firstStop() !== a }],
     ['插入空档后站点 +1 且门禁转为待校验', d => { const n = d.$$('#canvas-body .stop').length; d.click(d.$('#btn-add-gap')); return d.$$('#canvas-body .stop').length === n + 1 && d.$('#status-gate-text').textContent.includes('待重新校验') }],
     ['重排可应用并高亮变更站点', d => { d.mode('replan'); d.click(d.$('#btn-apply-replan')); return d.$('#canvas-body').textContent.includes('德国总督楼旧址博物馆') && d.$$('#canvas-body .stop[data-changed="true"]').length >= 1 }],
-    ['主题可切换深色并回落', d => { d.click(d.$('#btn-theme')); const dark = d.doc.documentElement.getAttribute('data-theme') === 'dark'; d.click(d.$('#btn-theme')); return dark && d.doc.documentElement.getAttribute('data-theme') === 'light' }],
+    ['模式切换为 radiogroup 单选语义（方向键可选）', d => {
+      const btns = d.$$('.segmented [role="radio"]')
+      if (btns.length !== 4) return false
+      d.click(btns[2])  // 空档填充
+      if (btns[2].getAttribute('aria-checked') !== 'true' || d.$$('#canvas-body .option-card').length !== 3) return false
+      btns[2].dispatchEvent(new d.win.KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }))
+      return btns[1].getAttribute('aria-checked') === 'true' && d.$$('#canvas-body .option-card').length === 0
+    }],
+    ['标签页支持 Home/End 键跳首尾', d => {
+      const tabs = d.$$('.tab')
+      tabs[2].focus()
+      tabs[2].dispatchEvent(new d.win.KeyboardEvent('keydown', { key: 'End', bubbles: true, cancelable: true }))
+      const endOk = tabs[4].getAttribute('aria-selected') === 'true'
+      tabs[4].dispatchEvent(new d.win.KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true }))
+      return endOk && tabs[0].getAttribute('aria-selected') === 'true'
+    }],
     ['降级提示可关闭', d => { d.click(d.$('#btn-banner-close')); return d.$('#banner-degraded').hidden === true }],
     // 回归：el() 用 textContent，曾把 SVG 字符串当纯文本渲染出代码
     ['城际交通分隔渲染为图标（而非原始 SVG 文本）', d => {
@@ -86,7 +101,24 @@ const EXPECTATIONS = {
     ['按状态筛选后行数减少', d => { const before = d.$$('#trades-body tr').length; const sel = d.$('#filter-status'); sel.value = '已成交'; sel.dispatchEvent(new d.win.Event('change', { bubbles: true })); return d.$$('#trades-body tr').length < before }],
     ['无结果时显示空状态', d => { const q = d.$('#filter-q'); q.value = '不存在的编号'; q.dispatchEvent(new d.win.Event('input', { bubbles: true })); return d.$('#trades-empty').hidden === false }],
     ['表头排序同步 aria-sort', d => { d.click(d.$('th button[data-sort="amount"]')); return d.$('th[aria-sort] button[data-sort="amount"]') !== null }],
-    ['主题切换生效', d => { d.click(d.$('#btn-theme')); return d.doc.documentElement.getAttribute('data-theme') === 'dark' }],
+    ['时间范围为 radiogroup 单选语义（点击 + 方向键 + 漫游 tabindex）', d => {
+      const btns = d.$$('.segmented [role="radio"]')
+      if (btns.length !== 3 || d.$('.segmented').getAttribute('role') !== 'radiogroup') return false
+      d.click(btns[0])  // 近 7 天
+      if (btns[0].getAttribute('aria-checked') !== 'true') return false
+      if (btns[1].getAttribute('aria-checked') !== 'false') return false
+      if (btns[0].getAttribute('tabindex') !== '0' || btns[1].getAttribute('tabindex') !== '-1') return false
+      btns[0].dispatchEvent(new d.win.KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
+      return btns[1].getAttribute('aria-checked') === 'true' && btns[0].getAttribute('aria-checked') === 'false'
+    }],
+    ['主题按钮 aria-pressed 随深浅色同步', d => {
+      const btn = d.$('#btn-theme')
+      d.click(btn)  // → dark
+      const darkOk = d.doc.documentElement.getAttribute('data-theme') === 'dark' && btn.getAttribute('aria-pressed') === 'true'
+      d.click(btn)  // → light
+      const lightOk = d.doc.documentElement.getAttribute('data-theme') === 'light' && btn.getAttribute('aria-pressed') === 'false'
+      return darkOk && lightOk
+    }],
     // 环形图回归：起点必须在 12 点。曾经 rotate(-90) 与 dashoffset:25 双重补偿，
     // 导致整环旋转 90°（最大弧段从 9 点开始）
     ['环形图无 rotate 变换且起点偏移为 25', d => {

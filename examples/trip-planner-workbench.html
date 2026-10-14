@@ -182,7 +182,7 @@ th button::after { content: ""; position: absolute; inset: -8px 0; }
   color: var(--color-muted-foreground); font: inherit; font-size: 12.5px; cursor: pointer;
   white-space: nowrap; transition: background-color 140ms ease, color 140ms ease;
 }
-.segmented button[aria-pressed="true"] { background: var(--color-card); color: var(--color-foreground); font-weight: 600; box-shadow: var(--shadow-sm); }
+.segmented button[aria-checked="true"] { background: var(--color-card); color: var(--color-foreground); font-weight: 600; box-shadow: var(--shadow-sm); }
 
 .badge {
   display: inline-flex; align-items: center; gap: 3px;
@@ -534,11 +534,11 @@ tbody tr:hover { background: var(--color-muted); }
       <span class="num">2026-10-26 ~ 10-30 · 5 天 4 晚 · 2 人 · 中等预算</span>
     </div>
 
-    <div class="segmented" role="group" aria-label="工作模式">
-      <button type="button" data-mode="full" aria-pressed="true">整趟旅行</button>
-      <button type="button" data-mode="day" aria-pressed="false">单日规划</button>
-      <button type="button" data-mode="gap" aria-pressed="false">空档填充</button>
-      <button type="button" data-mode="replan" aria-pressed="false">临场重排</button>
+    <div class="segmented" role="radiogroup" aria-label="工作模式">
+      <button type="button" role="radio" data-mode="full" aria-checked="true" tabindex="0">整趟旅行</button>
+      <button type="button" role="radio" data-mode="day" aria-checked="false" tabindex="-1">单日规划</button>
+      <button type="button" role="radio" data-mode="gap" aria-checked="false" tabindex="-1">空档填充</button>
+      <button type="button" role="radio" data-mode="replan" aria-checked="false" tabindex="-1">临场重排</button>
     </div>
 
     <span class="spacer"></span>
@@ -556,7 +556,7 @@ tbody tr:hover { background: var(--color-muted); }
         <svg width="14" height="14" aria-hidden="true"><use href="#i-download"/></svg>
         导出 CSV
       </button>
-      <button class="btn btn-icon" id="btn-theme" type="button" aria-label="切换深色 / 浅色模式" title="切换深色 / 浅色模式">
+      <button class="btn btn-icon" id="btn-theme" type="button" aria-pressed="false" aria-label="切换深色 / 浅色模式" title="切换深色 / 浅色模式">
         <svg width="16" height="16" aria-hidden="true"><use href="#i-moon"/></svg>
       </button>
     </div>
@@ -906,6 +906,9 @@ tbody tr:hover { background: var(--color-muted); }
      ========================================================== */
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
+    // 主题按钮是二进制开关：aria-pressed 同步当前是否为深色
+    var themeBtn = $('#btn-theme');
+    if (themeBtn) themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
     try { localStorage.setItem('uiux-demo-theme', t); } catch (e) { /* 隐私模式忽略 */ }
   }
   (function initTheme() {
@@ -1275,7 +1278,9 @@ tbody tr:hover { background: var(--color-muted); }
      ========================================================== */
   function syncModeButtons() {
     $$('.segmented button[data-mode]').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === state.mode));
+      var on = b.getAttribute('data-mode') === state.mode;
+      b.setAttribute('aria-checked', String(on));
+      b.setAttribute('tabindex', on ? '0' : '-1');  // 漫游 tabindex：组内仅一个 Tab 停靠点
     });
   }
 
@@ -1344,12 +1349,20 @@ tbody tr:hover { background: var(--color-muted); }
   /* ==========================================================
      13. 事件绑定
      ========================================================== */
-  $$('.segmented button[data-mode]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      state.mode = b.getAttribute('data-mode');
-      if (state.mode === 'day' || state.mode === 'gap') state.activeDay = 'd2';
-      syncModeButtons();
-      renderDaylist(); renderCanvas(); renderMap();
+  // 工作模式 = 单选组（radiogroup）：方向键在组内移动并选中
+  function selectMode(b) {
+    state.mode = b.getAttribute('data-mode');
+    if (state.mode === 'day' || state.mode === 'gap') state.activeDay = 'd2';
+    syncModeButtons();
+    renderDaylist(); renderCanvas(); renderMap();
+  }
+  $$('.segmented button[data-mode]').forEach(function (b, i, arr) {
+    b.addEventListener('click', function () { selectMode(b); });
+    b.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = arr[(i + 1) % arr.length];
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = arr[(i - 1 + arr.length) % arr.length];
+      if (next) { e.preventDefault(); next.focus(); selectMode(next); }
     });
   });
 
@@ -1367,11 +1380,13 @@ tbody tr:hover { background: var(--color-muted); }
   tabs.forEach(function (t, i) {
     t.addEventListener('click', function () { selectTab(t); });
     t.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        var next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-        next.focus(); selectTab(next);
-      }
+      // 方向键循环 + Home/End 跳首尾（WAI-ARIA tabs 惯例）
+      var next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); next.focus(); selectTab(next); }
     });
   });
 

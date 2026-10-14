@@ -248,7 +248,7 @@ a { color: var(--color-primary); }
   color: var(--color-muted-foreground); font: inherit; font-size: 13px; cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease;
 }
-.segmented button[aria-pressed="true"] { background: var(--color-card); color: var(--color-primary); font-weight: 600; box-shadow: var(--shadow-sm); }
+.segmented button[aria-checked="true"] { background: var(--color-card); color: var(--color-primary); font-weight: 600; box-shadow: var(--shadow-sm); }
 .field { display: flex; flex-direction: column; gap: var(--space-1); }
 .field label { font-size: 11px; color: var(--color-muted-foreground); }
 .field input, .field select {
@@ -484,7 +484,7 @@ footer.site-foot .spacer { margin-left: auto; }
       </svg>
       刷新
     </button>
-    <button class="btn btn-icon" id="btn-theme" type="button" aria-label="切换深色 / 浅色模式" title="切换深色 / 浅色模式">
+    <button class="btn btn-icon" id="btn-theme" type="button" aria-pressed="false" aria-label="切换深色 / 浅色模式" title="切换深色 / 浅色模式">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
       </svg>
@@ -524,10 +524,10 @@ footer.site-foot .spacer { margin-left: auto; }
 
   <!-- ===================== 筛选栏 ===================== -->
   <section class="filters" aria-label="筛选条件">
-    <div class="segmented" role="group" aria-label="时间范围">
-      <button type="button" data-range="7" aria-pressed="false">近 7 天</button>
-      <button type="button" data-range="30" aria-pressed="true">近 30 天</button>
-      <button type="button" data-range="90" aria-pressed="false">近 90 天</button>
+    <div class="segmented" role="radiogroup" aria-label="时间范围">
+      <button type="button" role="radio" data-range="7" aria-checked="false" tabindex="-1">近 7 天</button>
+      <button type="button" role="radio" data-range="30" aria-checked="true" tabindex="0">近 30 天</button>
+      <button type="button" role="radio" data-range="90" aria-checked="false" tabindex="-1">近 90 天</button>
     </div>
     <div class="field">
       <label for="filter-product">产品类型</label>
@@ -905,6 +905,9 @@ footer.site-foot .spacer { margin-left: auto; }
   var btnTheme = $('#btn-theme');
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
+    // 主题按钮是二进制开关：aria-pressed 同步当前是否为深色
+    var themeBtn = $('#btn-theme');
+    if (themeBtn) themeBtn.setAttribute('aria-pressed', String(theme === 'dark'));
     try { localStorage.setItem('uiux-demo-theme', theme); } catch (e) { /* 隐私模式忽略 */ }
   }
   (function initTheme() {
@@ -1185,14 +1188,30 @@ footer.site-foot .spacer { margin-left: auto; }
   /* ==========================================================
      7. 筛选交互
      ========================================================== */
-  $$('.segmented button').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      $$('.segmented button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
-      btn.setAttribute('aria-pressed', 'true');
-      state.range = Number(btn.getAttribute('data-range'));
-      applyDataset();
+  // 时间范围是单选组（radiogroup）：aria-checked + 漫游 tabindex（组内仅一个 Tab 停靠点），
+  // 方向键在组内移动并选中（WAI-ARIA radio group 惯例）
+  var rangeGroup = $('.segmented');
+  function syncRangeButtons() {
+    $$('.segmented button', rangeGroup).forEach(function (b) {
+      b.setAttribute('tabindex', b.getAttribute('aria-checked') === 'true' ? '0' : '-1');
+    });
+  }
+  function selectRange(btn) {
+    $$('.segmented button', rangeGroup).forEach(function (b) { b.setAttribute('aria-checked', String(b === btn)); });
+    syncRangeButtons();
+    state.range = Number(btn.getAttribute('data-range'));
+    applyDataset();
+  }
+  $$('.segmented button', rangeGroup).forEach(function (btn, i, arr) {
+    btn.addEventListener('click', function () { selectRange(btn); });
+    btn.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = arr[(i + 1) % arr.length];
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = arr[(i - 1 + arr.length) % arr.length];
+      if (next) { e.preventDefault(); next.focus(); selectRange(next); }
     });
   });
+  syncRangeButtons();
 
   function applyDataset() {
     var d = DATASETS[state.range];

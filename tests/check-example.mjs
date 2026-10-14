@@ -52,6 +52,7 @@ for (const file of files) {
   assert(/<caption/.test(html), '表格含 caption')
   assert(/role="img"/.test(html) && /aria-label(ledby)?=/.test(html), '图表有无障碍名称')
   assert(/aria-pressed=/.test(html), '切换类控件使用 aria-pressed')
+  assert(/role="radiogroup"/.test(html) && /role="radio"[^>]*aria-checked=/.test(html), '单选组使用 radiogroup/radio + aria-checked')
 
   // 3. 交互规范
   assert(/:focus-visible/.test(html), 'focus-visible 焦点可见')
