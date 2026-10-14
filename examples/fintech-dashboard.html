@@ -402,7 +402,12 @@ footer.site-foot .spacer { margin-left: auto; }
   .col-4 { grid-column: span 6; }
 }
 @media (max-width: 900px) {
-  .topnav { display: none; }
+  /* 移动端：主导航不隐藏，换行为第二行横向可滚动（原 display:none 使锚点入口在触屏上完全消失） */
+  .topbar { height: auto; min-height: var(--topbar-h); flex-wrap: wrap; padding-block: var(--space-2); }
+  .topnav { order: 3; flex: 1 1 100%; margin-left: 0; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .topnav::-webkit-scrollbar { display: none; }
+  .topnav a { flex: none; position: relative; }
+  .topnav a::after { content: ""; position: absolute; inset: -5px 0; } /* 触屏热区补到 44px */
   .page-head .refresh-info { margin-left: 0; text-align: left; }
 }
 @media (max-width: 768px) {
@@ -413,7 +418,7 @@ footer.site-foot .spacer { margin-left: auto; }
   .heatmap { grid-template-columns: 56px repeat(12, minmax(0, 1fr)); }
 }
 @media (max-width: 420px) {
-  .topbar { padding: 0 var(--space-3); gap: var(--space-2); }
+  .topbar { padding-inline: var(--space-3); gap: var(--space-2); }
   .brand small { display: none; }
   .kpi .kpi-value { font-size: 20px; }
   .heatmap .cell { font-size: 8px; }
