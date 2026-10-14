@@ -33,6 +33,9 @@
   /* 看板扩展语义色（仅在需要时使用） */
   --color-success: #0F766E;
   --color-warning: #B45309;
+  /* 涨跌语义色：中国证券惯例「涨=红、跌=绿」，仅用于涨跌，不用于状态徽章 */
+  --color-gain: #DC2626;             /* 涨 */
+  --color-loss: #0F766E;             /* 跌 */
   --chart-1: #1E40AF;
   --chart-2: #3B82F6;
   --chart-3: #D97706;
@@ -73,6 +76,8 @@
   --color-ring: #7CA5F5;
   --color-success: #34D399;
   --color-warning: #FBBF24;
+  --color-gain: #F87171;
+  --color-loss: #34D399;
   --chart-1: #5B8DEF;
   --chart-2: #7CA5F5;
   --chart-3: #F59E0B;
@@ -239,8 +244,8 @@ a { color: var(--color-primary); }
 .kpi .kpi-value .unit { font-size: 13px; font-weight: 400; color: var(--color-muted-foreground); margin-left: 2px; }
 .kpi .kpi-foot { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; }
 .delta { display: inline-flex; align-items: center; gap: 2px; font-family: var(--font-mono); font-weight: 600; }
-.delta.up { color: var(--color-success); }
-.delta.down { color: var(--color-destructive); }
+.delta.up { color: var(--color-gain); }
+.delta.down { color: var(--color-loss); }
 .delta.flat { color: var(--color-muted-foreground); }
 .kpi .vs { color: var(--color-muted-foreground); }
 .spark { margin-top: var(--space-1); }
@@ -282,7 +287,7 @@ a { color: var(--color-primary); }
 .heatmap .cell:hover { transform: scale(1.06); border-color: var(--color-foreground); }
 .heat-legend { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); font-size: 11px; color: var(--color-muted-foreground); }
 .heat-legend .bar { width: 120px; height: 8px; border-radius: 999px;
-  background: linear-gradient(90deg, rgba(30,64,175,.12), rgba(30,64,175,.55)); }
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-loss) 18%, transparent), color-mix(in srgb, var(--color-gain) 55%, transparent)); }
 
 /* ============================================================
    8. 表格
@@ -506,7 +511,7 @@ footer.site-foot .spacer { margin-left: auto; }
         <span class="vs">较上期</span>
       </div>
       <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="AUM 近 30 天走势：整体上行">
-        <polyline points="0,22 12,20 24,21 36,17 48,18 60,14 72,15 84,11 96,12 108,8 120,7" fill="none" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" />
+        <polyline points="0,22 12,20 24,21 36,17 48,18 60,14 72,15 84,11 96,12 108,8 120,7" fill="none" stroke="var(--color-gain)" stroke-width="2" stroke-linecap="round" />
       </svg>
     </article>
 
@@ -521,7 +526,7 @@ footer.site-foot .spacer { margin-left: auto; }
         <span class="vs">较昨日</span>
       </div>
       <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="交易额近 30 天走势：小幅波动">
-        <polyline points="0,12 12,15 24,11 36,16 48,13 60,17 72,14 84,18 96,15 108,19 120,17" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" />
+        <polyline points="0,12 12,15 24,11 36,16 48,13 60,17 72,14 84,18 96,15 108,19 120,17" fill="none" stroke="var(--color-loss)" stroke-width="2" stroke-linecap="round" />
       </svg>
     </article>
 
@@ -536,7 +541,7 @@ footer.site-foot .spacer { margin-left: auto; }
         <span class="vs">较上期</span>
       </div>
       <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="活跃账户近 30 天走势：稳步上升">
-        <polyline points="0,24 12,22 24,20 36,21 48,17 60,15 72,16 84,12 96,10 108,9 120,6" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" />
+        <polyline points="0,24 12,22 24,20 36,21 48,17 60,15 72,16 84,12 96,10 108,9 120,6" fill="none" stroke="var(--color-gain)" stroke-width="2" stroke-linecap="round" />
       </svg>
     </article>
 
@@ -551,7 +556,7 @@ footer.site-foot .spacer { margin-left: auto; }
         <span class="vs">较昨日已处置</span>
       </div>
       <svg class="spark" viewBox="0 0 120 28" role="img" aria-label="风险预警近 30 天走势：持续下降">
-        <polyline points="0,6 12,9 24,8 36,12 48,11 60,15 72,14 84,18 96,17 108,21 120,22" fill="none" stroke="var(--color-destructive)" stroke-width="2" stroke-linecap="round" />
+        <polyline points="0,6 12,9 24,8 36,12 48,11 60,15 72,14 84,18 96,17 108,21 120,22" fill="none" stroke="var(--color-warning)" stroke-width="2" stroke-linecap="round" />
       </svg>
     </article>
   </section>
@@ -700,6 +705,7 @@ footer.site-foot .spacer { margin-left: auto; }
     <div class="token-grid" id="token-grid"></div>
     <p style="padding: 0 var(--space-4) var(--space-4); font-size: 12px; color: var(--color-muted-foreground)">
       风格：Data-Dense Dashboard + Heat Map · 字体：Fira Code / Fira Sans · 主色 #1E40AF · 强调色 #D97706（WCAG 3:1 调整）。
+      涨跌配色遵循中国证券惯例：涨=红（--color-gain）、跌=绿（--color-loss）；状态徽章（已成交/待复核/已拒绝）仍用交通灯语义，不与涨跌混用。
       深色模式为同色系推导值，两套主题的正文对比度均 ≥ 4.5:1。
     </p>
   </details>
@@ -730,6 +736,8 @@ footer.site-foot .spacer { margin-left: auto; }
     ['次要文字 muted-fg', '--color-muted-foreground', '#5B6B8C', '#9FB0CC'],
     ['边框 border', '--color-border', '#DBEAFE', '#24324D'],
     ['危险 destructive', '--color-destructive', '#DC2626', '#F87171'],
+    ['涨跌 gain（涨·红）', '--color-gain', '#DC2626', '#F87171'],
+    ['涨跌 loss（跌·绿）', '--color-loss', '#0F766E', '#34D399'],
     ['成功 success', '--color-success', '#0F766E', '#34D399'],
     ['焦点环 ring', '--color-ring', '#1E40AF', '#7CA5F5']
   ];
@@ -793,9 +801,9 @@ footer.site-foot .spacer { margin-left: auto; }
     return n.toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d });
   }
   function heatColor(pct) {
-    // 色阶走令牌（color-mix），避免在演示里硬编码 hex：正为品牌蓝、负为危险色
+    // 色阶走令牌（color-mix），避免在演示里硬编码 hex：正为涨（红）、负为跌（绿）
     var intensity = Math.round(12 + Math.min(Math.abs(pct) / 5, 1) * 50);
-    var token = pct >= 0 ? 'var(--color-primary)' : 'var(--color-destructive)';
+    var token = pct >= 0 ? 'var(--color-gain)' : 'var(--color-loss)';
     return 'color-mix(in srgb, ' + token + ' ' + intensity + '%, transparent)';
   }
 
