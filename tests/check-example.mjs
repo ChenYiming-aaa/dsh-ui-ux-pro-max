@@ -9,7 +9,8 @@
  *      图表无障碍名称、live region
  *   3. 交互规范：focus-visible、prefers-reduced-motion、触摸目标 ≥44px、安全区
  *   4. 规范禁止项：无 emoji 作为结构图标
- *   5. 令牌化：除令牌定义块外无游离 hex；深浅两套主题齐全
+ *   5. 令牌化：除令牌定义块外无游离 hex/rgba（例外须以行内 token-exempt
+ *      标记 + 理由注释显式声明）；深浅两套主题齐全
  *   6. 状态完备：加载 / 空 / 提示条
  *
  * 用法: node tests/check-example.mjs
@@ -66,12 +67,42 @@ for (const file of files) {
   // 5. 令牌化
   assert(/\[data-theme="dark"\]/.test(html), '提供深色模式令牌')
   const style = (html.match(/<style>([\s\S]*?)<\/style>/) || [])[1] || ''
-  const hexes = style.match(/#[0-9A-Fa-f]{3,8}\b/g) || []
-  // 令牌定义处允许出现 hex；其余规则不应直接写 hex（rgba 之外的语义色必须走 var()）
   const tokenBlockCount = (style.match(/#[0-9A-Fa-f]{6}/g) || []).length
   assert(tokenBlockCount >= 20, `令牌定义包含 ${tokenBlockCount} 个颜色值`)
   assert(/var\(--color-/.test(style) && (style.match(/var\(--/g) || []).length > 50, '样式大量使用令牌变量')
-  assert(!/(?<!:)rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+/.test(style) || true, '颜色扩展走 color-mix/令牌')
+
+  // 剔除令牌定义块（:root / [data-theme="dark"]）与注释后，规则体内不得出现
+  // hex / rgba 字面量——语义色必须走 var()。确有例外处（如主题色卡）以行内
+  // `/* token-exempt: 理由 */` 显式标记，让例外可见、可审查。
+  const withoutTokenBlocks = style
+    .replace(/:root\s*\{[\s\S]*?\}/g, '')
+    .replace(/\[data-theme="dark"\]\s*\{[\s\S]*?\}/g, '')
+  const codeLines = []
+  let inBlockComment = false
+  let pendingExempt = false
+  for (const [i, raw] of withoutTokenBlocks.split('\n').entries()) {
+    const t = raw.trim()
+    if (/token-exempt/.test(raw)) pendingExempt = true
+    if (inBlockComment) {
+      if (t.includes('*/')) inBlockComment = false
+      continue
+    }
+    if (t.startsWith('/*')) {
+      if (!t.includes('*/')) inBlockComment = true
+      continue
+    }
+    const code = raw.replace(/\/\*[\s\S]*?\*\//g, '').trim()
+    if (code) codeLines.push({ no: i + 1, code, exempt: pendingExempt })
+    pendingExempt = false
+  }
+  const floating = codeLines.filter(l => !l.exempt && /#[0-9A-Fa-f]{3,8}\b/.test(l.code))
+  assert(floating.length === 0,
+    floating.length === 0 ? '令牌块与注释之外无游离 hex 字面量'
+      : `令牌块与注释之外无游离 hex 字面量 → ${floating.map(f => `L${f.no}: ${f.code.slice(0, 60)}`).join(' | ')}`)
+  const floatingRgba = codeLines.filter(l => !l.exempt && /(?<![\w-])rgba\(\s*\d/.test(l.code))
+  assert(floatingRgba.length === 0,
+    floatingRgba.length === 0 ? '规则体内无游离 rgba()（阴影等集中在令牌块）'
+      : `规则体内无游离 rgba() → ${floatingRgba.map(f => `L${f.no}: ${f.code.slice(0, 60)}`).join(' | ')}`)
 
   // 6. 状态完备
   assert(/skeleton/.test(html), '具备加载态（骨架屏）')

@@ -195,7 +195,7 @@ th button::after { content: ""; position: absolute; inset: -8px 0; }
 .brand .mark {
   width: 26px; height: 26px; border-radius: var(--radius-sm); flex: none;
   background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  display: grid; place-items: center; color: #FFFFFF;
+  display: grid; place-items: center; color: var(--color-on-primary);
 }
 .trip-name { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .trip-name strong { font-size: 13.5px; }
@@ -369,7 +369,7 @@ th button::after { content: ""; position: absolute; inset: -8px 0; }
 .route-line { fill: none; stroke: var(--color-primary); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .route-dash { fill: none; stroke: var(--color-border); stroke-width: 1.5; stroke-dasharray: 4 4; }
 .route-pin { fill: var(--color-accent); }
-.route-pin-label { fill: #FFFFFF; font-family: var(--font-mono); font-size: 8px; font-weight: 600; }
+.route-pin-label { fill: var(--color-on-accent); font-family: var(--font-mono); font-size: 8px; font-weight: 600; }
 .poi-dot { fill: var(--color-card); stroke: var(--color-primary); stroke-width: 1.5; }
 
 /* 预算 */
@@ -417,13 +417,14 @@ tbody tr:hover { background: var(--color-muted); }
 .theme-card[aria-pressed="true"] { border-color: var(--color-primary); box-shadow: 0 0 0 1px var(--color-primary); }
 .theme-thumb { height: 56px; display: block; }
 .theme-card .t-name { display: block; padding: 6px var(--space-2); font-size: 11.5px; }
-.t-illustrated { background: linear-gradient(135deg, #FDE68A, #93C5FD 60%, #6EE7B7); }
-.t-clay { background: linear-gradient(135deg, #FDBA74, #F87171 55%, #C084FC); }
-.t-noir { background: linear-gradient(135deg, #111827, #374151 60%, #9CA3AF); }
-.t-glass { background: linear-gradient(135deg, #BAE6FD, #E0F2FE 50%, #F0F9FF); }
-.t-journal { background: linear-gradient(135deg, #FEF3C7, #FDE68A 60%, #D6D3D1); }
-.t-zine { background: linear-gradient(135deg, #F43F5E, #FACC15 55%, #22D3EE); }
-.t-splash { background: linear-gradient(135deg, #0EA5E9, #6366F1 55%, #EA580C); }
+/* 主题缩略图是「其他主题的配色色卡」，本应多色——显式豁免令牌纪律 */
+.t-illustrated { background: linear-gradient(135deg, #FDE68A, #93C5FD 60%, #6EE7B7); } /* token-exempt: 主题色卡 */
+.t-clay { background: linear-gradient(135deg, #FDBA74, #F87171 55%, #C084FC); } /* token-exempt: 主题色卡 */
+.t-noir { background: linear-gradient(135deg, #111827, #374151 60%, #9CA3AF); } /* token-exempt: 主题色卡 */
+.t-glass { background: linear-gradient(135deg, #BAE6FD, #E0F2FE 50%, #F0F9FF); } /* token-exempt: 主题色卡 */
+.t-journal { background: linear-gradient(135deg, #FEF3C7, #FDE68A 60%, #D6D3D1); } /* token-exempt: 主题色卡 */
+.t-zine { background: linear-gradient(135deg, #F43F5E, #FACC15 55%, #22D3EE); } /* token-exempt: 主题色卡 */
+.t-splash { background: linear-gradient(135deg, #0EA5E9, #6366F1 55%, #EA580C); } /* token-exempt: 主题色卡 */
 
 /* 状态：骨架 / 空态 */
 .skeleton {
