@@ -66,6 +66,11 @@ const EXPECTATIONS = {
     ['重排可应用并高亮变更站点', d => { d.mode('replan'); d.click(d.$('#btn-apply-replan')); return d.$('#canvas-body').textContent.includes('德国总督楼旧址博物馆') && d.$$('#canvas-body .stop[data-changed="true"]').length >= 1 }],
     ['主题可切换深色并回落', d => { d.click(d.$('#btn-theme')); const dark = d.doc.documentElement.getAttribute('data-theme') === 'dark'; d.click(d.$('#btn-theme')); return dark && d.doc.documentElement.getAttribute('data-theme') === 'light' }],
     ['降级提示可关闭', d => { d.click(d.$('#btn-banner-close')); return d.$('#banner-degraded').hidden === true }],
+    // 回归：el() 用 textContent，曾把 SVG 字符串当纯文本渲染出代码
+    ['城际交通分隔渲染为图标（而非原始 SVG 文本）', d => {
+      const seps = d.$$('#daylist .transit-sep')
+      return seps.length === 4 && seps.every(s => s.querySelector('svg') && !s.textContent.includes('<svg'))
+    }],
   ],
   'fintech-dashboard.html': [
     ['KPI 卡 4 张', d => d.$$('#kpi-row .kpi').length === 4],
@@ -82,6 +87,17 @@ const EXPECTATIONS = {
     ['无结果时显示空状态', d => { const q = d.$('#filter-q'); q.value = '不存在的编号'; q.dispatchEvent(new d.win.Event('input', { bubbles: true })); return d.$('#trades-empty').hidden === false }],
     ['表头排序同步 aria-sort', d => { d.click(d.$('th button[data-sort="amount"]')); return d.$('th[aria-sort] button[data-sort="amount"]') !== null }],
     ['主题切换生效', d => { d.click(d.$('#btn-theme')); return d.doc.documentElement.getAttribute('data-theme') === 'dark' }],
+    // 环形图回归：起点必须在 12 点。曾经 rotate(-90) 与 dashoffset:25 双重补偿，
+    // 导致整环旋转 90°（最大弧段从 9 点开始）
+    ['环形图无 rotate 变换且起点偏移为 25', d => {
+      const arcs = ['arc-1', 'arc-2', 'arc-3', 'arc-4'].map(id => d.doc.getElementById(id))
+      return arcs.every(a => a && !a.getAttribute('transform')) && arcs[0].getAttribute('stroke-dashoffset') === '25'
+    }],
+    ['环形图各弧段长度合计 100（无重叠无缺口）', d => {
+      const total = ['arc-1', 'arc-2', 'arc-3', 'arc-4']
+        .reduce((s, id) => s + Number(d.doc.getElementById(id).getAttribute('stroke-dasharray').split(' ')[0]), 0)
+      return total === 100
+    }],
   ],
 }
 

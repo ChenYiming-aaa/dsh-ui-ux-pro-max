@@ -311,8 +311,13 @@ a { color: var(--color-primary); }
 }
 .heatmap .cell:hover { transform: scale(1.06); border-color: var(--color-foreground); }
 .heat-legend { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); font-size: 11px; color: var(--color-muted-foreground); }
+.heat-legend .legend-note { margin-left: var(--space-2); padding: 1px 7px; border: 1px solid var(--color-border); border-radius: 999px; }
 .heat-legend .bar { width: 120px; height: 8px; border-radius: 999px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color-loss) 18%, transparent), color-mix(in srgb, var(--color-gain) 55%, transparent)); }
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--color-loss) 97%, transparent),
+    color-mix(in srgb, var(--color-loss) 42%, transparent) 30%,
+    color-mix(in srgb, var(--color-gain) 42%, transparent) 70%,
+    color-mix(in srgb, var(--color-gain) 97%, transparent)); }
 
 /* ============================================================
    8. 表格
@@ -656,13 +661,13 @@ footer.site-foot .spacer { margin-left: auto; }
         <svg width="150" height="150" viewBox="0 0 42 42" role="img" aria-label="资产配置环形图：债券 42%、权益 31%、现金 17%、另类 10%">
           <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--color-muted)" stroke-width="6" />
           <circle id="arc-1" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-1)" stroke-width="6"
-                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+                  stroke-dasharray="0 100" stroke-dashoffset="25" />
           <circle id="arc-2" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-2)" stroke-width="6"
-                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+                  stroke-dasharray="0 100" stroke-dashoffset="25" />
           <circle id="arc-3" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-3)" stroke-width="6"
-                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+                  stroke-dasharray="0 100" stroke-dashoffset="25" />
           <circle id="arc-4" cx="21" cy="21" r="15.9" fill="none" stroke="var(--chart-4)" stroke-width="6"
-                  stroke-dasharray="0 100" stroke-dashoffset="25" transform="rotate(-90 21 21)" />
+                  stroke-dasharray="0 100" stroke-dashoffset="25" />
           <text class="donut-center" x="21" y="20.5" text-anchor="middle">¥128.6</text>
           <text class="donut-center-sub" x="21" y="25" text-anchor="middle">亿 · 总规模</text>
         </svg>
@@ -689,6 +694,7 @@ footer.site-foot .spacer { margin-left: auto; }
       </div>
       <div class="heat-legend">
         <span>-5%</span><span class="bar"></span><span>+5%</span>
+        <span class="legend-note">浅色 ≤ ±2.4% · 深色 &gt; ±2.4%</span>
         <span style="margin-left: auto">数据延迟 ≤ 15 分钟</span>
       </div>
     </article>
@@ -865,8 +871,13 @@ footer.site-foot .spacer { margin-left: auto; }
     return n.toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d });
   }
   function heatColor(pct) {
-    // 色阶走令牌（color-mix），避免在演示里硬编码 hex：正为涨（红）、负为跌（绿）
-    var intensity = Math.round(12 + Math.min(Math.abs(pct) / 5, 1) * 50);
+    // 色阶走令牌（color-mix），避免在演示里硬编码 hex：正为涨（红）、负为跌（绿）。
+    // 可访问性约束：色深约 45%–90% 的中间调无论深字白字都不足 4.5:1，
+    // 因此色阶只走两端——浅底（≤42%，配深色文字）与浓底（≥95%，配白字）。
+    var a = Math.abs(pct);
+    var intensity = a > 2.4
+      ? Math.round(95 + Math.min((a - 2.4) / 2.6, 1) * 5)  // 95%–100%
+      : Math.round(8 + (a / 2.4) * 34);                     // 8%–42%
     var token = pct >= 0 ? 'var(--color-gain)' : 'var(--color-loss)';
     return 'color-mix(in srgb, ' + token + ' ' + intensity + '%, transparent)';
   }
@@ -1041,6 +1052,7 @@ footer.site-foot .spacer { margin-left: auto; }
         var cell = document.createElement('div');
         cell.className = 'cell';
         cell.style.background = heatColor(val);
+        // 浓底（>2.4%）配白字、浅底配深色文字——两端均 ≥4.5:1（中间调不可读，故色阶跳过）
         cell.style.color = Math.abs(val) > 2.4 ? 'var(--color-on-strong)' : 'var(--color-foreground)';
         cell.textContent = (val > 0 ? '+' : '') + val.toFixed(1);
         cell.title = row + ' D' + (c + 1) + '：' + (val > 0 ? '+' : '') + val.toFixed(1) + '%';

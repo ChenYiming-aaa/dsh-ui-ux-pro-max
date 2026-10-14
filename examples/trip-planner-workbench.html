@@ -290,7 +290,7 @@ th button::after { content: ""; position: absolute; inset: -8px 0; }
 .day-item:hover { background: var(--color-muted); }
 .day-item[aria-current="true"] { background: var(--color-muted); border-color: var(--color-border); }
 .day-item .d-idx { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--color-primary); }
-.day-item .d-main { min-width: 0; }
+.day-item .d-main { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .day-item .d-city { font-size: 12.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .day-item .d-date { font-size: 11px; color: var(--color-muted-foreground); }
 .day-item .d-cost { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-muted-foreground); }
@@ -958,9 +958,11 @@ tbody tr:hover { background: var(--color-muted); }
         }
       });
       li.appendChild(btn);
-      // 城际交通段分隔（首日不重复提示）
+      // 城际交通段分隔（首日不重复提示）。注意：el() 用 textContent，
+      // 含 HTML 的字符串必须走 innerHTML，否则会把标签当纯文本渲染出来
       if (i > 0 && day.transit) {
-        var sep = el('li', 'transit-sep', svgIcon('i-route', 12) + ' ' + day.transit);
+        var sep = el('li', 'transit-sep');
+        sep.innerHTML = svgIcon('i-route', 12) + ' ' + day.transit;
         list.appendChild(sep);
       }
       list.appendChild(li);
