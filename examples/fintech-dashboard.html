@@ -874,6 +874,18 @@ footer.site-foot .spacer { margin-left: auto; }
     var d = digits === undefined ? 2 : digits;
     return n.toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d });
   }
+  // 老浏览器（无 color-mix，2023 年前）回退：读取令牌 HEX 手工合成 rgba。
+  // color-mix 路径的单元格颜色随主题切换自动更新（CSS 变量解析）；
+  // rgba 回退路径是渲染时定值，故主题切换时需重渲热力图（见 btn-theme）。
+  var supportsColorMix = !!(window.CSS && CSS.supports &&
+    CSS.supports('background', 'color-mix(in srgb, red 10%, transparent)'));
+  function tokenRgba(tokenName, pct) {
+    var hex = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim().replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(hex, 16);
+    if (isNaN(n)) return 'transparent';
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + (pct / 100).toFixed(2) + ')';
+  }
   function heatColor(pct) {
     // 色阶走令牌（color-mix），避免在演示里硬编码 hex：正为涨（红）、负为跌（绿）。
     // 可访问性约束：色深约 45%–90% 的中间调无论深字白字都不足 4.5:1，
@@ -882,8 +894,9 @@ footer.site-foot .spacer { margin-left: auto; }
     var intensity = a > 2.4
       ? Math.round(95 + Math.min((a - 2.4) / 2.6, 1) * 5)  // 95%–100%
       : Math.round(8 + (a / 2.4) * 34);                     // 8%–42%
-    var token = pct >= 0 ? 'var(--color-gain)' : 'var(--color-loss)';
-    return 'color-mix(in srgb, ' + token + ' ' + intensity + '%, transparent)';
+    var tokenName = pct >= 0 ? '--color-gain' : '--color-loss';
+    if (!supportsColorMix) return tokenRgba(tokenName, intensity);
+    return 'color-mix(in srgb, var(' + tokenName + ') ' + intensity + '%, transparent)';
   }
 
   /* ==========================================================
@@ -904,6 +917,7 @@ footer.site-foot .spacer { margin-left: auto; }
   btnTheme.addEventListener('click', function () {
     var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     applyTheme(next);
+    renderHeatmap(); // rgba 回退路径（无 color-mix 的老浏览器）的主题同步
   });
 
   /* ==========================================================
@@ -988,8 +1002,17 @@ footer.site-foot .spacer { margin-left: auto; }
     var hover = $('#trend-hover'), cross = $('#trend-cross'), dot = $('#trend-hover-dot');
     var tipBox = $('#trend-tip-box'), tipText = $('#trend-tip-text');
     var svg = $('#trend');
+    // 缓存 svg 矩形：getBoundingClientRect 每次 mousemove 都调用会触发布局读取。
+    // svg 非固定定位，(clientX - rect.left) 与滚动无关，仅宽度随响应式变化，
+    // 因此只需在 resize 时失效（renderTrend 重绘不影响 svg 元素本身）。
+    var svgRect = null;
+    function svgBox() {
+      if (!svgRect) svgRect = svg.getBoundingClientRect();
+      return svgRect;
+    }
+    window.addEventListener('resize', function () { svgRect = null; });
     function moveHover(evt) {
-      var rect = svg.getBoundingClientRect();
+      var rect = svgBox();
       var scale = W / rect.width;
       var localX = (evt.clientX - rect.left) * scale;
       var ratio = (localX - PAD_L) / plotW;
