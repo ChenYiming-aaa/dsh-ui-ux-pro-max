@@ -133,6 +133,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .btn-sm { min-height: 36px; padding: 0 var(--space-3); font-size: 12.5px; }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 
+/* 触摸目标热区扩展（hitSlop 等价，沿用 .icon-btn 的 ::after 模式）：
+   视觉尺寸保持工作台密度，垂直命中区域统一扩到 ≥44px。
+   仅纵向扩展，避免相邻控件热区重叠；行内文字链接（.link-ext）不在其列
+   ——扩展会破坏文本流。 */
+th button, .tab, .btn-sm, .segmented button { position: relative; }
+th button::after { content: ""; position: absolute; inset: -8px 0; }
+.tab::after { content: ""; position: absolute; inset: -3px 0; }
+.btn-sm::after { content: ""; position: absolute; inset: -4px 0; }
+.segmented button::after { content: ""; position: absolute; inset: -3px 0; }
+
 /* 密集行内按钮：视觉紧凑，热区仍够点 */
 .icon-btn {
   position: relative; width: 34px; height: 34px; flex: none;

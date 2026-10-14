@@ -333,6 +333,13 @@ td.amount { text-align: right; font-family: var(--font-mono); font-variant-numer
   color: var(--color-primary); font: inherit; font-size: 12px; cursor: pointer;
 }
 .row-action:hover { background: var(--color-muted); }
+/* 触摸目标热区扩展（hitSlop 等价，参照 .icon-btn 模式）：视觉尺寸保持紧凑密度，
+   垂直命中区域统一扩到 ≥44px。仅纵向扩展，避免相邻控件热区重叠。
+   说明：伪元素热区对 input/select 不生效，表单控件维持 40px 是有意的密度取舍；
+   行内文字链接扩展会破坏文本流，不在其列。 */
+.segmented button, .row-action, th button { position: relative; }
+.segmented button::after { content: ""; position: absolute; inset: -3px 0; }
+.row-action::after, th button::after { content: ""; position: absolute; inset: -6px 0; }
 .table-foot { display: flex; align-items: center; gap: var(--space-3); padding-top: var(--space-3); font-size: 12px; color: var(--color-muted-foreground); }
 .table-foot .spacer { margin-left: auto; }
 
