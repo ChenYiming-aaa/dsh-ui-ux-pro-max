@@ -1216,12 +1216,11 @@ tbody tr:hover { background: var(--color-muted); }
     body.innerHTML = '';
     rows.forEach(function (b) {
       var dd = daysUntil(b.deadline);
-      var cls = dd < 0 ? 'countdown' : (dd <= 2 ? 'countdown' : (dd <= 7 ? 'countdown' : 'countdown'));
       var urgent = dd <= 2;
       var soon = !urgent && dd <= 7;
       var tr = el('tr');
       tr.innerHTML =
-        '<td><span class="num">' + b.deadline.slice(5) + '</span><br><span class="' + cls + '" data-urgent="' + urgent + '" data-soon="' + soon + '">' +
+        '<td><span class="num">' + b.deadline.slice(5) + '</span><br><span class="countdown" data-urgent="' + urgent + '" data-soon="' + soon + '">' +
           (dd < 0 ? '已逾期 ' + (-dd) + ' 天' : (dd === 0 ? '今天截止' : '剩 ' + dd + ' 天')) + '</span></td>' +
         '<td>' + b.title + '</td>' +
         '<td>' + (b.url ? '<a class="link-ext" href="' + b.url + '" target="_blank" rel="noopener noreferrer">' + b.channel + svgIcon('i-ext', 11) + '</a>' : b.channel) + '</td>' +
