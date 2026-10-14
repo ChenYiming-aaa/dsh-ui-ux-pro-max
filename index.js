@@ -36,8 +36,8 @@ const SKILL_RESOURCE_BASE = {
 }
 const SKILL_INVOCATION = { modelInvocable: true, userInvocable: true }
 const SKILL_DESCRIPTION =
-  'UI/UX 设计智能库：通过 design_recommend / design_review / design_search 工具查询 67 种设计风格、' +
-  '161 个调色板、57 组字体搭配、99 条 UX 规范与 25 种图表类型（覆盖 22 个技术栈），' +
+  'UI/UX 设计智能库：通过 design_recommend / design_review / design_search 工具查询 84 种设计风格、' +
+  '192 个调色板、74 组字体搭配、99 条 UX 规范与 25 种图表类型（覆盖 22 个技术栈），' +
   '获取中文优先、带理由的结构化设计系统建议。创建或改造界面、评审 UX 时使用。'
 
 const SKILL_CANDIDATE = {
