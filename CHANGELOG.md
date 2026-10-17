@@ -6,6 +6,55 @@
 > 说明：本文件自 1.0.4 起建立。1.0.0–1.0.3 的历史条目未随浅克隆保留，
 > 如需完整历史请从仓库全量 clone 回填。
 
+## [1.2.0] - 2026-10-18
+
+### 变更（架构，对外行为等价）
+
+- **运行时代码分层**：`lib/` 从 6 个平铺文件重组为
+  `plugin/`（宿主适配）→ `tools/`（一工具一文件）→ `presentation/`、`domain/` →
+  `search/`、`repo/` → `i18n/` → `config.js`。三层出口、单向依赖、无环。
+- **入口瘦身**：`index.js` 从 316 行降为 10 行薄入口，只重导出 `plugin/`；
+  `buildTools()` 仍从根导出，工具名/参数/`output.schema`/返回结构/SKILL.md 语义不变。
+- **配置单一源**：`lib/config.js` 收拢 timeout、检索条数、渲染预算与 `VERIFIED_HOST`。
+- **能力数字派生**：`SKILL_DESCRIPTION` 与 `design_review` 描述从 `data/meta.json` 派生，
+  README/SKILL.md 的数字由 `tests/check-counts.mjs` 守卫。
+- **SchemaSpec 方言固化**：`lib/plugin/schema.js` + `tests/check-schema.mjs`，
+  覆盖属性级 required、items 内禁 required、禁 type 数组、禁数值边界。
+
+### 新增
+
+- `tests/_harness.mjs`：4 个测试文件共用的 assert / section / expect / 汇总。
+- `tests/check-imports.mjs`：分层铁律、无循环依赖、`data/` 路径唯一性、宿主 API 边界。
+- `tests/check-counts.mjs`：文档/description 能力数字 == `data/meta.json`。
+- `tests/contract.mjs`：schema ↔ `execute` 返回值一致性（零宿主依赖）。
+- `tests/check-schema.mjs`：SchemaSpec 方言 + 负例。
+- `npm test` 一键入口；CI 改为 `npm test` + 独立 jsdom DOM 验证。
+- `docs/ARCHITECTURE.md`（分层与新增代码位置）、`docs/UPSTREAM-SYNC.md`
+  （同步 SOP + 差异看板）、`docs/DSH-COMPAT.md`（兼容矩阵 + 降级契约）。
+- 完成态卡片：`design_recommend` 通过 `output.presentationMeta` +
+  `presentResult` 输出风格/主色/字体/令牌摘要，不再只有 generic 标题。
+- 渲染预算：设计系统 Markdown 12000 字符上限（超出显式截断），检索字段 400 字符。
+- 安装脚本：按 `package.json` 的 `files[]` 白名单复制；自动探测 desktop/web profile；
+  支持 `-ProfileName` / `-ProfileDir`；缺少 `lib/` 时给出可操作提示。
+
+### 修复
+
+- **上游溯源自相矛盾（N1）**：`THIRD_PARTY_NOTICES.md` 与 `data/index.json`
+  统一记录「原始上游 nextlevelbuilder/… + 转取路径 opencode/skills/…」。
+- **快照不可追溯（N2）**：`data/index.json` / `data/meta.json` 新增
+  `upstream` / `upstreamRef` / `upstreamRefKind` / `upstreamRefDate` /
+  `sourcePath` / `syncedAt`；`check-package` 断言非空且两份一致。
+- **SKILL_DESCRIPTION 数字漂移**：改为从 `meta.json` 派生。
+- **timeout 拍脑袋**：实测冷启动 ≈30ms 后改为 5000 / 3000 / 3000ms（保留 >100× 余量）。
+- **`apply()` 降级可观测**：skills 服务未就绪时通过 `ctx.logger?.debug?.()` 记录原因，
+  同时保留 `inject` 等待服务；三个工具照常注册。
+- **`files[]` 与安装物不一致**：安装脚本不再复制整个目录（`.git`/`tests`/`examples` 不进安装物）。
+
+### 文档
+
+- README（中英）目录树、测试说明、兼容性段落同步到新结构。
+- 新增 `docs/` 四份贡献者文档；`docs/` 不随包发布（不在 `files[]`）。
+
 ## [1.1.1] - 2026-10-17
 
 ### 修复

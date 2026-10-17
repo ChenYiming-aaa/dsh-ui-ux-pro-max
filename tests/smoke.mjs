@@ -8,36 +8,30 @@
  *   3. UX 审查（严重度排序）
  *   4. 领域/技术栈检索 + 中文查询映射
  *   5. 中文结构化输出
+ *   6. 清单一式两源同步
  *
  * 用法: node tests/smoke.mjs [--quiet]
  */
 
-import { readFileSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
-import { generateDesignSystem, summarizeDesignSystem } from '../lib/design-system.js'
-import { buildReview, QUICK_REFERENCE_CHECKLIST } from '../lib/review.js'
-import { search, searchStack, getDb, getFontRows, detectDomain } from '../lib/database.js'
-import { expandQuery } from '../lib/zh.js'
-import { formatDesignSystem, formatReview, formatSearchResult, formatTokenSummary } from '../lib/format.js'
+import { generateDesignSystem, summarizeDesignSystem } from '../lib/domain/design-system.js'
+import { buildReview } from '../lib/domain/review.js'
+import { QUICK_REFERENCE_CHECKLIST } from '../lib/domain/checklist.js'
+import { resolveDial } from '../lib/domain/dials.js'
+import { search, searchStack, detectDomain } from '../lib/search/retriever.js'
+import { getDb, getFontRows } from '../lib/repo/store.js'
+import { getStats } from '../lib/repo/stats.js'
+import { expandQuery, SEVERITY_ORDER } from '../lib/i18n/index.js'
+import { formatDesignSystem, formatReview, formatSearchResult, formatTokenSummary, clampMarkdown } from '../lib/presentation/index.js'
+import { RENDER } from '../lib/config.js'
+import { assert, section, finish, configure, readText, readJson } from './_harness.mjs'
 
-const quiet = process.argv.includes('--quiet')
-let failures = 0
-
-function assert(cond, label) {
-  if (cond) {
-    if (!quiet) console.log(`  ✅ ${label}`)
-  } else {
-    failures += 1
-    console.log(`  ❌ FAIL: ${label}`)
-  }
-}
-function section(title) {
-  console.log(`\n===== ${title} =====`)
-}
+configure({ quiet: process.argv.includes('--quiet') })
 
 // ---------- 1. 内置数据库 ----------
 section('1. 内置数据库')
 const db = getDb()
+const meta = readJson('data/meta.json')
+const stats = getStats()
 assert(db && db.domains && db.stacks && db.reasoning, 'index.json 可加载')
 assert(db.domains.style.length >= 67, `设计风格 ${db.domains.style.length} 条`)
 assert(db.domains.color.length >= 161, `调色板 ${db.domains.color.length} 条`)
@@ -46,9 +40,9 @@ assert(db.domains.ux.length >= 99, `UX 规范 ${db.domains.ux.length} 条`)
 assert(db.domains.chart.length >= 25, `图表类型 ${db.domains.chart.length} 条`)
 assert(Object.keys(db.stacks).length >= 22, `技术栈 ${Object.keys(db.stacks).length} 个`)
 assert(getFontRows().length > 1000, `Google 字体 ${getFontRows().length} 条（懒加载）`)
-const meta = JSON.parse(readFileSync(new URL('../data/meta.json', import.meta.url), 'utf8'))
 assert(meta.totalRows > 4000, `数据总行数 ${meta.totalRows}`)
 assert(meta.counts.style === db.domains.style.length, 'meta.json 计数与数据一致')
+assert(stats.capabilities.styles === meta.counts.style, 'stats 能力数字与 meta.json 同源')
 
 // ---------- 2. 设计系统生成 ----------
 section('2. design_recommend（中文查询）')
@@ -63,15 +57,16 @@ assert(ds.typography.heading && ds.typography.body, `字体组合: ${ds.typograp
 assert(ds.uxGuidelines.length > 0, `UX 规范要点 ${ds.uxGuidelines.length} 条`)
 assert(ds.stackGuidelines.length > 0, `技术栈规范 ${ds.stackGuidelines.length} 条`)
 assert(ds.dials.variance === 8 && ds.spacingScale.md === '8px', '设计旋钮生效（variance=8 → density 刻度）')
+assert(resolveDial('variance', 8).label === '大胆 / 不对称', '旋钮档位解析')
+assert(resolveDial('variance', 99).value === 10, '旋钮越界钳制到 10')
 
 // ---------- 3. UX 审查 ----------
 section('3. design_review')
 const review = buildReview({ target: '移动端登录表单', platform: 'mobile', maxRules: 8 })
 assert(review.priorityRules.length > 0, `命中规范 ${review.priorityRules.length} 条`)
 assert(review.checklist.length === 8, `通用检查清单 ${review.checklist.length} 章`)
-const sevOrder = { Critical: 0, High: 1, Medium: 2, Low: 3 }
-assert(review.priorityRules.every(r => sevOrder[r.severity] !== undefined), '严重度取值合法')
-assert(review.priorityRules.every((r, i, a) => i === 0 || sevOrder[a[i - 1].severity] <= sevOrder[r.severity]), '按严重度排序')
+assert(review.priorityRules.every(r => SEVERITY_ORDER[r.severity] !== undefined), '严重度取值合法')
+assert(review.priorityRules.every((r, i, a) => i === 0 || SEVERITY_ORDER[a[i - 1].severity] <= SEVERITY_ORDER[r.severity]), '按严重度排序')
 
 // ---------- 4. 检索与中文映射 ----------
 section('4. design_search')
@@ -89,13 +84,17 @@ assert(expandedGlass.length > 1, `「毛玻璃」扩展到英文关键词：${ex
 section('5. 中文结构化输出')
 const md = formatDesignSystem(ds)
 assert(md.includes('设计系统建议') && md.includes('推荐风格') && md.includes('配色方案'), '设计系统 Markdown')
+assert(md.length <= RENDER.designSystemChars, `设计系统 Markdown 在渲染预算内（${md.length} ≤ ${RENDER.designSystemChars}）`)
+const clamped = clampMarkdown('x'.repeat(RENDER.designSystemChars + 50))
+assert(clamped.includes('已截断') && clamped.length < RENDER.designSystemChars + 200, '超长 Markdown 显式截断并提示')
 assert(formatReview(review).includes('UX 审查清单'), '审查 Markdown')
 assert(formatSearchResult(search('毛玻璃 深色', 'style', 2)).includes('设计数据库检索'), '检索 Markdown')
-assert(formatTokenSummary(summarizeDesignSystem(ds)).includes('设计令牌摘要'), '令牌摘要 Markdown')
+const summary = summarizeDesignSystem(ds)
+assert(formatTokenSummary(summary).includes('设计令牌摘要'), '令牌摘要 Markdown')
 
 // ---------- 6. 交付前清单一式两源同步 ----------
-section('6. 清单一源同步（review.js vs references/quick-reference.md）')
-const quickRefMd = readFileSync(new URL('../references/quick-reference.md', import.meta.url), 'utf8')
+section('6. 清单一源同步（checklist.js vs references/quick-reference.md）')
+const quickRefMd = readText('references/quick-reference.md')
 // 按 §N 标题切块，统计每块的 `- [ ]` 条目数（色彩专项等非 § 小节无勾选项，不影响）
 const mdSectionCounts = quickRefMd.split(/^## §\d+/m).slice(1).map(chunk => (chunk.match(/- \[ \]/g) || []).length)
 const jsSectionCounts = QUICK_REFERENCE_CHECKLIST.map(s => s.checks.length)
@@ -104,11 +103,4 @@ assert(mdSectionCounts.length === jsSectionCounts.length,
 assert(JSON.stringify(mdSectionCounts) === JSON.stringify(jsSectionCounts),
   `各章节条目数一致（md [${mdSectionCounts}] / js [${jsSectionCounts}]）`)
 
-// ---------- 汇总 ----------
-console.log('\n========================================')
-if (failures === 0) {
-  console.log('✅ 全部通过：数据内置、三个工具链路正常、中文优先。')
-} else {
-  console.log(`❌ ${failures} 项失败`)
-  process.exitCode = 1
-}
+finish('✅ 全部通过：数据内置、三个工具链路正常、中文优先。')

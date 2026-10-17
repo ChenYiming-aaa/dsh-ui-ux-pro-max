@@ -13,7 +13,7 @@
 
 已发布到 npm：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)，可通过 DSH Desktop 插件市场一键安装。
 
-> 兼容性：覆盖 **DSH 0.1.x 与 0.2.x 两条版本线**（`@deepseek-ai/dsh-skill` / `dsh-tools` 声明为 `>=0.0.1-rc.1 <0.3.0-0`）。已在 **0.2.0-rc.2** 与 **0.1.1-rc.2** 两个真实运行时上验证——三个工具的定义编译、执行、输出 schema、render、presentCall 与内置技能注册全部通过；代码层无需随宿主版本改动。
+> 兼容性：`peerDependencies` 按预发布线逐条声明，覆盖 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 四条线及其正式版（上界 `<0.3.0-0`）。已在 **0.2.0-rc.2**、**0.1.1-rc.2** 与 **0.0.1-rc.1** 上验证工具定义编译、`execute`、输出 schema、`render`、`presentCall` / `presentResult` 与内置技能注册；完整矩阵见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
 
 ## 功能特性
 
@@ -27,11 +27,11 @@
 
 ### 方式一：插件市场安装（推荐）
 
-插件已发布到 npm（`dsh-ui-ux-pro-max@1.1.1`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
+插件已发布到 npm（`dsh-ui-ux-pro-max@1.2.0`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.1.1   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.1.1   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.2.0   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.2.0   # dsh web
 ```
 
 > 💡 提示：DSH Desktop 不把 `dsh` 命令加入 PATH——请**新开一个终端**（桌面版自带 host-commands）；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
@@ -108,14 +108,23 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 ```
 dsh-ui-ux-pro-max/
-├── index.js               # 宿主插件：3 个工具 + 内置技能
-├── lib/                   # BM25 检索 / 离线数据 / 中文词典 / 设计系统 / 审查构建 / 输出格式化
+├── index.js               # 薄入口：只重导出 plugin 层
+├── lib/
+│   ├── plugin/            # L5 宿主适配（apply / skill / SchemaSpec 方言）
+│   ├── tools/             # L4 三个工具（一工具一文件）
+│   ├── presentation/      # L3 Markdown 渲染
+│   ├── domain/            # L3 设计系统 / 审查 / 旋钮 / 推理 / 清单
+│   ├── search/            # L2 BM25 引擎 + 检索门面
+│   ├── repo/              # L2 数据访问 + 能力数字
+│   ├── i18n/              # L1 中文标签 / 词典 / 查询扩展
+│   └── config.js          # L0 横切常量（超时 / 条数 / 渲染预算）
 ├── data/                  # 内置数据库（index.json / fonts.json / meta.json）
 ├── skills/ui-ux-pro-max/  # 模型使用指南（中文 SKILL.md）
 ├── references/            # 交付前检查清单
 ├── examples/              # 设计系统落地示例（单文件、零依赖、可离线打开）
-├── tests/                 # 离线自检 + 清单/示例校验（CI 执行）
-├── install.ps1            # 一键安装
+├── tests/                 # 离线自检 + 契约/分层/方言/清单校验（CI 执行）
+├── docs/                  # 贡献者文档（架构 / 上游同步 / DSH 兼容，不随包发布）
+├── install.ps1            # 一键安装（按 files[] 白名单复制）
 └── cordis.patch.yml       # bundle 注册
 ```
 
@@ -151,19 +160,28 @@ dsh-ui-ux-pro-max/
 无需网络、无需 DSH 运行时即可复现全部检查（CI 在 Node 22 / 24 上运行）：
 
 ```bash
-node tests/check-package.mjs   # 清单与数据完整性
-node tests/smoke.mjs           # 离线自检（30 项断言）
-node tests/check-example.mjs   # 示例页面规范校验（每个示例 22 项）
-node tests/dom-smoke.mjs       # 示例页真实 DOM 执行与交互验证（需 jsdom，缺失则跳过）
+npm test
+# = check-package → smoke → check-example → check-counts → contract
+#   → check-imports → check-schema → dom-smoke
+#   （dom-smoke 在 jsdom 缺失时自动跳过；CI 另在独立目录安装 jsdom 后运行）
 ```
 
-**`check-package.mjs`** 覆盖历史上真实踩过的坑：`package.json` 的 UTF-8 BOM（会导致 DSH CLI `JSON.parse` 崩溃）、`dsh.bundle.patch` 缺失、`files[]` 指向不存在的文件、生命周期脚本（市场会拒绝安装）、`cordis.patch.yml` 的 insert 形状、`data/*.json` 可解析性与计数一致性。
+**`check-package.mjs`** 覆盖历史上真实踩过的坑：`package.json` 的 UTF-8 BOM（会导致 DSH CLI `JSON.parse` 崩溃）、`dsh.bundle.patch` 缺失、`files[]` 指向不存在的文件、生命周期脚本（市场会拒绝安装）、`cordis.patch.yml` 的 insert 形状、`data/*.json` 可解析性与计数一致性，以及上游溯源字段。
 
-**`smoke.mjs`** 覆盖插件行为：数据库完整性、`design_recommend`（中文查询 → 完整设计系统）、`design_review`（严重度排序）、`design_search`（领域/技术栈/中文映射）、中文结构化输出。
+**`smoke.mjs`** 覆盖插件行为：数据库完整性、`design_recommend`（中文查询 → 完整设计系统）、`design_review`（严重度排序）、`design_search`（领域/技术栈/中文映射）、中文结构化输出、清单一式两源同步。
 
 **`check-example.mjs`** 覆盖示例页面：脚本可编译、无障碍要点、令牌化程度、状态完备性、无 emoji 图标。
 
-> 运行时兼容性另有一层验证：在真实 DSH 上校验工具定义编译、输出 schema、`render`/`presentCall` 与 `apply()` 注册（依赖本机 DSH 安装路径，故不随仓库分发）。
+**`check-counts.mjs`** 保证 README / SKILL.md / package.json 中的能力数字与 `data/meta.json` 一致；**`contract.mjs`** 保证 schema 与 `execute` 返回值一致；**`check-imports.mjs`** 把分层铁律、无循环依赖、`data/` 路径唯一性变成 CI 断言；**`check-schema.mjs`** 拦住 SchemaSpec 方言错误（写错只有宿主运行时才会报）。
+
+> 运行时兼容性另有一层验证：在真实 DSH 上校验工具定义编译、输出 schema、`render` / `presentCall` / `presentResult` 与 `apply()` 注册（依赖本机 DSH 安装路径，故不随仓库分发）。验证矩阵与命令见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
+
+## 贡献者文档
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 分层、依赖铁律、新增代码该放哪
+- [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) — 已验证宿主线 × 验证项、SchemaSpec 方言、降级契约
+- [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md) — 上游同步 SOP 与差异看板
+- [docs/refactor-plan.md](docs/refactor-plan.md) — 本次结构升级的完整方案
 
 ## 致谢
 

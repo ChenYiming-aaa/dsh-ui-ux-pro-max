@@ -31,20 +31,23 @@ when and how to use each tool. The plugin is **host-only** (no client UI).
 
 ### Plugin market / npm (recommended)
 
-Published on npm as `dsh-ui-ux-pro-max@1.1.1`. Install from the **DSH Desktop
+Published on npm as `dsh-ui-ux-pro-max@1.2.0`. Install from the **DSH Desktop
 plugin market**, or with the CLI:
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.1.1   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.1.1   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.2.0   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.2.0   # dsh web
 ```
 
 > 💡 Note: DSH Desktop does not put the `dsh` command on PATH — open a **new
 > terminal** (the desktop app ships its own host-commands); if the command is
 > still missing, run `npm install -g @deepseek-ai/dsh` first.
 
-> Verified against **DSH 0.2.0-rc.2** and **0.1.1-rc.2** (`@deepseek-ai/dsh`, `dsh-tools`, `dsh-skill`).
-> The host requirement is declared as `>=0.0.1-rc.1 <0.3.0-0`, covering both the 0.1.x and 0.2.x release lines.
+> Verified against **DSH 0.2.0-rc.2**, **0.1.1-rc.2** and **0.0.1-rc.1** (`@deepseek-ai/dsh`,
+> `dsh-tools`, `dsh-skill`): tool-definition compilation, `execute`, output schema,
+> `render`, `presentCall` / `presentResult` and bundled-skill registration.
+> The peer range declares the 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 pre-release lines and their
+> stable releases (`<0.3.0-0`). See [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) for the matrix.
 
 ### DSH Desktop (from source)
 
@@ -99,26 +102,39 @@ design system actually being honoured rather than only described:
 No network and no DSH runtime required (CI runs these on Node 22 and 24):
 
 ```bash
-node tests/check-package.mjs   # manifest + bundled-data integrity
-node tests/smoke.mjs           # offline behaviour check (30 assertions)
-node tests/check-example.mjs   # example-page conformance (22 checks per example)
-node tests/dom-smoke.mjs       # renders examples in jsdom (skips when jsdom is absent)
+npm test
+# = check-package → smoke → check-example → check-counts → contract
+#   → check-imports → check-schema → dom-smoke
+#   (dom-smoke auto-skips when jsdom is absent; CI installs jsdom in a separate dir)
 ```
 
 `check-package.mjs` guards the failure modes actually hit in this project: a
 UTF-8 BOM in `package.json` (breaks the DSH CLI's `JSON.parse`), a missing
 `dsh.bundle.patch`, `files[]` entries that do not exist, lifecycle scripts
-(rejected by the market), the `cordis.patch.yml` insert shape, and the
-parseability/consistency of `data/*.json`.
+(rejected by the market), the `cordis.patch.yml` insert shape, the
+parseability/consistency of `data/*.json`, and upstream provenance fields.
 
 `smoke.mjs` covers plugin behaviour: bundled database, `design_recommend`
 (Chinese query → full design system), `design_review` (severity ordering),
 `design_search` (domain/stack/Chinese mapping), and Chinese structured output.
 
+`check-counts.mjs` keeps README / SKILL.md / package.json capability numbers in
+sync with `data/meta.json`; `contract.mjs` enforces schema ↔ `execute` consistency;
+`check-imports.mjs` turns the layering rules, acyclicity and `data/` path
+uniqueness into CI assertions; `check-schema.mjs` catches SchemaSpec dialect
+mistakes that would otherwise only fail inside the host runtime.
+
 > Runtime compatibility is verified separately against a real DSH install
-> (tool schema compilation, output schema, `render`/`presentCall`, and the
-> `apply()` registration path); that harness depends on local install paths and
-> is therefore not shipped in this repository.
+> (tool schema compilation, output schema, `render` / `presentCall` /
+> `presentResult`, and the `apply()` registration path); that harness depends on
+> local host paths and is therefore not shipped in this repository. See
+> [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md).
+
+## Contributor docs
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — layers, dependency rules, where to add code
+- [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) — verified hosts, SchemaSpec dialect, degradation contract
+- [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md) — upstream sync SOP and diff board
 
 ## Credits
 

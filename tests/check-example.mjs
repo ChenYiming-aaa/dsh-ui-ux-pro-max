@@ -16,38 +16,35 @@
  * 用法: node tests/check-example.mjs
  */
 
-import { readFileSync, readdirSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { readdirSync } from 'node:fs'
 import { Script } from 'node:vm'
+import { assert, finish, p, readText } from './_harness.mjs'
 
-const root = fileURLToPath(new URL('..', import.meta.url))
-const dir = `${root}examples`
-let failures = 0
-const assert = (cond, label) => {
-  if (cond) console.log(`  ✅ ${label}`)
-  else { failures += 1; console.log(`  ❌ FAIL: ${label}`) }
-}
-
-const files = readdirSync(dir).filter(f => f.endsWith('.html'))
+const dir = p('examples')
+const files = readdirSync(dir).filter(file => file.endsWith('.html'))
 assert(files.length > 0, `examples/ 下有 ${files.length} 个示例`)
 
 for (const file of files) {
-  const html = readFileSync(`${dir}/${file}`, 'utf8')
+  const html = readText(`examples/${file}`)
   console.log(`\n===== ${file} =====`)
 
   // 1. 内联脚本可编译
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1])
   assert(scripts.length > 0, `内联脚本 ${scripts.length} 段`)
   for (const [i, src] of scripts.entries()) {
-    try { new Script(src, { filename: `${file}#script${i + 1}` }); assert(true, `脚本 ${i + 1} 编译通过`) }
-    catch (e) { assert(false, `脚本 ${i + 1} 编译失败: ${e.message}`) }
+    try {
+      new Script(src, { filename: `${file}#script${i + 1}` })
+      assert(true, `脚本 ${i + 1} 编译通过`)
+    } catch (error) {
+      assert(false, `脚本 ${i + 1} 编译失败: ${error.message}`)
+    }
   }
 
   // 2. 无障碍
   assert(/<html[^>]+lang=/.test(html), 'html 声明 lang')
   assert(/<header[\s>]/.test(html) && /<main[\s>]/.test(html) && /<footer[\s>]/.test(html), '语义地标 header/main/footer')
   const iconButtons = [...html.matchAll(/<button[^>]*class="[^"]*btn-icon[^"]*"[^>]*>/g)].map(m => m[0])
-  assert(iconButtons.every(b => /aria-label=/.test(b)), `${iconButtons.length} 个纯图标按钮均有 aria-label`)
+  assert(iconButtons.every(button => /aria-label=/.test(button)), `${iconButtons.length} 个纯图标按钮均有 aria-label`)
   assert(/aria-sort=/.test(html) && /scope="col"/.test(html), '表格含 aria-sort 与 th scope')
   assert(/<caption/.test(html), '表格含 caption')
   assert(/role="img"/.test(html) && /aria-label(ledby)?=/.test(html), '图表有无障碍名称')
@@ -82,28 +79,28 @@ for (const file of files) {
   let inBlockComment = false
   let pendingExempt = false
   for (const [i, raw] of withoutTokenBlocks.split('\n').entries()) {
-    const t = raw.trim()
+    const trimmed = raw.trim()
     if (/token-exempt/.test(raw)) pendingExempt = true
     if (inBlockComment) {
-      if (t.includes('*/')) inBlockComment = false
+      if (trimmed.includes('*/')) inBlockComment = false
       continue
     }
-    if (t.startsWith('/*')) {
-      if (!t.includes('*/')) inBlockComment = true
+    if (trimmed.startsWith('/*')) {
+      if (!trimmed.includes('*/')) inBlockComment = true
       continue
     }
     const code = raw.replace(/\/\*[\s\S]*?\*\//g, '').trim()
     if (code) codeLines.push({ no: i + 1, code, exempt: pendingExempt })
     pendingExempt = false
   }
-  const floating = codeLines.filter(l => !l.exempt && /#[0-9A-Fa-f]{3,8}\b/.test(l.code))
+  const floating = codeLines.filter(line => !line.exempt && /#[0-9A-Fa-f]{3,8}\b/.test(line.code))
   assert(floating.length === 0,
     floating.length === 0 ? '令牌块与注释之外无游离 hex 字面量'
-      : `令牌块与注释之外无游离 hex 字面量 → ${floating.map(f => `L${f.no}: ${f.code.slice(0, 60)}`).join(' | ')}`)
-  const floatingRgba = codeLines.filter(l => !l.exempt && /(?<![\w-])rgba\(\s*\d/.test(l.code))
+      : `令牌块与注释之外无游离 hex 字面量 → ${floating.map(line => `L${line.no}: ${line.code.slice(0, 60)}`).join(' | ')}`)
+  const floatingRgba = codeLines.filter(line => !line.exempt && /(?<![\w-])rgba\(\s*\d/.test(line.code))
   assert(floatingRgba.length === 0,
     floatingRgba.length === 0 ? '规则体内无游离 rgba()（阴影等集中在令牌块）'
-      : `规则体内无游离 rgba() → ${floatingRgba.map(f => `L${f.no}: ${f.code.slice(0, 60)}`).join(' | ')}`)
+      : `规则体内无游离 rgba() → ${floatingRgba.map(line => `L${line.no}: ${line.code.slice(0, 60)}`).join(' | ')}`)
 
   // 6. 状态完备
   assert(/skeleton/.test(html), '具备加载态（骨架屏）')
@@ -122,17 +119,11 @@ const SHARED_CORE = [
   [/function\s+downloadCsv\s*\(/, 'downloadCsv()'],
 ]
 for (const file of files) {
-  const html = readFileSync(`${dir}/${file}`, 'utf8')
+  const html = readText(`examples/${file}`)
   for (const [re, name] of SHARED_CORE) {
     assert(re.test(html), `${file} 定义共享工具 ${name}`)
   }
   assert(html.includes("'uiux-demo-theme'"), `${file} 使用统一主题键 uiux-demo-theme`)
 }
 
-console.log('\n========================================')
-if (failures === 0) {
-  console.log('✅ 示例页面检查全部通过。')
-} else {
-  console.log(`❌ ${failures} 项失败`)
-  process.exitCode = 1
-}
+finish('✅ 示例页面检查全部通过。')

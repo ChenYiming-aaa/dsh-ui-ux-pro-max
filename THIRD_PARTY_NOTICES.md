@@ -21,6 +21,24 @@ project:
 The bundled data files (`data/index.json`, `data/fonts.json`) are a converted
 copy of the CSV database shipped with the upstream skill.
 
+### Source provenance
+
+The provenance of the bundled snapshot is recorded in both `data/index.json`
+and `data/meta.json`:
+
+| Field | Value |
+|---|---|
+| `upstream` | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` (original project) |
+| `upstreamRef` | `8a1a6d857332da32252d77365da90c3f6293b47b` (upstream commit at snapshot time) |
+| `sourcePath` | `opencode/skills/ui-ux-pro-max/data/` (transcode path used for the snapshot) |
+| `syncedAt` | `2026-08-19T09:37:40.268Z` |
+
+The original upstream is **nextlevelbuilder/ui-ux-pro-max-skill**. The snapshot
+was transcoded from the `opencode/skills/ui-ux-pro-max/data/` copy, whose column
+names match the upstream CSV files verbatim. Both the original upstream and the
+transcode path are recorded so the MIT attribution chain can be traced; see
+`docs/UPSTREAM-SYNC.md` for the full sync procedure.
+
 ## Google Fonts metadata
 
 `data/fonts.json` is derived from Google Fonts public metadata (font families

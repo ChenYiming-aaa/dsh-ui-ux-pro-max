@@ -13,13 +13,13 @@
  */
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
-import { fileURLToPath, pathToFileURL } from 'node:url'
+import { pathToFileURL } from 'node:url'
+import { assert, expect, finish, p } from './_harness.mjs'
 
-const root = fileURLToPath(new URL('..', import.meta.url))
 const args = process.argv.slice(2)
 const files = args.length
   ? args
-  : readdirSync(`${root}examples`).filter(f => f.endsWith('.html')).map(f => `${root}examples/${f}`)
+  : readdirSync(p('examples')).filter(f => f.endsWith('.html')).map(f => p('examples', f))
 
 let JSDOM
 try {
@@ -49,7 +49,6 @@ try {
  * 请连同这里的期望值一起更新。
  * 断言函数可返回 true / false，或用 expect(实际, 期望) 返回带诊断信息的失败。
  */
-const expect = (actual, expected) => actual === expected ? true : `${JSON.stringify(actual)} ≠ 期望 ${JSON.stringify(expected)}`
 const EXPECTATIONS = {
   'trip-planner-workbench.html': [
     ['站点总数徽标 = 33 站', d => expect(d.$('#stop-count-badge').textContent.trim(), '33 站')],
@@ -148,10 +147,9 @@ const EXPECTATIONS = {
   ],
 }
 
-let failures = 0
 for (const file of files) {
   const name = file.split(/[\\/]/).pop()
-  if (!existsSync(file)) { console.log(`❌ 文件不存在: ${file}`); failures++; continue }
+  if (!existsSync(file)) { assert(false, `文件不存在: ${file}`); continue }
   const html = readFileSync(file, 'utf8')
   const errors = []
   const dom = new JSDOM(html, {
@@ -177,11 +175,10 @@ for (const file of files) {
   console.log(`\n===== ${name} =====`)
   await new Promise(r => setTimeout(r, 1100)) // 等模拟门禁/加载的 setTimeout 完成
   // 断言函数可返回 true / false / 字符串（字符串 = 失败并附实际值，便于诊断）
-  const ok = (res, label) => {
-    if (res === true) { console.log(`  ✅ ${label}`); return }
-    failures++
-    console.log(`  ❌ FAIL: ${label}${typeof res === 'string' && res ? ` → 实际: ${res}` : ''}`)
-  }
+  const ok = (res, label) => assert(
+    res === true,
+    `${label}${typeof res === 'string' && res ? ` → 实际: ${res}` : ''}`,
+  )
 
   ok(errors.length === 0, errors.length ? `脚本报错: ${errors.join(' | ')}` : '脚本在真实 DOM 中无运行时错误')
   // 通用不变量：标签页状态与面板可见性一致
@@ -201,6 +198,4 @@ for (const file of files) {
   }
 }
 
-console.log('\n========================================')
-if (failures === 0) console.log(`✅ ${files.length} 个示例在真实 DOM 中运行与交互全部符合预期。`)
-else { console.log(`❌ ${failures} 项失败`); process.exitCode = 1 }
+finish(`✅ ${files.length} 个示例在真实 DOM 中运行与交互全部符合预期。`)
