@@ -31,12 +31,12 @@ when and how to use each tool. The plugin is **host-only** (no client UI).
 
 ### Plugin market / npm (recommended)
 
-Published on npm as `dsh-ui-ux-pro-max@1.1.0`. Install from the **DSH Desktop
+Published on npm as `dsh-ui-ux-pro-max@1.1.1`. Install from the **DSH Desktop
 plugin market**, or with the CLI:
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.1.0   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.1.0   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.1.1   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.1.1   # dsh web
 ```
 
 > 💡 Note: DSH Desktop does not put the `dsh` command on PATH — open a **new
