@@ -16,7 +16,7 @@
 | Site | In one line | Open |
 | --- | --- | --- |
 | **Style Atlas** ★ | 88 design styles, each rendered for real and comparable side by side | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
-| **Design Handbook** | Six domains: palettes, type, charts, landing pages, practices, recipes | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
+| **Design Handbook** (the other view of the same corpus) | Six domains: palettes, type, charts, landing pages, practices, recipes | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
 | Recipe composer | Pick a product type, get the whole recipe | [handbook/compose.html](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html) |
 
 ## ★ Style Atlas: see 88 styles before you pick one
@@ -47,7 +47,10 @@ A single page holds: editorial intro and original name, a **live preview with li
 palette with HEX, capability matrix, best-for and avoid lists, implementation checklist, a copyable
 AI prompt, and related styles. All 88 pages are static with zero external requests.
 
-## Design Handbook: after the look, the decisions
+## Design Handbook: the other view of the same data
+
+The atlas browses by style, the handbook browses by decision — both read the same 4,319-row
+corpus, so they are two views of one thing rather than two separate sites.
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/">

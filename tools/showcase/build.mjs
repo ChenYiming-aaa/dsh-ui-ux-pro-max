@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { STYLE_META } from './theme-data.mjs';
+import { HANDBOOK, OTHER_VIEW, HANDBOOK_LINE } from '../site-names.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -458,7 +459,7 @@ const header = (base = '', active = '') => `<header class="site-head">
       <a href="${base}index.html"${active === 'all' ? ' aria-current="page"' : ''}>全部风格</a>
       <a href="${base}index.html#types">分类</a>
       <a href="${base}guide.html"${active === 'guide' ? ' aria-current="page"' : ''}>阅读指南</a>
-      <a class="nav-x" href="${base}../handbook/" title="姊妹站：192 份产品配方，以及配色 / 字体 / 图表 / 落地页 / 规范"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
+      <a class="nav-x" href="${base}../handbook/" title="${OTHER_VIEW}：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">${HANDBOOK.name}</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="${GH}" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
   </div>
@@ -529,7 +530,7 @@ ${header('', 'all')}
   <section class="hero wrap">
     <p class="eyebrow">Style Atlas · ${META.counts.style} Styles</p>
     <h1>把设计风格<br><em>看清楚</em>再选。</h1>
-    <p class="lede">每一张卡片都由同一套组件骨架实时渲染，只更换颜色、字体、圆角、阴影与材质。你可以横向比较 ${styles.length} 种风格的真实差别，而不是读一段形容词。</p>
+    <p class="lede">${styles.length} 种风格由同一套组件骨架渲染，只换颜色、字体、圆角与材质——横向比较真实差别，不读形容词。</p>
     <div class="hero-act">
       <a class="btn" href="#gallery">进入图鉴 <span aria-hidden="true">↓</span></a>
       <button class="btn btn-ghost" type="button" data-random>随便看一种</button>
@@ -545,17 +546,15 @@ ${header('', 'all')}
 
   <section class="wrap xbar-w">
     <a class="xbar" href="../handbook/">
-      <span class="xbar-k">配套站点 · 设计手册</span>
-      <span class="xbar-t">选好风格之后，还需要「怎么定」：${META.counts.product} 份配方</span>
-      <span class="xbar-d">${META.counts.color} 套配色令牌 · ${META.counts.typography} 组字体配对 · ${META.counts.chart} 类图表选型 · ${META.counts.landing} 种落地页骨架 · 195 条交互规范；每份配方都能导出 CSS / Tailwind / JSON。</span>
-      <span class="xbar-go">进入设计手册<span aria-hidden="true">→</span></span>
+      <span class="xbar-k">${OTHER_VIEW} · ${HANDBOOK.name}</span>
+      <span class="xbar-t">${HANDBOOK_LINE}：${META.counts.product} 份产品配方，六个域互相引用</span>
+      <span class="xbar-go">进入${HANDBOOK.name}<span aria-hidden="true">→</span></span>
     </a>
   </section>
 
   <section id="types" class="wrap sec">
     <div class="sec-head">
       <h2>按类别浏览</h2>
-      <p>风格分为五类：通用视觉、移动端、数据可视化、落地页模式与平台规范。点击任意类别即可筛选。</p>
     </div>
     <div class="type-grid">
       ${familyCounts
@@ -573,7 +572,7 @@ ${header('', 'all')}
   <section id="gallery" class="wrap sec">
     <div class="sec-head">
       <h2>全部风格</h2>
-      <p>${styles.length} 条记录，其中 ${statusCounts.active} 条推荐、${statusCounts.supplemental} 条补充、${statusCounts.deprecated} 条已弃用。已弃用条目保留用于复刻旧项目。</p>
+      <p>${statusCounts.active} 推荐 · ${statusCounts.supplemental} 补充 · ${statusCounts.deprecated} 已弃用（保留用于复刻旧项目）</p>
     </div>
 
     <div class="filters" data-filters>

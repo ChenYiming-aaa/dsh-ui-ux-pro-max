@@ -279,10 +279,10 @@ em {
 .xbar {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas: "k t go" "k d go";
+  grid-template-areas: "k t go";
   gap: 2px 20px;
   align-items: center;
-  padding: 16px 20px;
+  padding: 18px 20px;
   background: var(--ink);
   border: 1px solid var(--ink);
   border-radius: var(--r);
@@ -308,22 +308,16 @@ em {
 }
 .xbar-t {
   grid-area: t;
-  font-size: 15.5px;
+  font-size: 18px;
   font-weight: 600;
-  letter-spacing: -0.01em;
-}
-.xbar-d {
-  grid-area: d;
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: rgba(246, 245, 241, 0.6);
+  letter-spacing: -0.015em;
 }
 .xbar-go {
   grid-area: go;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--accent);
   white-space: nowrap;
@@ -412,7 +406,7 @@ em {
 }
 
 .hero h1 {
-  font-size: clamp(38px, 6.6vw, 74px);
+  font-size: clamp(42px, 7.4vw, 82px);
   line-height: 1.02;
   letter-spacing: -0.035em;
   font-weight: 720;
@@ -439,9 +433,9 @@ em {
 
 .lede {
   margin-top: 22px;
-  max-width: 46em;
-  font-size: clamp(15px, 1.5vw, 17px);
-  line-height: 1.75;
+  max-width: 34em;
+  font-size: clamp(16px, 1.7vw, 18.5px);
+  line-height: 1.6;
   color: var(--ink-2);
 }
 
@@ -496,26 +490,26 @@ em {
 }
 
 .stats > div {
-  padding: 18px 18px 18px 0;
+  padding: 22px 22px 22px 0;
   border-right: 1px solid var(--line);
 }
 .stats > div:last-child {
   border-right: 0;
 }
 .stats > div + div {
-  padding-left: 18px;
+  padding-left: 22px;
 }
 
 .stats dt {
   font-family: var(--f-mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 .stats dd {
-  font-size: clamp(22px, 2.6vw, 30px);
+  font-size: clamp(30px, 3.6vw, 44px);
   font-weight: 650;
   letter-spacing: -0.03em;
   margin-top: 2px;
@@ -3240,7 +3234,7 @@ a.bhint:hover {
   }
   .xbar {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "k" "t" "d" "go";
+    grid-template-areas: "k" "t" "go";
     gap: 6px;
     padding: 14px 16px;
   }

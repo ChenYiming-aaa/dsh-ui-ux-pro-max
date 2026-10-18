@@ -6,6 +6,10 @@
  * 要部署到别的域名，构建时设 SHOWCASE_BASE=https://example.com/gallery/ 即可。
  */
 
+import { GALLERY, HANDBOOK, OTHER_VIEW, GALLERY_LINE } from '../site-names.mjs';
+
+export { GALLERY, HANDBOOK };
+
 const BASE = (process.env.SHOWCASE_BASE || '').trim();
 
 export const SHOWCASE_BASE = BASE;
@@ -47,12 +51,11 @@ function topbar(active, counts) {
   <div class="top-in">
     <a class="brand" href="./index.html">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-t">设计手册</span>
-      <span class="brand-s">atlas</span>
+      <span class="brand-t">${HANDBOOK.name}</span>
     </a>
     <nav class="nav" aria-label="域导航">${links}</nav>
     <div class="top-r">
-      <a class="top-link top-link--x" href="${showcaseUrl('index.html')}" title="另一个站点：88 种设计风格的渲染效果"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+      <a class="top-link top-link--x" href="${showcaseUrl('index.html')}" title="另一个站点：${GALLERY.name}，${GALLERY_LINE}"><span class="tl-full">${GALLERY.name}</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>`;
@@ -61,7 +64,7 @@ function topbar(active, counts) {
 export function footer() {
   return `<footer class="foot">
   <div class="foot-in">
-    <p><strong>设计手册</strong> · 姊妹站 <a href="${showcaseUrl('index.html')}">风格图鉴</a>（88 种风格的渲染效果），数据来自插件内置的 4319 行设计知识库。</p>
+    <p><strong>${HANDBOOK.name}</strong> · 同一知识库的${OTHER_VIEW} <a href="${showcaseUrl('index.html')}">${GALLERY.name}</a>（${GALLERY_LINE}），数据来自插件内置的 4319 行设计知识库。</p>
     <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
   </div>
 </footer>`;

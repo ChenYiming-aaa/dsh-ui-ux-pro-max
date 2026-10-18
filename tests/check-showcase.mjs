@@ -86,7 +86,7 @@ assert((css.match(/@media/g) || []).length >= 4, '样式表包含响应式断点
 assert(css.includes('prefers-reduced-motion'), '尊重减少动效偏好')
 assert(indexHtml.includes('aria-label') && indexHtml.includes('<nav'), '包含基础语义与无障碍标注')
 
-section('6. 姊妹站入口（设计手册）')
+section('6. 另一视图入口（设计手册）')
 assert(indexHtml.includes('class="xbar"') && indexHtml.includes('href="../handbook/"'), '首页有指向设计手册的横幅')
 assert(indexHtml.includes('class="nav-x"'), '导航里有常驻的手册入口')
 for (const f of ['gallery/index.html', 'gallery/guide.html']) {

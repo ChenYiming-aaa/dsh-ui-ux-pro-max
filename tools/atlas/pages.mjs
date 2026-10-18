@@ -15,6 +15,7 @@ import {
   showcaseUrl,
 } from './layout.mjs';
 import { RULE_KEYS, RULE_TYPES } from './zh.mjs';
+import { GALLERY, HANDBOOK, OTHER_VIEW, GALLERY_LINE } from '../site-names.mjs';
 
 const MODE_ZH = { light: '浅色', dark: '深色' };
 const RISK_ZH = { low: '低', medium: '中', high: '高', conditional: '视情况', none: '无' };
@@ -75,7 +76,6 @@ const shell = (a, o) => pageShell({ ...o, counts: navCounts(a) });
 /* ---------------------------------------------------------------- 首页 */
 export function indexPage(a) {
   const s = a.stats;
-  const bytes = (s.fontBytes / 1024 / 1024).toFixed(2);
   const entry = (href, no, title, count, desc) => `<a class="entry-a" href="${href}">
   <span class="entry-n">${no}</span>
   <span class="entry-t">${esc(title)}<span>${count}</span></span>
@@ -84,9 +84,9 @@ export function indexPage(a) {
 
   const body = `
 <section class="hero-b">
-  <p class="hero-k">设计手册 · atlas</p>
-  <h1 class="hero-t">风格图鉴讲「<em>长什么样</em>」，<br>这里讲「<em>怎么定</em>」。</h1>
-  <p class="hero-l">配色令牌、字体配对、图表选型、落地页结构、交互规范与产品配方——六个域共用同一套数据源，可以互相引用。选一个产品类型，能直接拿到一份可复制的完整设计配方。</p>
+  <p class="hero-k">六个域 · 同一套数据源 · ${OTHER_VIEW}</p>
+  <h1 class="hero-t">图鉴讲「<em>长什么样</em>」，<br>这里讲「<em>怎么定</em>」。</h1>
+  <p class="hero-l">同一份 4319 行设计知识库的${OTHER_VIEW}：配色、字体、图表、落地页、规范、配方，六个域互相引用。</p>
   <div class="hero-a">
     <a class="btn" href="./compose.html">打开配方生成器</a>
     <a class="btn btn--ghost" href="./palettes.html">浏览 ${s.palettes} 套配色</a>
@@ -103,55 +103,38 @@ ${statStrip([
 ])}
 
 <a class="xbar" href="${showcaseUrl('index.html')}">
-  <span class="xbar-k">姊妹站 · 风格图鉴</span>
-  <span class="xbar-t">先看「长什么样」：${s.styles} 种设计风格的真实渲染</span>
-  <span class="xbar-d">每种风格都由同一套组件骨架渲染，只换颜色、字体、圆角与材质；附浅色/深色切换、配色板、能力矩阵、适用与规避场景。</span>
-  <span class="xbar-go">去图鉴看看<span aria-hidden="true">→</span></span>
+  <span class="xbar-k">${OTHER_VIEW} · ${GALLERY.name}</span>
+  <span class="xbar-t">${GALLERY_LINE}：${s.styles} 种风格，全部真实渲染</span>
+  <span class="xbar-go">去看看<span aria-hidden="true">→</span></span>
 </a>
 
 <section class="sect">
   <div class="sect-h"><h2>六个域</h2><a href="./about.html">字段说明</a></div>
   <div class="entry">
-    ${entry('./palettes.html', '01 配色', '语义配色库', s.palettes, '每套 16 个语义令牌，直接渲染成按钮、输入框、卡片、焦点环的真实样子，可复制 CSS / Tailwind / JSON。')}
-    ${entry('./pairings.html', '02 字体', '字体配对', s.pairings, `${s.fontFamilies} 个字体已本地化（${bytes} MB），标题与正文成对展示，可调字号与行高看排印节奏。`)}
-    ${entry('./charts.html', '03 图表', '图表选型', s.charts, '按数据类型反查：该用什么图、什么量级该换 Canvas、无障碍风险在哪、推荐哪个库。')}
-    ${entry('./landing.html', '04 结构', '落地页模式', s.landings, '把分区顺序画成线框，标出 CTA 位置与配色策略，看清一个页面的骨架。')}
-    ${entry('./practices.html', '05 规范', '交互与工程规范', s.practices, '来自 UX / React / Web 三张表，每条都带「正确 / 错误」代码对照，按严重度可筛。')}
-    ${entry('./recipes.html', '06 决策', '产品配方', s.recipes, '选产品类型，一次给出主推风格、配色、字体、落地页、决策规则与反模式。')}
+    ${entry('./palettes.html', '01', '语义配色库', s.palettes, '16 个语义令牌，直接渲染成按钮、输入框、卡片与焦点环')}
+    ${entry('./pairings.html', '02', '字体配对', s.pairings, `${s.fontFamilies} 个字族已本地化，标题与正文成对展示真实排印`)}
+    ${entry('./charts.html', '03', '图表选型', s.charts, '按数据类型反查该用什么图、什么量级换 Canvas')}
+    ${entry('./landing.html', '04', '落地页模式', s.landings, '把分区顺序画成线框，标出 CTA 位置与配色策略')}
+    ${entry('./practices.html', '05', '交互与工程规范', s.practices, 'UX / React / Web 三表合并，正确与错误代码左右对照')}
+    ${entry('./recipes.html', '06', '产品配方', s.recipes, '选一个类型，给出风格、配色、字体、落地页与决策规则')}
   </div>
 </section>
 
 <section class="sect">
-  <div class="sect-h"><h2>两条使用路径</h2><a href="./about.html">怎么用</a></div>
+  <div class="sect-h"><h2>两条路径</h2></div>
   <div class="split">
     <div class="mini">
-      <h3>从产品出发</h3>
-      <p>知道自己在做什么产品，但不确定该长什么样。走 <a href="./compose.html">配方生成器</a>：选类型 → 拿配方 → 复制令牌。配方里的风格名可以跳到 <a href="${showcaseUrl('index.html')}">风格图鉴</a> 看渲染效果。</p>
+      <h3>已知产品</h3>
+      <p>用<a href="./compose.html">配方生成器</a>：选类型 → 拿配方 → 复制令牌。</p>
     </div>
     <div class="mini">
-      <h3>从零件出发</h3>
-      <p>只缺一块。要配色就去 <a href="./palettes.html">配色库</a>，要字体去 <a href="./pairings.html">字体配对</a>，图表拿不准就去 <a href="./charts.html">选型表</a>。每个域都能单独用。</p>
+      <h3>只缺一块</h3>
+      <p>去<a href="./palettes.html">配色库</a>、<a href="./pairings.html">字体配对</a>或<a href="./charts.html">图表选型</a>，各域可单独使用。</p>
     </div>
   </div>
 </section>
 
-<section class="sect">
-  <div class="sect-h"><h2>数据一致性</h2><a href="./about.html#lineage">溯源</a></div>
-  <div class="split">
-    <div class="mini">
-      <h3>三表对齐</h3>
-      <p>${s.recipes} 个产品类型在配色表、配方表、决策规则表里<strong>同名同序</strong>，所以「选一个类型」能同时拿到三个域的答案，不需要猜配。</p>
-    </div>
-    <div class="mini">
-      <h3>风格引用 100% 可解析</h3>
-      <p>配方中共 ${s.styleRefs} 处风格推荐，全部能对应到图鉴的 ${s.styles} 个风格详情页，没有悬空链接。</p>
-    </div>
-    <div class="mini">
-      <h3>落地页 ${Math.round((s.landingLinked / s.recipes) * 100)}% 可映射</h3>
-      <p>产品表用的是概念描述，落地页表用的是模式名。加了一层概念映射后，${s.landingLinked}/${s.recipes} 能落到具体模式；其余是仪表盘类产品，本就没有独立落地页。</p>
-    </div>
-  </div>
-</section>
+<p class="factbar"><span>三表同名同序</span><span>${s.styleRefs} 处风格引用全部可解析</span><span>落地页 ${Math.round((s.landingLinked / s.recipes) * 100)}% 可映射</span><a href="./about.html#lineage">溯源</a></p>
 `;
 
   return shell(a, {

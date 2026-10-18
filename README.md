@@ -14,7 +14,7 @@
 | 站点 | 一句话 | 打开 |
 | --- | --- | --- |
 | **风格图鉴** ★ | 88 种设计风格逐页真实渲染，可横向比较差异 | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
-| **设计手册** | 配色 / 字体 / 图表 / 落地页 / 规范 / 配方六个域 | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
+| **设计手册**（同一套数据的另一视图） | 配色 / 字体 / 图表 / 落地页 / 规范 / 配方六个域 | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
 | 配方生成器 | 选一个产品类型，直接拿到完整设计配方 | [handbook/compose.html](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html) |
 
 ## ★ 风格图鉴：把 88 种风格看清楚再选
@@ -37,7 +37,9 @@
 
 一页之内包含：中文导读与英文原名、**可切换浅色 / 深色的实时预览**、配色板与 HEX、能力矩阵、适用与规避场景、落地清单、可复制的 AI 提示词、相关风格。88 个页面全部纯静态、零外部请求。
 
-## 设计手册：选好风格之后，还需要「怎么定」
+## 设计手册：同一套数据的另一视图
+
+图鉴按「风格」翻，手册按「决策」翻——两者共用同一份 4319 行知识库，不是两个独立站点。选好风格之后，剩下的「怎么定」在这里。
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/">
