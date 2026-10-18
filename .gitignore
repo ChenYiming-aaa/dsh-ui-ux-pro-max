@@ -23,3 +23,10 @@ Thumbs.db
 
 # 本机工具数据（会话记忆等，不随仓库分发）
 .workbuddy/
+
+# 机器相关的本地 DSH 验证 / 市场脚本（不入库；可移植替代见 tests/host/）
+tests/dsh-loader.mjs
+tests/register-loader.mjs
+tests/validate-*.mjs
+tests/verify-market-install.mjs
+scripts/clean-market-cache.ps1
