@@ -3,12 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UI/UX Pro Max · 本地入口</title>
+<title>UI/UX Pro Max · 风格图鉴与设计手册</title>
 <!--
-  这个文件只用于「直接双击本地 html 打开」的场景：
-  手册的页面用 ../gallery/ 指回图鉴，两个站是同级目录，
-  部署时图鉴的 index.html 就在根上（构建产物会覆盖这里）。
-  线上访问请走 https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/
+  站点根入口：自动跳到 gallery/（风格图鉴）。
+
+  两个站是同级目录，手册用 ../gallery/ 指回图鉴，所以本地双击打开与线上
+  部署时的相对路径完全一致。GitHub Pages 的产物由 .github/workflows/pages.yml
+  拼装：dist/index.html（本文件）+ dist/gallery/ + dist/handbook/。
+
+  线上：
+    https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/
+    https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/
 -->
 <link rel="canonical" href="gallery/index.html">
 <meta http-equiv="refresh" content="0; url=gallery/index.html">
@@ -26,7 +31,7 @@
   <div class="box">
     <h1>UI/UX Pro Max</h1>
     <p>正在进入风格图鉴… 如果没有自动跳转，点 <a href="gallery/index.html">gallery/index.html</a>。</p>
-    <p style="margin-top:6px"><a href="handbook/index.html">或直接看设计手册</a></p>
+    <p style="margin-top:6px"><a href="handbook/index.html">或直接看设计手册 →</a></p>
   </div>
 </body>
 </html>
