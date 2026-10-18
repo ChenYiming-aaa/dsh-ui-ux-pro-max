@@ -23,7 +23,7 @@
 | `design_review` | UX checklist review of an existing UI, severity-ranked (Critical/High/Medium/Low) plus a pre-delivery checklist |
 | `design_search` | Search the database by domain (`style/color/chart/landing/product/ux/typography/icons/gsap/react/web/google-fonts`) or by one of 22 stacks |
 
-Chinese queries are auto-mapped to the English corpus (300+ term dictionary +
+Chinese queries are auto-mapped to the English corpus (400+ term dictionary +
 CJK bigram tokenization). A bundled `ui-ux-pro-max` skill teaches the model
 when and how to use each tool. The plugin is **host-only** (no client UI).
 
@@ -31,8 +31,9 @@ when and how to use each tool. The plugin is **host-only** (no client UI).
 
 ### Plugin market / npm (recommended)
 
-Published on npm as `dsh-ui-ux-pro-max@1.3.0`. Install from the **DSH Desktop
-plugin market**, or with the CLI:
+npm package: [dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max).
+Repository version **1.3.0**; use the version actually published on npm, or
+install from source below if it is not published yet.
 
 ```powershell
 dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.3.0   # DSH Desktop
@@ -43,9 +44,11 @@ dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.3.0   # dsh we
 > terminal** (the desktop app ships its own host-commands); if the command is
 > still missing, run `npm install -g @deepseek-ai/dsh` first.
 
-> Verified against **DSH 0.2.0-rc.2**, **0.1.1-rc.2** and **0.0.1-rc.1** (`@deepseek-ai/dsh`,
+> Verified against **DSH 0.2.0-rc.2** and **0.1.1-rc.2** (`@deepseek-ai/dsh`,
 > `dsh-tools`, `dsh-skill`): tool-definition compilation, `execute`, output schema,
 > `render`, `presentCall` / `presentResult` and bundled-skill registration.
+> A local **0.0.1-rc.1** test runtime is used for schema/execute/apply unit checks,
+> but it is outside the peer support range and is not a supported host line.
 > The peer range declares the 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 pre-release lines and their
 > stable releases (`<0.3.0-0`). See [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) for the matrix.
 
@@ -103,8 +106,8 @@ No network and no DSH runtime required (CI runs these on Node 22 and 24):
 
 ```bash
 npm test
-# = check-package → smoke → check-example → check-counts → contract
-#   → check-imports → check-schema → dom-smoke
+# = check-package → smoke → check-example → check-counts → check-i18n → contract
+#   → check-imports → check-schema → check-sync-parser → dom-smoke
 #   (dom-smoke auto-skips when jsdom is absent; CI installs jsdom in a separate dir)
 ```
 
@@ -119,10 +122,12 @@ parseability/consistency of `data/*.json`, and upstream provenance fields.
 `design_search` (domain/stack/Chinese mapping), and Chinese structured output.
 
 `check-counts.mjs` keeps README / SKILL.md / package.json capability numbers in
-sync with `data/meta.json`; `contract.mjs` enforces schema ↔ `execute` consistency;
-`check-imports.mjs` turns the layering rules, acyclicity and `data/` path
-uniqueness into CI assertions; `check-schema.mjs` catches SchemaSpec dialect
-mistakes that would otherwise only fail inside the host runtime.
+sync with `data/meta.json`; `check-i18n.mjs` guards the Chinese dictionary
+(no duplicate keys, deduplicated expansion); `contract.mjs` enforces schema ↔
+`execute` consistency; `check-imports.mjs` turns the layering rules, acyclicity
+and `data/` path uniqueness into CI assertions; `check-schema.mjs` catches
+SchemaSpec dialect mistakes that would otherwise only fail inside the host
+runtime; `check-sync-parser.mjs` locks the CSV parser used by the upstream sync tool.
 
 > Runtime compatibility is verified separately against a real DSH install
 > (tool schema compilation, output schema, `render` / `presentCall` /

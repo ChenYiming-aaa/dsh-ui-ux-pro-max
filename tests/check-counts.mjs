@@ -79,7 +79,11 @@ for (const doc of DOCS) {
 }
 
 section('3. 总量与字体数字')
-assert(readText('README.md').includes(String(caps.totalRows)), `README.md 含数据总行数 ${caps.totalRows}`)
-assert(readText('README.md').includes(String(caps.googleFonts)), `README.md 含 Google 字体 ${caps.googleFonts}`)
+const readmeText = readText('README.md')
+assert(readmeText.includes(String(caps.totalRows)), `README.md 含数据总行数 ${caps.totalRows}`)
+assert(readmeText.includes(String(caps.googleFonts)), `README.md 含 Google 字体 ${caps.googleFonts}`)
+assert(readmeText.includes(`推理规则 **${caps.reasoning}**`), `README.md 含推理规则 ${caps.reasoning}`)
+assert(readmeText.includes(`GSAP 动效 **${caps.gsap}**`), `README.md 含 GSAP 动效 ${caps.gsap}`)
+assert(readmeText.includes(`移动端接口 **${caps.webGuidelines}**`), `README.md 含移动端接口 ${caps.webGuidelines}`)
 
 finish('✅ 能力数字全部与 data/meta.json 一致。')

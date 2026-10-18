@@ -3,11 +3,11 @@
 > DSH 版本演进快、预发布线多；本文件记录「哪些宿主线验证过、分别验证了什么」，
 > 避免换一台机器/换一个宿主版本就重踩一遍。
 
-## 1. 已验证宿主线
+## 1. 宿主线验证记录
 
 | 宿主线 | 验证日期 | 状态 | 证据 / 说明 |
 |---|---|---|---|
-| `0.0.1-rc.1`（`@deepseek-ai/dsh-tools` / `dsh-skill`） | 2026-10-18 | ✅ 本次验证 | 本仓库 `node_modules/@deepseek-ai/*`；`tests/validate-tools.mjs` + `tests/validate-apply.mjs` 全部通过 |
+| `0.0.1-rc.1`（本机 `node_modules` 测试运行时） | 2026-10-18 | ⚠️ 非支持线 | 仅用于 `validate-tools` / `validate-apply` 的 schema/execute/apply 单测；**不在 peer 支持区间**，不作为发布支持线 |
 | `0.1.1-rc.2` | 2026-10-14（历史） | ✅ 历史验证 | 1.1.0 发布记录（README / CHANGELOG）；本次环境未复现 |
 | `0.2.0-rc.2` | 2026-10-17（历史） | ✅ 历史验证 | 1.1.1 修复 boot gate 时验证；本次环境未复现 |
 | `0.2.1-rc.*` | — | ⚠️ 仅 peer 区间覆盖 | `peerDependencies` 已覆盖 `>=0.2.1-rc.1 <0.3.0-0`，未实际跑宿主验证 |
@@ -56,16 +56,16 @@ node --import ./tests/register-loader.mjs tests/validate-apply.mjs
 
 ## 4. 超时与渲染预算（实测）
 
-2026-10-18 在 Node 22.20 / Windows 上实测（冷进程）：
+2026-10-18 在 Node 22.20 / Windows 上实测（冷进程，数据同步到 1.3.0 后）：
 
 | 指标 | 实测 |
 |---|---|
-| 模块加载（`lib/domain/design-system.js`） | ≈10ms |
-| 首次 `design_recommend`（含 1.2MB `index.json` 解析） | ≈30ms |
-| 第二次起检索 | ≈2ms |
-| `formatDesignSystem` 输出（典型中文查询） | 2.5–4.4KB 字符 |
-| `formatReview` 输出 | ≈3.4KB 字符 |
-| `formatSearchResult` 输出 | ≈6.2KB 字符 |
+| 模块加载（`lib/domain/design-system.js`） | ≈20ms |
+| 首次 `design_recommend`（含 1.5MB `index.json` 解析） | ≈36ms |
+| 第二次起检索 | ≈1ms |
+| `formatDesignSystem` 输出（典型中文查询） | 2.5–4.5KB 字符 |
+| `formatReview` 输出 | ≈3.8KB 字符 |
+| `formatSearchResult` 输出 | 4.5–6.5KB 字符（新增字段后） |
 
 据此：
 - `TIMEOUTS` 设为 `5000 / 3000 / 3000ms`（冷启动的 100× 以上余量，不是拍脑袋的 20s）。

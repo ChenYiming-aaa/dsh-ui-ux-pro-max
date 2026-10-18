@@ -117,6 +117,7 @@ tools/design-search
 | `tests/check-example.mjs` | 示例页静态规范（无障碍、令牌化、状态） |
 | `tests/dom-smoke.mjs` | 示例页真实 DOM 交互（jsdom 缺失时跳过） |
 | `tests/check-counts.mjs` | 能力数字 == `data/meta.json` |
+| `tests/check-i18n.mjs` | 中文词典无重复键、扩展结果去重 |
 | `tests/contract.mjs` | schema ↔ execute 返回值一致 |
 | `tests/check-imports.mjs` | 分层、无环、data 路径唯一、宿主 API 边界 |
 | `tests/check-schema.mjs` | SchemaSpec 方言 + 负例 |
@@ -132,6 +133,6 @@ tools/design-search
 
 - **顶层目录仍叫 `lib/`**：`files[]`、安装脚本、README、SKILL.md 都引用它；改名收益低、风险高。
 - **examples 保持单文件自包含**：共享片段用测试守卫，不引入构建链。
-- **`data/fonts.json`（约 1.1MB）仍随包**：`google-fonts` 检索依赖它；拆包/懒装会破坏「完全离线」卖点，暂不动。
+- **`data/fonts.json`（约 1.2MB）仍随包**：`google-fonts` 检索依赖它；拆包/懒装会破坏「完全离线」卖点，暂不动。
 - **不引入 TypeScript / devDependencies**：零构建、零运行时依赖是发布约束；契约用 JSDoc + 测试保证。
 - **检查清单以 JS 为源、Markdown 为镜像**：工具输出是权威来源，镜像由测试防漂移。

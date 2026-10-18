@@ -11,15 +11,15 @@
   <img src="https://img.shields.io/badge/Node-%3E%3D22-green" alt="Node" />
 </p>
 
-已发布到 npm：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)，可通过 DSH Desktop 插件市场一键安装。
+npm 包：[dsh-ui-ux-pro-max](https://www.npmjs.com/package/dsh-ui-ux-pro-max)。仓库当前版本 **1.3.0**；npm 上的实际版本以包页为准，未更新时请用方式二/三从源码安装。
 
-> 兼容性：`peerDependencies` 按预发布线逐条声明，覆盖 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 四条线及其正式版（上界 `<0.3.0-0`）。已在 **0.2.0-rc.2**、**0.1.1-rc.2** 与 **0.0.1-rc.1** 上验证工具定义编译、`execute`、输出 schema、`render`、`presentCall` / `presentResult` 与内置技能注册；完整矩阵见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
+> 兼容性：`peerDependencies` 按预发布线逐条声明，覆盖 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 四条线及其正式版（上界 `<0.3.0-0`）。已在 **0.2.0-rc.2** 与 **0.1.1-rc.2** 上验证工具定义编译、`execute`、输出 schema、`render`、`presentCall` / `presentResult` 与内置技能注册；本机另有 **0.0.1-rc.1** 测试运行时用于 schema/execute/apply 单测，但它不在 peer 支持区间内，不作为支持线。完整矩阵见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
 
 ## 功能特性
 
 - **三个模型工具** — `design_recommend` 生成完整设计系统、`design_review` 按 119 条 UX 规范审查 UI、`design_search` 检索领域/技术栈数据库
 - **数据完全内置** — 4319 行数据库随插件打包，零网络、零 Python、零第三方运行时依赖
-- **中文优先** — 全中文输出；内置 300+ 中文术语→英文词典与 CJK 分词，输入「金融 SaaS 数据看板」即可命中
+- **中文优先** — 全中文输出；内置 400+ 中文术语→英文词典与 CJK 分词，输入「金融 SaaS 数据看板」即可命中
 - **设计旋钮**（1-10）— `variance` 大胆度 / `motion` 动效强度（附 GSAP 方案）/ `density` 密度
 - **纯 JS 重写** — 上游 Python 实现整体重写为 BM25 检索引擎 + 设计系统生成器
 
@@ -27,7 +27,7 @@
 
 ### 方式一：插件市场安装（推荐）
 
-插件已发布到 npm（`dsh-ui-ux-pro-max@1.3.0`），可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI：
+若 npm 已发布 1.3.0，可直接在 **DSH Desktop 插件市场**中搜索安装；或使用 CLI（把版本号换成 npm 上的实际版本）：
 
 ```powershell
 dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.3.0   # DSH Desktop
@@ -161,8 +161,8 @@ dsh-ui-ux-pro-max/
 
 ```bash
 npm test
-# = check-package → smoke → check-example → check-counts → contract
-#   → check-imports → check-schema → dom-smoke
+# = check-package → smoke → check-example → check-counts → check-i18n → contract
+#   → check-imports → check-schema → check-sync-parser → dom-smoke
 #   （dom-smoke 在 jsdom 缺失时自动跳过；CI 另在独立目录安装 jsdom 后运行）
 ```
 
@@ -172,7 +172,7 @@ npm test
 
 **`check-example.mjs`** 覆盖示例页面：脚本可编译、无障碍要点、令牌化程度、状态完备性、无 emoji 图标。
 
-**`check-counts.mjs`** 保证 README / SKILL.md / package.json 中的能力数字与 `data/meta.json` 一致；**`contract.mjs`** 保证 schema 与 `execute` 返回值一致；**`check-imports.mjs`** 把分层铁律、无循环依赖、`data/` 路径唯一性变成 CI 断言；**`check-schema.mjs`** 拦住 SchemaSpec 方言错误（写错只有宿主运行时才会报）。
+**`check-counts.mjs`** 保证 README / SKILL.md / package.json 中的能力数字与 `data/meta.json` 一致；**`check-i18n.mjs`** 保证中文词典无重复键、扩展结果去重；**`contract.mjs`** 保证 schema 与 `execute` 返回值一致；**`check-imports.mjs`** 把分层铁律、无循环依赖、`data/` 路径唯一性变成 CI 断言；**`check-schema.mjs`** 拦住 SchemaSpec 方言错误（写错只有宿主运行时才会报）；**`check-sync-parser.mjs`** 锁定上游 CSV 的引号/转义/换行解析。
 
 > 运行时兼容性另有一层验证：在真实 DSH 上校验工具定义编译、输出 schema、`render` / `presentCall` / `presentResult` 与 `apply()` 注册（依赖本机 DSH 安装路径，故不随仓库分发）。验证矩阵与命令见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
 

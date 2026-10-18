@@ -12,6 +12,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,4 +23,6 @@ jobs:
       # This job intentionally does NOT write data or push commits: a human reviews
       # the diff, runs `npm run sync:upstream`, updates docs, and opens a PR.
       - name: Compare bundled data with upstream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run check:upstream

@@ -108,6 +108,11 @@ node scripts/sync-upstream.mjs --write --ref <sha> --ref-date <ISO>
 - `data/fonts.json`（googleFonts）
 - `data/meta.json`（counts / totalRows / 溯源字段）
 
+> 脚本会校验上游 `catalog-summary.json` 的 stack 数；若上游新增/删除技术栈，
+> 会要求先更新 `lib/repo/stacks.js` 再同步。
+> 需要查询 commit 日期时可用 `GITHUB_TOKEN` 避免匿名 API 限流，或直接传
+> `--ref-date`。
+
 ### Step 3 · 更新文档数字
 
 `tests/check-counts.mjs` 会列出所有与 `meta.json` 不一致的文档。通常需要同步：

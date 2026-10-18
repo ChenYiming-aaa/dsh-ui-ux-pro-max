@@ -51,7 +51,7 @@
 | 数据自述 | `data/index.json`：`format: "ui-ux-pro-max-database"`、`version: 1`、`generated: 2026-08-19T09:37:40Z`、`source: "opencode/skills/ui-ux-pro-max (data/)"` |
 | 列名比对 | `style` 表 `Style Category / Type / Keywords / Primary Colors / Effects & Animation / Best For / Light Mode ✓ / Dark Mode ✓ / Implementation Checklist / Design System Variables`；`reasoning` 表 `UI_Category / Recommended_Pattern / Style_Priority / Color_Mood / Typography_Mood / Key_Effects / Decision_Rules / Anti_Patterns / Severity` —— 与上游 CSV **逐字一致**，血缘确凿 |
 | 算法比对 | `lib/bm25.js` 明写"保持与 Python 版一致的 k1=1.5 / b=0.75 参数与 IDF 公式"；`design-system.js` 五步流程对应上游 `design_system.py` 的 `DesignSystemGenerator` |
-| 本仓库自研 | 纯 JS 重写、离线内置 JSON、中文优先（300+ 术语词典 + CJK 二元分词）、**三个 1-10 设计旋钮**（上游没有） |
+| 本仓库自研 | 纯 JS 重写、离线内置 JSON、中文优先（400+ 术语词典 + CJK 二元分词）；**三个 1-10 设计旋钮为中文标签重实现，上游 `137597b` 已有 `DIAL_TIERS`**（并非上游没有） |
 
 **两个必须修的点（已并入阶段 7）**
 

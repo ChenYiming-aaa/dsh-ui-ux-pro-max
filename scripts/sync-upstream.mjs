@@ -123,8 +123,11 @@ export function parseCsv(text) {
     })
 }
 
-async function getText(url) {
-  const response = await fetch(url, { headers: { 'user-agent': 'dsh-ui-ux-pro-max-sync' } })
+async function getText(url, timeoutMs = 60000) {
+  const response = await fetch(url, {
+    headers: { 'user-agent': 'dsh-ui-ux-pro-max-sync' },
+    signal: AbortSignal.timeout(timeoutMs),
+  })
   if (!response.ok) die(`GET ${url} → HTTP ${response.status}`)
   return response.text()
 }
@@ -145,8 +148,14 @@ function resolveCommit(ref) {
 
 async function resolveCommitDate(sha) {
   try {
+    const headers = {
+      'user-agent': 'dsh-ui-ux-pro-max-sync',
+      accept: 'application/vnd.github+json',
+    }
+    if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`
     const response = await fetch(`https://api.github.com/repos/nextlevelbuilder/ui-ux-pro-max-skill/commits/${sha}`, {
-      headers: { 'user-agent': 'dsh-ui-ux-pro-max-sync', accept: 'application/vnd.github+json' },
+      headers,
+      signal: AbortSignal.timeout(15000),
     })
     if (response.ok) {
       const body = await response.json()
@@ -166,6 +175,13 @@ async function fetchCsv(sha, relativePath) {
 }
 
 async function buildData({ sha, shaDate, now }) {
+  const summary = JSON.parse(await getText(`${RAW_BASE}/${sha}/${DATA_PATH}catalog-summary.json`))
+  const upstreamStackCount = summary?.counts?.stacks
+  if (Number.isInteger(upstreamStackCount) && upstreamStackCount !== STACKS.length) {
+    die(`上游 stacks=${upstreamStackCount} 与本地 STACKS=${STACKS.length} 不一致；` +
+      '请先更新 lib/repo/stacks.js，再重新同步。')
+  }
+
   const domains = {}
   const counts = {}
   for (const [domain, file] of DOMAIN_FILES) {
@@ -184,6 +200,19 @@ async function buildData({ sha, shaDate, now }) {
 
   const googleFonts = await fetchCsv(sha, FONTS_FILE)
   counts.googleFonts = googleFonts.length
+
+  // catalog-summary 是上游自己的一份计数快照；与 CSV 行数不一致时不要写入，
+  // 避免把半更新的上游状态带进本仓库。
+  const expectedCounts = {
+    style: summary?.counts?.styles?.total ?? summary?.counts?.styles,
+    ux: summary?.counts?.uxGuidelines,
+    reasoning: summary?.counts?.reasoningProfiles,
+  }
+  for (const [key, expected] of Object.entries(expectedCounts)) {
+    if (Number.isInteger(expected) && counts[key] !== expected) {
+      die(`上游 ${key} 的 catalog 计数 ${expected} 与 CSV 行数 ${counts[key]} 不一致；请重试或换 ref。`)
+    }
+  }
 
   const totalRows = Object.values(counts).reduce((sum, count) => sum + count, 0)
   const provenance = {
