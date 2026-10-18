@@ -149,12 +149,23 @@ down-weighted but kept. `react-native` and `flutter` also add that stack's guide
 
 ### Examples
 
+Pick the tool by what you are actually doing, and pass the details you already have:
+
 ```text
-design_recommend("金融 SaaS 数据看板", projectName: "金融智控台", stack: "react", variance: 8)
-design_review("移动端登录表单", platform: "mobile")
+# New project: get a full design system first
+design_recommend("财务 数据看板 深色 高密度", projectName: "财务中台", stack: "react")
+
+# Revamp: describe the page together with the symptom
+design_review("移动端登录页，提交后没有任何反馈", platform: "mobile")
+
+# Only one piece missing: search that domain
 design_search("毛玻璃 深色", domain: "style")
-design_search("表单 无障碍", domain: "ux", maxResults: 5)
+design_search("金融 信任蓝", domain: "color")
 ```
+
+Queries can be Chinese or English — Chinese maps onto the English corpus (「金融」→ fintech).
+For `gsap` / `react` / `web` / `google-fonts` the rows are English, so keep the terms
+(`scroll reveal`, `memo`) for better hits.
 
 ### Design dials
 

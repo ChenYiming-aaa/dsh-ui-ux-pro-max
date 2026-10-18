@@ -21,18 +21,18 @@ whenToUse: 新建或改造界面、评审 UX、选风格/配色/字体、查图�
 
 ## 使用流程
 
-### 1. 生成设计系统（首选）→ `design_recommend`
+### 1. 从零开始做界面 → `design_recommend`
 
-**新建页面/项目时先用 `design_recommend`** 拿到完整建议，再按需补充检索：
+新页面、新项目先用它拿一整套方案，再按需补检索：
 
 ```
-design_recommend(query: "金融 SaaS 数据看板", projectName: "金融智控台", stack: "react")
-design_recommend(query: "AI 搜索工具 现代 极简", projectName: "AI Search", variance: 8, motion: 6, density: 8)
+design_recommend(query: "财务 数据看板 深色 高密度", projectName: "财务中台", stack: "react")
+design_recommend(query: "AI 搜索 极简 留白", projectName: "AI Search", variance: 8, motion: 6, density: 8)
 ```
 
-- `query`：产品类型 + 行业 + 气质/功能关键词，**建议 2 个词以上**（不要用单个汉字或泛词）；把最想强调的属性写在最前面。
-  - 检索按 token 打分：原查询词权重 1.0，中文别名扩展出的英文词权重 0.6。所以 `"毛玻璃 深色"` 有效，而 `"毛玻璃 玻璃 深色 暗色"` 只是重复同一属性，不会更准。
-  - 中文会映射到英文语料（「金融」→ fintech、「毛玻璃」→ glassmorphism）。
+- `query`：写「产品类型 + 行业 + 气质/功能」，**至少两个词**，最想强调的放最前；单个汉字或「好看一点」这类泛词会先被误判类别。
+  - 中文直接写中文即可（「财务 数据看板 深色」）；但 `gsap` / `react` / `web` / `google-fonts` 的语料是英文，留英文术语命中更准（`scroll reveal`、`memo`）。
+  - 中文会映射到英文语料（「金融」→ fintech、「毛玻璃」→ glassmorphism）；检索按 token 打分，原词权重 1.0、扩展词 0.6，所以堆同义词不会更准——`"毛玻璃 深色"` 与 `"毛玻璃 玻璃 深色 暗色"` 结果一样。
 - `stack`（可选）：附加该技术栈的实现规范（react / nextjs / vue / flutter / swiftui / javafx / wpf / winui / avalonia / uno / uwp / threejs / angular / laravel / svelte / astro / nuxtjs / nuxt-ui / html-tailwind / shadcn / jetpack-compose / react-native）。
 - 三个 1-10 旋钮（可选）：
   - `variance`：1=居中/极简，10=大胆/不对称（粗野主义、Bento 网格）
@@ -40,43 +40,38 @@ design_recommend(query: "AI 搜索工具 现代 极简", projectName: "AI Search
   - `density`：1=宽松（24-96px 间距），10=紧凑/看板（8-32px 间距）
 - **返回结构**：推荐风格（按优先级排序、带理由）→ 配色方案（HEX 令牌 + CSS 变量）→ 字体搭配 → 落地页模式 → UX 规范要点 → 反模式 → 决策规则 →（可选）技术栈规范 / GSAP 动效 / 间距刻度 / 实现清单。
 - **UX 规范要点**：固定不少于 3 条；命中不足时会用通用类别（Accessibility/Layout/Forms 等）兜底。看到偏通用的条目时把它当基线，不要当作"该产品专属结论"。
-- **不要用单字查询**：`design_recommend("色")` 会先误判产品类别；查单字请用 `design_search`。
 
-### 2. 评审现有 UI → `design_review`
+### 2. 已有界面，想知道哪里不对 → `design_review`
 
-描述要审查的页面/组件，得到针对性规范（按严重度：严重/高/中/低）+ 通用交付前检查清单：
+连同**页面、关键交互、出错的现象**一起描述，得到按严重度排序的规范 + 交付前检查清单：
 
 ```
-design_review(target: "移动端登录表单", platform: "mobile")
-design_review(target: "数据分析看板", platform: "web", maxRules: 12)
+design_review(target: "移动端登录页，提交后没有任何反馈", platform: "mobile")
+design_review(target: "数据看板首屏加载慢，图表出来晚", platform: "web", maxRules: 12)
 ```
 
-- `target` 写具体：页面/组件 + 关键交互 + 状态（如「结算页优惠券输入 错误态 移动端」）。
-- `platform` 的准确语义：
-  - **严重度仍是第一排序键**；`platform` 只在同一严重度内决定先后：匹配的规则靠前，不匹配的 ×0.5 降权但**保留**（不是硬过滤）。
-  - `desktop` 按 `web` 口径处理（库内没有桌面专属规则）。
-  - `react-native` / `flutter` 会额外追加该技术栈的框架规范，适合用户明确使用该框架时。
-- 因此不要期待 `platform: "mobile"` 把结果裁剪成只剩移动端规则；它的作用是让同严重度的规则更贴合目标平台。
+- `target` 写具体：页面/组件 + 关键交互 + 状态或现象（「结算页优惠券输入 错误态」比「结算页」有用得多）。
+- `platform` 只影响**同严重度内的先后**：**严重度仍是第一排序键**，匹配平台的规则靠前，不匹配的 ×0.5 降权但**保留**（不是硬过滤）。`desktop` 按 `web` 口径处理（库内没有桌面专属规则）；`react-native` / `flutter` 会额外追加该栈的框架规范。
 
 把返回的规则当作检查清单逐条核对；若某条是刻意例外，在汇报里说明而不是悄悄跳过。
 
-### 3. 补充细节检索 → `design_search`
+### 3. 只缺一块：定点补 → `design_search`
 
-| 需要 | domain | 示例 |
+| 缺什么 | `domain` | 示例 |
 |---|---|---|
-| 更多风格选项 | `style` | `design_search("毛玻璃 深色", "style")` |
-| 配色方案 | `color` | `design_search("fintech 信任蓝", "color")` |
-| 图表推荐 | `chart` | `design_search("实时仪表盘 趋势", "chart")` |
-| 字体搭配 | `typography` | `design_search("优雅 高端", "typography")` |
-| UX 最佳实践 | `ux` | `design_search("表单 无障碍 加载", "ux")` |
-| 落地页结构 | `landing` | `design_search("hero 社会证明 定价", "landing")` |
-| 产品类型/类别 | `product` | `design_search("金融 数据看板", "product")` |
-| 图标 | `icons` | `design_search("导航 设置", "icons")` |
-| GSAP 动效 | `gsap` | `design_search("scroll reveal stagger", "gsap")` |
-| React 性能 | `react` | `design_search("rerender memo list", "react")` |
-| 移动端接口规范 | `web` | `design_search("accessibilityLabel 安全区", "web")` |
-| Google 字体 | `google-fonts` | `design_search("monospace variable font", "google-fonts")` |
-| 技术栈规范 | `stack` 参数 | `design_search("list 性能 导航", stack: "react-native")` |
+| 换一种风格 | `style` | `design_search("毛玻璃 深色", "style")` |
+| 定配色 | `color` | `design_search("金融 信任蓝", "color")` |
+| 选图表 | `chart` | `design_search("实时监控 趋势", "chart")` |
+| 选字体 | `typography` | `design_search("高端 优雅", "typography")` |
+| 表单/无障碍规范 | `ux` | `design_search("表单 校验 无障碍", "ux")` |
+| 排落地页 | `landing` | `design_search("首屏 用户评价 定价", "landing")` |
+| 判断产品类型 | `product` | `design_search("金融 数据看板", "product")` |
+| 找图标 | `icons` | `design_search("导航 设置", "icons")` |
+| 写动效 | `gsap` | `design_search("scroll reveal stagger", "gsap")` |
+| 治列表卡顿 | `react` | `design_search("列表 卡顿 memo", "react")` |
+| 修移动端遮挡 | `web` | `design_search("safe area 安全区", "web")` |
+| 挑 Google 字体 | `google-fonts` | `design_search("monospace 等宽 可变", "google-fonts")` |
+| 查框架规范 | `stack` 参数 | `design_search("长列表 性能 导航", stack: "react-native")` |
 
 `domain` 可省略（自动识别），但已知领域时显式传入更稳；`maxResults` 取 1-8，默认 3。
 
@@ -104,9 +99,7 @@ design_review(target: "数据分析看板", platform: "web", maxRules: 12)
 
 ## 常见误用
 
-- 用 `design_recommend` 查单字或泛词（应先确认产品类别，或改用 `design_search`）。
-- 把 `platform` 当硬过滤，期待结果集只剩该平台规则（实际只影响同严重度内的排序）。
-- 在 `query` 里堆同义词（重复属性不会提高相关度，主属性权重更高）。
+- 把 `platform` 当硬过滤，期待结果集只剩该平台规则。
 - 把 UX 的 3 条通用兜底要点当成产品专属结论。
 - 把空结果解释成"设计库里没有这个领域"。
 

@@ -122,14 +122,23 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 `design_review` 的 `platform` 可选 `web`（默认）/ `mobile` / `desktop` / `react-native` / `flutter`。它只影响**同严重度内**的排序：匹配平台的规则优先，不匹配的降权保留而非过滤；`react-native` 与 `flutter` 会额外附加该技术栈的规范。
 
-### 调用示例
+### 常见用法
+
+按「你正在做什么」选工具，参数写手头真实的信息：
 
 ```text
-design_recommend("金融 SaaS 数据看板", projectName: "金融智控台", stack: "react", variance: 8)
-design_review("移动端登录表单", platform: "mobile")
+# 新项目：先拿一整套方案
+design_recommend("财务 数据看板 深色 高密度", projectName: "财务中台", stack: "react")
+
+# 改版评审：页面和问题现象一起说
+design_review("移动端登录页，提交后没有任何反馈", platform: "mobile")
+
+# 只缺某一块：按领域定点补
 design_search("毛玻璃 深色", domain: "style")
-design_search("表单 无障碍", domain: "ux", maxResults: 5)
+design_search("金融 信任蓝", domain: "color")
 ```
+
+中文直接写中文（「金融」会映射到 fintech）；但 `gsap` / `react` / `web` / `google-fonts` 的语料是英文，保留术语命中更准（`scroll reveal`、`memo`）。
 
 ### 设计旋钮
 

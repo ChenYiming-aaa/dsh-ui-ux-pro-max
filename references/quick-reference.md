@@ -75,18 +75,18 @@
 - [ ] 空状态、加载态、错误态都有设计
 - [ ] 深链接/状态恢复不丢状态
 
-## 色彩专项
+## 按症状查
 
-- 深色模式对比度问题：查 `color` 领域关键词 `dark mode` / `accessible pairs`
+- 深色模式对比度：查 `color` 领域 `dark mode` / `accessible pairs`
 - 动画不自然：查 `gsap` 领域 `spring physics` / `easing` / `exit faster than enter`
 - 表单体验差：查 `ux` 领域 `inline validation` / `error clarity` / `focus management`
 - 导航混乱：查 `ux` 领域 `nav hierarchy` / `bottom nav limit` / `back behavior`
 - 小屏布局破碎：查 `ux` 领域 `mobile first` / `breakpoint consistency`
-- 卡顿：查 `react` 领域 `virtualize lists` / `main thread budget` / `debounce throttle`
+- 列表卡顿：查 `react` 领域 `列表 卡顿 memo` / `virtualize lists` / `main thread budget`
 
 ## 查询策略提示
 
-- 多维度关键词组合：`"产品类型 + 行业 + 气质 + 密度"`，如 `"entertainment social vibrant content-dense"`
-- 同一需求换词重试：`"playful neon"` → `"vibrant dark"` → `"content-first minimal"`
-- 先 `design_recommend` 拿完整建议，再 `design_search` 深挖不确定的维度
-- 已知技术栈时传 `stack` 参数获取实现级规范
+- 按「产品 + 行业 + 气质 + 密度」组合，如 `"娱乐 社交 活力 信息流"`（中文会映射到英文语料）
+- 没命中就换词，别堆同义词：`"活力 霓虹"` → `"高饱和 深色"` → `"内容优先 极简"`
+- 英文语料保留术语：`"scroll reveal stagger"`（gsap）、`"safe area 安全区"`（web）
+- 先 `design_recommend` 拿整体方案，再用 `design_search` 深挖不确定的那一维；已知技术栈时传 `stack`

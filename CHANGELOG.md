@@ -17,6 +17,13 @@
   及 `tests/check-example.mjs`：两个站点取代它们作为「设计系统如何落地」的示例。
 - `tests/dom-smoke.mjs` 改为验证真实站点——图鉴首页的类别筛选、搜索（含 Esc 清空）、排序，
   以及详情页的配色板与明暗预览切换；CI 的 DOM 步骤保持不变。
+- 重写全部示例措辞（README 中英、`SKILL.md`、`references/quick-reference.md` 与三个工具的
+  参数说明）：改成真实场景会出现的说法，如「财务 数据看板 深色 高密度」「移动端登录页，
+  提交后没有任何反馈」，并按「新项目 / 改版评审 / 只缺一块」三种处境组织章节标题。
+  每条新示例都在检索层验证过命中；`gsap` / `react` / `web` / `google-fonts` 因语料是英文，
+  示例保留术语（`scroll reveal`、`memo`、`safe area 安全区`），纯中文查询会 0 命中。
+- 精简重复表述：`platform` 语义的三段说明合并为一条，删除与开头重复的「不要用单字查询」，
+  `references/quick-reference.md` 的「色彩专项」更名为「按症状查」（原列表并不只讲颜色）。
 
 ### 风格图鉴（静态站点）
 
