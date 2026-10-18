@@ -74,13 +74,13 @@
 
 ## 安装
 
-三种方式任选其一。当前版本 **1.4.0**；以 [npm 包页](https://www.npmjs.com/package/dsh-ui-ux-pro-max) 实际发布的版本为准。
+三种方式任选其一。当前版本 **1.4.1**；以 [npm 包页](https://www.npmjs.com/package/dsh-ui-ux-pro-max) 实际发布的版本为准。
 
 ### 从插件市场 / npm
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.0
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.0
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.1
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.1
 ```
 
 > DSH Desktop 不把 `dsh` 加入 PATH，安装后请新开一个终端；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
@@ -211,7 +211,7 @@ npm run serve:gallery     # 只跑图鉴，挂在根路径
 直接指定已发布版本安装，或改用源码安装：
 
 ```powershell
-dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.0
+dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.1
 ```
 
 **需要联网吗？**

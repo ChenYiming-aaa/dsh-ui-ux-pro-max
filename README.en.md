@@ -90,14 +90,14 @@ both languages. All 764 style references resolve to atlas detail pages — no da
 
 ## Install
 
-Pick one of the three options. Current version **1.4.0**; use whatever is actually published
+Pick one of the three options. Current version **1.4.1**; use whatever is actually published
 on [npm](https://www.npmjs.com/package/dsh-ui-ux-pro-max).
 
 ### Plugin market / npm
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.0
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.0
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.1
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.1
 ```
 
 > DSH Desktop does not put `dsh` on PATH — open a new terminal afterwards. If the command is
@@ -249,7 +249,7 @@ Check, in order: `dsh` points at the right profile; the profile's `cordis.patch.
 Install a published version explicitly, or use the source install:
 
 ```powershell
-dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.0
+dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.1
 ```
 
 **Does it need network access?**
