@@ -43,7 +43,16 @@
   统一记录「原始上游 nextlevelbuilder/… + 转取路径 opencode/skills/…」。
 - **快照不可追溯（N2）**：`data/index.json` / `data/meta.json` 新增
   `upstream` / `upstreamRef` / `upstreamRefKind` / `upstreamRefDate` /
-  `sourcePath` / `syncedAt`；`check-package` 断言非空且两份一致。
+  `upstreamDataPath` / `sourcePath` / `syncedAt` / `lineageVerifiedAt`；
+  `check-package` 断言非空、40 位 commit、两份一致。
+- **上游 ref 修正**：逐行比对后确认快照对应
+  `nextlevelbuilder/ui-ux-pro-max-skill@137597b`（2026-07-03），而非最初按
+  `generated` 时间戳推测的 `8a1a6d8`（该提交已是 88/119/192，与本快照 84/99/161 不符）。
+- **血缘校验结果**：11 个领域表 + 161 条 reasoning + 22 个 stack 表 + 1,923 条
+  Google Fonts 行数与列名全部相等；仅 186 个单元格的内部双引号在 CSV 转码时被剥离
+  （`icons` 100 / `shadcn` 38 / `nuxt-ui` 25 / `javafx` 15 / `nuxtjs` 5 /
+  `web` 1 / `wpf` 1 / `uno` 1）。
+  本版本只修正溯源，不改数据内容；该转码瑕疵留待下次上游同步修复。
 - **SKILL_DESCRIPTION 数字漂移**：改为从 `meta.json` 派生。
 - **timeout 拍脑袋**：实测冷启动 ≈30ms 后改为 5000 / 3000 / 3000ms（保留 >100× 余量）。
 - **`apply()` 降级可观测**：skills 服务未就绪时通过 `ctx.logger?.debug?.()` 记录原因，

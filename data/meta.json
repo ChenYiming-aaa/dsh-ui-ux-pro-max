@@ -77,9 +77,11 @@
   ],
   "totalRows": 4200,
   "upstream": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
-  "upstreamRef": "8a1a6d857332da32252d77365da90c3f6293b47b",
+  "upstreamRef": "137597b02fc3c8689059af899bffef76ee6ae15c",
   "upstreamRefKind": "commit",
-  "upstreamRefDate": "2026-08-18T18:16:41Z",
+  "upstreamRefDate": "2026-07-03T23:16:28Z",
   "sourcePath": "opencode/skills/ui-ux-pro-max/data/",
-  "syncedAt": "2026-08-19T09:37:40.268Z"
+  "syncedAt": "2026-08-19T09:37:40.268Z",
+  "upstreamDataPath": "cli/assets/data/",
+  "lineageVerifiedAt": "2026-10-18"
 }

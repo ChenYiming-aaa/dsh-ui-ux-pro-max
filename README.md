@@ -187,6 +187,8 @@ npm test
 
 数据与算法移植自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT），针对 DSH 插件形态重写为纯 JS、离线、中文优先。参考：`zhaiyateng/dsh-design-skills`、`Viger1/dsh-design`、`superdesigndev/superdesign-skill`。
 
+数据快照对应上游 `137597b`（2026-07-03），2026-08-19 转码；逐行溯源方法与结果见 [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md)。
+
 ## 许可证
 
 [MIT](LICENSE) © ChenYiming-aaa。第三方数据与算法来源详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

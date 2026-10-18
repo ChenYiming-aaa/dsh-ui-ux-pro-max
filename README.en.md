@@ -141,6 +141,9 @@ mistakes that would otherwise only fail inside the host runtime.
 - **Upstream**: [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
   (MIT) — data, search, and design-system logic ported and optimized for the DSH
   plugin form (pure JS, offline, Chinese-first, structured tool output).
+- **Data snapshot**: upstream commit `137597b` (2026-07-03), transcoded 2026-08-19;
+  row/column lineage verification is documented in
+  [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md).
 - Plugin patterns inspired by `zhaiyateng/dsh-design-skills`, `Viger1/dsh-design`,
   and `superdesigndev/superdesign-skill`.
 

@@ -29,15 +29,27 @@ and `data/meta.json`:
 | Field | Value |
 |---|---|
 | `upstream` | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` (original project) |
-| `upstreamRef` | `8a1a6d857332da32252d77365da90c3f6293b47b` (upstream commit at snapshot time) |
-| `sourcePath` | `opencode/skills/ui-ux-pro-max/data/` (transcode path used for the snapshot) |
-| `syncedAt` | `2026-08-19T09:37:40.268Z` |
+| `upstreamRef` | `137597b02fc3c8689059af899bffef76ee6ae15c` (upstream commit, 2026-07-03) |
+| `upstreamDataPath` | `cli/assets/data/` (upstream data directory used for verification) |
+| `sourcePath` | `opencode/skills/ui-ux-pro-max/data/` (transcode path recorded by the snapshot) |
+| `syncedAt` | `2026-08-19T09:37:40.268Z` (transcode time; content corresponds to the upstream commit above) |
+| `lineageVerifiedAt` | `2026-10-18` (row/column comparison against upstream) |
 
 The original upstream is **nextlevelbuilder/ui-ux-pro-max-skill**. The snapshot
-was transcoded from the `opencode/skills/ui-ux-pro-max/data/` copy, whose column
-names match the upstream CSV files verbatim. Both the original upstream and the
-transcode path are recorded so the MIT attribution chain can be traced; see
-`docs/UPSTREAM-SYNC.md` for the full sync procedure.
+was transcoded from the `opencode/skills/ui-ux-pro-max/data/` copy, whose data
+matches upstream commit `137597b` row-for-row and column-for-column: all 11
+domain tables (style/color/chart/landing/product/ux/typography/icons/gsap/react/web),
+the 161 reasoning rows, all 22 stack tables and all 1,923 Google Fonts rows were
+compared field-by-field. The only differences are 186 cells across 8 tables
+where internal double quotes were stripped during CSV transcoding
+(`icons` 100, `shadcn` 38, `nuxt-ui` 25, `javafx` 15, `nuxtjs` 5, `web` 1,
+`wpf` 1, `uno` 1); no rows were added, removed, or replaced. That quote-stripping
+is a transcode artifact, not a different data source, and should be repaired on
+the next upstream sync.
+
+Both the original upstream and the transcode path are recorded so the MIT
+attribution chain can be traced; see `docs/UPSTREAM-SYNC.md` for the verification
+method and sync procedure.
 
 ## Google Fonts metadata
 

@@ -118,16 +118,26 @@ assert(Object.keys(index.domains).length >= 11, `领域数 ${Object.keys(index.d
 assert(Object.keys(index.stacks).length >= 22, `技术栈数 ${Object.keys(index.stacks).length}`)
 
 section('6. 上游溯源')
+const PROVENANCE_KEYS = [
+  'upstream', 'upstreamRef', 'upstreamRefKind', 'upstreamRefDate',
+  'upstreamDataPath', 'sourcePath', 'syncedAt', 'lineageVerifiedAt',
+]
 for (const [name, data] of [['data/index.json', index], ['data/meta.json', meta]]) {
-  for (const key of ['upstream', 'upstreamRef', 'syncedAt']) {
+  for (const key of PROVENANCE_KEYS) {
     assert(typeof data[key] === 'string' && data[key].trim().length > 0, `${name}.${key} 非空`)
   }
+  assert(/^[0-9a-f]{40}$/.test(data.upstreamRef), `${name}.upstreamRef 是完整 commit SHA`)
+  assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(data.upstreamRefDate), `${name}.upstreamRefDate 是 ISO 时间`)
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(data.lineageVerifiedAt), `${name}.lineageVerifiedAt 是核对日期`)
+  assert(data.upstreamRefKind === 'commit', `${name}.upstreamRefKind = commit`)
 }
-assert(index.upstream === meta.upstream, '两份数据的 upstream 一致')
-assert(index.upstreamRef === meta.upstreamRef, '两份数据的 upstreamRef 一致')
-assert(index.syncedAt === meta.syncedAt, '两份数据的 syncedAt 一致')
+for (const key of PROVENANCE_KEYS) {
+  assert(index[key] === meta[key], `两份数据的 ${key} 一致`)
+}
 const notices = readText('THIRD_PARTY_NOTICES.md')
-assert(notices.includes(index.upstream) && notices.includes(index.upstreamRef) && notices.includes(index.sourcePath),
+assert(notices.includes(index.upstream) && notices.includes(index.upstreamRef) &&
+  notices.includes(index.upstreamDataPath) && notices.includes(index.sourcePath) &&
+  notices.includes(index.lineageVerifiedAt),
   'THIRD_PARTY_NOTICES 与数据溯源字段一致')
 
 finish('✅ 清单与数据检查全部通过。')
