@@ -1,6 +1,8 @@
 # dsh-ui-ux-pro-max
 
-> DeepSeek Harness（DSH）的 UI/UX 设计智能库插件：内置 **88 种设计风格、192 个调色板、74 组字体搭配、119 条 UX 规范、25 种图表类型与 22 个技术栈**，完全离线、中文优先。
+> DeepSeek Harness（DSH）的 UI/UX 设计智能库插件——内置 **88 种设计风格、192 个调色板、74 组字体搭配、195 条交互规范、25 种图表类型与 192 份产品配方**，完全离线、中文优先。
+>
+> 最直观的入口不是文档，而是两个在线站点：**[风格图鉴](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/)** 与 **[设计手册](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/)**。
 
 <p align="center">
   <img src="https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="license" />
@@ -9,7 +11,56 @@
   <img src="https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue" alt="dsh-plugin" />
 </p>
 
-安装后即可在对话中调用 `design_recommend` / `design_review` / `design_search` 三个工具，并使用内置的 `ui-ux-pro-max` 技能。插件运行在宿主端：没有客户端界面、不发起网络请求、无第三方运行时依赖。
+| 站点 | 一句话 | 打开 |
+| --- | --- | --- |
+| **风格图鉴** ★ | 88 种设计风格逐页真实渲染，可横向比较差异 | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
+| **设计手册** | 配色 / 字体 / 图表 / 落地页 / 规范 / 配方六个域 | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
+| 配方生成器 | 选一个产品类型，直接拿到完整设计配方 | [handbook/compose.html](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html) |
+
+## ★ 风格图鉴：把 88 种风格看清楚再选
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/">
+    <img src="docs/images/gallery-home.png" alt="风格图鉴首页：88 种设计风格，按类别浏览" width="900" />
+  </a>
+</p>
+
+**每一张卡片都由同一套组件骨架渲染**，只替换设计令牌与材质特效类——所以看到的是真实界面，而不是一段形容词。支持按类别筛选、关键词搜索、按编号 / 名称 / 复杂度排序，桌面与移动端都能用。
+
+每个风格都有独立详情页。下面这页（[液态玻璃 ↗](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html)）是最能体现渲染引擎的一页：磨砂层叠、边缘高光、折射动画，全部由 CSS 令牌与材质类产出。
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html">
+    <img src="docs/images/gallery-style.png" alt="风格详情页：液态玻璃，含中文导读、实时预览、配色板与能力矩阵" width="900" />
+  </a>
+</p>
+
+一页之内包含：中文导读与英文原名、**可切换浅色 / 深色的实时预览**、配色板与 HEX、能力矩阵、适用与规避场景、落地清单、可复制的 AI 提示词、相关风格。88 个页面全部纯静态、零外部请求。
+
+## 设计手册：选好风格之后，还需要「怎么定」
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/">
+    <img src="docs/images/handbook-home.png" alt="设计手册首页：配色、字体、图表、落地页、规范、配方六个域" width="900" />
+  </a>
+</p>
+
+| 域 | 内容 |
+| --- | --- |
+| 配色 | 192 套 × 16 个语义令牌，直接渲染成按钮 / 输入框 / 卡片 / 焦点环，附 7 组 WCAG 对比度与 CSS / Tailwind / JSON 导出 |
+| 字体 | 74 组标题 + 正文配对，**91 个字族的 latin 子集已本地化（约 2.9 MB）**，看到的是真实排印 |
+| 图表 | 25 类数据类型的选型表：最佳图表、备选、禁用条件、SVG/Canvas 阈值、无障碍风险 |
+| 落地页 | 34 种页面骨架，把分区顺序画成线框并标出 CTA 与配色策略 |
+| 规范 | 195 条 UX / React / Web 规范，「正确 / 错误」代码对照，按严重度筛选 |
+| 配方 | 192 类产品：主推与次选风格、16 个令牌、字体、落地页、决策规则与反模式 |
+
+**配方生成器**把三张表（product / color / reasoning）按产品类型同名同序对齐，选一个类型即得整份配方；192 个产品类型、88 种推荐模式、34 种落地页模式全部中文，中英文都能搜。764 处风格引用全部解析到图鉴详情页，没有悬空链接。
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html">
+    <img src="docs/images/handbook-compose.png" alt="配方生成器：选定产品类型后给出风格、令牌、字体与规则，可导出 CSS / Tailwind / JSON" width="900" />
+  </a>
+</p>
 
 ## 特性
 
@@ -103,60 +154,20 @@ design_search("表单 无障碍", domain: "ux", maxResults: 5)
 
 数据移植自 `nextlevelbuilder/ui-ux-pro-max-skill@56ea9cf`（2026-10-15）。
 
-### 示例页面
+## 站点的构建与部署
 
-两个单文件、可离线直接打开的 HTML 示例，展示工具输出的设计系统如何落地：
-
-- [examples/fintech-dashboard.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/fintech-dashboard.html) — 金融数据看板：KPI、趋势图、环形图、热力图、可排序表格。
-- [examples/trip-planner-workbench.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/trip-planner-workbench.html) — 行程编排工作台：时间轴、地图、预算、预订倒计时、四种模式与重排 diff。
-
-## 风格图鉴（在线）
-
-[**chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) 把 88 种风格做成了可浏览的静态站点：每种风格都有详情页，含中文导读、真实渲染的效果示例（可切换浅色 / 深色）、配色板、能力矩阵、适用与规避场景、落地清单与可复制的 AI 提示词。
-
-- 所有预览由同一套组件骨架渲染，只替换设计令牌与材质特效类，因此可以横向比较风格差异。
-- 支持按类别筛选、关键词搜索、按编号 / 名称 / 复杂度排序，桌面与移动端自适应。
-- 纯静态、零外部请求；页面由 `data/index.json` 生成，可离线打开或部署到任意静态托管。
-
-```bash
-npm run build:gallery   # 由 data/ 重新生成 gallery/
-npm run serve:gallery   # 只跑图鉴，挂在根路径
-npm run serve           # 两站一起：/gallery/ 与 /handbook/
-```
-
-推送到 `main` 后，`.github/workflows/pages.yml` 会重新生成并发布 `gallery/`；仓库 Pages 的 Source 需选择「GitHub Actions」。中文名称、导读与预览主题在 `tools/showcase/theme-data.mjs` 中维护。
-
-**目录布局**：两个站是同级目录 `gallery/` 与 `handbook/`，站点根 `index.html` 跳转到 `/gallery/`。同级布局让本地直接双击 html 打开与线上部署的相对路径完全一致，`../handbook/` 这类互链在两种场景下都成立。
-
-## 设计手册（姊妹站）
-
-图鉴讲「长什么样」，[**/handbook/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) 讲「怎么定」。它**单独构建、单独成站**，产物在仓库根的 `handbook/`，与 `gallery/` 没有构建上的先后关系；两个站互为入口，任意一页都能一键切到另一站。
-
-| 域 | 内容 |
-| --- | --- |
-| 配色 | 192 套 × 16 个语义令牌，直接渲染成按钮 / 输入框 / 卡片 / 焦点环的真实样子，附 7 组 WCAG 对比度与 CSS / Tailwind / JSON 导出 |
-| 字体 | 74 组标题 + 正文配对，**91 个字族的 latin 子集已本地化（约 2.9 MB）**，看到的是真实排印，可调字号与行高 |
-| 图表 | 25 类数据类型的选型表：最佳图表、备选、使用与禁用条件、SVG/Canvas 量级阈值、无障碍风险与降级方案 |
-| 落地页 | 34 种页面骨架，把分区顺序画成线框并标出 CTA 位置与配色策略 |
-| 规范 | 195 条 UX / React / Web 规范，「正确 / 错误」代码左右对照，按严重度筛选 |
-| 配方 | 192 类产品的完整配方：主推与次选风格、配色、字体、落地页、决策规则与反模式 |
-
-- **配方生成器**（`/handbook/compose.html`）：选一个产品类型，一次给出整份配方并导出 CSS 变量 / Tailwind 配置 / JSON。
-- **中文化**：192 个产品类型、88 种推荐模式、34 种落地页模式、36 个决策规则键名与全部风格名都有中文。列表以中文名为主行、英文原名作副标题，**中英文都能搜**（输入「仪表盘」或 `dashboard` 都命中）。配色方向 / 反模式 / 关键考量这类自由长句保留上游英文原文，页面上用「原文」徽标标注，避免半中半英的机翻腔。
-- 三张表（product / color / reasoning）按产品类型同名同序对齐，764 处风格引用全部解析到图鉴的 88 个详情页，没有悬空链接。
-- **入口**：图鉴全站导航有常驻的「设计手册 →」，首页另有一条横幅；手册全站顶部有「风格图鉴 ↗」，首页有对称横幅。两端在移动端也保留入口。
-- **站内自洽**：手册页面之间只用 `./` 相对路径；唯一的出站方向是图鉴（`../index.html` 与 `../style/<id>.html`），默认相对指向同域上一级。要部署到别的域名，构建时设 `SHOWCASE_BASE=https://example.com/` 即可。
-- 纯静态、零外部请求；字体在仓库内，构建与浏览都不联网。
+两个站是同级目录 `gallery/` 与 `handbook/`，站点根 `index.html` 跳转到 `/gallery/`。同级布局让本地双击 html 打开与线上部署的相对路径完全一致，`../handbook/` 这类互链在两种场景下都成立。手册**单独构建、单独成站**，只依赖 `tools/atlas/`、`data/`、`assets/atlas-fonts/`。
 
 ```bash
 npm run fonts             # 首次或换字体时：下载 91 个字族的 latin 子集
-npm run build             # 两个站一起构建（= build:gallery + build:handbook）
+npm run build             # 两站一起构建（= build:gallery + build:handbook）
+npm run build:gallery     # 只构建图鉴 → gallery/
 npm run build:handbook    # 只构建手册 → handbook/
-npm run serve             # 两站同时预览：/ 与 /handbook/
-npm run serve:handbook    # 只跑手册，挂在根路径 http://127.0.0.1:4173/
+npm run serve             # 两站预览：/gallery/ 与 /handbook/
+npm run serve:gallery     # 只跑图鉴，挂在根路径
 ```
 
-手册只依赖 `tools/atlas/`、`data/`、`assets/atlas-fonts/` 三处，没有 `gallery/` 也能构建（`tests/check-atlas.mjs` 会在缺少图鉴产物时自动跳过外链可达检查）。数据派生在 `tools/atlas/data.mjs`，页面模板在 `tools/atlas/pages.mjs`。
+推送到 `main` 后 `.github/workflows/pages.yml` 会重建两站、跑两份结构检查，再合并成一个 Pages 产物发布（仓库 Pages 的 Source 为「GitHub Actions」）。中文名称、导读与预览主题在 `tools/showcase/theme-data.mjs`，手册的数据派生在 `tools/atlas/data.mjs`。
 
 ## 配置
 
@@ -193,7 +204,7 @@ dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.0
 ```
 
 **需要联网吗？**
-不需要。数据全部随包内置，Google 字体列表也是本地文件，插件运行时不发起任何请求。
+不需要。数据全部随包内置，Google 字体列表也是本地文件，插件运行时不发起任何请求；两个站点同样零外部请求。
 
 **为什么搜不到某些风格？**
 它们可能被标记为 `deprecated` 并默认排除。在查询里带上 `legacy` 或 `deprecated` 即可召回。

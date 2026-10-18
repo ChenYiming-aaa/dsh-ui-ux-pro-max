@@ -25,7 +25,7 @@
     "node": "^22.19.0 || >=24.0.0"
   },
   "scripts": {
-    "test": "node tests/check-package.mjs && node tests/check-columns.mjs && node tests/check-config.mjs && node tests/smoke.mjs && node tests/check-example.mjs && node tests/check-counts.mjs && node tests/check-skill.mjs && node tests/check-i18n.mjs && node tests/contract.mjs && node tests/check-imports.mjs && node tests/check-schema.mjs && node tests/check-showcase.mjs && node tests/check-atlas.mjs && node tests/dom-smoke.mjs",
+    "test": "node tests/check-package.mjs && node tests/check-columns.mjs && node tests/check-config.mjs && node tests/smoke.mjs && node tests/check-counts.mjs && node tests/check-skill.mjs && node tests/check-i18n.mjs && node tests/contract.mjs && node tests/check-imports.mjs && node tests/check-schema.mjs && node tests/check-showcase.mjs && node tests/check-atlas.mjs && node tests/dom-smoke.mjs",
     "verify:host": "node --import ./tests/host/register.mjs tests/host/verify-host.mjs",
     "build": "node tools/showcase/build.mjs && node tools/atlas/build.mjs",
     "build:gallery": "node tools/showcase/build.mjs",

@@ -1,17 +1,79 @@
 # dsh-ui-ux-pro-max
 
 > UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**:
-> **88 design styles**, **192 color palettes**, **74 font pairings**,
-> **119 UX guidelines**, **25 chart types** and **22 technology stacks** —
-> fully offline, Chinese-first.
+> **88 design styles**, **192 color palettes**, **74 font pairings**, **119 UX guidelines**,
+> **25 chart types** and **192 product recipes** — 195 interface rules in total, fully offline,
+> Chinese-first.
+>
+> The most direct way in is not this document: it is the two hosted sites —
+> **[Style Atlas](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/)** and
+> **[Design Handbook](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/)**.
 
 [![License](https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max)](LICENSE)
 [![npm](https://img.shields.io/npm/v/dsh-ui-ux-pro-max)](https://www.npmjs.com/package/dsh-ui-ux-pro-max)
 [![CI](https://img.shields.io/github/actions/workflow/status/ChenYiming-aaa/dsh-ui-ux-pro-max/ci.yml?label=CI)](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/actions)
 
-Once installed, the `design_recommend` / `design_review` / `design_search` tools and the
-bundled `ui-ux-pro-max` skill are available in the chat. The plugin runs host-side only:
-no client UI, no network requests, no third-party runtime dependencies.
+| Site | In one line | Open |
+| --- | --- | --- |
+| **Style Atlas** ★ | 88 design styles, each rendered for real and comparable side by side | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
+| **Design Handbook** | Six domains: palettes, type, charts, landing pages, practices, recipes | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
+| Recipe composer | Pick a product type, get the whole recipe | [handbook/compose.html](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html) |
+
+## ★ Style Atlas: see 88 styles before you pick one
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/">
+    <img src="docs/images/gallery-home.png" alt="Style Atlas home: 88 design styles, browsable by category" width="900" />
+  </a>
+</p>
+
+**Every card is rendered from the same component skeleton** — only design tokens and material
+effect classes are swapped, so what you see is a real interface, not a paragraph of adjectives.
+Filter by category, search by keyword, sort by index / name / complexity; responsive on desktop
+and mobile.
+
+Each style also gets its own page. The one below
+([Liquid Glass ↗](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html))
+shows the rendering engine at its best: layered frost, edge highlights and refraction, all produced
+by CSS tokens plus material classes.
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html">
+    <img src="docs/images/gallery-style.png" alt="Style detail page: Liquid Glass with editorial intro, live preview, palette and capability matrix" width="900" />
+  </a>
+</p>
+
+A single page holds: editorial intro and original name, a **live preview with light/dark toggle**,
+palette with HEX, capability matrix, best-for and avoid lists, implementation checklist, a copyable
+AI prompt, and related styles. All 88 pages are static with zero external requests.
+
+## Design Handbook: after the look, the decisions
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/">
+    <img src="docs/images/handbook-home.png" alt="Design Handbook home: palettes, type, charts, landing pages, practices, recipes" width="900" />
+  </a>
+</p>
+
+| Domain | Content |
+| --- | --- |
+| Palettes | 192 sets × 16 semantic tokens, rendered as real buttons / inputs / cards / focus rings, with 7 WCAG contrast checks and CSS / Tailwind / JSON export |
+| Type | 74 heading + body pairings with **91 latin subsets self-hosted (~2.9 MB)** — real rendering |
+| Charts | 25 data types: best chart, alternatives, when to avoid, SVG/Canvas thresholds, a11y risk |
+| Landing | 34 page skeletons with section order drawn as wireframes, CTA placement and color strategy |
+| Practices | 195 UX / React / Web rules with good/bad code side by side, filterable by severity |
+| Recipes | 192 product types: primary and secondary styles, 16 tokens, type, landing pattern, decision rules and anti-patterns |
+
+The **recipe composer** aligns three tables (product / color / reasoning) by the same product keys,
+so one pick yields the whole recipe. All 192 product types, 88 recommended patterns, 34 landing
+patterns, 36 decision-rule keys and every style name are localized to Chinese, and search matches
+both languages. All 764 style references resolve to atlas detail pages — no dangling links.
+
+<p align="center">
+  <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html">
+    <img src="docs/images/handbook-compose.png" alt="Recipe composer: pick a product type, get styles, tokens, type and rules; export as CSS / Tailwind / JSON" width="900" />
+  </a>
+</p>
 
 ## Features
 
@@ -119,62 +181,26 @@ the query explicitly mentions `legacy` / `deprecated`.
 
 Data is ported from `nextlevelbuilder/ui-ux-pro-max-skill@56ea9cf` (2026-10-15).
 
-### Example pages
+## Building & deploying the sites
 
-Two offline single-file HTML examples showing the generated design system applied:
-
-- [examples/fintech-dashboard.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/fintech-dashboard.html) — fintech dashboard: KPI
-  cards, trend chart, donut, heat map, sortable table.
-- [examples/trip-planner-workbench.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/trip-planner-workbench.html) — trip-planning
-  workbench: timeline, map, budget, booking countdowns, four modes, re-plan diff.
-
-## Style atlas (hosted)
-
-[**chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) turns all 88 styles into a browsable static site. Every style has its own page with a Chinese editorial intro, a live rendered sample (light/dark switch), palette, capability matrix, best-for / avoid lists, implementation checklist and a copyable prompt.
-
-- All previews share one component skeleton; only design tokens and material effect classes change, so styles can be compared side by side.
-- Filter by category, search by keyword, sort by index / name / complexity; responsive on desktop and mobile.
-- Fully static with zero external requests, generated from `data/index.json`.
-
-```bash
-npm run build:gallery   # regenerate gallery/ from data/
-npm run serve:gallery   # gallery only, mounted at the root
-npm run serve           # both: /gallery/ and /handbook/
-```
-
-Pushes to `main` rebuild and publish `gallery/` through `.github/workflows/pages.yml` (set Pages source to “GitHub Actions”). Chinese copy and preview themes live in `tools/showcase/theme-data.mjs`.
-
-**Layout**: `gallery/` and `handbook/` sit side by side; the site root `index.html` redirects to `/gallery/`. The sibling layout makes relative links such as `../handbook/` resolve identically when opening files directly and when deployed.
-
-## Design handbook (sister site)
-
-The gallery shows *what it looks like*; [**/handbook/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) covers *how to decide*. It builds and ships **on its own** — output goes to `handbook/` at the repo root, with no build-order dependency on `gallery/`. The two sites link to each other from every page.
-
-| Domain | Content |
-| --- | --- |
-| Palettes | 192 sets × 16 semantic tokens, rendered as real buttons / inputs / cards / focus rings, with 7 WCAG contrast checks and CSS / Tailwind / JSON export |
-| Type | 74 heading + body pairings with **91 latin subsets self-hosted (~2.9 MB)** — real rendering, adjustable size and leading |
-| Charts | 25 data types: best chart, alternatives, when to use / avoid, SVG vs Canvas thresholds, a11y risk and fallback |
-| Landing | 34 page skeletons with section order drawn as wireframes, CTA placement and color strategy |
-| Practices | 195 UX / React / Web rules with good/bad code side by side, filterable by severity |
-| Recipes | 192 product types: primary and secondary styles, palette, type, landing pattern, decision rules and anti-patterns |
-
-- **Recipe composer** (`/handbook/compose.html`): pick a product type, get the whole recipe, export as CSS variables / Tailwind config / JSON.
-- **Chinese-native UI**: all 192 product types, 88 recommended patterns, 34 landing patterns, 36 decision-rule keys and every style name have Chinese labels. Lists lead with the Chinese name and keep the English original as a subtitle; search matches both (type 「仪表盘」 or `dashboard`). Free-form prose (color direction, anti-patterns, key considerations) stays in the upstream English and is marked with a small “原文” badge instead of being machine-translated.
-- The product / color / reasoning tables share the same 192 keys, and all 764 style references resolve to the 88 gallery pages.
-- **Findable**: the gallery keeps a persistent “设计手册 →” item in its nav plus a banner on the home page; the handbook has a “风格图鉴 ↗” button on every page and a matching banner. Both remain visible on mobile.
-- **Self-contained**: handbook pages link to each other with `./` only. The single outbound direction is the gallery (`../index.html`, `../style/<id>.html`), resolved relative to the same origin by default; set `SHOWCASE_BASE=https://example.com/` at build time to point at another host.
-- Fully static, zero external requests — fonts ship in the repo.
+`gallery/` and `handbook/` sit side by side; the site root `index.html` redirects to `/gallery/`.
+The sibling layout makes relative links such as `../handbook/` resolve identically when opening
+files directly and when deployed. The handbook **builds on its own** — it needs only
+`tools/atlas/`, `data/` and `assets/atlas-fonts/`, not `gallery/`.
 
 ```bash
 npm run fonts             # one-off: fetch the latin subsets for 91 families
 npm run build             # build both sites (= build:gallery + build:handbook)
+npm run build:gallery     # gallery only → gallery/
 npm run build:handbook    # handbook only → handbook/
-npm run serve             # preview both: / and /handbook/
-npm run serve:handbook    # handbook only, mounted at the root path
+npm run serve             # preview both: /gallery/ and /handbook/
+npm run serve:gallery     # gallery only, mounted at the root path
 ```
 
-The handbook needs only `tools/atlas/`, `data/` and `assets/atlas-fonts/` — it builds without `gallery/` present (`tests/check-atlas.mjs` skips the outbound-link check when the gallery output is missing).
+Pushes to `main` rebuild both sites, run the structure checks, and publish one merged Pages
+artifact through `.github/workflows/pages.yml` (Pages source is “GitHub Actions”). Chinese copy and
+preview themes live in `tools/showcase/theme-data.mjs`; handbook data derivation lives in
+`tools/atlas/data.mjs`.
 
 ## Configuration
 
@@ -214,7 +240,7 @@ dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.0
 
 **Does it need network access?**
 No. All data ships with the package, the Google Fonts list is a local file, and the plugin
-makes no requests at runtime.
+makes no requests at runtime; both sites are equally self-contained.
 
 **Why are some styles missing from search results?**
 They may be marked `deprecated` and excluded by default. Mention `legacy` or `deprecated` in

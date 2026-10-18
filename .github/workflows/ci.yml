@@ -23,12 +23,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      # 一键全量：清单/数据、离线自检、示例规范、能力数字、契约、
+      # 一键全量：清单/数据、离线自检、站点结构、能力数字、契约、
       # 分层守卫、SchemaSpec 方言（dom-smoke 在 jsdom 缺失时自动跳过）
       - name: Run test suite
         run: npm test
 
-      # 真实 DOM 执行验证：渲染结果、预算/倒计时计算、模式切换、排序与编辑
+      # 真实 DOM 执行验证：图鉴首页的筛选/搜索/排序，详情页渲染与明暗切换
       # jsdom 装在独立目录，避免连带解析本插件的 peerDependencies
       - name: DOM smoke test (jsdom, isolated install)
         env:

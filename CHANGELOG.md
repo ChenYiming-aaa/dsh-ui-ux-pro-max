@@ -8,9 +8,19 @@
 
 ## [Unreleased]
 
+### 文档与示例
+
+- README 重构（中英同步）：把两个在线站点提到开头显著位置，并配 4 张截图
+  （`docs/images/`）——图鉴首页、风格详情页（液态玻璃）、手册首页、配方生成器；
+  删除原有的 examples 章节与链接。
+- 删除 `examples/`（`fintech-dashboard.html` / `trip-planner-workbench.html` 与说明文件）
+  及 `tests/check-example.mjs`：两个站点取代它们作为「设计系统如何落地」的示例。
+- `tests/dom-smoke.mjs` 改为验证真实站点——图鉴首页的类别筛选、搜索（含 Esc 清空）、排序，
+  以及详情页的配色板与明暗预览切换；CI 的 DOM 步骤保持不变。
+
 ### 风格图鉴（静态站点）
 
-- 新增 `site/`：把 88 种设计风格渲染成可浏览的纯静态站点，可直接部署到 GitHub Pages。
+- 新增 `gallery/`：把 88 种设计风格渲染成可浏览的纯静态站点，可直接部署到 GitHub Pages。
   首页支持类别筛选、关键词搜索与编号/名称/复杂度/状态排序；每种风格有独立详情页，
   含中文导读、效果示例（浅色/深色可切换）、配色板、能力矩阵、适用与规避场景、
   落地清单、AI 提示词与相关风格导航。
@@ -18,7 +28,7 @@
   （毛玻璃、新拟态、扫描线、像素化、纸质噪点等），因此差异全部来自风格本身。
 - 新增生成器 `tools/showcase/build.mjs` 与人工策划的元数据
   `tools/showcase/theme-data.mjs`（中文名 / 场景 / 导读 / 主题令牌）；
-  `npm run build:site` 重新生成，`npm run serve:site` 本地预览。
+  `npm run build:gallery` 重新生成，`npm run serve:gallery` 本地预览。
 - 新增 `tests/check-showcase.mjs`：校验元数据覆盖、特效类实现、88 个页面完整性、
   纯静态（无外部资源）与响应式断点，已接入 `npm test`。
 - 新增 `.github/workflows/pages.yml`：推送 `main` 后重建并发布到 GitHub Pages。
