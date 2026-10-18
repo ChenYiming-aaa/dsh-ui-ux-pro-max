@@ -1,6 +1,6 @@
 {
   "name": "dsh-ui-ux-pro-max",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "UI/UX 设计智能库插件：内置 88 种设计风格、192 个调色板、74 组字体搭配、119 条 UX 规范、25 种图表类型与 22 个技术栈，提供 design_recommend / design_review / design_search 三个模型工具。数据库完全内置、离线可用、中文优先。 / UI/UX design intelligence plugin for DeepSeek Harness: 88 styles, 192 palettes, 74 font pairings, 119 UX guidelines, 25 chart types, 22 stacks. Offline-first, Chinese-first design_recommend / design_review / design_search tools.",
   "type": "module",
   "main": "index.js",
@@ -25,7 +25,8 @@
     "node": "^22.19.0 || >=24.0.0"
   },
   "scripts": {
-    "test": "node tests/check-package.mjs && node tests/smoke.mjs && node tests/check-example.mjs && node tests/check-counts.mjs && node tests/check-i18n.mjs && node tests/contract.mjs && node tests/check-imports.mjs && node tests/check-schema.mjs && node tests/dom-smoke.mjs"
+    "test": "node tests/check-package.mjs && node tests/check-columns.mjs && node tests/check-config.mjs && node tests/smoke.mjs && node tests/check-example.mjs && node tests/check-counts.mjs && node tests/check-skill.mjs && node tests/check-i18n.mjs && node tests/contract.mjs && node tests/check-imports.mjs && node tests/check-schema.mjs && node tests/dom-smoke.mjs",
+    "verify:host": "node --import ./tests/host/register.mjs tests/host/verify-host.mjs"
   },
   "publishConfig": {
     "access": "public"

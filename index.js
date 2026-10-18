@@ -15,4 +15,5 @@
  */
 
 export { name, inject } from './lib/plugin/meta.js'
+export { Config } from './lib/plugin/config.js'
 export { apply, buildTools } from './lib/plugin/index.js'

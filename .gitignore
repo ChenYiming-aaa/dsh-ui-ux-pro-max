@@ -1,14 +1,18 @@
-# 本地备份与构建产物
-*.bak
-*.log
-*.tgz
-
 # 依赖与包管理器
 node_modules/
 .pnpm-store/
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# 构建与验证产物（可随时重建，不入库）
+*.tgz
+*.log
+install.log
+.host-compat/
+
+# 本地备份
+*.bak
 
 # 编辑器与系统
 .DS_Store
@@ -17,13 +21,5 @@ Thumbs.db
 .vscode/
 *.swp
 
-# 本地安装残留（不应入库）
-install.log
-
-# 机器相关的本地开发辅助（依赖本机 DSH 安装路径，不入库）
-tests/dsh-loader.mjs
-tests/register-loader.mjs
-tests/validate-tools.mjs
-tests/validate-apply.mjs
-tests/verify-market-install.mjs
-scripts/clean-market-cache.ps1
+# 本机工具数据（会话记忆等，不随仓库分发）
+.workbuddy/

@@ -102,7 +102,7 @@ tools/design-search
 
 | 常量 | 用途 |
 |---|---|
-| `TIMEOUTS` | 三个工具的 cooperative timeout |
+| `TIMEOUTS` | 三个工具的 advisory timeout metadata（注册表不强制执行） |
 | `LIMITS` | 检索默认条数/上限、审查默认条数/预取条数 |
 | `SEARCH_CONFIG` | design_recommend 五步检索 |
 | `RENDER` | 设计系统 Markdown 上限、检索字段截断 |
@@ -112,15 +112,29 @@ tools/design-search
 
 | 文件 | 抓什么 |
 |---|---|
-| `tests/check-package.mjs` | BOM / bundle patch / files[] / 生命周期脚本 / peer 区间 / 数据计数 / 上游溯源 |
+| `tests/check-package.mjs` | BOM / bundle patch / files[] / 生命周期脚本 / peer 区间（含 cordis 白名单）/ 数据计数 / 上游溯源 |
+| `tests/check-columns.mjs` | 列配置 ⊆ 实际列（11 域 + 22 栈）/ 标签覆盖 / 无全空列 |
+| `tests/check-config.mjs` | 配置默认值 / 范围校验 / Standard Schema / 工具默认值注入 |
 | `tests/smoke.mjs` | 数据库、生成、审查、检索、中文输出、清单双源 |
 | `tests/check-example.mjs` | 示例页静态规范（无障碍、令牌化、状态） |
 | `tests/dom-smoke.mjs` | 示例页真实 DOM 交互（jsdom 缺失时跳过） |
 | `tests/check-counts.mjs` | 能力数字 == `data/meta.json` |
+| `tests/check-skill.mjs` | SKILL.md 覆盖全部领域/单字/platform 与关键口径，且正文不含 frontmatter |
 | `tests/check-i18n.mjs` | 中文词典无重复键、扩展结果去重 |
 | `tests/contract.mjs` | schema ↔ execute 返回值一致 |
 | `tests/check-imports.mjs` | 分层、无环、data 路径唯一、宿主 API 边界 |
 | `tests/check-schema.mjs` | SchemaSpec 方言 + 负例 |
+| `tests/host/verify-host.mjs` | 真实宿主包兼容（`DSH_MODULE_ROOT` 指定，不进 `npm test`） |
+
+### 测试环境的两种形态
+
+| | 本地工作树（本机） | 干净 clone / CI |
+|---|---|---|
+| `node_modules` | 常为软链接到同级主工作树 | 不存在，需按需安装 |
+| `dom-smoke` | 跑 jsdom 真实交互 | 缺 jsdom 时**静默跳过**（CI 另装隔离 jsdom 后强制跑） |
+| `verify:host` | 解析到本机宿主版本 | 需 `DSH_MODULE_ROOT` 指向隔离安装目录 |
+
+结论：**本地全绿 ≠ 干净 clone 全绿**，判断以 CI 为准。新增测试不要依赖本机路径或父工作树。
 
 ## 8. 有意保留的决策
 

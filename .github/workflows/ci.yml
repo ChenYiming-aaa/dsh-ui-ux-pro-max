@@ -40,3 +40,34 @@ jobs:
           npm install --no-audit --no-fund jsdom
           cd "$GITHUB_WORKSPACE"
           node tests/dom-smoke.mjs
+
+  # 真实宿主兼容矩阵：把宿主包（dsh-tools / dsh-skill）装进隔离目录，
+  # 通过 DSH_MODULE_ROOT 让插件的 `import @deepseek-ai/*` 改道到该版本，
+  # 逐项验证 SchemaSpec 编译、execute、render、apply 注册。
+  # 这三条线对应 package.json peerDependencies 的三段区间。
+  host-compat:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ['0.1.1-rc.1', '0.2.0-rc.2', '0.2.1-rc.2']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install host packages (isolated)
+        run: |
+          mkdir -p "$RUNNER_TEMP/host"
+          cd "$RUNNER_TEMP/host"
+          npm init -y > /dev/null
+          npm install --no-audit --no-fund \
+            "@deepseek-ai/dsh-tools@${{ matrix.host }}" \
+            "@deepseek-ai/dsh-skill@${{ matrix.host }}"
+
+      - name: Verify plugin against host ${{ matrix.host }}
+        env:
+          DSH_MODULE_ROOT: ${{ runner.temp }}/host
+        run: npm run verify:host

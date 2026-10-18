@@ -5,4 +5,8 @@
 - insert:
     - id: ui-ux-pro-max
       name: dsh-ui-ux-pro-max
-      config: {}
+      # 默认值即下列三项；省略 config 等价于使用默认值。
+      config:
+        maxResults: 3
+        reviewRules: 8
+        skill: true

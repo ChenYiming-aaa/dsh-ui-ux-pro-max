@@ -6,6 +6,96 @@
 > 说明：本文件自 1.0.4 起建立。1.0.0–1.0.3 的历史条目未随浅克隆保留，
 > 如需完整历史请从仓库全量 clone 回填。
 
+## [1.4.0] - 2026-10-18
+
+> 主题：检索质量、健壮性与原生 DSH 契约对齐。**有对外行为变化**（检索排序、审查结果集、
+> UX 要点条数、技能正文、非法 stack 的错误语义），但工具入参、返回结构、schema 均未变，
+> 无需改动调用方。
+
+### 检索质量
+
+- **修复多属性查询稀释主属性**：别名扩展词此前按"词典条目"去重（`dark mode` / `dark` /
+  `dark-mode` 是三个不同字符串），拼进查询串后被分词成同一个 `dark` 重复计分。
+  现在在 token 层去重，并区分权重：原查询 token 1.0、扩展词 0.6（`lib/config.js` 的 `RETRIEVAL`）。
+  BM25 新增 `scoreTerms()` 支持带权 token 表。
+- **中文单字查询可检索**：整条查询是单个汉字时启用 `lib/i18n/short.zh.js` 的兜底别名
+  （`图`→chart、`色`→color、`字`→字体搭配、`动`→动效规范），此前 `search("图")` 返回 0 条且被误判为 `style` 域。
+  一字多义的字（`表`/`页`）**故意不收录**，宁可空结果也不猜错领域。
+- **分词保留单个汉字**：`tokenize` 的长度过滤此前把专门为单字 CJK 写的分支变成了死代码；
+  现在只对拉丁词要求长度 ≥ 2。
+- **单字查询的领域兜底**：已登记的单字在该领域零命中时，返回领域默认条目而非空数组
+  （`fallback: true`），避免模型把"查不到"理解成"库里没有这个领域"。
+- **`design_recommend` 的 UX 要点更稳**：改为三级召回（原话 → 已识别产品类别 → 通用类别+严重度兜底），
+  保证不少于 3 条。此前同类查询可能只回 0–2 条，措辞一变就消失。
+
+### 审查行为
+
+- **`design_review` 的 `platform` 真正参与排序**：此前只拼进查询串，`web` 与 `flutter` 结果几乎相同。
+  现在按平台归一化做软过滤（匹配优先、不匹配 ×0.5 降权仍保留），
+  `react-native` / `flutter` 追加该技术栈的框架规范，`desktop` 按 `web` 口径处理。
+- **废弃条目策略统一**：`style` 域此前恒排除 `deprecated`，与技术栈域不对称。
+  现在两域同一套判定——默认排除，查询显式包含 `legacy` / `deprecated` 时保留。
+
+### 健壮性
+
+- `getStats()` 加异常保护：`data/meta.json` 不可读时返回 `null`，工具描述降级为不含数字的措辞，
+  不再让插件在**模块加载期**崩溃。
+- `localizeRow` 的未登记列兜底此前产出 `Foo (Foo)`（模板两处都是键名），改为保留英文原键。
+- 移除 `buildTools()` 的模块级 `_tools` 缓存：多次 `apply()` 不再共享同一批 definition 对象。
+
+### 原生 DSH 契约对齐（S1–S10）
+
+- **技能正文**：`SkillDefinition.content` 现在返回去掉 YAML frontmatter 的正文
+  （`lib/plugin/skill-body.js`）；候选补 `whenToUse` / `path` / `metadata`，
+  `list/get` 尊重 `options.signal` 与 `candidate.locator`。模型不再在
+  `<skill_content>` 里看到 `--- name: ...`。
+- **工具并发**：三个只读工具声明 `isConcurrencySafe: () => true`，原生调度器
+  可并行派发；不写父级状态，缓存幂等。
+- **错误语义**：`design_search` 对未知 stack 改为抛错，由宿主归一为 `isError`，
+  不再返回“成功值 + error 字段”。
+- **呈现**：`design_search` / `design_review` 补 `presentationMeta` + `presentResult`；
+  卡片可重放，且错误态不产出卡片。
+- **配置面**：新增 `lib/plugin/config.js`（Standard Schema）与
+  `maxResults` / `reviewRules` / `skill` 三个字段；`cordis.patch.yml` 给出默认值示例。
+  未显式传参时使用配置默认值，显式传参优先。
+- **超时语义**：`TIMEOUTS` 明确为 advisory metadata；注册表不强制执行，
+  需要截止时间时由宿主挂载 `@deepseek-ai/dsh-tool-call-timeout-policy`。
+- **技能正文内容**：补 `product` 域、单字表、`platform` 的“严重度优先/降权保留”口径、
+  `score` / `fallback` / 空结果的解读与常见误用。
+- **单字兜底可见**：`formatSearchResult` 在 `fallback: true` 时显式标注“领域默认条目”，
+  避免 0.00 分兜底被当成精确命中。
+
+### 低风险补充（1.4.0）
+
+- `design_search` 新增可选 `includeDeprecated`（默认 `false`）：只放行
+  `Status=deprecated` 的行，不改变查询词与排序；仅作用于该工具，
+  `design_recommend` 仍不会推荐废弃风格。
+- `design_search` / `design_review` 的 `presentResult` 改为紧凑摘要（命中数 + 最多 3 条），
+  完整 Markdown 仍在 `render` / 结构化结果中，避免通用卡片过长。
+- `VERIFIED_HOST` 从 `0.2.0-rc.2` 抬到已实测的 `0.2.1-rc.2`；peer 区间不变。
+
+### 测试与工程
+
+- 新增 `tests/check-columns.mjs`：断言 11 个领域 + 22 个技术栈的 `searchCols` / `outputCols`
+  ⊆ 实际列、中文标签全覆盖、无"存在但全空"的列。并入 `npm test`。
+- 新增 `tests/check-config.mjs`：配置默认值/范围/Standard Schema/工具默认值注入。
+- 新增 `tests/check-skill.mjs`：SKILL.md 覆盖 12 个领域、已登记单字、platform 枚举、
+  `fallback`/`legacy` 等关键口径，且正文不含 frontmatter。
+- 新增 `tests/host/`（`verify-host.mjs` + 解析钩子）与 `npm run verify:host`：
+  **可移植**的真实宿主验证，用 `DSH_MODULE_ROOT` 指向任意宿主导入根，不再依赖本机 DSH 安装路径。
+- CI 新增 `host-compat` 矩阵，对 `0.1.1-rc.1` / `0.2.0-rc.2` / `0.2.1-rc.2` 三条 peer 线实跑兼容验证。
+- `check-package` 的 peer 守卫改为显式白名单（含 `@deepseek-ai/cordis`）。
+  cordis 是独立发版的 DI 框架（实测 4.x），peer 保持 `*` 是正确的；
+  新增 `VERIFIED_CORDIS_MAJOR` 守卫"若改成区间必须覆盖 4.x"。
+
+### 文档
+
+- `docs/DSH-COMPAT.md`：兼容矩阵补三态标签（CI 自动验证 / 人工验证 / 仅声明覆盖），
+  并记录本轮三条宿主线的实跑结果；补"先 `defineTool` 再校验 schema"的顺序陷阱。
+- `README.md` / `examples/README.md` / `docs/ARCHITECTURE.md`：说明 worktree、
+  `node_modules` 软链接与干净 clone 的差异，明确以 CI 为准。
+- `docs/remediation-plan.md`：本轮的缺陷分析与方案文档（含一处被实测推翻的假设，见文件内批注）。
+
 ## [1.3.0] - 2026-10-18
 
 ### 数据更新

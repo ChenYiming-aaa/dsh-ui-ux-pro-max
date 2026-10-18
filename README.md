@@ -1,6 +1,6 @@
-<h1 align="center">dsh-ui-ux-pro-max</h1>
+# dsh-ui-ux-pro-max
 
-> DeepSeek Harness 的 UI/UX 设计智能库插件：内置 **88 种设计风格、192 个调色板、74 组字体搭配、119 条 UX 规范、25 种图表类型与 22 个技术栈**，完全离线、中文优先。
+> DeepSeek Harness（DSH）的 UI/UX 设计智能库插件：内置 **88 种设计风格、192 个调色板、74 组字体搭配、119 条 UX 规范、25 种图表类型与 22 个技术栈**，完全离线、中文优先。
 
 <p align="center">
   <img src="https://img.shields.io/github/license/ChenYiming-aaa/dsh-ui-ux-pro-max" alt="license" />
@@ -9,32 +9,30 @@
   <img src="https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-blue" alt="dsh-plugin" />
 </p>
 
-纯宿主端 DSH 插件：注册 `design_recommend` / `design_review` / `design_search` 三个模型工具，以及内置技能 `ui-ux-pro-max`。无客户端 UI、无网络请求、无运行时依赖。
-
-> 仓库当前版本 **1.3.0**。npm 上的实际版本以 [npm 包页](https://www.npmjs.com/package/dsh-ui-ux-pro-max) 为准；未更新时请用源码安装。
->
-> 兼容性：覆盖 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 四条 DSH 预发布线及其正式版（上界 `<0.3.0-0`）。已在 **0.2.0-rc.2** 与 **0.1.1-rc.2** 验证工具定义、`execute`、输出 schema、`render`、`presentCall` / `presentResult` 与技能注册。详见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
+安装后即可在对话中调用 `design_recommend` / `design_review` / `design_search` 三个工具，并使用内置的 `ui-ux-pro-max` 技能。插件运行在宿主端：没有客户端界面、不发起网络请求、无第三方运行时依赖。
 
 ## 特性
 
-- **三个模型工具**：生成设计系统、审查 UX、按领域/技术栈检索。
-- **数据完全内置**：4319 行数据库随包发布，零网络、零 Python、零第三方运行时依赖。
-- **中文优先**：全中文输出，400+ 中文术语映射 + CJK 二元分词。
+- **三个工具**：生成设计系统、审查 UX、按领域或技术栈检索。
+- **数据完全内置**：4319 行设计数据库随包发布，零网络、零 Python、零第三方运行时依赖。
+- **中文优先**：全中文输出，400+ 中文术语映射 + CJK 二元分词；单字查询（`图` / `色` / `字` / `动`）按领域兜底。
 - **设计旋钮**：`variance` 大胆度 / `motion` 动效强度（附 GSAP 方案）/ `density` 密度，均为 1-10。
-- **纯 JS 重写**：BM25 检索引擎 + 设计系统生成器，Node `^22.19 || >=24`。
+- **纯 JavaScript**：BM25 检索引擎 + 设计系统生成器，Node `^22.19 || >=24`。
 
 ## 安装
 
-### 插件市场 / npm
+三种方式任选其一。当前版本 **1.4.0**；以 [npm 包页](https://www.npmjs.com/package/dsh-ui-ux-pro-max) 实际发布的版本为准。
+
+### 从插件市场 / npm
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.3.0
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.3.0
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.0
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.0
 ```
 
-> DSH Desktop 不把 `dsh` 加入 PATH，请新开终端；若仍找不到命令，先 `npm install -g @deepseek-ai/dsh`。
+> DSH Desktop 不把 `dsh` 加入 PATH，安装后请新开一个终端；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
 
-### 源码一键安装
+### 从源码安装（Windows）
 
 ```powershell
 git clone https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max.git
@@ -42,11 +40,11 @@ cd dsh-ui-ux-pro-max
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-安装脚本按 `files[]` 白名单复制到 profile 的共享 `node_modules`，并幂等追加 `cordis.patch.yml` 注册条目；支持 `-ProfileDir` / `-ProfileName`。
+脚本会按 `package.json` 的 `files[]` 白名单复制文件到 profile 的共享 `node_modules`，并幂等追加注册条目；支持 `-ProfileDir` / `-ProfileName`，`-WhatIf` 可先预览。
 
-### 手动安装
+### 手动安装（任意平台）
 
-把包放入 `<profile>\..\node_modules\dsh-ui-ux-pro-max\`，在 profile 的 `cordis.patch.yml` 追加：
+把包放入 `<profile>\..\node_modules\dsh-ui-ux-pro-max\`，然后在 profile 的 `cordis.patch.yml` 追加：
 
 ```yaml
 - insert:
@@ -57,17 +55,42 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 重启 DSH Desktop，或运行 `npx @deepseek-ai/dsh web`。
 
-## 工具
+安装完成后可以问一句「推荐一个金融数据看板的设计风格」来验证工具是否生效。
 
-| 工具 | 用途 |
-|---|---|
-| `design_recommend` | 产品类型 + 关键词 → 完整设计系统：风格优先级、HEX 配色与 CSS 变量、字体搭配、落地页模式、UX 要点、反模式、旋钮 |
-| `design_review` | 按 UX + 移动端 + React 性能规范审查 UI，按严重度排序，附交付前检查清单 |
-| `design_search` | 按领域（style/color/chart/landing/product/ux/typography/icons/gsap/react/web/google-fonts）或 22 个技术栈检索 |
+## 使用方法
 
-三个工具均返回结构化中文结果；`render` 输出 Markdown，`design_recommend` 另有令牌摘要卡片。
+### 三个工具
 
-## 内置数据
+| 工具 | 用途 | 主要参数 |
+|---|---|---|
+| `design_recommend` | 产品类型 + 关键词 → 完整设计系统：风格优先级、HEX 配色与 CSS 变量、字体搭配、落地页模式、UX 要点、反模式、旋钮 | `query`（必填）、`projectName`、`stack`、`variance`、`motion`、`density` |
+| `design_review` | 按 UX + 移动端 + React 性能规范审查 UI，按严重度排序，附交付前检查清单 | `target`（必填）、`platform`、`maxRules` |
+| `design_search` | 按领域或技术栈检索设计知识；可选 `includeDeprecated` 包含废弃条目 | `query`（必填）、`domain`、`stack`、`maxResults`、`includeDeprecated` |
+
+`design_search` 的 `domain` 可选值：`style` / `color` / `chart` / `landing` / `product` / `ux` / `typography` / `icons` / `gsap` / `react` / `web` / `google-fonts`；`stack` 为 22 个技术栈之一（如 `react`、`nextjs`、`vue`、`flutter`、`swiftui`、`javafx`），与 `domain` 二选一。
+
+`design_review` 的 `platform` 可选 `web`（默认）/ `mobile` / `desktop` / `react-native` / `flutter`。它只影响**同严重度内**的排序：匹配平台的规则优先，不匹配的降权保留而非过滤；`react-native` 与 `flutter` 会额外附加该技术栈的规范。
+
+### 调用示例
+
+```text
+design_recommend("金融 SaaS 数据看板", projectName: "金融智控台", stack: "react", variance: 8)
+design_review("移动端登录表单", platform: "mobile")
+design_search("毛玻璃 深色", domain: "style")
+design_search("表单 无障碍", domain: "ux", maxResults: 5)
+```
+
+### 设计旋钮
+
+三个旋钮都是 1-10 的整数，不传则使用风格自带的默认值：
+
+| 旋钮 | 1 | 10 | 附带效果 |
+|---|---|---|---|
+| `variance` | 居中、极简、对称 | 大胆、不对称、强对比 | 影响风格与布局建议 |
+| `motion` | 克制 | 复杂编排 | 高值附 GSAP 动效片段 |
+| `density` | 宽松 | 紧凑、看板化 | 覆盖间距刻度（spacing scale） |
+
+### 内置数据
 
 | 类别 | 内容 |
 |---|---|
@@ -76,67 +99,68 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 | 审查规范 | UX 规范 **119** · React 性能 **44** · 移动端接口 **32** · 推理规则 **192** |
 | 检索支撑 | 产品类型 **192** · 技术栈 **22** · Google 字体 **1934**（懒加载） |
 
-- 风格数据共 88 条，其中 9 条 `deprecated` 默认不参与检索（79 条可检索）。
-- 技术栈规范默认排除 `deprecated`；显式查询 `legacy` / `deprecated` 时保留。
-- 数据来源：上游 `nextlevelbuilder/ui-ux-pro-max-skill@56ea9cf`（2026-10-15）。溯源字段与统计口径见 [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md)。
+88 种风格中有 9 条标记为 `deprecated`，默认不参与检索（实际可检索 79 条）。风格与技术栈的废弃条目采用同一策略：默认排除，查询中显式包含 `legacy` / `deprecated` 时保留，便于复刻旧项目。
 
-## 示例
+数据移植自 `nextlevelbuilder/ui-ux-pro-max-skill@56ea9cf`（2026-10-15）。
 
-```text
-design_recommend("金融 SaaS 数据看板", projectName: "金融智控台", stack: "react", variance: 8)
-design_review("移动端登录表单", platform: "mobile")
-design_search("毛玻璃 深色", domain: "style")
+### 示例页面
+
+两个单文件、可离线直接打开的 HTML 示例，展示工具输出的设计系统如何落地：
+
+- [examples/fintech-dashboard.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/fintech-dashboard.html) — 金融数据看板：KPI、趋势图、环形图、热力图、可排序表格。
+- [examples/trip-planner-workbench.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/trip-planner-workbench.html) — 行程编排工作台：时间轴、地图、预算、预订倒计时、四种模式与重排 diff。
+
+## 配置
+
+插件只有三个配置项，写在注册条目的 `config` 里，全部可省略：
+
+```yaml
+- insert:
+    - id: ui-ux-pro-max
+      name: dsh-ui-ux-pro-max
+      config:
+        maxResults: 3      # design_search 未传 maxResults 时的默认条数，1-8
+        reviewRules: 8     # design_review 未传 maxRules 时的默认条数，1-20
+        skill: true        # 是否注册内置 ui-ux-pro-max 技能
 ```
 
-两个可离线打开的单文件示例：
+| 配置项 | 类型 | 默认值 | 取值范围 | 说明 |
+|---|---|---|---|---|
+| `maxResults` | 整数 | `3` | 1-8 | `design_search` 的默认返回条数；调用时传参可覆盖 |
+| `reviewRules` | 整数 | `8` | 1-20 | `design_review` 的默认规范条数；调用时传参可覆盖 |
+| `skill` | 布尔 | `true` | `true` / `false` | 设为 `false` 时只注册三个工具，不注册技能 |
 
-- [examples/fintech-dashboard.html](examples/fintech-dashboard.html) — 金融数据看板：KPI、趋势图、环形图、热力图、可排序表格。
-- [examples/trip-planner-workbench.html](examples/trip-planner-workbench.html) — 行程编排工作台：时间轴、地图、预算、预订倒计时、四种模式与重排 diff。
+未知字段会被忽略；类型或范围不合法时插件在加载期报错，不会带病启动。
 
-## 目录结构
+## 常见问题
 
-```
-dsh-ui-ux-pro-max/
-├── index.js                # 薄入口：重导出 plugin 层
-├── lib/
-│   ├── plugin/             # L5 宿主适配（apply / skill / SchemaSpec 方言）
-│   ├── tools/              # L4 三个工具（一工具一文件）
-│   ├── presentation/       # L3 Markdown 渲染
-│   ├── domain/             # L3 设计系统 / 审查 / 旋钮 / 推理 / 清单
-│   ├── search/             # L2 BM25 + 检索门面
-│   ├── repo/               # L2 数据访问 + 能力数字
-│   ├── i18n/               # L1 中文标签 / 词典 / 查询扩展
-│   └── config.js           # L0 横切常量
-├── data/                   # 内置数据库
-├── skills/ui-ux-pro-max/   # SKILL.md
-├── references/             # 交付前检查清单
-├── examples/               # 单文件示例
-├── tests/                  # 测试（不发布）
-├── docs/                   # 贡献者文档（不发布）
-├── install.ps1
-└── cordis.patch.yml
+**安装后工具或技能没有出现？**
+依次检查：`dsh` 命令是否指向正确的 profile；profile 的 `cordis.patch.yml` 是否有 `id: ui-ux-pro-max` 的 `insert` 条目；Node 版本是否满足 `^22.19 || >=24`；修改后是否重启了 DSH。
+
+**npm 上的版本比仓库旧？**
+直接指定已发布版本安装，或改用源码安装：
+
+```powershell
+dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.0
 ```
 
-依赖方向：`plugin → tools → presentation/domain → search/repo → i18n → config`。
+**需要联网吗？**
+不需要。数据全部随包内置，Google 字体列表也是本地文件，插件运行时不发起任何请求。
 
-## 测试
+**为什么搜不到某些风格？**
+它们可能被标记为 `deprecated` 并默认排除。在查询里带上 `legacy` 或 `deprecated` 即可召回。
 
-无需网络、无需 DSH 运行时：
+**中文单字查询（`图` / `色` / `字` / `动`）结果不理想？**
+单字信息量不足，插件会先把已登记的单字映射到对应领域；若扩展后仍无命中，则返回该领域的默认条目并标记 `fallback`。换成具体词组效果更好，例如「金融 配色」「图表 对比」。
 
-```bash
-npm test
-```
+**支持哪些 DSH 版本？**
+覆盖 0.1.0 / 0.1.1 / 0.2.0 / 0.2.1 四条预发布线及其正式版（上界 `<0.3.0-0`）。已在 0.1.1-rc.1、0.2.0-rc.2、0.2.1-rc.2 验证工具定义、执行、输出 schema、渲染与技能注册。详见 [DSH-COMPAT.md](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/docs/DSH-COMPAT.md)。
 
-覆盖：清单/数据完整性、离线行为、示例页规范与 DOM 交互、能力数字、中文词典、schema 契约、分层依赖、SchemaSpec 方言。`dom-smoke` 在 jsdom 缺失时自动跳过。
+**可以替换或扩充数据吗？**
+数据在 `data/index.json` 与 `data/fonts.json`，随包发布；目前不支持运行时加载外部数据文件，需要修改后重新打包。
 
-真实宿主验证依赖本机 DSH 路径，不随仓库分发；矩阵与命令见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
-
-## 文档
-
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 分层、依赖铁律、新增代码位置
-- [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md) — 数据来源、计数与口径
-- [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) — 宿主兼容矩阵、SchemaSpec 方言、降级契约
-- [docs/refactor-plan.md](docs/refactor-plan.md) — 结构升级方案（历史记录）
+**只装插件、不装技能可以吗？**
+可以，把配置里的 `skill` 设为 `false`，三个模型工具仍然可用。
 
 ## 致谢与许可证
 

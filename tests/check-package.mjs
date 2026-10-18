@@ -16,7 +16,7 @@
  */
 
 import { existsSync, readdirSync } from 'node:fs'
-import { VERIFIED_HOST } from '../lib/config.js'
+import { VERIFIED_CORDIS_MAJOR, VERIFIED_HOST } from '../lib/config.js'
 import { assert, section, finish, p, readText, readJson } from './_harness.mjs'
 
 const hasBom = (buf) => buf.length >= 3 && buf[0] === 0xef && buf[1] === 0xbb && buf[2] === 0xbf
@@ -59,9 +59,15 @@ assert(!pkg.scripts || !lifecycles.some(script => script in pkg.scripts), '无�
 assert(typeof pkg.scripts?.test === 'string' && pkg.scripts.test.length > 0, 'npm test 入口已声明（非生命周期脚本）')
 const peers = pkg.peerDependencies ?? {}
 assert(Object.keys(peers).length > 0, `peerDependencies 已声明: ${Object.keys(peers).join(', ')}`)
-const dshPeers = Object.entries(peers).filter(([key]) => key.startsWith('@deepseek-ai/dsh'))
-assert(dshPeers.every(([, value]) => typeof value === 'string' && value.length > 0),
-  `DSH peer 区间: ${dshPeers.map(([key, value]) => `${key}@${value}`).join(', ')}`)
+
+// 显式白名单：历史上只用 startsWith('@deepseek-ai/dsh') 过滤，cordis 因此
+// 完全不受守卫——它若被写成 `<0.2` 会静默让所有宿主 boot gate 跳过本插件。
+const HOST_PEER_KEYS = ['@deepseek-ai/cordis', '@deepseek-ai/dsh-skill', '@deepseek-ai/dsh-tools']
+for (const key of HOST_PEER_KEYS) {
+  assert(typeof peers[key] === 'string' && peers[key].length > 0, `宿主 peer 已声明: ${key}@${peers[key] ?? '(缺失)'}`)
+}
+const dshPeers = HOST_PEER_KEYS.filter(key => key !== '@deepseek-ai/cordis')
+  .map(key => [key, peers[key]]).filter(([, value]) => value)
 assert(typeof pkg.engines?.node === 'string', `engines.node = ${pkg.engines?.node}`)
 
 // 回归保护：宿主 boot gate 会跳过「声明区间不含当前运行时」的插件（表现为
@@ -73,6 +79,20 @@ for (const [name, range] of dshPeers) {
   assert(bounds.length > 0, `${name} 声明了上界`)
   const coversHost = bounds.some(([maj, min]) => maj > hostTuple[0] || (maj === hostTuple[0] && min > hostTuple[1]))
   assert(coversHost, `${name} 区间 ${range} 的上界高于已验证宿主线 ${VERIFIED_HOST}（避免 boot gate 跳过）`)
+}
+
+// cordis 版本号独立于 DSH 发版（实测 4.x），`*` 是正确声明；
+// 但若有人改成具体区间，必须仍覆盖 VERIFIED_CORDIS_MAJOR，否则等于自断兼容。
+{
+  const range = peers['@deepseek-ai/cordis']
+  if (range && range.trim() !== '*') {
+    const bounds = [...String(range).matchAll(/<\s*(\d+)\.(\d+)\.(\d+)/g)].map(m => Number(m[1]))
+    assert(bounds.length > 0, `cordis 区间 ${range} 声明了上界`)
+    assert(bounds.some(maj => maj > VERIFIED_CORDIS_MAJOR),
+      `cordis 区间 ${range} 覆盖实测主版本线 ${VERIFIED_CORDIS_MAJOR}.x`)
+  } else {
+    assert(range === '*', `cordis peer 保持通配（独立发版，实测 ${VERIFIED_CORDIS_MAJOR}.x）`)
+  }
 }
 
 section('3. files[] 白名单')

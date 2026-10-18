@@ -40,7 +40,7 @@
 
 - `styles.csv` 共 88 行，其中 `active` 50、`supplemental` 29、`deprecated` 9。
   检索默认排除 `deprecated`（9 条），因此可检索风格为 79 条；
-  查询显式包含 `legacy` / `deprecated` 时，技术栈检索会保留废弃条目。
+  查询显式包含 `legacy` / `deprecated` 时，风格与技术栈检索都会保留废弃条目（同一套判定，见 `lib/search/retriever.js` 的 `deprecatedFilter`）。
 - 1.2.0 的快照来自上游 `137597b`，经 opencode 路径转码，曾有 186 个单元格
   丢失内部双引号；1.3.0 直接从上游 CSV 重新生成，该问题已修复。
 - 上游 CSV 含引号内换行；计数必须以 CSV 解析器为准，不能按行 `split` 或 `wc -l`。

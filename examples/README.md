@@ -50,3 +50,5 @@ node tests/dom-smoke.mjs       # 两个示例的真实 DOM 交互回归
 - [ ] 涉及令牌/文字时，用 Chrome headless 实际渲染截图核对（SVG 内
       `font-size` 是 viewBox 用户单位，不是屏幕像素——踩过坑）
 - [ ] 改动设计系统宣称时，同步 CSS 头部注释的「与工具真实输出差异」清单
+- [ ] 若本地 `node_modules` 是软链接，「DOM 交互测试通过」不代表干净 clone 通过；
+      以 CI（隔离安装 jsdom）的结果为准
