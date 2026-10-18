@@ -1,0 +1,87 @@
+name: Pages
+
+# 两个互相独立的静态站点，目录同级：
+#   风格图鉴  gallery/  → /gallery/
+#   设计手册  handbook/ → /handbook/
+# 根路径用一个跳转页导到 /gallery/。
+#
+# 两站在代码与产物上完全脱钩：handbook 不读也不清 gallery。
+# 同级布局让本地 file:// 打开与线上部署的相对路径完全一致。
+#
+# 仓库设置里把 Pages 的 Source 设为「GitHub Actions」即可。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gallery/**'
+      - 'handbook/**'
+      - 'index.html'
+      - 'data/index.json'
+      - 'data/meta.json'
+      - 'data/fonts.json'
+      - 'assets/atlas-fonts/**'
+      - 'tools/showcase/**'
+      - 'tools/atlas/**'
+      - 'tools/serve.mjs'
+      - 'tests/check-showcase.mjs'
+      - 'tests/check-atlas.mjs'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # 两个站各自独立构建，互不依赖
+      - name: Build style gallery
+        run: node tools/showcase/build.mjs
+
+      - name: Build design handbook
+        run: node tools/atlas/build.mjs
+
+      - name: Check gallery
+        run: node tests/check-showcase.mjs
+
+      - name: Check handbook
+        run: node tests/check-atlas.mjs
+
+      # 合并成一个 artifact：dist/gallery/ 与 dist/handbook/ 同级，根上放跳转页
+      - name: Assemble pages artifact
+        run: |
+          mkdir -p dist
+          cp -r gallery/. dist/gallery/
+          cp -r handbook/. dist/handbook/
+          cp index.html dist/index.html
+          ls -1 dist
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,2192 @@
+{
+  "generated": "2026-10-18T11:07:43.033Z",
+  "source": "https://fonts.googleapis.com/css2",
+  "subset": "latin",
+  "families": [
+    {
+      "family": "Abril Fatface",
+      "slug": "abril-fatface",
+      "category": "Display",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "abril-fatface-400.woff2",
+          "bytes": 13156,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Amatic SC",
+      "slug": "amatic-sc",
+      "category": "Handwriting",
+      "subsets": "cyrillic | hebrew | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "amatic-sc-400.woff2",
+          "bytes": 28268,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "amatic-sc-700.woff2",
+          "bytes": 27220,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Anton",
+      "slug": "anton",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "anton-400.woff2",
+          "bytes": 18612,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Archivo",
+      "slug": "archivo",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "archivo.woff2",
+          "bytes": 34928,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Atkinson Hyperlegible",
+      "slug": "atkinson-hyperlegible",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "atkinson-hyperlegible-400.woff2",
+          "bytes": 17208,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "atkinson-hyperlegible-700.woff2",
+          "bytes": 17524,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Baloo 2",
+      "slug": "baloo-2",
+      "category": "Display",
+      "subsets": "devanagari | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "baloo-2.woff2",
+          "bytes": 33188,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Barlow",
+      "slug": "barlow",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "barlow-400.woff2",
+          "bytes": 22196,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "barlow-700.woff2",
+          "bytes": 22788,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Barlow Condensed",
+      "slug": "barlow-condensed",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "barlow-condensed-400.woff2",
+          "bytes": 21164,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "barlow-condensed-700.woff2",
+          "bytes": 22444,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Be Vietnam Pro",
+      "slug": "be-vietnam-pro",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "be-vietnam-pro-400.woff2",
+          "bytes": 21168,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "be-vietnam-pro-700.woff2",
+          "bytes": 22152,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Bebas Neue",
+      "slug": "bebas-neue",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "bebas-neue-400.woff2",
+          "bytes": 13768,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Bodoni Moda",
+      "slug": "bodoni-moda",
+      "category": "Serif",
+      "subsets": "latin | latin-ext | math | symbols",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "bodoni-moda.woff2",
+          "bytes": 25884,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Cabin",
+      "slug": "cabin",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "cabin.woff2",
+          "bytes": 28320,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Calistoga",
+      "slug": "calistoga",
+      "category": "Display",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "calistoga-400.woff2",
+          "bytes": 41384,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Caveat",
+      "slug": "caveat",
+      "category": "Handwriting",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "caveat.woff2",
+          "bytes": 74932,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Chakra Petch",
+      "slug": "chakra-petch",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | thai | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "chakra-petch-400.woff2",
+          "bytes": 9756,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "chakra-petch-700.woff2",
+          "bytes": 9900,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Cinzel",
+      "slug": "cinzel",
+      "category": "Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "cinzel.woff2",
+          "bytes": 25904,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Comic Neue",
+      "slug": "comic-neue",
+      "category": "Handwriting",
+      "subsets": "latin",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "comic-neue-400.woff2",
+          "bytes": 19572,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "comic-neue-700.woff2",
+          "bytes": 19244,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Cormorant",
+      "slug": "cormorant",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "cormorant.woff2",
+          "bytes": 35340,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Cormorant Garamond",
+      "slug": "cormorant-garamond",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "cormorant-garamond.woff2",
+          "bytes": 37640,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Cormorant Infant",
+      "slug": "cormorant-infant",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "cormorant-infant.woff2",
+          "bytes": 35668,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Crimson Pro",
+      "slug": "crimson-pro",
+      "category": "Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "crimson-pro.woff2",
+          "bytes": 48200,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Crimson Text",
+      "slug": "crimson-text",
+      "category": "Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "crimson-text-400.woff2",
+          "bytes": 25184,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "crimson-text-700.woff2",
+          "bytes": 25540,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Didact Gothic",
+      "slug": "didact-gothic",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "didact-gothic-400.woff2",
+          "bytes": 17836,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "DM Sans",
+      "slug": "dm-sans",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "dm-sans.woff2",
+          "bytes": 36932,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "EB Garamond",
+      "slug": "eb-garamond",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "eb-garamond.woff2",
+          "bytes": 44336,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Epilogue",
+      "slug": "epilogue",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "epilogue.woff2",
+          "bytes": 35700,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Exo",
+      "slug": "exo",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "exo.woff2",
+          "bytes": 21828,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Exo 2",
+      "slug": "exo-2",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "exo-2.woff2",
+          "bytes": 40896,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Figtree",
+      "slug": "figtree",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "figtree.woff2",
+          "bytes": 20156,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Fira Code",
+      "slug": "fira-code",
+      "category": "Monospace",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext | symbols2",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "fira-code.woff2",
+          "bytes": 36276,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Fira Sans",
+      "slug": "fira-sans",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "fira-sans-400.woff2",
+          "bytes": 23872,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "fira-sans-700.woff2",
+          "bytes": 25012,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Fredoka",
+      "slug": "fredoka",
+      "category": "Sans Serif",
+      "subsets": "hebrew | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "fredoka.woff2",
+          "bytes": 29732,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Great Vibes",
+      "slug": "great-vibes",
+      "category": "Handwriting",
+      "subsets": "cyrillic | cyrillic-ext | greek-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "great-vibes-400.woff2",
+          "bytes": 42800,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "IBM Plex Sans",
+      "slug": "ibm-plex-sans",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "ibm-plex-sans.woff2",
+          "bytes": 45712,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Inter",
+      "slug": "inter",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "inter.woff2",
+          "bytes": 48256,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "JetBrains Mono",
+      "slug": "jetbrains-mono",
+      "category": "Monospace",
+      "subsets": "cyrillic | cyrillic-ext | greek | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "jetbrains-mono.woff2",
+          "bytes": 31432,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Josefin Sans",
+      "slug": "josefin-sans",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "josefin-sans.woff2",
+          "bytes": 28528,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Jost",
+      "slug": "jost",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "jost.woff2",
+          "bytes": 26576,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Kalam",
+      "slug": "kalam",
+      "category": "Handwriting",
+      "subsets": "devanagari | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "kalam-400.woff2",
+          "bytes": 22336,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "kalam-700.woff2",
+          "bytes": 22144,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Karla",
+      "slug": "karla",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "karla.woff2",
+          "bytes": 24320,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Lato",
+      "slug": "lato",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "lato-400.woff2",
+          "bytes": 23580,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "lato-700.woff2",
+          "bytes": 23040,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Lexend",
+      "slug": "lexend",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "lexend.woff2",
+          "bytes": 39680,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Lexend Mega",
+      "slug": "lexend-mega",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "lexend-mega.woff2",
+          "bytes": 45348,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Libre Baskerville",
+      "slug": "libre-baskerville",
+      "category": "Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "libre-baskerville.woff2",
+          "bytes": 33872,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Libre Bodoni",
+      "slug": "libre-bodoni",
+      "category": "Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "libre-bodoni.woff2",
+          "bytes": 26448,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Lora",
+      "slug": "lora",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | math | symbols | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "lora.woff2",
+          "bytes": 37788,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Manrope",
+      "slug": "manrope",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "manrope.woff2",
+          "bytes": 24836,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Merriweather",
+      "slug": "merriweather",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "merriweather-400.woff2",
+          "bytes": 49168,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Montserrat",
+      "slug": "montserrat",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "montserrat.woff2",
+          "bytes": 37956,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Newsreader",
+      "slug": "newsreader",
+      "category": "Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "newsreader.woff2",
+          "bytes": 58084,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Naskh Arabic",
+      "slug": "noto-naskh-arabic",
+      "category": "Serif",
+      "subsets": "arabic | latin | latin-ext | math | symbols",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-naskh-arabic.woff2",
+          "bytes": 19696,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans",
+      "slug": "noto-sans",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | devanagari | greek | greek-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans.woff2",
+          "bytes": 35820,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans Arabic",
+      "slug": "noto-sans-arabic",
+      "category": "Sans Serif",
+      "subsets": "arabic | latin | latin-ext | math | symbols",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-arabic.woff2",
+          "bytes": 31416,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans Hebrew",
+      "slug": "noto-sans-hebrew",
+      "category": "Sans Serif",
+      "subsets": "cyrillic-ext | greek-ext | hebrew | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-hebrew.woff2",
+          "bytes": 20192,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans JP",
+      "slug": "noto-sans-jp",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | japanese | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-jp.woff2",
+          "bytes": 24624,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans KR",
+      "slug": "noto-sans-kr",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | korean | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-kr.woff2",
+          "bytes": 25880,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans SC",
+      "slug": "noto-sans-sc",
+      "category": "Sans Serif",
+      "subsets": "chinese-simplified | cyrillic | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-sc.woff2",
+          "bytes": 24880,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans TC",
+      "slug": "noto-sans-tc",
+      "category": "Sans Serif",
+      "subsets": "chinese-traditional | cyrillic | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-tc.woff2",
+          "bytes": 24860,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans Thai",
+      "slug": "noto-sans-thai",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | thai",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-sans-thai.woff2",
+          "bytes": 30748,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Serif JP",
+      "slug": "noto-serif-jp",
+      "category": "Serif",
+      "subsets": "cyrillic | japanese | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-serif-jp.woff2",
+          "bytes": 33404,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Noto Serif TC",
+      "slug": "noto-serif-tc",
+      "category": "Serif",
+      "subsets": "chinese-traditional | cyrillic | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "noto-serif-tc.woff2",
+          "bytes": 33168,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Nunito",
+      "slug": "nunito",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "nunito.woff2",
+          "bytes": 39128,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Nunito Sans",
+      "slug": "nunito-sans",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "nunito-sans.woff2",
+          "bytes": 31076,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Open Sans",
+      "slug": "open-sans",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | hebrew | latin | latin-ext | math | symbols | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "open-sans.woff2",
+          "bytes": 48320,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Orbitron",
+      "slug": "orbitron",
+      "category": "Sans Serif",
+      "subsets": "latin",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "orbitron.woff2",
+          "bytes": 11800,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Outfit",
+      "slug": "outfit",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "outfit.woff2",
+          "bytes": 32292,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Patrick Hand",
+      "slug": "patrick-hand",
+      "category": "Handwriting",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "patrick-hand-400.woff2",
+          "bytes": 23944,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Playfair Display",
+      "slug": "playfair-display",
+      "category": "Serif",
+      "subsets": "cyrillic | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "playfair-display.woff2",
+          "bytes": 38404,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Playfair Display SC",
+      "slug": "playfair-display-sc",
+      "category": "Serif",
+      "subsets": "cyrillic | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "playfair-display-sc-400.woff2",
+          "bytes": 24944,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "playfair-display-sc-700.woff2",
+          "bytes": 26556,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Plus Jakarta Sans",
+      "slug": "plus-jakarta-sans",
+      "category": "Sans Serif",
+      "subsets": "cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "plus-jakarta-sans.woff2",
+          "bytes": 27348,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Poiret One",
+      "slug": "poiret-one",
+      "category": "Display",
+      "subsets": "cyrillic | latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "poiret-one-400.woff2",
+          "bytes": 7824,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Poppins",
+      "slug": "poppins",
+      "category": "Sans Serif",
+      "subsets": "devanagari | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "poppins-400.woff2",
+          "bytes": 7884,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "poppins-700.woff2",
+          "bytes": 7816,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Press Start 2P",
+      "slug": "press-start-2p",
+      "category": "Display",
+      "subsets": "cyrillic | cyrillic-ext | greek | latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "press-start-2p-400.woff2",
+          "bytes": 12512,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Public Sans",
+      "slug": "public-sans",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "public-sans.woff2",
+          "bytes": 26832,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Quicksand",
+      "slug": "quicksand",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "quicksand.woff2",
+          "bytes": 28244,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Raleway",
+      "slug": "raleway",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "raleway.woff2",
+          "bytes": 48264,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Righteous",
+      "slug": "righteous",
+      "category": "Display",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "righteous-400.woff2",
+          "bytes": 12756,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Roboto",
+      "slug": "roboto",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext | math | symbols | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "roboto.woff2",
+          "bytes": 43136,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Roboto Mono",
+      "slug": "roboto-mono",
+      "category": "Monospace",
+      "subsets": "cyrillic | cyrillic-ext | greek | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "roboto-mono.woff2",
+          "bytes": 32796,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Rubik",
+      "slug": "rubik",
+      "category": "Sans Serif",
+      "subsets": "arabic | cyrillic | cyrillic-ext | hebrew | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "rubik.woff2",
+          "bytes": 35348,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Russo One",
+      "slug": "russo-one",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | latin | latin-ext",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "russo-one-400.woff2",
+          "bytes": 7344,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Share Tech Mono",
+      "slug": "share-tech-mono",
+      "category": "Monospace",
+      "subsets": "latin",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "share-tech-mono-400.woff2",
+          "bytes": 13500,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Source Sans 3",
+      "slug": "source-sans-3",
+      "category": "Sans Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | greek-ext | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "source-sans-3.woff2",
+          "bytes": 28872,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Source Serif 4",
+      "slug": "source-serif-4",
+      "category": "Serif",
+      "subsets": "cyrillic | cyrillic-ext | greek | latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "source-serif-4.woff2",
+          "bytes": 50936,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Space Grotesk",
+      "slug": "space-grotesk",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "space-grotesk.woff2",
+          "bytes": 22288,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Space Mono",
+      "slug": "space-mono",
+      "category": "Monospace",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "space-mono-400.woff2",
+          "bytes": 16520,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "space-mono-700.woff2",
+          "bytes": 16724,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Syncopate",
+      "slug": "syncopate",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "syncopate-400.woff2",
+          "bytes": 32344,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        },
+        {
+          "name": "syncopate-700.woff2",
+          "bytes": 17432,
+          "weights": [
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Syne",
+      "slug": "syne",
+      "category": "Sans Serif",
+      "subsets": "greek | latin | latin-ext",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "syne.woff2",
+          "bytes": 34608,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Varela Round",
+      "slug": "varela-round",
+      "category": "Sans Serif",
+      "subsets": "hebrew | latin | latin-ext | vietnamese",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "varela-round-400.woff2",
+          "bytes": 22948,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "VT323",
+      "slug": "vt323",
+      "category": "Monospace",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400
+      ],
+      "variable": false,
+      "files": [
+        {
+          "name": "vt323-400.woff2",
+          "bytes": 17936,
+          "weights": [
+            "400"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    },
+    {
+      "family": "Work Sans",
+      "slug": "work-sans",
+      "category": "Sans Serif",
+      "subsets": "latin | latin-ext | vietnamese",
+      "weights": [
+        400,
+        700
+      ],
+      "variable": true,
+      "files": [
+        {
+          "name": "work-sans.woff2",
+          "bytes": 50316,
+          "weights": [
+            "400",
+            "700"
+          ],
+          "style": "normal",
+          "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

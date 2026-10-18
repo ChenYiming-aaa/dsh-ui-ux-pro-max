@@ -128,6 +128,54 @@ Two offline single-file HTML examples showing the generated design system applie
 - [examples/trip-planner-workbench.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/trip-planner-workbench.html) — trip-planning
   workbench: timeline, map, budget, booking countdowns, four modes, re-plan diff.
 
+## Style atlas (hosted)
+
+[**chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) turns all 88 styles into a browsable static site. Every style has its own page with a Chinese editorial intro, a live rendered sample (light/dark switch), palette, capability matrix, best-for / avoid lists, implementation checklist and a copyable prompt.
+
+- All previews share one component skeleton; only design tokens and material effect classes change, so styles can be compared side by side.
+- Filter by category, search by keyword, sort by index / name / complexity; responsive on desktop and mobile.
+- Fully static with zero external requests, generated from `data/index.json`.
+
+```bash
+npm run build:gallery   # regenerate gallery/ from data/
+npm run serve:gallery   # gallery only, mounted at the root
+npm run serve           # both: /gallery/ and /handbook/
+```
+
+Pushes to `main` rebuild and publish `gallery/` through `.github/workflows/pages.yml` (set Pages source to “GitHub Actions”). Chinese copy and preview themes live in `tools/showcase/theme-data.mjs`.
+
+**Layout**: `gallery/` and `handbook/` sit side by side; the site root `index.html` redirects to `/gallery/`. The sibling layout makes relative links such as `../handbook/` resolve identically when opening files directly and when deployed.
+
+## Design handbook (sister site)
+
+The gallery shows *what it looks like*; [**/handbook/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) covers *how to decide*. It builds and ships **on its own** — output goes to `handbook/` at the repo root, with no build-order dependency on `gallery/`. The two sites link to each other from every page.
+
+| Domain | Content |
+| --- | --- |
+| Palettes | 192 sets × 16 semantic tokens, rendered as real buttons / inputs / cards / focus rings, with 7 WCAG contrast checks and CSS / Tailwind / JSON export |
+| Type | 74 heading + body pairings with **91 latin subsets self-hosted (~2.9 MB)** — real rendering, adjustable size and leading |
+| Charts | 25 data types: best chart, alternatives, when to use / avoid, SVG vs Canvas thresholds, a11y risk and fallback |
+| Landing | 34 page skeletons with section order drawn as wireframes, CTA placement and color strategy |
+| Practices | 195 UX / React / Web rules with good/bad code side by side, filterable by severity |
+| Recipes | 192 product types: primary and secondary styles, palette, type, landing pattern, decision rules and anti-patterns |
+
+- **Recipe composer** (`/handbook/compose.html`): pick a product type, get the whole recipe, export as CSS variables / Tailwind config / JSON.
+- **Chinese-native UI**: all 192 product types, 88 recommended patterns, 34 landing patterns, 36 decision-rule keys and every style name have Chinese labels. Lists lead with the Chinese name and keep the English original as a subtitle; search matches both (type 「仪表盘」 or `dashboard`). Free-form prose (color direction, anti-patterns, key considerations) stays in the upstream English and is marked with a small “原文” badge instead of being machine-translated.
+- The product / color / reasoning tables share the same 192 keys, and all 764 style references resolve to the 88 gallery pages.
+- **Findable**: the gallery keeps a persistent “设计手册 →” item in its nav plus a banner on the home page; the handbook has a “风格图鉴 ↗” button on every page and a matching banner. Both remain visible on mobile.
+- **Self-contained**: handbook pages link to each other with `./` only. The single outbound direction is the gallery (`../index.html`, `../style/<id>.html`), resolved relative to the same origin by default; set `SHOWCASE_BASE=https://example.com/` at build time to point at another host.
+- Fully static, zero external requests — fonts ship in the repo.
+
+```bash
+npm run fonts             # one-off: fetch the latin subsets for 91 families
+npm run build             # build both sites (= build:gallery + build:handbook)
+npm run build:handbook    # handbook only → handbook/
+npm run serve             # preview both: / and /handbook/
+npm run serve:handbook    # handbook only, mounted at the root path
+```
+
+The handbook needs only `tools/atlas/`, `data/` and `assets/atlas-fonts/` — it builds without `gallery/` present (`tests/check-atlas.mjs` skips the outbound-link check when the gallery output is missing).
+
 ## Configuration
 
 The plugin exposes three optional settings under the registration entry's `config`:

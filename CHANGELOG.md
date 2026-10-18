@@ -6,6 +6,99 @@
 > 说明：本文件自 1.0.4 起建立。1.0.0–1.0.3 的历史条目未随浅克隆保留，
 > 如需完整历史请从仓库全量 clone 回填。
 
+## [Unreleased]
+
+### 风格图鉴（静态站点）
+
+- 新增 `site/`：把 88 种设计风格渲染成可浏览的纯静态站点，可直接部署到 GitHub Pages。
+  首页支持类别筛选、关键词搜索与编号/名称/复杂度/状态排序；每种风格有独立详情页，
+  含中文导读、效果示例（浅色/深色可切换）、配色板、能力矩阵、适用与规避场景、
+  落地清单、AI 提示词与相关风格导航。
+- 预览由同一副组件骨架渲染，只替换设计令牌与 59 个材质特效类
+  （毛玻璃、新拟态、扫描线、像素化、纸质噪点等），因此差异全部来自风格本身。
+- 新增生成器 `tools/showcase/build.mjs` 与人工策划的元数据
+  `tools/showcase/theme-data.mjs`（中文名 / 场景 / 导读 / 主题令牌）；
+  `npm run build:site` 重新生成，`npm run serve:site` 本地预览。
+- 新增 `tests/check-showcase.mjs`：校验元数据覆盖、特效类实现、88 个页面完整性、
+  纯静态（无外部资源）与响应式断点，已接入 `npm test`。
+- 新增 `.github/workflows/pages.yml`：推送 `main` 后重建并发布到 GitHub Pages。
+
+### 设计手册（独立静态站点）
+
+- 新增 `handbook/`：在图鉴之外补一套「怎么定」的手册，共 10 页——配色库（192 套）、
+  字体配对（74 组）、图表选型（25 类）、落地页模式（34 种）、规范对照（195 条）、
+  产品配方（192 类）、配方生成器、总览、方法与溯源、404。
+- **独立成站**：产物在仓库根的 `handbook/`，与 `site/` 无构建先后关系，也不读写 `site/`；
+  页面之间只用 `./` 相对路径，没有 `../`、没有以 `/` 开头的绝对路径，可部署到任意子路径。
+  只依赖 `tools/atlas/`、`data/`、`assets/atlas-fonts/` 三处，缺 `site/` 也能构建。
+  部署时两站合并进同一个 Pages artifact：`/` 是图鉴，`/handbook/` 是手册。
+- **配色**直接渲染成真实界面小样（按钮 / 输入框 / 卡片 / 标签 / 焦点环），
+  不是色块堆叠；每套附 16 个语义令牌、7 组 WCAG 对比度与 CSS / Tailwind / JSON 导出。
+- **字体**把 74 组配对涉及的 91 个字族的 latin 子集下载进仓库（约 2.9 MB，106 个 woff2），
+  用本地 `@font-face` 引用，因此样张是真实排印；中文说明文字仍走系统字体栈。
+  新增 `tools/atlas/fetch-fonts.mjs` 与 `npm run fonts` 负责拉取与重建清单。
+- **配方**把三张表（product / color / reasoning）按产品类型同名同序对齐，一次给出主推与次选风格、
+  16 个配色令牌、字体配对、落地页结构、决策规则与反模式；764 处风格引用全部解析到图鉴详情页
+  （以绝对 URL 出站，构建时可用 `SHOWCASE_BASE` 覆盖）。
+- **配方生成器**：选一个产品类型即可生成整份配方，支持导出 CSS 变量 / Tailwind 配置 / JSON，
+  并可用 `#<key>` 直接深链到某个产品。
+- **图标与图表**：25 类图表各配一张手绘 SVG 示意与一句中文摘要；34 种落地页把
+  `Section Order` 解析成线框并标出 CTA 位置。
+- 新增 `tools/atlas/`（`data.mjs` 数据派生、`pages.mjs` 模板、`layout.mjs` 外壳、
+  `color.mjs` 颜色工具、`mood-map.mjs` 情绪→字体标签映射、`svg.mjs` 图表示意）。
+- 新增 `tools/serve.mjs`：一个静态服务器同时提供两站（`/` 与 `/handbook/`），
+  也支持 `--root=handbook` 把手册挂在根路径模拟独立部署；补齐 `woff2` / `woff` / `webp` 的 MIME。
+  取代原 `tools/showcase/serve.mjs`。
+- 新增 `tests/check-atlas.mjs`：校验产物结构、16 令牌完整性、字体文件与 `@font-face` 对应、
+  **独立站自洽（无 `../`、站内相对链接全部可达、无根绝对路径）**、纯静态与无障碍标记，
+  并在 jsdom 可用时验证筛选、展开与生成器导出。
+- **双站互链（解决「找不到入口」）**：图鉴全站导航新增常驻高亮的「设计手册 →」（详情页自动修正为
+  `../handbook/`），首页 hero 下方新增深色横幅；手册全站顶部「风格图鉴 ↗」改为高对比按钮，
+  首页新增对称横幅。此前两站互不引用，手册作为子系统却没有入口。
+- 入口在移动端不再隐藏：图鉴 620px 以下显示「手册 →」并隐藏分类 / GitHub；手册保留「图鉴 ↗」，
+  同时收起 nav 里的「落地页 / 规范」（首页六宫格仍可达）。
+- `tests/check-showcase.mjs` 新增「姊妹站入口」断言（首页横幅、导航项、88 个详情页的 `../handbook/` 深度）；
+  `tests/check-atlas.mjs` 的 6b 改为「唯一的出站方向是图鉴」——允许 `../index.html` 与 `../style/<id>.html`，
+  其余仍是 `./`，并断言 10 页都能一键回到图鉴。
+- `SHOWCASE_BASE` 语义调整：默认空 → 出站链接用同域相对路径（本地预览与部署都对），
+  设了值才走绝对 URL（异域部署用）。
+- `package.json` 脚本改为 `build` / `build:site` / `build:handbook` / `serve` / `serve:site` /
+  `serve:handbook` / `fonts`；`pages.yml` 两站并行构建后合并 artifact，
+  触发路径补上 `handbook/**`、`tools/atlas/**` 与 `assets/atlas-fonts/**`。
+
+### 配方生成器中文化
+
+- 新增 `tools/atlas/zh.mjs`：192 条产品类型中文名（全量人工翻译）、88 条推荐模式分段词表、
+  34 条落地页模式名、36 个决策规则键名、4 种规则值类型（风格 / 结构 / 做法 / 模式）。
+- **生成器**：左列改为「中文名 + 英文原名」双行，页面标题同样双语；推荐模式、落地页名、
+  仪表盘类型、决策规则（`if_ux_focused` → 「体验导向」，`style:liquid-glass` → 「风格 · 毛玻璃」可点开）
+  全部中文化；置信度转百分比；导出内容加中文注释。
+- **搜索**：改为读 `data-q`（中文名 + 英文原名 + 主推风格中文名），中英文关键词都能命中。
+- **风格名**：`resolveStyles()` 补 `zh` 字段，复用图鉴的 `STYLE_META`，两边中文名不会漂。
+- **落地页模式名**复用推荐模式词表，34 条全部有中文；`landing.html` 卡片与侧栏索引同步。
+- **配方页**（`recipes.html`）同步：标题、主推/次选风格、推荐模式、落地页、筛选 chip 全部中文化，
+  `data-search` 加中文，搜中文也能筛。
+- **保留英文的部分**：配色方向、色彩情绪、字体情绪、反模式、关键考量等自由长句（上游 900+ 条
+  唯一值，逐条翻译不可控）保持原文，页面上用「原文」徽标标注，并在生成器底部说明。
+- **修复**：`.cz-pick` 里 `.search` 继承了 toolbar 的 `flex:1 1 260px`，在纵向容器里被撑成 260px 高，
+  移动端列表上方出现大片空白 —— 改为 `flex:0 0 auto`。
+- `tests/check-atlas.mjs` 增补中文化断言（192 条中文名 / 推荐模式 / 风格名 / 36 个规则键名 /
+  列表中文主行 / 中文检索串）与 jsdom 中文搜索用例。
+
+### 目录布局修正（修复「点设计手册 404」）
+
+- 图鉴产物由 `site/` 改为 **`gallery/`**，与 `handbook/` 同级；站点根 `index.html` 跳转到 `/gallery/`。
+  原因是此前源码布局（`site/` + `handbook/` 同级）与部署布局（图鉴在根、手册在 `/handbook/`）
+  不一致：本地直接双击 `site/index.html` 时，`handbook/` 会被解析成 `site/handbook/`（不存在），
+  点进去就是 404。
+- 现在 `../gallery/` 与 `../handbook/` 在**本地 file://、本地 HTTP、线上部署**三种场景下解析结果完全一致。
+- 互链前缀随之调整：图鉴根页 `../handbook/`、详情页 `../../handbook/`；手册统一 `../gallery/…`。
+- 首页横幅的 `href="handbook/"` 是硬编码，未跟随 `base` 前缀，导致根页出现指向 `gallery/handbook/` 的坏链 —— 已修，并在
+  `tests/check-showcase.mjs` 加了反向断言（禁止出现 `href="handbook/"`）。
+- `package.json` 脚本改名：`build:gallery` / `serve:gallery`（原 `build:site` / `serve:site`）。
+- `tools/serve.mjs` 改为挂载 `/gallery` 与 `/handbook`，根路径 302 到 `/gallery/`。
+- `pages.yml` 组装 `dist/gallery/` + `dist/handbook/` + 根跳转页。
+
 ## [1.4.0] - 2026-10-18
 
 > 主题：检索质量、健壮性与原生 DSH 契约对齐。**有对外行为变化**（检索排序、审查结果集、

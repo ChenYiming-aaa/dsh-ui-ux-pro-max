@@ -110,6 +110,54 @@ design_search("表单 无障碍", domain: "ux", maxResults: 5)
 - [examples/fintech-dashboard.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/fintech-dashboard.html) — 金融数据看板：KPI、趋势图、环形图、热力图、可排序表格。
 - [examples/trip-planner-workbench.html](https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/examples/trip-planner-workbench.html) — 行程编排工作台：时间轴、地图、预算、预订倒计时、四种模式与重排 diff。
 
+## 风格图鉴（在线）
+
+[**chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) 把 88 种风格做成了可浏览的静态站点：每种风格都有详情页，含中文导读、真实渲染的效果示例（可切换浅色 / 深色）、配色板、能力矩阵、适用与规避场景、落地清单与可复制的 AI 提示词。
+
+- 所有预览由同一套组件骨架渲染，只替换设计令牌与材质特效类，因此可以横向比较风格差异。
+- 支持按类别筛选、关键词搜索、按编号 / 名称 / 复杂度排序，桌面与移动端自适应。
+- 纯静态、零外部请求；页面由 `data/index.json` 生成，可离线打开或部署到任意静态托管。
+
+```bash
+npm run build:gallery   # 由 data/ 重新生成 gallery/
+npm run serve:gallery   # 只跑图鉴，挂在根路径
+npm run serve           # 两站一起：/gallery/ 与 /handbook/
+```
+
+推送到 `main` 后，`.github/workflows/pages.yml` 会重新生成并发布 `gallery/`；仓库 Pages 的 Source 需选择「GitHub Actions」。中文名称、导读与预览主题在 `tools/showcase/theme-data.mjs` 中维护。
+
+**目录布局**：两个站是同级目录 `gallery/` 与 `handbook/`，站点根 `index.html` 跳转到 `/gallery/`。同级布局让本地直接双击 html 打开与线上部署的相对路径完全一致，`../handbook/` 这类互链在两种场景下都成立。
+
+## 设计手册（姊妹站）
+
+图鉴讲「长什么样」，[**/handbook/**](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) 讲「怎么定」。它**单独构建、单独成站**，产物在仓库根的 `handbook/`，与 `gallery/` 没有构建上的先后关系；两个站互为入口，任意一页都能一键切到另一站。
+
+| 域 | 内容 |
+| --- | --- |
+| 配色 | 192 套 × 16 个语义令牌，直接渲染成按钮 / 输入框 / 卡片 / 焦点环的真实样子，附 7 组 WCAG 对比度与 CSS / Tailwind / JSON 导出 |
+| 字体 | 74 组标题 + 正文配对，**91 个字族的 latin 子集已本地化（约 2.9 MB）**，看到的是真实排印，可调字号与行高 |
+| 图表 | 25 类数据类型的选型表：最佳图表、备选、使用与禁用条件、SVG/Canvas 量级阈值、无障碍风险与降级方案 |
+| 落地页 | 34 种页面骨架，把分区顺序画成线框并标出 CTA 位置与配色策略 |
+| 规范 | 195 条 UX / React / Web 规范，「正确 / 错误」代码左右对照，按严重度筛选 |
+| 配方 | 192 类产品的完整配方：主推与次选风格、配色、字体、落地页、决策规则与反模式 |
+
+- **配方生成器**（`/handbook/compose.html`）：选一个产品类型，一次给出整份配方并导出 CSS 变量 / Tailwind 配置 / JSON。
+- **中文化**：192 个产品类型、88 种推荐模式、34 种落地页模式、36 个决策规则键名与全部风格名都有中文。列表以中文名为主行、英文原名作副标题，**中英文都能搜**（输入「仪表盘」或 `dashboard` 都命中）。配色方向 / 反模式 / 关键考量这类自由长句保留上游英文原文，页面上用「原文」徽标标注，避免半中半英的机翻腔。
+- 三张表（product / color / reasoning）按产品类型同名同序对齐，764 处风格引用全部解析到图鉴的 88 个详情页，没有悬空链接。
+- **入口**：图鉴全站导航有常驻的「设计手册 →」，首页另有一条横幅；手册全站顶部有「风格图鉴 ↗」，首页有对称横幅。两端在移动端也保留入口。
+- **站内自洽**：手册页面之间只用 `./` 相对路径；唯一的出站方向是图鉴（`../index.html` 与 `../style/<id>.html`），默认相对指向同域上一级。要部署到别的域名，构建时设 `SHOWCASE_BASE=https://example.com/` 即可。
+- 纯静态、零外部请求；字体在仓库内，构建与浏览都不联网。
+
+```bash
+npm run fonts             # 首次或换字体时：下载 91 个字族的 latin 子集
+npm run build             # 两个站一起构建（= build:gallery + build:handbook）
+npm run build:handbook    # 只构建手册 → handbook/
+npm run serve             # 两站同时预览：/ 与 /handbook/
+npm run serve:handbook    # 只跑手册，挂在根路径 http://127.0.0.1:4173/
+```
+
+手册只依赖 `tools/atlas/`、`data/`、`assets/atlas-fonts/` 三处，没有 `gallery/` 也能构建（`tests/check-atlas.mjs` 会在缺少图鉴产物时自动跳过外链可达检查）。数据派生在 `tools/atlas/data.mjs`，页面模板在 `tools/atlas/pages.mjs`。
+
 ## 配置
 
 插件只有三个配置项，写在注册条目的 `config` 里，全部可省略：

@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图表选型 · 25 类数据类型 · 设计手册</title>
+<meta name="description" content="25 类数据类型的图表选型指南：最佳图表、备选、使用条件、数据量阈值、无障碍风险与降级方案。">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./assets/fonts.css">
+<link rel="stylesheet" href="./assets/atlas.css">
+
+</head>
+<body class="page-charts">
+<a class="skip" href="#main">跳到正文</a>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-t">设计手册</span>
+      <span class="brand-s">atlas</span>
+    </a>
+    <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a is-on" href="./charts.html" aria-current="page">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a></nav>
+    <div class="top-r">
+      <a class="top-link top-link--x" href="../gallery/index.html" title="另一个站点：88 种设计风格的渲染效果"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选与说明</summary><div class="side-in"><div class="side-blk">
+  <h2 class="side-h">按无障碍风险</h2>
+  <div class="chips" data-filter="risk" role="group"><button type="button" class="chip is-on" data-v="">全部</button><button type="button" class="chip" data-v="low" data-n="8">低<em>8</em></button><button type="button" class="chip" data-v="medium" data-n="0">中<em>0</em></button><button type="button" class="chip" data-v="high" data-n="6">高<em>6</em></button></div>
+  
+</div>
+<div class="side-blk">
+  <h2 class="side-h">说明</h2>
+  <p class="side-note">入口是「你的数据长什么样」，不是「你会用哪个图」。先认数据类型，再看推荐图表与量级阈值。</p>
+  <p class="side-note">每张卡片的示意图是按类型手绘的，用来看形态，不是真实数据。</p>
+  <p class="side-note">「量级」一栏给出 SVG / Canvas 的分界，超过阈值就要考虑降采样或聚合。</p>
+  
+</div></div></details></aside>
+  <main class="main" id="main">
+<header class="phead">
+  <p class="kicker">数据可视化</p>
+  <h1 class="ph1">图表选型</h1>
+  <p class="lead"><strong>25 类</strong>数据类型，逐类给出最佳图表、备选方案、使用与禁用条件、数据量级阈值、无障碍风险与降级方案。做数据型产品时，先在这里对齐「该用什么图」。</p>
+  <div class="pmeta"><span>25 类数据</span><span>25 张示意</span><span>含量级阈值</span><span>字段原文为英文</span></div>
+</header>
+<div class="tools">
+  <label class="search">
+    <span class="search-ico" aria-hidden="true"></span>
+    <input type="search" data-search placeholder="搜索数据类型、图表名、使用条件…" autocomplete="off" spellcheck="false">
+  </label>
+  
+  
+  <span class="count" data-count-out aria-live="polite"></span>
+</div>
+<div class="ch-grid" data-list><article class="ch" data-item data-search="trend over time line chart area chart, smooth area data has a time axis; user needs to observe rise/fall trends or rate of change over a continuous period trend, time-series, line, growth, timeline, progress, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Trend Over Time</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M12 62 L34 44 L56 52 L78 30 L106 38" stroke="#e4501e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="66" x2="110" y2="66" stroke="#e6e2d8" stroke-width="1"/></svg></div>
+  <p class="ch-best">Line Chart</p>
+  <p class="ch-sec">备选：Area Chart, Smooth Area</p>
+  <p class="ch-note">有时间轴就看趋势；点太少改用统计卡，线超过 6 条就换面积图或做降采样。</p>
+  <p class="ch-txt"><b>用：</b>Data has a time axis; user needs to observe rise/fall trends or rate of change over a continuous period</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Fewer than 4 data points (use stat card); more than 6 series (visual noise); no time dimension exists</p>
+  <p class="ch-txt"><b>量级：</b>&lt;1000 pts: SVG; ≥1000 pts: Canvas + downsampling; &gt;10000: aggregate to intervals</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Zoom</span>
+    <span class="tag">Chart.js</span>
+  </div>
+</article><article class="ch" data-item data-search="compare categories bar chart (horizontal or vertical) column chart, grouped bar comparing discrete categories by magnitude; ranking or ordering is the core insight; categories ≤ 15 compare, categories, bar, comparison, ranking, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Compare Categories</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><line x1="10" y1="66" x2="112" y2="66" stroke="#e6e2d8" stroke-width="1"/><rect x="14" y="50" width="12" height="16" rx="2" fill="#e4501e" opacity="0.45"/><rect x="32" y="37" width="12" height="29" rx="2" fill="#e4501e" opacity="0.5800000000000001"/><rect x="50" y="44" width="12" height="22" rx="2" fill="#e4501e" opacity="0.71"/><rect x="68" y="25" width="12" height="41" rx="2" fill="#e4501e" opacity="0.8400000000000001"/><rect x="86" y="34" width="12" height="32" rx="2" fill="#e4501e" opacity="0.97"/></svg></div>
+  <p class="ch-best">Bar Chart (Horizontal or Vertical)</p>
+  <p class="ch-sec">备选：Column Chart, Grouped Bar</p>
+  <p class="ch-note">比大小用柱状；类别超过 15 个横过来，20–50 个改用条形表格。</p>
+  <p class="ch-txt"><b>用：</b>Comparing discrete categories by magnitude; ranking or ordering is the core insight; categories ≤ 15</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Categories &gt; 15 (use table or search); data has time dimension (use line); showing proportions (use waffle/stacked)</p>
+  <p class="ch-txt"><b>量级：</b>&lt;20 categories: vertical bar; 20–50: horizontal bar; &gt;50: paginated table</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Sort</span>
+    <span class="tag">Chart.js</span>
+  </div>
+</article><article class="ch" data-item data-search="part-to-whole pie chart or donut stacked bar, waffle chart ≤5 categories; one dominant segment vs rest; emphasis on visual proportion over exact values part-to-whole, pie, donut, percentage, proportion, share, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Part-to-Whole</h2>
+    <span class="tag tag--bad">风险 高</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M60 40 L60 12 A28 28 0 0 1 84 56 Z" fill="#e4501e" opacity="0.85"/><path d="M60 40 L84 56 A28 28 0 0 1 38 62 Z" fill="#b3aea2" opacity="0.55"/><path d="M60 40 L38 62 A28 28 0 0 1 60 12 Z" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><circle cx="60" cy="40" r="12" fill="#fff"/></svg></div>
+  <p class="ch-best">Pie Chart or Donut</p>
+  <p class="ch-sec">备选：Stacked Bar, Waffle Chart</p>
+  <p class="ch-note">看占比用饼或环；切片超过 5 片、或需要精确比较，就换堆叠条。</p>
+  <p class="ch-txt"><b>用：</b>≤5 categories; one dominant segment vs rest; emphasis on visual proportion over exact values</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Categories &gt; 5; slice differences &lt; 5% (visually indistinguishable); user needs precise values; accessibility-first context</p>
+  <p class="ch-txt"><b>量级：</b>Max 6 slices; beyond that switch to stacked bar 100%</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Drill</span>
+    <span class="tag">Chart.js</span>
+  </div>
+</article><article class="ch" data-item data-search="correlation / distribution scatter plot or bubble chart heat map, matrix exploring relationship between two continuous variables; identifying clusters or outliers in a dataset correlation, distribution, scatter, relationship, pattern, cluster, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Correlation / Distribution</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><line x1="12" y1="66" x2="110" y2="66" stroke="#e6e2d8" stroke-width="1"/><line x1="12" y1="14" x2="12" y2="66" stroke="#e6e2d8" stroke-width="1"/><circle cx="30" cy="52" r="3" fill="#e4501e" opacity="0.55"/><circle cx="42" cy="44" r="5" fill="#e4501e" opacity="0.55"/><circle cx="50" cy="56" r="3" fill="#e4501e" opacity="0.55"/><circle cx="62" cy="32" r="6" fill="#e4501e" opacity="0.55"/><circle cx="70" cy="38" r="4" fill="#e4501e" opacity="0.55"/><circle cx="80" cy="24" r="7" fill="#e4501e" opacity="0.55"/><circle cx="90" cy="30" r="4" fill="#e4501e" opacity="0.55"/><circle cx="98" cy="46" r="3" fill="#e4501e" opacity="0.55"/><circle cx="56" cy="20" r="3" fill="#e4501e" opacity="0.55"/></svg></div>
+  <p class="ch-best">Scatter Plot or Bubble Chart</p>
+  <p class="ch-sec">备选：Heat Map, Matrix</p>
+  <p class="ch-note">看两个连续变量的关系用散点；点少于 20 个说明不了分布。</p>
+  <p class="ch-txt"><b>用：</b>Exploring relationship between two continuous variables; identifying clusters or outliers in a dataset</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Variables are categorical (use grouped bar); fewer than 20 points (patterns aren't meaningful); mobile-primary context</p>
+  <p class="ch-txt"><b>量级：</b>&lt;500 pts: SVG; 500–5000: Canvas at 0.6–0.8 opacity; &gt;5000: hexbin or aggregate first</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Brush</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="heatmap / intensity heat map or choropleth grid heat map, bubble heat showing intensity/density across a 2d grid; time-based patterns (e.g., activity by hour × day) heatmap, heat-map, intensity, density, matrix, calendar, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Heatmap / Intensity</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="13" y="15" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="32.2" y="15" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="51.4" y="15" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="70.6" y="15" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="89.8" y="15" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="13" y="33.66666666666667" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="32.2" y="33.66666666666667" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="51.4" y="33.66666666666667" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="70.6" y="33.66666666666667" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="89.8" y="33.66666666666667" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="13" y="52.333333333333336" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="32.2" y="52.333333333333336" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="51.4" y="52.333333333333336" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="70.6" y="52.333333333333336" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="89.8" y="52.333333333333336" width="17.2" height="16.666666666666668" fill="#e6e2d8"/><rect x="13" y="15" width="17.2" height="16.67" fill="#e4501e" opacity="0.15"/><rect x="32.2" y="15" width="17.2" height="16.67" fill="#e4501e" opacity="0.5"/><rect x="51.4" y="15" width="17.2" height="16.67" fill="#e4501e" opacity="0.8"/><rect x="70.6" y="15" width="17.2" height="16.67" fill="#e4501e" opacity="0.3"/><rect x="89.8" y="15" width="17.2" height="16.67" fill="#e4501e" opacity="0.1"/><rect x="13" y="33.67" width="17.2" height="16.67" fill="#e4501e" opacity="0.4"/><rect x="32.2" y="33.67" width="17.2" height="16.67" fill="#e4501e" opacity="0.9"/><rect x="51.4" y="33.67" width="17.2" height="16.67" fill="#e4501e" opacity="1"/><rect x="70.6" y="33.67" width="17.2" height="16.67" fill="#e4501e" opacity="0.6"/><rect x="89.8" y="33.67" width="17.2" height="16.67" fill="#e4501e" opacity="0.2"/><rect x="13" y="52.34" width="17.2" height="16.67" fill="#e4501e" opacity="0.2"/><rect x="32.2" y="52.34" width="17.2" height="16.67" fill="#e4501e" opacity="0.7"/><rect x="51.4" y="52.34" width="17.2" height="16.67" fill="#e4501e" opacity="0.85"/><rect x="70.6" y="52.34" width="17.2" height="16.67" fill="#e4501e" opacity="0.45"/><rect x="89.8" y="52.34" width="17.2" height="16.67" fill="#e4501e" opacity="0.15"/></svg></div>
+  <p class="ch-best">Heat Map or Choropleth</p>
+  <p class="ch-sec">备选：Grid Heat Map, Bubble Heat</p>
+  <p class="ch-note">二维密度用热力；格子少于 20 个不如直接标数字。</p>
+  <p class="ch-txt"><b>用：</b>Showing intensity/density across a 2D grid; time-based patterns (e.g., activity by hour × day)</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Fewer than 20 cells (use bar); user needs to read exact values; colorblind users without pattern fallback</p>
+  <p class="ch-txt"><b>量级：</b>Up to 10,000 cells efficiently; beyond that aggregate; calendar heatmap: 365 cells max per SVG</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Zoom</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="geographic data choropleth map or bubble map geographic heat map data has a regional/location dimension; spatial distribution is the core insight for the user geographic, map, location, region, geo, spatial, choropleth, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Geographic Data</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M18 22 L44 16 L52 34 L38 50 L20 44 Z" fill="#e4501e" opacity="0.25"/><path d="M56 18 L86 20 L92 42 L70 52 L54 40 Z" fill="#e4501e" opacity="0.55"/><path d="M30 54 L56 50 L60 68 L34 66 Z" fill="#e4501e" opacity="0.4"/><path d="M70 48 L96 44 L100 64 L74 66 Z" fill="#b3aea2" opacity="0.35"/><circle cx="76" cy="50" r="5" fill="#e4501e"/><circle cx="34" cy="30" r="3" fill="#4a4740"/></svg></div>
+  <p class="ch-best">Choropleth Map or Bubble Map</p>
+  <p class="ch-sec">备选：Geographic Heat Map</p>
+  <p class="ch-note">有地理位置才用地图；区域面积悬殊会让读图失真。</p>
+  <p class="ch-txt"><b>用：</b>Data has a regional/location dimension; spatial distribution is the core insight for the user</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Regions have very different sizes making visual comparison misleading (use bar); mobile-primary context</p>
+  <p class="ch-txt"><b>量级：</b>&lt;1000 regions: SVG; ≥1000: Canvas/WebGL (Deck.gl); global maps: tile-based rendering</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Pan + Zoom + Drill</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="funnel / flow funnel chart or sankey waterfall (for flows) sequential multi-stage process; showing conversion or drop-off rates between defined stages funnel, flow, conversion, drop-off, pipeline, stages, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Funnel / Flow</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="14" y="22" width="92" height="10" rx="2" fill="#e4501e" opacity="0.85"/><rect x="24" y="36" width="72" height="9" rx="2" fill="#e4501e" opacity="0.7"/><rect x="34" y="49" width="52" height="8" rx="2" fill="#e4501e" opacity="0.55"/><rect x="44" y="61" width="32" height="7" rx="2" fill="#e4501e" opacity="0.4"/></svg></div>
+  <p class="ch-best">Funnel Chart or Sankey</p>
+  <p class="ch-sec">备选：Waterfall (for flows)</p>
+  <p class="ch-note">转化漏斗看逐级流失；阶段超过 6 级会失去可读性。</p>
+  <p class="ch-txt"><b>用：</b>Sequential multi-stage process; showing conversion or drop-off rates between defined stages</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Stages aren't sequential; values don't decrease monotonically (use bar); fewer than 3 stages</p>
+  <p class="ch-txt"><b>量级：</b>3–8 stages optimal; beyond 8 stages group minor steps into 'Other'</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Drill</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="performance vs target gauge chart or bullet chart dial, thermometer single kpi measured against a defined target or threshold; dashboard summary context performance, target, kpi, gauge, goal, threshold, progress, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Performance vs Target</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="14" y="14" width="90" height="10" rx="2" fill="#e6e2d8"/><rect x="14" y="14" width="73.8" height="10" rx="2" fill="#e4501e" opacity="0.8"/><line x1="95" y1="12" x2="95" y2="26" stroke="#4a4740" stroke-width="2"/><rect x="14" y="32" width="90" height="10" rx="2" fill="#e6e2d8"/><rect x="14" y="32" width="49.50000000000001" height="10" rx="2" fill="#e4501e" opacity="0.8"/><line x1="95" y1="30" x2="95" y2="44" stroke="#4a4740" stroke-width="2"/><rect x="14" y="50" width="90" height="10" rx="2" fill="#e6e2d8"/><rect x="14" y="50" width="61.2" height="10" rx="2" fill="#e4501e" opacity="0.8"/><line x1="95" y1="48" x2="95" y2="62" stroke="#4a4740" stroke-width="2"/></svg></div>
+  <p class="ch-best">Gauge Chart or Bullet Chart</p>
+  <p class="ch-sec">备选：Dial, Thermometer</p>
+  <p class="ch-note">实际值对目标值用子弹图；一个指标一条，不要叠在一起。</p>
+  <p class="ch-txt"><b>用：</b>Single KPI measured against a defined target or threshold; dashboard summary context</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>No target or benchmark exists; comparing multiple KPIs at once (use bullet chart grid)</p>
+  <p class="ch-txt"><b>量级：</b>Single metric per gauge; for 3+ KPIs use bullet chart grid layout</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="time-series forecast line with confidence band ribbon chart historical data + model predictions; communicating uncertainty range to non-technical stakeholders forecast, prediction, confidence, band, projection, estimate, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Time-Series Forecast</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M12 46 L34 34 L56 40 L78 26 L106 32" stroke="#e4501e" stroke-width="1.8" fill="none"/><path d="M12 40 L34 26 L56 32 L78 18 L106 24 L106 40 L78 34 L56 48 L34 42 L12 52 Z" fill="#e4501e" opacity="0.16"/></svg></div>
+  <p class="ch-best">Line with Confidence Band</p>
+  <p class="ch-sec">备选：Ribbon Chart</p>
+  <p class="ch-note">预测线要带置信区间，别画一根光秃秃的延长线。</p>
+  <p class="ch-txt"><b>用：</b>Historical data + model predictions; communicating uncertainty range to non-technical stakeholders</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>No historical baseline; prediction confidence is too low to be useful; audience is not data-literate</p>
+  <p class="ch-txt"><b>量级：</b>Keep historical window to 30–90 days for readability; forecast horizon ≤ 30% of visible x-axis range</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Toggle</span>
+    <span class="tag">Chart.js</span>
+  </div>
+</article><article class="ch" data-item data-search="anomaly detection line chart with highlights scatter with alert monitoring a time-series for outliers; alerting users to unexpected spikes or dips in operational data anomaly, outlier, spike, alert, detection, monitoring, deviation, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Anomaly Detection</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M12 54 L34 42 L56 46 L78 24 L106 34" stroke="#b3aea2" stroke-width="1.6" fill="none"/><circle cx="78" cy="24" r="9" fill="#e4501e" opacity="0.18"/><circle cx="78" cy="24" r="3.4" fill="#e4501e"/><path d="M78 24 L78 60" stroke="#e4501e" stroke-width="1" stroke-dasharray="2 2"/></svg></div>
+  <p class="ch-best">Line Chart with Highlights</p>
+  <p class="ch-sec">备选：Scatter with Alert</p>
+  <p class="ch-note">异常点要高亮并给出基线，否则读者不知道「正常」长什么样。</p>
+  <p class="ch-txt"><b>用：</b>Monitoring a time-series for outliers; alerting users to unexpected spikes or dips in operational data</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Anomalies are predefined categories (use bar with highlight); real-time context without a pause control</p>
+  <p class="ch-txt"><b>量级：</b>Stream at ≤60fps with Canvas; batch: up to 10,000 pts; mark anomalies as a separate data layer</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Alert</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="hierarchical / nested data treemap sunburst, nested donut, icicle showing size relationships within a hierarchy; overview of proportional structure (e.g., budget breakdown) hierarchy, nested, treemap, parent, children, breakdown, drill, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Hierarchical / Nested Data</h2>
+    <span class="tag tag--bad">风险 高</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="12" y="14" width="52" height="52" rx="2" fill="#e4501e" opacity="0.75"/><rect x="64" y="14" width="44" height="30" rx="2" fill="#b3aea2" opacity="0.55"/><rect x="64" y="44" width="24" height="22" rx="2" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><rect x="88" y="44" width="20" height="22" rx="2" fill="#e4501e" opacity="0.35"/><rect x="14" y="16" width="22" height="22" rx="1" fill="#fff" opacity="0.35"/></svg></div>
+  <p class="ch-best">Treemap</p>
+  <p class="ch-sec">备选：Sunburst, Nested Donut, Icicle</p>
+  <p class="ch-note">嵌套占比用矩形树图；层级超过 3 层就该拆开看。</p>
+  <p class="ch-txt"><b>用：</b>Showing size relationships within a hierarchy; overview of proportional structure (e.g., budget breakdown)</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Hierarchy depth &gt; 3 levels (too complex to read); user needs to compare sibling values precisely</p>
+  <p class="ch-txt"><b>量级：</b>&lt;200 nodes: SVG; 200–1000: Canvas; &gt;1000: paginate or pre-filter before rendering</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Drilldown</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="flow / process data sankey diagram alluvial, chord diagram showing how quantities flow between nodes; multi-source multi-target distribution flow, process, sankey, distribution, source, target, transfer, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Flow / Process Data</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M18 16 C60 16 62 30 102 30" stroke="#e4501e" stroke-width="8" fill="none" opacity="0.55" stroke-linecap="round"/><path d="M18 36 C60 36 62 44 102 44" stroke="#b3aea2" stroke-width="6" fill="none" opacity="0.5" stroke-linecap="round"/><path d="M18 52 C60 52 62 58 102 60" stroke="#e4501e" stroke-width="4" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
+  <p class="ch-best">Sankey Diagram</p>
+  <p class="ch-sec">备选：Alluvial, Chord Diagram</p>
+  <p class="ch-note">看流向与分流用桑基图；节点超过 12 个会变成一团线。</p>
+  <p class="ch-txt"><b>用：</b>Showing how quantities flow between nodes; multi-source multi-target distribution</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Flow directions form loops (use network graph); fewer than 3 source-target pairs; mobile-primary context</p>
+  <p class="ch-txt"><b>量级：</b>&lt;50 flows: SVG; ≥50: Canvas; &gt;200 flows: aggregate minor flows into 'Other' node</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Drilldown</span>
+    <span class="tag">D3.js (d3-sankey)</span>
+  </div>
+</article><article class="ch" data-item data-search="cumulative changes waterfall chart stacked bar, cascade showing how individual positive/negative components add up to a final total (e.g., p&amp;l, budget variance) waterfall, cumulative, variance, incremental, bridge, delta, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Cumulative Changes</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><line x1="8" y1="66" x2="112" y2="66" stroke="#e6e2d8" stroke-width="1"/><rect x="10" y="40" width="14" height="26" fill="#e4501e" opacity="0.75"/><rect x="30" y="30" width="14" height="36" fill="#e4501e" opacity="0.75"/><rect x="50" y="34" width="14" height="32" fill="#b3aea2" opacity="0.75"/><rect x="62" y="46" width="14" height="20" fill="#b3aea2" opacity="0.75"/><rect x="72" y="36" width="14" height="30" fill="#e4501e" opacity="0.75"/><rect x="90" y="26" width="14" height="40" fill="#e4501e" opacity="0.75"/><path d="M24 40 L30 40 M44 30 L50 30 M64 46 L72 46 M86 36 L90 36" stroke="#b3aea2" stroke-width="1" stroke-dasharray="2 2" fill="none"/></svg></div>
+  <p class="ch-best">Waterfall Chart</p>
+  <p class="ch-sec">备选：Stacked Bar, Cascade</p>
+  <p class="ch-note">累计增减用瀑布图，能看出每一步对总量的贡献。</p>
+  <p class="ch-txt"><b>用：</b>Showing how individual positive/negative components add up to a final total (e.g., P&amp;L, budget variance)</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Changes are not additive; more than 12 bars (readability breaks); audience expects a simple total</p>
+  <p class="ch-txt"><b>量级：</b>4–12 bars optimal; beyond 12 aggregate minor items into a single 'Other' bar</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover</span>
+    <span class="tag">ApexCharts</span>
+  </div>
+</article><article class="ch" data-item data-search="multi-variable comparison radar / spider chart parallel coordinates, grouped bar comparing multiple entities across the same fixed set of attributes (e.g., product feature comparison) radar, spider, multi-variable, attributes, dimensions, comparison, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Multi-Variable Comparison</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><polygon points="60 16,82.5166604983954 29,82.51666049839541 55,60 68,37.483339501604604 55.00000000000001,37.4833395016046 28.999999999999996" fill="none" stroke="#e6e2d8" stroke-width="1"/><polygon points="60 24.84,74.86099592894097 33.42,74.86099592894097 50.58,60 59.16,45.139004071059034 50.580000000000005,45.139004071059034 33.419999999999995" fill="none" stroke="#e6e2d8" stroke-width="1"/><polygon points="60 33.42,67.43049796447048 37.71,67.43049796447049 46.29,60 50.58,52.56950203552952 46.290000000000006,52.56950203552952 37.71" fill="none" stroke="#e6e2d8" stroke-width="1"/><polygon points="60 18.599999999999998,71.2583302491977 35.5,76.88749537379655 51.75,60 52.4,40.86083857636391 53.05000000000001,47.61583672588253 34.849999999999994" fill="#e4501e" fill-opacity="0.22" stroke="#e4501e" stroke-width="1.5"/></svg></div>
+  <p class="ch-best">Radar / Spider Chart</p>
+  <p class="ch-sec">备选：Parallel Coordinates, Grouped Bar</p>
+  <p class="ch-note">多维比较用雷达图；超过 8 个维度就失去区分度。</p>
+  <p class="ch-txt"><b>用：</b>Comparing multiple entities across the same fixed set of attributes (e.g., product feature comparison)</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Axes &gt; 8 (unreadable); values need precise comparison (use grouped bar); audience unfamiliar with radar charts</p>
+  <p class="ch-txt"><b>量级：</b>2–3 datasets maximum per chart; 5–8 axes; beyond 8 axes switch to parallel coordinates</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Toggle</span>
+    <span class="tag">Chart.js</span>
+  </div>
+</article><article class="ch" data-item data-search="stock / trading ohlc candlestick chart ohlc bar, heikin-ashi financial time-series with open/high/low/close data; trading or investment product context only stock, trading, ohlc, candlestick, finance, price, volume, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Stock / Trading OHLC</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><line x1="10" y1="70" x2="112" y2="70" stroke="#e6e2d8" stroke-width="1"/><line x1="22" y1="24" x2="22" y2="64" stroke="#4a4740" stroke-width="1"/><rect x="17" y="30" width="10" height="14" fill="#b3aea2"/><line x1="42" y1="16" x2="42" y2="48" stroke="#4a4740" stroke-width="1"/><rect x="37" y="22" width="10" height="10" fill="#b3aea2"/><line x1="62" y1="6" x2="62" y2="34" stroke="#4a4740" stroke-width="1"/><rect x="57" y="12" width="10" height="8" fill="#b3aea2"/><line x1="82" y1="20" x2="82" y2="56" stroke="#4a4740" stroke-width="1"/><rect x="77" y="26" width="10" height="12" fill="#b3aea2"/><line x1="102" y1="12" x2="102" y2="48" stroke="#4a4740" stroke-width="1"/><rect x="97" y="18" width="10" height="8" fill="#b3aea2"/></svg></div>
+  <p class="ch-best">Candlestick Chart</p>
+  <p class="ch-sec">备选：OHLC Bar, Heikin-Ashi</p>
+  <p class="ch-note">开高低收用 K 线；必须配成交量，否则看不出力度。</p>
+  <p class="ch-txt"><b>用：</b>Financial time-series with Open/High/Low/Close data; trading or investment product context only</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Non-financial audience; no OHLC data available (use line chart); accessibility-first context</p>
+  <p class="ch-txt"><b>量级：</b>Real-time: Canvas required. Historical: paginate by time range. Max 500 candles visible at once</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Real-time + Hover + Zoom</span>
+    <span class="tag">Lightweight Charts (TradingView)</span>
+  </div>
+</article><article class="ch" data-item data-search="relationship / connection data network graph hierarchical tree, adjacency matrix mapping connections between entities; network topology or social graph exploration context network, graph, nodes, edges, connections, relationships, force, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Relationship / Connection Data</h2>
+    <span class="tag tag--bad">风险 高</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M30 24 L58 18 M30 24 L44 48 M58 18 L82 30 M44 48 L82 30 M58 18 L64 52 M44 48 L64 52 M82 30 L64 52 M82 30 L96 54 M64 52 L96 54" stroke="#b3aea2" stroke-width="1" fill="none"/><circle cx="30" cy="24" r="6" fill="#e4501e"/><circle cx="58" cy="18" r="5" fill="#e4501e" opacity="0.7"/><circle cx="82" cy="30" r="7" fill="#4a4740"/><circle cx="44" cy="48" r="5" fill="#b3aea2"/><circle cx="64" cy="52" r="6" fill="#e4501e" opacity="0.5"/><circle cx="96" cy="54" r="4" fill="#b3aea2"/></svg></div>
+  <p class="ch-best">Network Graph</p>
+  <p class="ch-sec">备选：Hierarchical Tree, Adjacency Matrix</p>
+  <p class="ch-note">关系网络用节点图；超过 50 个节点要做聚类或筛选。</p>
+  <p class="ch-txt"><b>用：</b>Mapping connections between entities; network topology or social graph exploration context</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Node count &gt; 500 without clustering pre-applied; user needs precise connection counts; mobile context</p>
+  <p class="ch-txt"><b>量级：</b>≤100 nodes: SVG; 101–500: Canvas; &gt;500: must apply clustering/LOD before rendering</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Drilldown + Hover + Drag</span>
+    <span class="tag">D3.js (d3-force)</span>
+  </div>
+</article><article class="ch" data-item data-search="distribution / statistical box plot violin plot, beeswarm showing spread, median, and outliers of a dataset; comparing distributions across multiple groups distribution, statistical, spread, median, outlier, quartile, boxplot, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Distribution / Statistical</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><line x1="10" y1="70" x2="112" y2="70" stroke="#e6e2d8" stroke-width="1"/><rect x="21" y="30" width="18" height="-16" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><line x1="21" y1="46" x2="39" y2="46" stroke="#e4501e" stroke-width="2"/><line x1="30" y1="22" x2="30" y2="30" stroke="#b3aea2" stroke-width="1"/><line x1="30" y1="14" x2="30" y2="22" stroke="#b3aea2" stroke-width="1"/><line x1="25" y1="22" x2="35" y2="22" stroke="#b3aea2" stroke-width="1"/><line x1="25" y1="22" x2="35" y2="22" stroke="#b3aea2" stroke-width="1"/><rect x="51" y="24" width="18" height="-6" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><line x1="51" y1="56" x2="69" y2="56" stroke="#e4501e" stroke-width="2"/><line x1="60" y1="16" x2="60" y2="24" stroke="#b3aea2" stroke-width="1"/><line x1="60" y1="18" x2="60" y2="26" stroke="#b3aea2" stroke-width="1"/><line x1="55" y1="16" x2="65" y2="16" stroke="#b3aea2" stroke-width="1"/><line x1="55" y1="26" x2="65" y2="26" stroke="#b3aea2" stroke-width="1"/><rect x="81" y="34" width="18" height="-24" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><line x1="81" y1="42" x2="99" y2="42" stroke="#e4501e" stroke-width="2"/><line x1="90" y1="26" x2="90" y2="34" stroke="#b3aea2" stroke-width="1"/><line x1="90" y1="10" x2="90" y2="18" stroke="#b3aea2" stroke-width="1"/><line x1="85" y1="26" x2="95" y2="26" stroke="#b3aea2" stroke-width="1"/><line x1="85" y1="18" x2="95" y2="18" stroke="#b3aea2" stroke-width="1"/></svg></div>
+  <p class="ch-best">Box Plot</p>
+  <p class="ch-sec">备选：Violin Plot, Beeswarm</p>
+  <p class="ch-note">看分布形态用箱线图；样本少于 20 个不足以画箱。</p>
+  <p class="ch-txt"><b>用：</b>Showing spread, median, and outliers of a dataset; comparing distributions across multiple groups</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Fewer than 20 data points per group (distribution is not meaningful); audience unfamiliar with statistical charts</p>
+  <p class="ch-txt"><b>量级：</b>Any sample size; aggregated representation so rendering is ⚡ Excellent at any volume</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover</span>
+    <span class="tag">Plotly</span>
+  </div>
+</article><article class="ch" data-item data-search="performance vs target (compact) bullet chart gauge, progress bar dashboard with multiple kpis side by side; space-constrained contexts where a gauge is too large bullet, compact, kpi, dashboard, target, benchmark, range, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Performance vs Target (Compact)</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="14" y="14" width="90" height="10" rx="2" fill="#e6e2d8"/><rect x="14" y="14" width="73.8" height="10" rx="2" fill="#e4501e" opacity="0.8"/><line x1="95" y1="12" x2="95" y2="26" stroke="#4a4740" stroke-width="2"/><rect x="14" y="32" width="90" height="10" rx="2" fill="#e6e2d8"/><rect x="14" y="32" width="49.50000000000001" height="10" rx="2" fill="#e4501e" opacity="0.8"/><line x1="95" y1="30" x2="95" y2="44" stroke="#4a4740" stroke-width="2"/><rect x="14" y="50" width="90" height="10" rx="2" fill="#e6e2d8"/><rect x="14" y="50" width="61.2" height="10" rx="2" fill="#e4501e" opacity="0.8"/><line x1="95" y1="48" x2="95" y2="62" stroke="#4a4740" stroke-width="2"/></svg></div>
+  <p class="ch-best">Bullet Chart</p>
+  <p class="ch-sec">备选：Gauge, Progress Bar</p>
+  <p class="ch-note">空间紧张时用紧凑版子弹图，一行一个指标。</p>
+  <p class="ch-txt"><b>用：</b>Dashboard with multiple KPIs side by side; space-constrained contexts where a gauge is too large</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Single KPI with emphasis (use gauge); data has no defined target range; fewer than 3 KPIs</p>
+  <p class="ch-txt"><b>量级：</b>Ideal for 3–10 bullet charts in a grid; scales to any count efficiently</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="proportional / percentage waffle chart pictogram, stacked bar 100% showing what fraction of a whole is filled; percentage progress in a visually engaging and accessible format waffle, percentage, proportion, progress, filled, grid, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Proportional / Percentage</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="12" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.55"/><rect x="21.6" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.5575"/><rect x="31.2" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.5650000000000001"/><rect x="40.8" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.5725"/><rect x="50.4" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.5800000000000001"/><rect x="60" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.5875"/><rect x="69.6" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.5950000000000001"/><rect x="79.2" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6025"/><rect x="88.8" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6100000000000001"/><rect x="98.39999999999999" y="14" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6175"/><rect x="12" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.625"/><rect x="21.6" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6325000000000001"/><rect x="31.2" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.64"/><rect x="40.8" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6475000000000001"/><rect x="50.4" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.655"/><rect x="60" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6625000000000001"/><rect x="69.6" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.67"/><rect x="79.2" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6775"/><rect x="88.8" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.685"/><rect x="98.39999999999999" y="22.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.6925"/><rect x="12" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7000000000000001"/><rect x="21.6" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7075"/><rect x="31.2" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7150000000000001"/><rect x="40.8" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7225"/><rect x="50.4" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7300000000000001"/><rect x="60" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7375"/><rect x="69.6" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7450000000000001"/><rect x="79.2" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7525000000000001"/><rect x="88.8" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.76"/><rect x="98.39999999999999" y="31" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7675000000000001"/><rect x="12" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.775"/><rect x="21.6" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7825000000000001"/><rect x="31.2" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.79"/><rect x="40.8" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.7975000000000001"/><rect x="50.4" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.805"/><rect x="60" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.8125"/><rect x="69.6" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.8200000000000001"/><rect x="79.2" y="39.5" width="7.6" height="6.5" rx="1" fill="#e4501e" opacity="0.8275000000000001"/><rect x="88.8" y="39.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="98.39999999999999" y="39.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="12" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="21.6" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="31.2" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="40.8" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="50.4" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="60" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="69.6" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="79.2" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="88.8" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="98.39999999999999" y="48" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="12" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="21.6" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="31.2" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="40.8" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="50.4" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="60" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="69.6" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="79.2" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="88.8" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/><rect x="98.39999999999999" y="56.5" width="7.6" height="6.5" rx="1" fill="#e6e2d8" opacity="1"/></svg></div>
+  <p class="ch-best">Waffle Chart</p>
+  <p class="ch-sec">备选：Pictogram, Stacked Bar 100%</p>
+  <p class="ch-note">百分比用华夫图，比饼图更容易比较大小。</p>
+  <p class="ch-txt"><b>用：</b>Showing what fraction of a whole is filled; percentage progress in a visually engaging and accessible format</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>More than 5 categories (use stacked bar); exact values matter over visual proportion; very tight space</p>
+  <p class="ch-txt"><b>量级：</b>10×10 grid standard (100 cells); for &gt; 5 categories switch to stacked 100% bar</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover</span>
+    <span class="tag">D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="hierarchical proportional sunburst chart treemap, icicle, circle packing exploring nested proportions where both hierarchy and relative size matter (e.g., org spend breakdown) sunburst, hierarchy, nested, proportion, radial, circle, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Hierarchical Proportional</h2>
+    <span class="tag tag--bad">风险 高</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M60 40 L60 12 A28 28 0 0 1 88 40 Z" fill="#e4501e" opacity="0.85" stroke="#fff" stroke-width="1"/><path d="M60 40 L88 40 A28 28 0 0 1 60 68 Z" fill="#e4501e" opacity="0.5" stroke="#fff" stroke-width="1"/><path d="M60 40 L60 68 A28 28 0 0 1 32 40 Z" fill="#b3aea2" opacity="0.55" stroke="#fff" stroke-width="1"/><path d="M60 40 L32 40 A28 28 0 0 1 60 12 Z" fill="#b3aea2" opacity="0.3" stroke="#fff" stroke-width="1"/><path d="M60 40 L60 24 A16 16 0 0 1 76 40 Z" fill="#4a4740" opacity="0.35" stroke="#fff" stroke-width="1"/><path d="M60 40 L76 40 A16 16 0 0 1 60 56 Z" fill="#e6e2d8" opacity="1" stroke="#fff" stroke-width="1"/><path d="M60 40 L60 56 A16 16 0 0 1 44 40 Z" fill="#e6e2d8" opacity="1" stroke="#fff" stroke-width="1"/><path d="M60 40 L44 40 A16 16 0 0 1 60 24 Z" fill="#e6e2d8" opacity="1" stroke="#fff" stroke-width="1"/></svg></div>
+  <p class="ch-best">Sunburst Chart</p>
+  <p class="ch-sec">备选：Treemap, Icicle, Circle Packing</p>
+  <p class="ch-note">层级占比用旭日图；超过 3 环就看不清了。</p>
+  <p class="ch-txt"><b>用：</b>Exploring nested proportions where both hierarchy and relative size matter (e.g., org spend breakdown)</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>More than 3 hierarchy levels (outer rings become unreadable); precision matters over overview; mobile</p>
+  <p class="ch-txt"><b>量级：</b>&lt;100 nodes: SVG; 100–500: Canvas; &gt;500: filter to top N before rendering</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Drilldown + Hover</span>
+    <span class="tag">D3.js (d3-hierarchy)</span>
+  </div>
+</article><article class="ch" data-item data-search="root cause analysis decomposition tree decision tree, flow chart decomposing a metric into contributing factors; ai-assisted analysis or bi drill-down scenarios root cause, decomposition, tree, hierarchy, drill-down, ai-split, attribution, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Root Cause Analysis</h2>
+    <span class="tag tag--ok">风险 低</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="46" y="12" width="28" height="12" rx="2" fill="#e4501e"/><path d="M60 24 L60 32 M30 32 L90 32 M30 32 L30 40 M60 32 L60 40 M90 32 L90 40" stroke="#b3aea2" stroke-width="1" fill="none"/><rect x="18" y="40" width="24" height="10" rx="2" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><rect x="48" y="40" width="24" height="10" rx="2" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><rect x="78" y="40" width="24" height="10" rx="2" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><path d="M30 50 L30 58 M90 50 L90 58" stroke="#b3aea2" stroke-width="1" fill="none"/><rect x="18" y="58" width="24" height="10" rx="2" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><rect x="78" y="58" width="24" height="10" rx="2" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/></svg></div>
+  <p class="ch-best">Decomposition Tree</p>
+  <p class="ch-sec">备选：Decision Tree, Flow Chart</p>
+  <p class="ch-note">归因拆解用分解树，逐层下钻到可行动的粒度。</p>
+  <p class="ch-txt"><b>用：</b>Decomposing a metric into contributing factors; AI-assisted analysis or BI drill-down scenarios</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>No clear parent-child causal relationship; audience expects a summary rather than exploration</p>
+  <p class="ch-txt"><b>量级：</b>Up to 5 levels deep; limit visible nodes to 20 per level for readability; lazy-load deeper levels</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Drill + Expand</span>
+    <span class="tag">Power BI (native)</span>
+  </div>
+</article><article class="ch" data-item data-search="3d spatial data 3d scatter / surface plot volumetric rendering, point cloud scientific/engineering context where z-axis carries essential info not expressible in 2d 3d, spatial, immersive, terrain, molecular, volumetric, point-cloud, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">3D Spatial Data</h2>
+    <span class="tag tag--bad">风险 高</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M20 62 L20 24 L92 16 M20 62 L98 56 M92 16 L98 56" stroke="#e6e2d8" stroke-width="1" fill="none"/><circle cx="44" cy="40" r="5" fill="#e4501e" opacity="0.85"/><circle cx="62" cy="32" r="3.5" fill="#e4501e" opacity="0.6"/><circle cx="74" cy="44" r="6" fill="#e4501e" opacity="0.45"/><circle cx="38" cy="52" r="3" fill="#4a4740" opacity="0.6"/><circle cx="84" cy="30" r="4" fill="#4a4740" opacity="0.45"/></svg></div>
+  <p class="ch-best">3D Scatter / Surface Plot</p>
+  <p class="ch-sec">备选：Volumetric Rendering, Point Cloud</p>
+  <p class="ch-note">三维数据才用 3D；平面屏幕上容易误读深度。</p>
+  <p class="ch-txt"><b>用：</b>Scientific/engineering context where Z-axis carries essential info not expressible in 2D</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>2D projection conveys the same insight; mobile context; accessibility-required environments; standard business dashboards</p>
+  <p class="ch-txt"><b>量级：</b>WebGL required. Deck.gl: up to 1M points. Three.js: LOD required beyond 50,000 pts</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Rotate + Zoom + VR</span>
+    <span class="tag">Three.js</span>
+  </div>
+</article><article class="ch" data-item data-search="real-time streaming streaming area chart ticker tape, moving gauge live monitoring dashboards; iot/ops data updating at ≥1 hz; user needs current value at a glance streaming, real-time, ticker, live, velocity, pulse, monitoring, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Real-Time Streaming</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M12 56 C30 40 40 54 56 44 C72 34 84 48 108 30 L108 68 L12 68 Z" fill="#e4501e" opacity="0.28"/><path d="M12 62 C30 52 42 62 58 54 C74 46 86 58 108 46 L108 68 L12 68 Z" fill="#b3aea2" opacity="0.35"/><path d="M12 56 C30 40 40 54 56 44 C72 34 84 48 108 30" stroke="#e4501e" stroke-width="1.8" fill="none"/></svg></div>
+  <p class="ch-best">Streaming Area Chart</p>
+  <p class="ch-sec">备选：Ticker Tape, Moving Gauge</p>
+  <p class="ch-note">实时流用流式面积图，只保留最近窗口，旧数据聚合。</p>
+  <p class="ch-txt"><b>用：</b>Live monitoring dashboards; IoT/ops data updating at ≥1 Hz; user needs current value at a glance</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Update frequency &lt; 1/min (use periodic-refresh line chart); flashing content without reduced-motion support</p>
+  <p class="ch-txt"><b>量级：</b>Canvas/WebGL required. Buffer last 60–300s of data. Downsample older data on scroll</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Real-time + Pause + Zoom</span>
+    <span class="tag">Smoothed D3.js</span>
+  </div>
+</article><article class="ch" data-item data-search="sentiment / emotion word cloud with sentiment sentiment arc, radar chart nlp output visualization; exploratory analysis of text corpus sentiment; frequency-weighted keyword overview sentiment, emotion, nlp, opinion, feeling, text-analysis, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Sentiment / Emotion</h2>
+    <span class="tag tag--bad">风险 高</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><rect x="24" y="30" width="30" height="9" rx="3" fill="#e4501e" opacity="0.8"/><rect x="62" y="24" width="26" height="8" rx="3" fill="#b3aea2" opacity="0.45"/><rect x="30" y="44" width="22" height="7" rx="3" fill="#b3aea2" opacity="0.45"/><rect x="58" y="38" width="20" height="6" rx="3" fill="#e4501e" opacity="0.8"/><rect x="82" y="34" width="18" height="6" rx="3" fill="#b3aea2" opacity="0.45"/><rect x="24" y="54" width="18" height="6" rx="3" fill="#b3aea2" opacity="0.45"/><rect x="48" y="52" width="24" height="7" rx="3" fill="#e4501e" opacity="0.8"/><rect x="76" y="50" width="16" height="5" rx="3" fill="#b3aea2" opacity="0.45"/></svg></div>
+  <p class="ch-best">Word Cloud with Sentiment</p>
+  <p class="ch-sec">备选：Sentiment Arc, Radar Chart</p>
+  <p class="ch-note">情绪分布用带情感着色的词云；只做概览，不做精确比较。</p>
+  <p class="ch-txt"><b>用：</b>NLP output visualization; exploratory analysis of text corpus sentiment; frequency-weighted keyword overview</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Precise values matter (word size is inherently imprecise); screen-reader context; corpus &lt; 50 items</p>
+  <p class="ch-txt"><b>量级：</b>50–5000 terms optimal. Beyond 5000: apply top-N filtering before render. Avoid on mobile</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Hover + Filter</span>
+    <span class="tag">D3-cloud</span>
+  </div>
+</article><article class="ch" data-item data-search="process mining process map / graph directed acyclic graph (dag), petri net analyzing event logs to visualize actual process flows; identifying bottlenecks and deviations in ops/product funnels process, mining, variants, path, bottleneck, log, event, accessible chart, keyboard accessible chart">
+  <div class="ch-h">
+    <h2 class="ch-t">Process Mining</h2>
+    <span class="tag tag--warn">风险 视情况</span>
+  </div>
+  <div class="ch-fig"><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><circle cx="22" cy="26" r="8" fill="#e4501e"/><circle cx="60" cy="20" r="7" fill="#b3aea2"/><circle cx="98" cy="28" r="8" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><circle cx="40" cy="56" r="7" fill="#e6e2d8" stroke="#b3aea2" stroke-width="1"/><circle cx="82" cy="56" r="9" fill="#e4501e" opacity="0.6"/><path d="M30 27 L53 22 M67 22 L90 26 M26 33 L37 50 M47 55 L73 55 M90 35 L84 47" stroke="#b3aea2" stroke-width="1.2" fill="none"/></svg></div>
+  <p class="ch-best">Process Map / Graph</p>
+  <p class="ch-sec">备选：Directed Acyclic Graph (DAG), Petri Net</p>
+  <p class="ch-note">流程挖掘用过程图，标出瓶颈与回流的边。</p>
+  <p class="ch-txt"><b>用：</b>Analyzing event logs to visualize actual process flows; identifying bottlenecks and deviations in ops/product funnels</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>No event log data available; audience expects a static flowchart (use diagram tool); node count &gt; 100 without pre-filtering</p>
+  <p class="ch-txt"><b>量级：</b>&lt;30 nodes: SVG; 30–100: Canvas; &gt;100: apply variant filtering (top 80% of cases) before rendering</p>
+  <div class="ch-foot">
+    <span class="tag">交互 Drag + Node-Click</span>
+    <span class="tag">React-Flow</span>
+  </div>
+</article></div>
+<p class="empty" data-empty hidden>没有匹配的图表类型。</p>
+  </main>
+</div>
+<footer class="foot">
+  <div class="foot-in">
+    <p><strong>设计手册</strong> · 姊妹站 <a href="../gallery/index.html">风格图鉴</a>（88 种风格的渲染效果），数据来自插件内置的 4319 行设计知识库。</p>
+    <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
+  </div>
+</footer>
+<script src="./assets/app.js" defer></script>
+
+</body>
+</html>

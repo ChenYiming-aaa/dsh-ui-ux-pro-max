@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>落地页模式 · 34 种结构 · 设计手册</title>
+<meta name="description" content="34 种落地页结构：分区顺序线框、CTA 位置、配色策略、推荐效果与转化优化要点。">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./assets/fonts.css">
+<link rel="stylesheet" href="./assets/atlas.css">
+
+</head>
+<body class="page-landing">
+<a class="skip" href="#main">跳到正文</a>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-t">设计手册</span>
+      <span class="brand-s">atlas</span>
+    </a>
+    <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a" href="./charts.html">图表<span class="nav-c">25</span></a><a class="nav-a is-on" href="./landing.html" aria-current="page">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a></nav>
+    <div class="top-r">
+      <a class="top-link top-link--x" href="../gallery/index.html" title="另一个站点：88 种设计风格的渲染效果"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选与说明</summary><div class="side-in"><div class="side-blk">
+  <h2 class="side-h">区块数</h2>
+  <div class="chips" data-filter="sections" role="group"><button type="button" class="chip is-on" data-v="">全部</button><button type="button" class="chip" data-v="4" data-n="18">4 个区块<em>18</em></button><button type="button" class="chip" data-v="5" data-n="16">5 个区块<em>16</em></button></div>
+  
+</div>
+<div class="side-blk">
+  <h2 class="side-h">模式索引</h2>
+  <ul class="side-list"><li><a href="#hero-features-cta">首屏 + 特性 + 转化入口</a></li><li><a href="#hero-testimonials-cta">首屏 + 用户证言 + 转化入口</a></li><li><a href="#product-demo-features">产品演示 + 特性</a></li><li><a href="#minimal-single-column">极简单栏</a></li><li><a href="#funnel-3-step-conversion">漏斗（三步转化）</a></li><li><a href="#comparison-table-cta">对比表 + 转化入口</a></li><li><a href="#lead-magnet-form">引流诱饵 + 表单</a></li><li><a href="#pricing-page-cta">定价页 + 转化入口</a></li><li><a href="#video-first-hero">视频首屏</a></li><li><a href="#scroll-triggered-storytelling">滚动叙事</a></li><li><a href="#ai-personalization-landing">AI 个性化落地</a></li><li><a href="#waitlist-coming-soon">候补名单 / 即将上线</a></li><li><a href="#comparison-table-focus">对比表主导</a></li><li><a href="#pricing-focused-landing">定价驱动落地</a></li><li><a href="#app-store-style-landing">应用商店风格落地</a></li><li><a href="#faq-documentation-landing">问答 / 文档落地</a></li><li><a href="#immersive-interactive-experience">沉浸互动体验</a></li><li><a href="#event-conference-landing">活动 / 大会落地</a></li><li><a href="#product-review-ratings-focused">评价 / 评分驱动</a></li><li><a href="#community-forum-landing">社区 / 论坛落地</a></li><li><a href="#before-after-transformation">前后对比</a></li><li><a href="#marketplace-directory">交易市场 / 目录</a></li><li><a href="#newsletter-content-first">通讯优先 / 内容优先</a></li><li><a href="#webinar-registration">网络研讨会报名</a></li><li><a href="#enterprise-gateway">企业门户</a></li><li><a href="#portfolio-grid">作品集网格</a></li><li><a href="#horizontal-scroll-journey">横向滚动旅程</a></li><li><a href="#bento-grid-showcase">便当式网格展示</a></li><li><a href="#interactive-3d-configurator">互动 3D 配置器</a></li><li><a href="#ai-driven-dynamic-landing">AI 驱动动态落地</a></li><li><a href="#feature-rich-showcase">功能展示</a></li><li><a href="#hero-centric-design">首屏主导</a></li><li><a href="#trust-authority-conversion">信任与权威 + 转化</a></li><li><a href="#real-time-operations-landing">实时 / 运营落地</a></li></ul>
+  
+</div>
+<div class="side-blk">
+  <h2 class="side-h">说明</h2>
+  <p class="side-note">线框按 Section Order 逐区绘制，高度表示这一区大致占多少版面。橙色区块是 CTA，深色是导航。</p>
+  <p class="side-note">34 种模式来自落地页表；产品配方里的「落地页」会链到这里的对应锚点。</p>
+  
+</div></div></details></aside>
+  <main class="main" id="main">
+<header class="phead">
+  <p class="kicker">页面结构</p>
+  <h1 class="ph1">落地页模式</h1>
+  <p class="lead"><strong>34 种</strong>经过验证的落地页骨架。每种给出分区顺序、CTA 位置、配色策略、推荐效果与转化要点，并把它画成线框——先看骨架，再谈视觉。</p>
+  <div class="pmeta"><span>34 种模式</span><span>152 个区块</span><span>含 CTA 位置</span><span>字段原文为英文</span></div>
+</header>
+<div class="tools">
+  <label class="search">
+    <span class="search-ico" aria-hidden="true"></span>
+    <input type="search" data-search placeholder="搜索模式名、分区、转化要点…" autocomplete="off" spellcheck="false">
+  </label>
+  
+  
+  <span class="count" data-count-out aria-live="polite"></span>
+</div>
+<div class="ld-grid" data-list><article class="ld" data-item id="hero-features-cta" data-search="首屏 + 特性 + 转化入口 hero + features + cta hero, hero-centric, hero-centric design, features, feature-rich, feature-rich showcase, cta, call-to-action hero with headline/image &gt; value prop &gt; key features (3-5) &gt; cta section &gt; footer hero (sticky) + bottom deep cta placement. for cta label text, verify at least 4.5:1 against the button fill; use 7:1 only when the product explicitly targets aaa normal-text contrast. keep focus and component boundaries independently visible. disable hero parallax under reduced motion and render its static final state.">
+  <div class="ld-h">
+    <h2 class="ld-t">首屏 + 特性 + 转化入口<small class="rec-en">Hero + Features + CTA</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero with headline/image"><span>Hero with headline/image</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Value prop"><span>Value prop</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Key features (3-5)"><span>Key features (3-5)</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA section"><span>CTA section</span><em>转化</em></div><div class="wire-s wire-s--footer" style="height:20px" title="Footer"><span>Footer</span><em>页脚</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero with headline/image &gt; Value prop &gt; Key features (3-5) &gt; CTA section &gt; Footer</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero (sticky) + Bottom</p>
+    <p class="ld-i"><b>配色策略</b>Hero: Brand primary or vibrant. Features: Card bg #FAFAFA. CTA: Contrasting accent color</p>
+    <p class="ld-i"><b>转化要点</b>Deep CTA placement. For CTA label text, verify at least 4.5:1 against the button fill; use 7:1 only when the product explicitly targets AAA normal-text contrast. Keep focus and component boundaries independently visible. Disable hero parallax under reduced motion and render its static final state.</p>
+  </div>
+  <div class="ld-f"><span class="mono">hero-features-cta</span><span>Hero parallax</span></div>
+</article><article class="ld" data-item id="hero-testimonials-cta" data-search="首屏 + 用户证言 + 转化入口 hero + testimonials + cta hero, testimonials, social-proof, social-proof-focused, social proof focused, trust, reviews, cta, carousel accessibility, keyboard accessible carousel, pause auto rotation, reduced motion final state hero &gt; problem statement &gt; solution overview &gt; testimonials carousel &gt; cta hero (sticky) + post-testimonials social proof before cta. use a concise set of verified testimonials with photo, name, and role. cta after social proof. provide previous/next and pause controls; stop rotation on focus, hover, and reduced motion; announce slide position. previous/next buttons and keyboard controls must expose every slide without dragging.">
+  <div class="ld-h">
+    <h2 class="ld-t">首屏 + 用户证言 + 转化入口<small class="rec-en">Hero + Testimonials + CTA</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero"><span>Hero</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Problem statement"><span>Problem statement</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Solution overview"><span>Solution overview</span><em>特性</em></div><div class="wire-s wire-s--social" style="height:27px" title="Testimonials carousel"><span>Testimonials carousel</span><em>口碑</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero &gt; Problem statement &gt; Solution overview &gt; Testimonials carousel &gt; CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero (sticky) + Post-testimonials</p>
+    <p class="ld-i"><b>配色策略</b>Hero: Brand color. Testimonials: Light bg #F5F5F5. Quotes: Italic, muted color #666. CTA: Vibrant</p>
+    <p class="ld-i"><b>转化要点</b>Social proof before CTA. Use a concise set of verified testimonials with photo, name, and role. CTA after social proof. Provide previous/next and pause controls; stop rotation on focus, hover, and reduced motion; announce slide position. Previous/next buttons and keyboard controls must expose every slide without dragging.</p>
+  </div>
+  <div class="ld-f"><span class="mono">hero-testimonials-cta</span><span>Testimonial carousel slide animations</span></div>
+</article><article class="ld" data-item id="product-demo-features" data-search="产品演示 + 特性 product demo + features demo, product-demo, features, showcase, interactive, interactive-product-demo, interactive product demo hero &gt; product video/mockup (center) &gt; feature breakdown per section &gt; comparison (optional) &gt; cta video center + cta right/bottom use an interactive demo only when it explains value better than static media. provide captions, transcript, visible play/pause controls, and a non-video fallback; do not autoplay under reduced motion. pause media when offscreen or hidden and keep the final product state available as static content.">
+  <div class="ld-h">
+    <h2 class="ld-t">产品演示 + 特性<small class="rec-en">Product Demo + Features</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero"><span>Hero</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Product video/mockup (center)"><span>Product video/mockup (center)</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Feature breakdown per section"><span>Feature breakdown per section</span><em>特性</em></div><div class="wire-s wire-s--other" style="height:25px" title="Comparison (optional)"><span>Comparison (optional)</span><em>内容</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero &gt; Product video/mockup (center) &gt; Feature breakdown per section &gt; Comparison (optional) &gt; CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Video center + CTA right/bottom</p>
+    <p class="ld-i"><b>配色策略</b>Video surround: Brand color overlay. Features: Icon color #0080FF. Text: Dark #222</p>
+    <p class="ld-i"><b>转化要点</b>Use an interactive demo only when it explains value better than static media. Provide captions, transcript, visible play/pause controls, and a non-video fallback; do not autoplay under reduced motion. Pause media when offscreen or hidden and keep the final product state available as static content.</p>
+  </div>
+  <div class="ld-f"><span class="mono">product-demo-features</span><span>Video play button pulse</span></div>
+</article><article class="ld" data-item id="minimal-single-column" data-search="极简单栏 minimal single column minimal, simple, direct, minimal &amp; direct, minimal-direct, single-column, clean hero headline &gt; short description &gt; benefit bullets (3 max) &gt; cta &gt; footer center, large cta button single cta focus. large typography. lots of whitespace. no nav clutter. mobile-first.">
+  <div class="ld-h">
+    <h2 class="ld-t">极简单栏<small class="rec-en">Minimal Single Column</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero headline"><span>Hero headline</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Short description"><span>Short description</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Benefit bullets (3 max)"><span>Benefit bullets (3 max)</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div><div class="wire-s wire-s--footer" style="height:20px" title="Footer"><span>Footer</span><em>页脚</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero headline &gt; Short description &gt; Benefit bullets (3 max) &gt; CTA &gt; Footer</p>
+    <p class="ld-i"><b>CTA 位置</b>Center, large CTA button</p>
+    <p class="ld-i"><b>配色策略</b>Minimalist: Brand + white #FFFFFF + accent. Verify CTA label text against its button fill at 4.5:1 minimum; use 7:1 only for an explicit AAA normal-text target.</p>
+    <p class="ld-i"><b>转化要点</b>Single CTA focus. Large typography. Lots of whitespace. No nav clutter. Mobile-first.</p>
+  </div>
+  <div class="ld-f"><span class="mono">minimal-single-column</span><span>Minimal hover effects. Smooth scroll. CTA scale on hover (subtle)</span></div>
+</article><article class="ld" data-item id="funnel-3-step-conversion" data-search="漏斗（三步转化） funnel (3-step conversion) funnel, conversion, conversion-optimized, conversion optimized, steps, wizard, onboarding hero &gt; step 1 (problem) &gt; step 2 (solution) &gt; step 3 (action) &gt; cta progression each step: mini-cta. final: main cta progressive disclosure. show only essential info per step. use progress indicators. multiple ctas.">
+  <div class="ld-h">
+    <h2 class="ld-t">漏斗（三步转化）<small class="rec-en">Funnel (3-Step Conversion)</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero"><span>Hero</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Step 1 (problem)"><span>Step 1 (problem)</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Step 2 (solution)"><span>Step 2 (solution)</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Step 3 (action)"><span>Step 3 (action)</span><em>转化</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA progression"><span>CTA progression</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero &gt; Step 1 (problem) &gt; Step 2 (solution) &gt; Step 3 (action) &gt; CTA progression</p>
+    <p class="ld-i"><b>CTA 位置</b>Each step: mini-CTA. Final: main CTA</p>
+    <p class="ld-i"><b>配色策略</b>Step colors: 1 (Red/Problem), 2 (Orange/Process), 3 (Green/Solution). CTA: Brand color</p>
+    <p class="ld-i"><b>转化要点</b>Progressive disclosure. Show only essential info per step. Use progress indicators. Multiple CTAs.</p>
+  </div>
+  <div class="ld-f"><span class="mono">funnel-3-step-conversion</span><span>Step number animations</span></div>
+</article><article class="ld" data-item id="comparison-table-cta" data-search="对比表 + 转化入口 comparison table + cta comparison, table, compare, versus, cta hero &gt; problem intro &gt; comparison table (product vs competitors) &gt; pricing (optional) &gt; cta table: right column. cta: below table use comparison to show unique value. highlight your product row. include 'free trial' in pricing row.">
+  <div class="ld-h">
+    <h2 class="ld-t">对比表 + 转化入口<small class="rec-en">Comparison Table + CTA</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero"><span>Hero</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Problem intro"><span>Problem intro</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Comparison table (product vs competitors)"><span>Comparison table (product vs competitors)</span><em>特性</em></div><div class="wire-s wire-s--pricing" style="height:35px" title="Pricing (optional)"><span>Pricing (optional)</span><em>定价</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero &gt; Problem intro &gt; Comparison table (product vs competitors) &gt; Pricing (optional) &gt; CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Table: Right column. CTA: Below table</p>
+    <p class="ld-i"><b>配色策略</b>Table: Alternating rows (white/light grey). Your product: Highlight #FFFACD (light yellow) or green. Text: Dark</p>
+    <p class="ld-i"><b>转化要点</b>Use comparison to show unique value. Highlight your product row. Include 'free trial' in pricing row.</p>
+  </div>
+  <div class="ld-f"><span class="mono">comparison-table-cta</span><span>Table row hover highlight</span></div>
+</article><article class="ld" data-item id="lead-magnet-form" data-search="引流诱饵 + 表单 lead magnet + form lead, form, signup, capture, email, magnet hero (benefit headline) &gt; lead magnet preview (ebook cover, checklist, etc) &gt; form (minimal fields) &gt; cta submit form cta: submit button ask only for information necessary to deliver the lead magnet. preview its value and show submission progress.">
+  <div class="ld-h">
+    <h2 class="ld-t">引流诱饵 + 表单<small class="rec-en">Lead Magnet + Form</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (benefit headline)"><span>Hero (benefit headline)</span><em>首屏</em></div><div class="wire-s wire-s--social" style="height:27px" title="Lead magnet preview (ebook cover, checklist, etc)"><span>Lead magnet preview (ebook cover, checklist, etc)</span><em>口碑</em></div><div class="wire-s wire-s--form" style="height:35px" title="Form (minimal fields)"><span>Form (minimal fields)</span><em>表单</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA submit"><span>CTA submit</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (benefit headline) &gt; Lead magnet preview (ebook cover, checklist, etc) &gt; Form (minimal fields) &gt; CTA submit</p>
+    <p class="ld-i"><b>CTA 位置</b>Form CTA: Submit button</p>
+    <p class="ld-i"><b>配色策略</b>Lead magnet: Professional design. Form: Clean white bg. Inputs: Light border #CCCCCC. CTA: Brand color</p>
+    <p class="ld-i"><b>转化要点</b>Ask only for information necessary to deliver the lead magnet. Preview its value and show submission progress.</p>
+  </div>
+  <div class="ld-f"><span class="mono">lead-magnet-form</span><span>Form focus state animations</span></div>
+</article><article class="ld" data-item id="pricing-page-cta" data-search="定价页 + 转化入口 pricing page + cta pricing, plans, tiers, comparison, cta hero (pricing headline) &gt; price comparison cards &gt; feature comparison table &gt; faq section &gt; final cta each card: cta button. sticky cta in nav highlight the plan that matches the intended audience and show actual annual savings transparently. use faqs to address concerns.">
+  <div class="ld-h">
+    <h2 class="ld-t">定价页 + 转化入口<small class="rec-en">Pricing Page + CTA</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (pricing headline)"><span>Hero (pricing headline)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Price comparison cards"><span>Price comparison cards</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Feature comparison table"><span>Feature comparison table</span><em>特性</em></div><div class="wire-s wire-s--faq" style="height:25px" title="FAQ section"><span>FAQ section</span><em>问答</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Final CTA"><span>Final CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (pricing headline) &gt; Price comparison cards &gt; Feature comparison table &gt; FAQ section &gt; Final CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Each card: CTA button. Sticky CTA in nav</p>
+    <p class="ld-i"><b>配色策略</b>Free: Grey, Starter: Blue, Pro: Green/Gold, Enterprise: Dark. Cards: 1px border, shadow</p>
+    <p class="ld-i"><b>转化要点</b>Highlight the plan that matches the intended audience and show actual annual savings transparently. Use FAQs to address concerns.</p>
+  </div>
+  <div class="ld-f"><span class="mono">pricing-page-cta</span><span>Price toggle animation (monthly/yearly)</span></div>
+</article><article class="ld" data-item id="video-first-hero" data-search="视频首屏 video-first hero video, hero, media, visual, engaging hero with video background &gt; key features overlay &gt; benefits section &gt; cta overlay on video (center/bottom) + bottom section use video only when it demonstrates value better than static media. add captions for accessibility. compress video for performance. provide captions and a visible pause control; use a static poster when reduced motion is requested. pause video when offscreen or hidden; the reduced-motion poster must preserve the final message and cta.">
+  <div class="ld-h">
+    <h2 class="ld-t">视频首屏<small class="rec-en">Video-First Hero</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero with video background"><span>Hero with video background</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Key features overlay"><span>Key features overlay</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Benefits section"><span>Benefits section</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero with video background &gt; Key features overlay &gt; Benefits section &gt; CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Overlay on video (center/bottom) + Bottom section</p>
+    <p class="ld-i"><b>配色策略</b>Use an overlay strong enough for text contrast. Brand accent for CTA. Light text only when the measured contrast passes.</p>
+    <p class="ld-i"><b>转化要点</b>Use video only when it demonstrates value better than static media. Add captions for accessibility. Compress video for performance. Provide captions and a visible pause control; use a static poster when reduced motion is requested. Pause video when offscreen or hidden; the reduced-motion poster must preserve the final message and CTA.</p>
+  </div>
+  <div class="ld-f"><span class="mono">video-first-hero</span><span>Video autoplay muted</span></div>
+</article><article class="ld" data-item id="scroll-triggered-storytelling" data-search="滚动叙事 scroll-triggered storytelling storytelling, scroll, narrative, story, immersive intro hook &gt; chapter 1 (problem) &gt; chapter 2 (journey) &gt; chapter 3 (solution) &gt; climax cta end of each chapter (mini) + final climax cta keep the narrative understandable without scroll-driven effects. use progress indicator. mobile: simplify animations. keep dom reading order complete; disable parallax and scroll-scrub under reduced motion. pause scroll animation when offscreen or hidden and render each chapter in its final readable state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">滚动叙事<small class="rec-en">Scroll-Triggered Storytelling</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--other" style="height:25px" title="Intro hook"><span>Intro hook</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Chapter 1 (problem)"><span>Chapter 1 (problem)</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Chapter 2 (journey)"><span>Chapter 2 (journey)</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Chapter 3 (solution)"><span>Chapter 3 (solution)</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Climax CTA"><span>Climax CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Intro hook &gt; Chapter 1 (problem) &gt; Chapter 2 (journey) &gt; Chapter 3 (solution) &gt; Climax CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>End of each chapter (mini) + Final climax CTA</p>
+    <p class="ld-i"><b>配色策略</b>Progressive reveal. Each chapter has distinct color. Building intensity.</p>
+    <p class="ld-i"><b>转化要点</b>Keep the narrative understandable without scroll-driven effects. Use progress indicator. Mobile: simplify animations. Keep DOM reading order complete; disable parallax and scroll-scrub under reduced motion. Pause scroll animation when offscreen or hidden and render each chapter in its final readable state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">scroll-triggered-storytelling</span><span>ScrollTrigger animations</span></div>
+</article><article class="ld" data-item id="ai-personalization-landing" data-search="ai 个性化落地 ai personalization landing ai, personalization, smart, recommendation, dynamic dynamic hero (personalized) &gt; relevant features &gt; tailored testimonials &gt; smart cta context-aware placement based on user segment validate personalization with consent-aware product analytics. requires analytics integration. fallback for new users.">
+  <div class="ld-h">
+    <h2 class="ld-t">AI 个性化落地<small class="rec-en">AI Personalization Landing</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Dynamic hero (personalized)"><span>Dynamic hero (personalized)</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Relevant features"><span>Relevant features</span><em>特性</em></div><div class="wire-s wire-s--social" style="height:27px" title="Tailored testimonials"><span>Tailored testimonials</span><em>口碑</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Smart CTA"><span>Smart CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Dynamic hero (personalized) &gt; Relevant features &gt; Tailored testimonials &gt; Smart CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Context-aware placement based on user segment</p>
+    <p class="ld-i"><b>配色策略</b>Adaptive based on user data. A/B test color variations per segment.</p>
+    <p class="ld-i"><b>转化要点</b>Validate personalization with consent-aware product analytics. Requires analytics integration. Fallback for new users.</p>
+  </div>
+  <div class="ld-f"><span class="mono">ai-personalization-landing</span><span>Dynamic content swap</span></div>
+</article><article class="ld" data-item id="waitlist-coming-soon" data-search="候补名单 / 即将上线 waitlist/coming soon waitlist, coming-soon, launch, early-access, notify, countdown accessibility, pause animation, reduced motion final state, verified waitlist count hero with countdown &gt; product teaser/preview &gt; email capture form &gt; social proof (waitlist count) email form prominent (above fold) + sticky form on scroll explain early-access benefits without fabricated scarcity. show a waitlist count only when it is current, verified, and dated. provide a static launch deadline, pause decorative countdown motion when offscreen/hidden, and render the final readable timer state under reduced motion. email form and referral actions remain keyboard operable.">
+  <div class="ld-h">
+    <h2 class="ld-t">候补名单 / 即将上线<small class="rec-en">Waitlist/Coming Soon</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero with countdown"><span>Hero with countdown</span><em>首屏</em></div><div class="wire-s wire-s--social" style="height:27px" title="Product teaser/preview"><span>Product teaser/preview</span><em>口碑</em></div><div class="wire-s wire-s--form" style="height:35px" title="Email capture form"><span>Email capture form</span><em>表单</em></div><div class="wire-s wire-s--social" style="height:27px" title="Social proof (waitlist count)"><span>Social proof (waitlist count)</span><em>口碑</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero with countdown &gt; Product teaser/preview &gt; Email capture form &gt; Social proof (waitlist count)</p>
+    <p class="ld-i"><b>CTA 位置</b>Email form prominent (above fold) + Sticky form on scroll</p>
+    <p class="ld-i"><b>配色策略</b>Anticipation: Dark + accent highlights. Countdown in brand color. Urgency indicators.</p>
+    <p class="ld-i"><b>转化要点</b>Explain early-access benefits without fabricated scarcity. Show a waitlist count only when it is current, verified, and dated. Provide a static launch deadline, pause decorative countdown motion when offscreen/hidden, and render the final readable timer state under reduced motion. Email form and referral actions remain keyboard operable.</p>
+  </div>
+  <div class="ld-f"><span class="mono">waitlist-coming-soon</span><span>Countdown timer animation</span></div>
+</article><article class="ld" data-item id="comparison-table-focus" data-search="对比表主导 comparison table focus comparison, table, versus, compare, features hero (problem statement) &gt; comparison matrix (you vs competitors) &gt; feature deep-dive &gt; winner cta after comparison table (highlighted row) + bottom show value vs competitors. measure comparison performance with product-specific analytics. be factual. include pricing if favorable.">
+  <div class="ld-h">
+    <h2 class="ld-t">对比表主导<small class="rec-en">Comparison Table Focus</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (problem statement)"><span>Hero (problem statement)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Comparison matrix (you vs competitors)"><span>Comparison matrix (you vs competitors)</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Feature deep-dive"><span>Feature deep-dive</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Winner CTA"><span>Winner CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (problem statement) &gt; Comparison matrix (you vs competitors) &gt; Feature deep-dive &gt; Winner CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>After comparison table (highlighted row) + Bottom</p>
+    <p class="ld-i"><b>配色策略</b>Your product column highlighted (accent bg or green). Competitors neutral. Checkmarks green.</p>
+    <p class="ld-i"><b>转化要点</b>Show value vs competitors. Measure comparison performance with product-specific analytics. Be factual. Include pricing if favorable.</p>
+  </div>
+  <div class="ld-f"><span class="mono">comparison-table-focus</span><span>Table row hover highlight</span></div>
+</article><article class="ld" data-item id="pricing-focused-landing" data-search="定价驱动落地 pricing-focused landing pricing, price, cost, plans, subscription hero (value proposition) &gt; pricing cards (3 tiers) &gt; feature comparison &gt; faq &gt; final cta each pricing card + sticky cta in nav + bottom show actual monthly and annual totals and savings transparently. explain plan differences and address objections in the faq.">
+  <div class="ld-h">
+    <h2 class="ld-t">定价驱动落地<small class="rec-en">Pricing-Focused Landing</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (value proposition)"><span>Hero (value proposition)</span><em>首屏</em></div><div class="wire-s wire-s--pricing" style="height:35px" title="Pricing cards (3 tiers)"><span>Pricing cards (3 tiers)</span><em>定价</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Feature comparison"><span>Feature comparison</span><em>特性</em></div><div class="wire-s wire-s--faq" style="height:25px" title="FAQ"><span>FAQ</span><em>问答</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Final CTA"><span>Final CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (value proposition) &gt; Pricing cards (3 tiers) &gt; Feature comparison &gt; FAQ &gt; Final CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Each pricing card + Sticky CTA in nav + Bottom</p>
+    <p class="ld-i"><b>配色策略</b>Popular plan highlighted (brand color border/bg). Free: grey. Enterprise: dark/premium.</p>
+    <p class="ld-i"><b>转化要点</b>Show actual monthly and annual totals and savings transparently. Explain plan differences and address objections in the FAQ.</p>
+  </div>
+  <div class="ld-f"><span class="mono">pricing-focused-landing</span><span>Price toggle monthly/annual animation</span></div>
+</article><article class="ld" data-item id="app-store-style-landing" data-search="应用商店风格落地 app store style landing app, mobile, download, store, install, carousel accessibility, keyboard accessible carousel, pause auto rotation, reduced motion final state, single pointer buttons hero with device mockup &gt; screenshots carousel &gt; features with icons &gt; reviews/ratings &gt; download ctas download buttons prominent (app store + play store) throughout show real screenshots and only current verified ratings. provide platform-specific ctas, buttons and keyboard controls in addition to swipe, and pause any auto-rotation. stop auto-rotation on focus, hover, offscreen/hidden, or reduced motion and render the selected screenshot as the static final state.">
+  <div class="ld-h">
+    <h2 class="ld-t">应用商店风格落地<small class="rec-en">App Store Style Landing</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero with device mockup"><span>Hero with device mockup</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Screenshots carousel"><span>Screenshots carousel</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Features with icons"><span>Features with icons</span><em>特性</em></div><div class="wire-s wire-s--social" style="height:27px" title="Reviews/ratings"><span>Reviews/ratings</span><em>口碑</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Download CTAs"><span>Download CTAs</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero with device mockup &gt; Screenshots carousel &gt; Features with icons &gt; Reviews/ratings &gt; Download CTAs</p>
+    <p class="ld-i"><b>CTA 位置</b>Download buttons prominent (App Store + Play Store) throughout</p>
+    <p class="ld-i"><b>配色策略</b>Dark/light matching app store feel. Star ratings in gold. Screenshots with device frames.</p>
+    <p class="ld-i"><b>转化要点</b>Show real screenshots and only current verified ratings. Provide platform-specific CTAs, buttons and keyboard controls in addition to swipe, and pause any auto-rotation. Stop auto-rotation on focus, hover, offscreen/hidden, or reduced motion and render the selected screenshot as the static final state.</p>
+  </div>
+  <div class="ld-f"><span class="mono">app-store-style-landing</span><span>Device mockup rotations</span></div>
+</article><article class="ld" data-item id="faq-documentation-landing" data-search="问答 / 文档落地 faq/documentation landing faq, documentation, help, support, questions, faq/documentation, knowledge base hero with search bar &gt; popular categories &gt; faq accordion &gt; contact/support cta search bar prominent + contact cta for unresolved questions reduce support tickets. track search analytics. show related articles. contact escalation path.">
+  <div class="ld-h">
+    <h2 class="ld-t">问答 / 文档落地<small class="rec-en">FAQ/Documentation Landing</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero with search bar"><span>Hero with search bar</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Popular categories"><span>Popular categories</span><em>内容</em></div><div class="wire-s wire-s--faq" style="height:25px" title="FAQ accordion"><span>FAQ accordion</span><em>问答</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Contact/support CTA"><span>Contact/support CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero with search bar &gt; Popular categories &gt; FAQ accordion &gt; Contact/support CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Search bar prominent + Contact CTA for unresolved questions</p>
+    <p class="ld-i"><b>配色策略</b>Clean, high readability. Minimal color. Category icons in brand color. Success green for resolved.</p>
+    <p class="ld-i"><b>转化要点</b>Reduce support tickets. Track search analytics. Show related articles. Contact escalation path.</p>
+  </div>
+  <div class="ld-f"><span class="mono">faq-documentation-landing</span><span>Search autocomplete</span></div>
+</article><article class="ld" data-item id="immersive-interactive-experience" data-search="沉浸互动体验 immersive/interactive experience immersive, interactive, experience, 3d, animation, immersive/interactive experience full-screen interactive element &gt; guided product tour &gt; key benefits revealed &gt; cta after completion after interaction complete + skip option for impatient users measure engagement for the specific audience and device mix. performance trade-off. provide skip option. mobile fallback essential. provide skip, keyboard, reduced-motion, and non-3d fallback paths. pause animation when offscreen/hidden and preserve the completed final state when reduced motion is enabled.">
+  <div class="ld-h">
+    <h2 class="ld-t">沉浸互动体验<small class="rec-en">Immersive/Interactive Experience</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--other" style="height:25px" title="Full-screen interactive element"><span>Full-screen interactive element</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Guided product tour"><span>Guided product tour</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Key benefits revealed"><span>Key benefits revealed</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA after completion"><span>CTA after completion</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Full-screen interactive element &gt; Guided product tour &gt; Key benefits revealed &gt; CTA after completion</p>
+    <p class="ld-i"><b>CTA 位置</b>After interaction complete + Skip option for impatient users</p>
+    <p class="ld-i"><b>配色策略</b>Immersive experience colors. Dark background for focus. Highlight interactive elements.</p>
+    <p class="ld-i"><b>转化要点</b>Measure engagement for the specific audience and device mix. Performance trade-off. Provide skip option. Mobile fallback essential. Provide skip, keyboard, reduced-motion, and non-3D fallback paths. Pause animation when offscreen/hidden and preserve the completed final state when reduced motion is enabled.</p>
+  </div>
+  <div class="ld-f"><span class="mono">immersive-interactive-experience</span><span>WebGL</span></div>
+</article><article class="ld" data-item id="event-conference-landing" data-search="活动 / 大会落地 event/conference landing event, conference, meetup, registration, schedule, hero-centric design, hero-centric, countdown accessibility, pause animation, reduced motion final state hero (date/location/countdown) &gt; speakers grid &gt; agenda/schedule &gt; sponsors &gt; register cta register cta sticky + after speakers + bottom early bird pricing with deadline. social proof (past attendees). speaker credibility. multi-ticket discounts. expose the exact deadline as text; pause decorative countdown motion offscreen/hidden and show a static final state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">活动 / 大会落地<small class="rec-en">Event/Conference Landing</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (date/location/countdown)"><span>Hero (date/location/countdown)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Speakers grid"><span>Speakers grid</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Agenda/schedule"><span>Agenda/schedule</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Sponsors"><span>Sponsors</span><em>内容</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Register CTA"><span>Register CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (date/location/countdown) &gt; Speakers grid &gt; Agenda/schedule &gt; Sponsors &gt; Register CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Register CTA sticky + After speakers + Bottom</p>
+    <p class="ld-i"><b>配色策略</b>Urgency colors (countdown). Event branding. Speaker cards professional. Sponsor logos neutral.</p>
+    <p class="ld-i"><b>转化要点</b>Early bird pricing with deadline. Social proof (past attendees). Speaker credibility. Multi-ticket discounts. Expose the exact deadline as text; pause decorative countdown motion offscreen/hidden and show a static final state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">event-conference-landing</span><span>Countdown timer</span></div>
+</article><article class="ld" data-item id="product-review-ratings-focused" data-search="评价 / 评分驱动 product review/ratings focused reviews, ratings, testimonials, social-proof, social-proof-focused, stars hero (product + aggregate rating) &gt; rating breakdown &gt; individual reviews &gt; buy/cta after reviews summary + buy button alongside reviews user-generated content builds trust. show verified purchases. filter by rating. respond to negative reviews.">
+  <div class="ld-h">
+    <h2 class="ld-t">评价 / 评分驱动<small class="rec-en">Product Review/Ratings Focused</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (product + aggregate rating)"><span>Hero (product + aggregate rating)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Rating breakdown"><span>Rating breakdown</span><em>内容</em></div><div class="wire-s wire-s--social" style="height:27px" title="Individual reviews"><span>Individual reviews</span><em>口碑</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Buy/CTA"><span>Buy/CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (product + aggregate rating) &gt; Rating breakdown &gt; Individual reviews &gt; Buy/CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>After reviews summary + Buy button alongside reviews</p>
+    <p class="ld-i"><b>配色策略</b>Trust colors. Star ratings gold. Verified badge green. Review sentiment colors.</p>
+    <p class="ld-i"><b>转化要点</b>User-generated content builds trust. Show verified purchases. Filter by rating. Respond to negative reviews.</p>
+  </div>
+  <div class="ld-f"><span class="mono">product-review-ratings-focused</span><span>Star fill animations</span></div>
+</article><article class="ld" data-item id="community-forum-landing" data-search="社区 / 论坛落地 community/forum landing community, forum, social, members, discussion, verified member count, live update accessibility, pause updates, reduced motion final state hero (community value prop) &gt; popular topics/categories &gt; active members showcase &gt; join cta join button prominent + after member showcase preview real community value and simplify onboarding. show member and activity counts only when current, verified, and dated; label activity as live only when backed by an active real-time source. provide pause/update-frequency controls for moving feeds, stop work offscreen/hidden, and keep a static final state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">社区 / 论坛落地<small class="rec-en">Community/Forum Landing</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (community value prop)"><span>Hero (community value prop)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Popular topics/categories"><span>Popular topics/categories</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Active members showcase"><span>Active members showcase</span><em>内容</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Join CTA"><span>Join CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (community value prop) &gt; Popular topics/categories &gt; Active members showcase &gt; Join CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Join button prominent + After member showcase</p>
+    <p class="ld-i"><b>配色策略</b>Warm, welcoming. Member photos add humanity. Topic badges in brand colors. Activity indicators green.</p>
+    <p class="ld-i"><b>转化要点</b>Preview real community value and simplify onboarding. Show member and activity counts only when current, verified, and dated; label activity as live only when backed by an active real-time source. Provide pause/update-frequency controls for moving feeds, stop work offscreen/hidden, and keep a static final state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">community-forum-landing</span><span>Member avatars animation</span></div>
+</article><article class="ld" data-item id="before-after-transformation" data-search="前后对比 before-after transformation before-after, transformation, results, comparison, accessible drag interaction, drag single pointer alternative, keyboard drag alternative hero (problem state) &gt; transformation slider/comparison &gt; how it works &gt; results cta after transformation reveal + bottom visual proof of value. measure the outcome with product-specific analytics. real results. specific metrics. guarantee offer. provide arrow buttons and keyboard steps so dragging is not required. arrow buttons and keyboard steps expose the same final before/after positions; reduced motion removes reveal animation.">
+  <div class="ld-h">
+    <h2 class="ld-t">前后对比<small class="rec-en">Before-After Transformation</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (problem state)"><span>Hero (problem state)</span><em>首屏</em></div><div class="wire-s wire-s--form" style="height:35px" title="Transformation slider/comparison"><span>Transformation slider/comparison</span><em>表单</em></div><div class="wire-s wire-s--feature" style="height:35px" title="How it works"><span>How it works</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Results CTA"><span>Results CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (problem state) &gt; Transformation slider/comparison &gt; How it works &gt; Results CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>After transformation reveal + Bottom</p>
+    <p class="ld-i"><b>配色策略</b>Contrast: muted/grey (before) vs vibrant/colorful (after). Success green for results.</p>
+    <p class="ld-i"><b>转化要点</b>Visual proof of value. Measure the outcome with product-specific analytics. Real results. Specific metrics. Guarantee offer. Provide arrow buttons and keyboard steps so dragging is not required. Arrow buttons and keyboard steps expose the same final before/after positions; reduced motion removes reveal animation.</p>
+  </div>
+  <div class="ld-f"><span class="mono">before-after-transformation</span><span>Slider comparison interaction</span></div>
+</article><article class="ld" data-item id="marketplace-directory" data-search="交易市场 / 目录 marketplace / directory marketplace, directory, search, listing, carousel accessibility, keyboard accessible carousel, pause auto rotation, reduced motion final state, marketplace carousel, keyboard carousel controls hero (search focused) &gt; categories &gt; featured listings &gt; trust/safety &gt; cta (become a host/seller) hero search bar + navbar 'list your item' search is the primary cta. reduce friction with useful suggestions. for featured-listing carousels, provide previous/next and play/pause buttons, full keyboard access, and a single-pointer alternative to swiping; stop rotation on focus, hover, offscreen/hidden, or reduced motion and render the selected listing as the static final state.">
+  <div class="ld-h">
+    <h2 class="ld-t">交易市场 / 目录<small class="rec-en">Marketplace / Directory</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (Search focused)"><span>Hero (Search focused)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Categories"><span>Categories</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Featured Listings"><span>Featured Listings</span><em>特性</em></div><div class="wire-s wire-s--social" style="height:27px" title="Trust/Safety"><span>Trust/Safety</span><em>口碑</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA (Become a host/seller)"><span>CTA (Become a host/seller)</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (Search focused) &gt; Categories &gt; Featured Listings &gt; Trust/Safety &gt; CTA (Become a host/seller)</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero Search Bar + Navbar 'List your item'</p>
+    <p class="ld-i"><b>配色策略</b>Search: High contrast. Categories: Visual icons. Trust: Blue/Green.</p>
+    <p class="ld-i"><b>转化要点</b>Search is the primary CTA. Reduce friction with useful suggestions. For featured-listing carousels, provide previous/next and play/pause buttons, full keyboard access, and a single-pointer alternative to swiping; stop rotation on focus, hover, offscreen/hidden, or reduced motion and render the selected listing as the static final state.</p>
+  </div>
+  <div class="ld-f"><span class="mono">marketplace-directory</span><span>Search autocomplete animation</span></div>
+</article><article class="ld" data-item id="newsletter-content-first" data-search="通讯优先 / 内容优先 newsletter / content first newsletter, content, writer, blog, subscribe, minimal &amp; direct, minimal-direct, verified subscriber count, dated social proof hero (value prop + form) &gt; recent issues/archives &gt; social proof (subscriber count) &gt; about author hero inline form + sticky header form keep the form to the fields actually required and link to a sample issue. show a subscriber count only when it is current, verified, and dated; otherwise use qualitative social proof.">
+  <div class="ld-h">
+    <h2 class="ld-t">通讯优先 / 内容优先<small class="rec-en">Newsletter / Content First</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (Value Prop + Form)"><span>Hero (Value Prop + Form)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Recent Issues/Archives"><span>Recent Issues/Archives</span><em>内容</em></div><div class="wire-s wire-s--social" style="height:27px" title="Social Proof (Subscriber count)"><span>Social Proof (Subscriber count)</span><em>口碑</em></div><div class="wire-s wire-s--other" style="height:25px" title="About Author"><span>About Author</span><em>内容</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (Value Prop + Form) &gt; Recent Issues/Archives &gt; Social Proof (Subscriber count) &gt; About Author</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero inline form + Sticky header form</p>
+    <p class="ld-i"><b>配色策略</b>Minimalist. Paper-like background. Text focus. Accent color for Subscribe.</p>
+    <p class="ld-i"><b>转化要点</b>Keep the form to the fields actually required and link to a sample issue. Show a subscriber count only when it is current, verified, and dated; otherwise use qualitative social proof.</p>
+  </div>
+  <div class="ld-f"><span class="mono">newsletter-content-first</span><span>Text highlight animations</span></div>
+</article><article class="ld" data-item id="webinar-registration" data-search="网络研讨会报名 webinar registration webinar, registration, event, training, live, webinar ticker accessibility, pause ticker, verified seat availability, verified live status, reduced motion final state hero (topic + timer + form) &gt; what you'll learn &gt; speaker bio &gt; urgency/bonuses &gt; form (again) hero (right side form) + bottom anchor state the event time and timezone in text. claim limited seats or live status only when current capacity or stream state is verified and timestamped. provide pause/hide controls for the urgency ticker, stop it offscreen/hidden, keep controls keyboard operable, and render a static final state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">网络研讨会报名<small class="rec-en">Webinar Registration</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (Topic + Timer + Form)"><span>Hero (Topic + Timer + Form)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="What you'll learn"><span>What you'll learn</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Speaker Bio"><span>Speaker Bio</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Urgency/Bonuses"><span>Urgency/Bonuses</span><em>内容</em></div><div class="wire-s wire-s--form" style="height:35px" title="Form (again)"><span>Form (again)</span><em>表单</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (Topic + Timer + Form) &gt; What you'll learn &gt; Speaker Bio &gt; Urgency/Bonuses &gt; Form (again)</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero (Right side form) + Bottom anchor</p>
+    <p class="ld-i"><b>配色策略</b>Urgency: Red/Orange. Professional: Blue/Navy. Form: High contrast white.</p>
+    <p class="ld-i"><b>转化要点</b>State the event time and timezone in text. Claim limited seats or live status only when current capacity or stream state is verified and timestamped. Provide pause/hide controls for the urgency ticker, stop it offscreen/hidden, keep controls keyboard operable, and render a static final state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">webinar-registration</span><span>Countdown timer</span></div>
+</article><article class="ld" data-item id="enterprise-gateway" data-search="企业门户 enterprise gateway enterprise, corporate, gateway, solutions, portal, trust, authority, trust &amp; authority, carousel accessibility, keyboard accessible carousel, pause auto rotation, reduced motion final state hero (video/mission) &gt; solutions by industry &gt; solutions by role &gt; client logos &gt; contact sales contact sales (primary) + login (secondary) path selection (i am a...). mega menu navigation. trust signals prominent. provide pause/stop for video and rotating logos; stop on focus and reduced motion. logo carousel controls must be keyboard operable; pause moving media offscreen/hidden and render a static final state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">企业门户<small class="rec-en">Enterprise Gateway</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (Video/Mission)"><span>Hero (Video/Mission)</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Solutions by Industry"><span>Solutions by Industry</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Solutions by Role"><span>Solutions by Role</span><em>特性</em></div><div class="wire-s wire-s--social" style="height:27px" title="Client Logos"><span>Client Logos</span><em>口碑</em></div><div class="wire-s wire-s--form" style="height:35px" title="Contact Sales"><span>Contact Sales</span><em>表单</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (Video/Mission) &gt; Solutions by Industry &gt; Solutions by Role &gt; Client Logos &gt; Contact Sales</p>
+    <p class="ld-i"><b>CTA 位置</b>Contact Sales (Primary) + Login (Secondary)</p>
+    <p class="ld-i"><b>配色策略</b>Corporate: Navy/Grey. High integrity. Conservative accents.</p>
+    <p class="ld-i"><b>转化要点</b>Path selection (I am a...). Mega menu navigation. Trust signals prominent. Provide pause/stop for video and rotating logos; stop on focus and reduced motion. Logo carousel controls must be keyboard operable; pause moving media offscreen/hidden and render a static final state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">enterprise-gateway</span><span>Slow video background</span></div>
+</article><article class="ld" data-item id="portfolio-grid" data-search="作品集网格 portfolio grid portfolio, grid, showcase, gallery, masonry, portfolio grid + visuals hero (name/role) &gt; project grid (masonry) &gt; about/philosophy &gt; contact project card hover + footer contact visuals first. filter by category. fast loading essential.">
+  <div class="ld-h">
+    <h2 class="ld-t">作品集网格<small class="rec-en">Portfolio Grid</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (Name/Role)"><span>Hero (Name/Role)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Project Grid (Masonry)"><span>Project Grid (Masonry)</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="About/Philosophy"><span>About/Philosophy</span><em>内容</em></div><div class="wire-s wire-s--form" style="height:35px" title="Contact"><span>Contact</span><em>表单</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (Name/Role) &gt; Project Grid (Masonry) &gt; About/Philosophy &gt; Contact</p>
+    <p class="ld-i"><b>CTA 位置</b>Project Card Hover + Footer Contact</p>
+    <p class="ld-i"><b>配色策略</b>Neutral background (let work shine). Text: Black/White. Accent: Minimal.</p>
+    <p class="ld-i"><b>转化要点</b>Visuals first. Filter by category. Fast loading essential.</p>
+  </div>
+  <div class="ld-f"><span class="mono">portfolio-grid</span><span>Image lazy load reveal</span></div>
+</article><article class="ld" data-item id="horizontal-scroll-journey" data-search="横向滚动旅程 horizontal scroll journey horizontal, scroll, journey, gallery, storytelling, panoramic, storytelling-driven intro (vertical) &gt; the journey (horizontal track) &gt; detail reveal &gt; vertical footer floating sticky cta or end of horizontal track immersive product discovery. high engagement. keep navigation visible. preserve a normal vertical navigation path and disable scroll-jacking under reduced motion. pause effects when offscreen/hidden and render every chapter in its final vertical reading state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">横向滚动旅程<small class="rec-en">Horizontal Scroll Journey</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--other" style="height:25px" title="Intro (Vertical)"><span>Intro (Vertical)</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="The Journey (Horizontal Track)"><span>The Journey (Horizontal Track)</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Detail Reveal"><span>Detail Reveal</span><em>内容</em></div><div class="wire-s wire-s--footer" style="height:20px" title="Vertical Footer"><span>Vertical Footer</span><em>页脚</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Intro (Vertical) &gt; The Journey (Horizontal Track) &gt; Detail Reveal &gt; Vertical Footer</p>
+    <p class="ld-i"><b>CTA 位置</b>Floating Sticky CTA or End of Horizontal Track</p>
+    <p class="ld-i"><b>配色策略</b>Continuous palette transition. Chapter colors. Progress bar #000000.</p>
+    <p class="ld-i"><b>转化要点</b>Immersive product discovery. High engagement. Keep navigation visible. Preserve a normal vertical navigation path and disable scroll-jacking under reduced motion. Pause effects when offscreen/hidden and render every chapter in its final vertical reading state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">horizontal-scroll-journey</span><span>Scroll-jacking (careful)</span></div>
+</article><article class="ld" data-item id="bento-grid-showcase" data-search="便当式网格展示 bento grid showcase bento, grid, features, modular, apple-style, showcase, feature-rich showcase hero &gt; bento grid (key features) &gt; detail cards &gt; tech specs &gt; cta floating action button or bottom of grid scannable value props. high information density without clutter. mobile stack. keep cards usable without hover and suppress tilt/stagger/video motion under reduced motion. pause card media offscreen/hidden and render cards in their final readable state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">便当式网格展示<small class="rec-en">Bento Grid Showcase</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero"><span>Hero</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Bento Grid (Key Features)"><span>Bento Grid (Key Features)</span><em>特性</em></div><div class="wire-s wire-s--other" style="height:25px" title="Detail Cards"><span>Detail Cards</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Tech Specs"><span>Tech Specs</span><em>内容</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero &gt; Bento Grid (Key Features) &gt; Detail Cards &gt; Tech Specs &gt; CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Floating Action Button or Bottom of Grid</p>
+    <p class="ld-i"><b>配色策略</b>Card backgrounds: #F5F5F7 or Glass. Icons: Vibrant brand colors. Text: Dark.</p>
+    <p class="ld-i"><b>转化要点</b>Scannable value props. High information density without clutter. Mobile stack. Keep cards usable without hover and suppress tilt/stagger/video motion under reduced motion. Pause card media offscreen/hidden and render cards in their final readable state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">bento-grid-showcase</span><span>Hover card scale (1.02)</span></div>
+</article><article class="ld" data-item id="interactive-3d-configurator" data-search="互动 3d 配置器 interactive 3d configurator 3d, configurator, customizer, interactive, product, interactive product demo, accessible drag interaction, drag single pointer alternative, keyboard drag alternative hero (configurator) &gt; feature highlight (synced) &gt; price/specs &gt; purchase inside configurator ui + sticky bottom bar let users inspect product details before purchase. provide buttons and keyboard controls for rotate/zoom plus a 2d/specification fallback. named rotate/zoom buttons and keyboard controls replace drag gestures; pause rendering offscreen/hidden and preserve the chosen configuration as the reduced-motion final state.">
+  <div class="ld-h">
+    <h2 class="ld-t">互动 3D 配置器<small class="rec-en">Interactive 3D Configurator</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (Configurator)"><span>Hero (Configurator)</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Feature Highlight (synced)"><span>Feature Highlight (synced)</span><em>特性</em></div><div class="wire-s wire-s--other" style="height:25px" title="Price/Specs"><span>Price/Specs</span><em>内容</em></div><div class="wire-s wire-s--other" style="height:25px" title="Purchase"><span>Purchase</span><em>内容</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (Configurator) &gt; Feature Highlight (synced) &gt; Price/Specs &gt; Purchase</p>
+    <p class="ld-i"><b>CTA 位置</b>Inside Configurator UI + Sticky Bottom Bar</p>
+    <p class="ld-i"><b>配色策略</b>Neutral studio background. Product: Realistic materials. UI: Minimal overlay.</p>
+    <p class="ld-i"><b>转化要点</b>Let users inspect product details before purchase. Provide buttons and keyboard controls for rotate/zoom plus a 2D/specification fallback. Named rotate/zoom buttons and keyboard controls replace drag gestures; pause rendering offscreen/hidden and preserve the chosen configuration as the reduced-motion final state.</p>
+  </div>
+  <div class="ld-f"><span class="mono">interactive-3d-configurator</span><span>Real-time rendering</span></div>
+</article><article class="ld" data-item id="ai-driven-dynamic-landing" data-search="ai 驱动动态落地 ai-driven dynamic landing ai, dynamic, personalized, adaptive, generative prompt/input hero &gt; generated result preview &gt; how it works &gt; value prop input field (hero) + 'try it' buttons immediate value demonstration. 'show, don't tell'. low friction start. disable typing, shimmer, and morphing effects when reduced motion is requested. pause loaders offscreen/hidden and render generated content in its final state under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">AI 驱动动态落地<small class="rec-en">AI-Driven Dynamic Landing</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Prompt/Input Hero"><span>Prompt/Input Hero</span><em>首屏</em></div><div class="wire-s wire-s--social" style="height:27px" title="Generated Result Preview"><span>Generated Result Preview</span><em>口碑</em></div><div class="wire-s wire-s--feature" style="height:35px" title="How it Works"><span>How it Works</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Value Prop"><span>Value Prop</span><em>特性</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Prompt/Input Hero &gt; Generated Result Preview &gt; How it Works &gt; Value Prop</p>
+    <p class="ld-i"><b>CTA 位置</b>Input Field (Hero) + 'Try it' Buttons</p>
+    <p class="ld-i"><b>配色策略</b>Adaptive to user input. Dark mode for compute feel. Neon accents.</p>
+    <p class="ld-i"><b>转化要点</b>Immediate value demonstration. 'Show, don't tell'. Low friction start. Disable typing, shimmer, and morphing effects when reduced motion is requested. Pause loaders offscreen/hidden and render generated content in its final state under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">ai-driven-dynamic-landing</span><span>Typing text effects</span></div>
+</article><article class="ld" data-item id="feature-rich-showcase" data-search="功能展示 feature-rich showcase feature-rich, feature-rich showcase, features, showcase, product showcase hero (value prop) &gt; feature grid/cards (4-6) &gt; use cases or benefits &gt; social proof or logos &gt; cta hero (sticky) + after features + bottom clear feature hierarchy. one key message per card. strong cta repetition.">
+  <div class="ld-h">
+    <h2 class="ld-t">功能展示<small class="rec-en">Feature-Rich Showcase</small></h2>
+    <span class="tag">5 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (value prop)"><span>Hero (value prop)</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Feature grid/cards (4-6)"><span>Feature grid/cards (4-6)</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Use cases or benefits"><span>Use cases or benefits</span><em>特性</em></div><div class="wire-s wire-s--social" style="height:27px" title="Social proof or logos"><span>Social proof or logos</span><em>口碑</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA"><span>CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (value prop) &gt; Feature grid/cards (4-6) &gt; Use cases or benefits &gt; Social proof or logos &gt; CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero (sticky) + After features + Bottom</p>
+    <p class="ld-i"><b>配色策略</b>Brand primary + card bg #FAFAFA. Feature icons accent. CTA contrasting.</p>
+    <p class="ld-i"><b>转化要点</b>Clear feature hierarchy. One key message per card. Strong CTA repetition.</p>
+  </div>
+  <div class="ld-f"><span class="mono">feature-rich-showcase</span><span>Feature card hover lift</span></div>
+</article><article class="ld" data-item id="hero-centric-design" data-search="首屏主导 hero-centric design hero-centric, hero-centric design, hero-first, hero above fold full-bleed hero (headline + visual) &gt; single value prop strip &gt; key benefit or proof &gt; primary cta hero dominant (center/bottom) + sticky nav cta one primary cta. let the hero dominate the initial viewport without hiding the next content cue. use a static hero and non-pulsing cta when reduced motion is requested; provide video controls. pause hero media offscreen/hidden and keep the final hero message and cta static under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">首屏主导<small class="rec-en">Hero-Centric Design</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Full-bleed Hero (headline + visual)"><span>Full-bleed Hero (headline + visual)</span><em>首屏</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Single value prop strip"><span>Single value prop strip</span><em>特性</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Key benefit or proof"><span>Key benefit or proof</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Primary CTA"><span>Primary CTA</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Full-bleed Hero (headline + visual) &gt; Single value prop strip &gt; Key benefit or proof &gt; Primary CTA</p>
+    <p class="ld-i"><b>CTA 位置</b>Hero dominant (center/bottom) + Sticky nav CTA</p>
+    <p class="ld-i"><b>配色策略</b>Hero: High-impact visual. Minimal text. Verify CTA label text against the button fill at 4.5:1 minimum; use 7:1 only for an explicit AAA normal-text target.</p>
+    <p class="ld-i"><b>转化要点</b>One primary CTA. Let the hero dominate the initial viewport without hiding the next content cue. Use a static hero and non-pulsing CTA when reduced motion is requested; provide video controls. Pause hero media offscreen/hidden and keep the final hero message and CTA static under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">hero-centric-design</span><span>Hero parallax or video</span></div>
+</article><article class="ld" data-item id="trust-authority-conversion" data-search="信任与权威 + 转化 trust &amp; authority + conversion trust &amp; authority, trust, authority, conversion, credibility, enterprise, carousel accessibility, keyboard accessible carousel, pause auto rotation, reduced motion final state hero (mission/credibility) &gt; proof (logos, certs, stats) &gt; solution overview &gt; clear cta path contact sales / get quote (primary) + nav security badges. case studies. transparent pricing. low-friction form. provide pause/stop and stop the logo carousel on focus, hover, and reduced motion. previous/next controls provide the keyboard equivalent; pause offscreen/hidden and render a static logo set under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">信任与权威 + 转化<small class="rec-en">Trust &amp; Authority + Conversion</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (mission/credibility)"><span>Hero (mission/credibility)</span><em>首屏</em></div><div class="wire-s wire-s--social" style="height:27px" title="Proof (logos, certs, stats)"><span>Proof (logos, certs, stats)</span><em>口碑</em></div><div class="wire-s wire-s--feature" style="height:35px" title="Solution overview"><span>Solution overview</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="Clear CTA path"><span>Clear CTA path</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (mission/credibility) &gt; Proof (logos, certs, stats) &gt; Solution overview &gt; Clear CTA path</p>
+    <p class="ld-i"><b>CTA 位置</b>Contact Sales / Get Quote (primary) + Nav</p>
+    <p class="ld-i"><b>配色策略</b>Navy/Grey corporate. Trust blue. Accent for CTA only.</p>
+    <p class="ld-i"><b>转化要点</b>Security badges. Case studies. Transparent pricing. Low-friction form. Provide pause/stop and stop the logo carousel on focus, hover, and reduced motion. Previous/next controls provide the keyboard equivalent; pause offscreen/hidden and render a static logo set under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">trust-authority-conversion</span><span>Logo carousel</span></div>
+</article><article class="ld" data-item id="real-time-operations-landing" data-search="实时 / 运营落地 real-time / operations landing real-time, real-time monitor, operations, dashboard, telemetry, live data, live ticker accessibility, pause live updates, verified live status, reduced motion final state hero (product + live preview or status) &gt; key metrics/indicators &gt; how it works &gt; cta (start trial / contact) primary cta in nav + after metrics offer a demo or sandbox and show trust signals. label telemetry as live only when backed by a current source, with update time and stale state. provide pause/hide or update-frequency controls for tickers and previews, stop offscreen/hidden work, support keyboard controls, and render a static final snapshot under reduced motion.">
+  <div class="ld-h">
+    <h2 class="ld-t">实时 / 运营落地<small class="rec-en">Real-Time / Operations Landing</small></h2>
+    <span class="tag">4 区</span>
+  </div>
+  <div class="wire"><div class="wire-in"><div class="wire-s wire-s--hero" style="height:60px" title="Hero (product + live preview or status)"><span>Hero (product + live preview or status)</span><em>首屏</em></div><div class="wire-s wire-s--other" style="height:25px" title="Key metrics/indicators"><span>Key metrics/indicators</span><em>内容</em></div><div class="wire-s wire-s--feature" style="height:35px" title="How it works"><span>How it works</span><em>特性</em></div><div class="wire-s wire-s--cta" style="height:30px" title="CTA (Start trial / Contact)"><span>CTA (Start trial / Contact)</span><em>转化</em></div></div></div>
+  <div class="ld-b">
+    <p class="ld-i"><b>分区顺序</b>Hero (product + live preview or status) &gt; Key metrics/indicators &gt; How it works &gt; CTA (Start trial / Contact)</p>
+    <p class="ld-i"><b>CTA 位置</b>Primary CTA in nav + After metrics</p>
+    <p class="ld-i"><b>配色策略</b>Dark or neutral. Status colors (green/amber/red). Data-dense but scannable.</p>
+    <p class="ld-i"><b>转化要点</b>Offer a demo or sandbox and show trust signals. Label telemetry as live only when backed by a current source, with update time and stale state. Provide pause/hide or update-frequency controls for tickers and previews, stop offscreen/hidden work, support keyboard controls, and render a static final snapshot under reduced motion.</p>
+  </div>
+  <div class="ld-f"><span class="mono">real-time-operations-landing</span><span>Live data ticker</span></div>
+</article></div>
+<p class="empty" data-empty hidden>没有匹配的落地页模式。</p>
+  </main>
+</div>
+<footer class="foot">
+  <div class="foot-in">
+    <p><strong>设计手册</strong> · 姊妹站 <a href="../gallery/index.html">风格图鉴</a>（88 种风格的渲染效果），数据来自插件内置的 4319 行设计知识库。</p>
+    <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
+  </div>
+</footer>
+<script src="./assets/app.js" defer></script>
+
+</body>
+</html>

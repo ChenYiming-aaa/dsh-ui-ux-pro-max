@@ -10,6 +10,10 @@ yarn.lock
 *.log
 install.log
 .host-compat/
+.shots/
+
+# 图鉴产物已从 site/ 迁到 gallery/，这里兜住旧残留（若被进程占用删不掉，关掉预览后再删）
+/site/
 
 # 本地备份
 *.bak
