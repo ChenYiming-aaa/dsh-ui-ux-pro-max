@@ -32,14 +32,15 @@ and `data/meta.json`:
 | `upstreamRef` | `56ea9cf174ed86786187daa9de0e6247cb0747e4` (upstream commit, 2026-10-15) |
 | `upstreamRefDate` | `2026-10-15T09:04:34+07:00` |
 | `upstreamDataPath` | `cli/assets/data/` (upstream data directory) |
-| `sourcePath` | `cli/assets/data/` (direct sync path since 1.3.0) |
-| `syncedAt` | `2026-10-18T03:59:34.490Z` (direct sync time) |
+| `sourcePath` | `cli/assets/data/` (data source path) |
+| `syncedAt` | `2026-10-18T03:59:34.490Z` (data generation time) |
 | `lineageVerifiedAt` | `2026-10-18` (row/column comparison against upstream) |
 
 The original upstream is **nextlevelbuilder/ui-ux-pro-max-skill**. Since 1.3.0
-the bundled data is synced directly from its `cli/assets/data/` CSVs with
-`scripts/sync-upstream.mjs` (built-in CSV parser; no lossy transcode). The
-current snapshot matches upstream `56ea9cf` row-for-row and column-for-column:
+the bundled data was generated directly from its `cli/assets/data/` CSVs with a
+quoted-field parser (no lossy transcode). The plugin itself does **not** fetch or
+sync data at runtime or on a schedule. The current snapshot matches upstream
+`56ea9cf` row-for-row and column-for-column:
 
 - 88 style rows, 119 UX guidelines, 192 reasoning profiles;
 - 22 stack tables (1,271 guideline rows) and 1,934 Google Fonts rows;
@@ -47,10 +48,10 @@ current snapshot matches upstream `56ea9cf` row-for-row and column-for-column:
 
 The earlier 1.2.0 snapshot (`137597b`, transcoded via
 `opencode/skills/ui-ux-pro-max/data/`) had 186 cells with stripped internal
-double quotes; the 1.3.0 direct sync repaired that by parsing the upstream CSV
-with a proper quoted-field parser.
+double quotes; the 1.3.0 data generation repaired that by parsing the upstream
+CSV with a proper quoted-field parser.
 
-See `docs/UPSTREAM-SYNC.md` for the verification method and sync procedure.
+See `docs/DATA-PROVENANCE.md` for lineage details and current counts.
 
 ## Google Fonts metadata
 

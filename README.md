@@ -162,7 +162,7 @@ dsh-ui-ux-pro-max/
 ```bash
 npm test
 # = check-package → smoke → check-example → check-counts → check-i18n → contract
-#   → check-imports → check-schema → check-sync-parser → dom-smoke
+#   → check-imports → check-schema → dom-smoke
 #   （dom-smoke 在 jsdom 缺失时自动跳过；CI 另在独立目录安装 jsdom 后运行）
 ```
 
@@ -172,7 +172,7 @@ npm test
 
 **`check-example.mjs`** 覆盖示例页面：脚本可编译、无障碍要点、令牌化程度、状态完备性、无 emoji 图标。
 
-**`check-counts.mjs`** 保证 README / SKILL.md / package.json 中的能力数字与 `data/meta.json` 一致；**`check-i18n.mjs`** 保证中文词典无重复键、扩展结果去重；**`contract.mjs`** 保证 schema 与 `execute` 返回值一致；**`check-imports.mjs`** 把分层铁律、无循环依赖、`data/` 路径唯一性变成 CI 断言；**`check-schema.mjs`** 拦住 SchemaSpec 方言错误（写错只有宿主运行时才会报）；**`check-sync-parser.mjs`** 锁定上游 CSV 的引号/转义/换行解析。
+**`check-counts.mjs`** 保证 README / SKILL.md / package.json 中的能力数字与 `data/meta.json` 一致；**`check-i18n.mjs`** 保证中文词典无重复键、扩展结果去重；**`contract.mjs`** 保证 schema 与 `execute` 返回值一致；**`check-imports.mjs`** 把分层铁律、无循环依赖、`data/` 路径唯一性变成 CI 断言；**`check-schema.mjs`** 拦住 SchemaSpec 方言错误（写错只有宿主运行时才会报）。
 
 > 运行时兼容性另有一层验证：在真实 DSH 上校验工具定义编译、输出 schema、`render` / `presentCall` / `presentResult` 与 `apply()` 注册（依赖本机 DSH 安装路径，故不随仓库分发）。验证矩阵与命令见 [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md)。
 
@@ -180,14 +180,14 @@ npm test
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 分层、依赖铁律、新增代码该放哪
 - [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) — 已验证宿主线 × 验证项、SchemaSpec 方言、降级契约
-- [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md) — 上游同步 SOP（`npm run check:upstream` / `sync:upstream`）与差异看板
+- [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md) — 数据来源、当前计数与口径
 - [docs/refactor-plan.md](docs/refactor-plan.md) — 本次结构升级的完整方案
 
 ## 致谢
 
 数据与算法移植自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT），针对 DSH 插件形态重写为纯 JS、离线、中文优先。参考：`zhaiyateng/dsh-design-skills`、`Viger1/dsh-design`、`superdesigndev/superdesign-skill`。
 
-数据快照对应上游 `56ea9cf`（2026-10-15），2026-10-18 直接同步；逐行溯源、差异看板与同步命令见 [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md)。
+数据快照对应上游 `56ea9cf`（2026-10-15），2026-10-18 生成；数据来源、当前计数与口径见 [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md)。
 
 ## 许可证
 

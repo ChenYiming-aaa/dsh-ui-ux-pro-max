@@ -3,6 +3,8 @@
 > 目标：在**完全保留 DSH 插件形态**的前提下，把"能跑"的代码重组成"能长"的结构。
 > 形式：目标目录树 + 分阶段任务清单，每项标注**原因 / 影响范围 / 预期收益**。
 > 基线：2026-10-17，`1.1.1`，四个测试套件全部通过（`check-package` / `smoke` / `check-example` / `dom-smoke`）。
+>
+> 注（1.3.0）：自动/定时同步工具未保留；数据来源与当前计数见 [DATA-PROVENANCE.md](DATA-PROVENANCE.md)。
 
 ---
 
@@ -38,7 +40,7 @@
 > `nextlevelbuilder/ui-ux-pro-max-skill@137597b`（2026-07-03）；转码路径为
 > `opencode/skills/ui-ux-pro-max/data/`。186 个单元格在转码时丢失内部双引号
 > （数据瑕疵，非来源不同）。
-> 详见 `docs/UPSTREAM-SYNC.md`。
+> 详见 `docs/DATA-PROVENANCE.md`。
 
 ### 0.3 上游血缘与"俱进"现状（读码 + 数据自述核实）
 
@@ -64,8 +66,8 @@
 >
 > **2026-10-18 更新**：N1/N2 已在 1.2.0 处理。快照实际对应上游 `137597b`
 > （2026-07-03，84 风格 / 99 UX / 161 推理规则 / 1,923 字体），不是按
-> `generated` 时间戳推测的 `8a1a6d8`；详见 `docs/UPSTREAM-SYNC.md` 的血缘验证。
-> **1.3.0** 已通过 `scripts/sync-upstream.mjs` 直接同步到 `56ea9cf`
+> `generated` 时间戳推测的 `8a1a6d8`；详见 `docs/DATA-PROVENANCE.md` 的血缘验证。
+> **1.3.0** 已直接从上游 `cli/assets/data/` 生成数据并同步到 `56ea9cf`
 > （88 风格 / 119 UX / 192 推理规则）。
 
 ---
@@ -372,8 +374,8 @@ dsh-ui-ux-pro-max/
 |---|------|------|---------|------|------|
 | 7.1 | **修复溯源标注（N1）**：`THIRD_PARTY_NOTICES.md` 与 `data/index.json` 的 `source` 统一；若确从 opencode 转出，则同时注明「原始上游 nextlevelbuilder/…」+「转取路径 opencode/skills/…」 | 法律声明与实际来源不一致 | 2 处文件 | MIT 署名链条闭合 | **必做** |
 | 7.2 | **快照可追溯（N2）**：`index.json` / `meta.json` 增加 `upstream`（repo URL）、`upstreamRef`（commit/tag）、`syncedAt`；`check-package` 断言三者非空 | 现在无法回答"落后多少" | 数据 + 1 测试 | 上游同步变成可度量动作 | **必做** |
-| 7.3 | 新建 `docs/UPSTREAM-SYNC.md`：同步 SOP（取上游 CSV → 转换 → 重生成 `meta.json` → 跑测试 → 更新文档）+ **差异看板**（本仓库 vs 上游，逐域条数对比，标注来源与日期） | 同步目前完全靠人记忆 | 新增 1 文档 | 每次同步有章可循 | **必做** |
-| 7.4 | 每 release 前核对上游差异并写进 `CHANGELOG.md`；差异超阈值（如某域落后 >10%）时开 issue | 让"俱进"成为节奏而非偶然 | 流程 | 数据不再静默老化 | **必做** |
+| 7.3 | 新建 `docs/DATA-PROVENANCE.md`：数据来源、当前计数与口径（**不再包含同步 SOP**；自动/定时同步工具未保留） | 数据来源需要可追溯 | 新增 1 文档 | 数据来源与计数可查 | **必做** |
+| 7.4 | 数据更新时在 `CHANGELOG.md` 记录上游 ref 与计数；差异超阈值（如某域落后 >10%）时开 issue | 让数据变化可追溯 | 流程 | 数据不再静默老化 | **必做** |
 | 7.5 | **DSH 兼容矩阵** `docs/DSH-COMPAT.md`：记录已验证宿主线（0.1.0 / 0.1.1 / 0.2.0 / 0.2.1）× 验证项（工具定义编译、schema、`render`、`presentCall`、`apply()` 注册、内置技能激活） | 宿主演进快且验证结果只在本机 | 新增 1 文档 | 版本适配不再靠重踩一遍坑 | **必做** |
 | 7.6 | `VERIFIED_HOST` 常量提到 `lib/config.js`，`check-package.mjs` 与其同源 | 现状硬编码在测试里，与 `peerDependencies` 是两份真相 | 2 文件 | peer 区间与验证基线同改同测 | **必做** |
 | 7.7 | **SchemaSpec 方言合规测试**：把 `index.js` 顶部那段方言注释（属性级 `required`、`items` 内禁 `required`、禁 type 数组、禁 numeric bounds）固化进 `lib/plugin/schema.js` + `tests/check-schema.mjs` | 这些是 DSH 特有的坑，写错只有宿主运行时才报错 | 新增 1 测试 + 1 模块 | 非法 schema 在 CI 就被拦下 | **必做** |
@@ -393,17 +395,17 @@ dsh-ui-ux-pro-max/
 
 ```bash
 npm test
-# = check-package → smoke → check-example → check-counts → contract → check-imports → check-schema
+# = check-package → smoke → check-example → check-counts → check-i18n
+#   → contract → check-imports → check-schema
 #   （dom-smoke 在 jsdom 缺失时自动跳过，CI 中独立安装后运行）
 ```
 
-另有**两道 CI 跑不了、必须人工过**的关（已写进 `docs/DSH-COMPAT.md` 与 `docs/UPSTREAM-SYNC.md`）：
+另有**两道 CI 跑不了、必须人工过**的关（已写进 `docs/DSH-COMPAT.md`；数据来源见 `docs/DATA-PROVENANCE.md`）：
 
 ```bash
 # 1) 真实宿主验证：依赖本机 DSH 安装路径，无法进 CI
 node tests/validate-tools.mjs && node tests/validate-apply.mjs
-# 2) 上游差异核对：每次 release 前跑一次，结果写进 CHANGELOG
-#    取上游 CSV → 转换 → 比对各域条数 → 更新 docs/UPSTREAM-SYNC.md 差异看板
+# 2) 数据核对：数据是静态发布物；如替换数据库，更新 data/*.json 并运行 npm test
 ```
 
 ### 5.2 新增自动检查项
@@ -418,7 +420,7 @@ node tests/validate-tools.mjs && node tests/validate-apply.mjs
 | **死代码** | 扫 `export` 符号在 `lib/` 与 `tests/` 的引用数，报告 0 引用项 | `summarizeDesignSystem` 类僵尸 API |
 | **SchemaSpec 方言合规** | `tests/check-schema.mjs`：断言三工具 schema 不含 `items` 内 `required`、不含 type 数组、不含 numeric bounds、根层 `required` 为属性级 | DSH 特有的坑，写错只有宿主运行时才报错（阶段 7.7） |
 | **溯源字段完整性** | `check-package.mjs` 增加：断言 `index.json` / `meta.json` 含非空 `upstream` / `upstreamRef` / `syncedAt` | 防止上游信息在重新转换时丢失（阶段 7.2） |
-| **上游差异看板** | `docs/UPSTREAM-SYNC.md` 的差异表须带"核对日期 + 数据来源"，release 前人工更新 | 让"俱进"可度量（阶段 7.4） |
+| **上游差异看板** | `docs/DATA-PROVENANCE.md` 的差异表须带"核对日期 + 数据来源"，release 前人工更新 | 让"俱进"可度量（阶段 7.4） |
 
 ### 5.3 发布前人工/半自动校验
 
@@ -459,11 +461,11 @@ node tests/check-package.mjs  # BOM / bundle.patch / files 存在性 / 无生命
 | 能力 | 做法 | 落地项 |
 |------|------|--------|
 | **可追溯** | `index.json` / `meta.json` 写入 `upstream` + `upstreamRef` + `syncedAt`，并由 `check-package` 断言非空 | 7.2 |
-| **可重复** | `docs/UPSTREAM-SYNC.md` 固化 SOP：取上游 CSV → 转换 → 重生成 `meta.json` → 跑 `npm test` → 更新文档数字 | 7.3 |
+| **可重复** | `docs/DATA-PROVENANCE.md` 固化 SOP：取上游 CSV → 转换 → 重生成 `meta.json` → 跑 `npm test` → 更新文档数字 | 7.3 |
 | **可度量** | 差异看板逐域对比条数，带"核对日期 + 数据来源"；release 前必看 | 7.3 / 7.4 |
 | **自动跟随** | 能力数字改从 `meta.json` 派生（阶段 2.3）后，**数据一更新，11 处文档数字与 `SKILL_DESCRIPTION` 自动跟上**，无需手工改 | 2.3 / 7.8 |
 
-**差异看板模板**（放 `docs/UPSTREAM-SYNC.md`）：
+**差异看板模板**（放 `docs/DATA-PROVENANCE.md`）：
 
 | 域 | 本仓库 | 上游 | 差值 | 核对日期 |
 |---|---|---|---|---|
@@ -513,4 +515,4 @@ node tests/check-package.mjs  # BOM / bundle.patch / files 存在性 / 无生命
 ② 支持哪些 DSH 宿主版本、分别验证过什么？
 ③ 上游现在比我们多多少条？
 ④ 换个宿主版本，要改哪几个文件？
-答案分别在 `data/index.json` 的 `upstreamRef`、`docs/DSH-COMPAT.md`、`docs/UPSTREAM-SYNC.md`、`lib/config.js`。
+答案分别在 `data/index.json` 的 `upstreamRef`、`docs/DSH-COMPAT.md`、`docs/DATA-PROVENANCE.md`、`lib/config.js`。

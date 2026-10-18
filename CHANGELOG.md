@@ -8,15 +8,15 @@
 
 ## [1.3.0] - 2026-10-18
 
-### 数据同步
+### 数据更新
 
 - **快照更新到上游 `56ea9cf`（2026-10-15）**，直接读取 `cli/assets/data/` CSV：
   - 风格 **84 → 88**、UX 规范 **99 → 119**、推理规则 **161 → 192**
   - 动效 **16 → 17**、移动端接口 **30 → 32**、Google 字体 **1923 → 1934**
   - 技术栈规范合计 **1221 → 1271**，数据总行数 **4200 → 4319**
-- 使用新的 `scripts/sync-upstream.mjs` 内置 CSV 解析器（支持引号、`""` 转义、
-  字段内换行），修复了 1.2.0 快照中 186 个单元格丢失内部双引号的转码瑕疵。
-- 新增 `npm run check:upstream` / `npm run sync:upstream` 两个非生命周期脚本。
+- 生成数据时使用了支持引号、`""` 转义和字段内换行的 CSV 解析器，
+  修复了 1.2.0 快照中 186 个单元格丢失内部双引号的转码瑕疵。
+- 数据是发布包内的静态文件；插件的工具调用路径**不联网**，也不包含运行时/定时同步功能。
 
 ### 检索行为
 
@@ -27,12 +27,9 @@
   `Allowed Contexts` / stack `Applies To` / `Status` / `Verified At`。
 - 中文标签补齐上述新字段。
 
-### 文档 / 工具
+### 文档
 
-- `docs/UPSTREAM-SYNC.md` 增加：
-  - 1.3.0 同步结果与差异看板（与 `56ea9cf` 全量对齐）
-  - `check:upstream` / `sync:upstream` 的 SOP
-  - 「实时同步」方案评估：不推荐运行时拉取；推荐定时检查 + PR
+- `docs/DATA-PROVENANCE.md` 记录数据来源、当前计数与统计口径。
 - README（中英）、SKILL.md、package.json、THIRD_PARTY_NOTICES 能力数字与溯源同步。
 
 ### 说明
@@ -63,8 +60,8 @@
 - `tests/contract.mjs`：schema ↔ `execute` 返回值一致性（零宿主依赖）。
 - `tests/check-schema.mjs`：SchemaSpec 方言 + 负例。
 - `npm test` 一键入口；CI 改为 `npm test` + 独立 jsdom DOM 验证。
-- `docs/ARCHITECTURE.md`（分层与新增代码位置）、`docs/UPSTREAM-SYNC.md`
-  （同步 SOP + 差异看板）、`docs/DSH-COMPAT.md`（兼容矩阵 + 降级契约）。
+- `docs/ARCHITECTURE.md`（分层与新增代码位置）、`docs/DSH-COMPAT.md`
+  （兼容矩阵 + 降级契约）。
 - 完成态卡片：`design_recommend` 通过 `output.presentationMeta` +
   `presentResult` 输出风格/主色/字体/令牌摘要，不再只有 generic 标题。
 - 渲染预算：设计系统 Markdown 12000 字符上限（超出显式截断），检索字段 400 字符。

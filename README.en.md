@@ -107,7 +107,7 @@ No network and no DSH runtime required (CI runs these on Node 22 and 24):
 ```bash
 npm test
 # = check-package → smoke → check-example → check-counts → check-i18n → contract
-#   → check-imports → check-schema → check-sync-parser → dom-smoke
+#   → check-imports → check-schema → dom-smoke
 #   (dom-smoke auto-skips when jsdom is absent; CI installs jsdom in a separate dir)
 ```
 
@@ -126,8 +126,7 @@ sync with `data/meta.json`; `check-i18n.mjs` guards the Chinese dictionary
 (no duplicate keys, deduplicated expansion); `contract.mjs` enforces schema ↔
 `execute` consistency; `check-imports.mjs` turns the layering rules, acyclicity
 and `data/` path uniqueness into CI assertions; `check-schema.mjs` catches
-SchemaSpec dialect mistakes that would otherwise only fail inside the host
-runtime; `check-sync-parser.mjs` locks the CSV parser used by the upstream sync tool.
+SchemaSpec dialect mistakes that would otherwise only fail inside the host runtime.
 
 > Runtime compatibility is verified separately against a real DSH install
 > (tool schema compilation, output schema, `render` / `presentCall` /
@@ -139,16 +138,16 @@ runtime; `check-sync-parser.mjs` locks the CSV parser used by the upstream sync 
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — layers, dependency rules, where to add code
 - [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) — verified hosts, SchemaSpec dialect, degradation contract
-- [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md) — upstream sync SOP (`npm run check:upstream` / `sync:upstream`) and diff board
+- [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md) — data source, current counts and caveats
 
 ## Credits
 
 - **Upstream**: [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
   (MIT) — data, search, and design-system logic ported and optimized for the DSH
   plugin form (pure JS, offline, Chinese-first, structured tool output).
-- **Data snapshot**: upstream commit `56ea9cf` (2026-10-15), synced 2026-10-18;
-  row/column lineage verification is documented in
-  [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md).
+- **Data snapshot**: upstream commit `56ea9cf` (2026-10-15), generated 2026-10-18;
+  source, counts and caveats are documented in
+  [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md).
 - Plugin patterns inspired by `zhaiyateng/dsh-design-skills`, `Viger1/dsh-design`,
   and `superdesigndev/superdesign-skill`.
 

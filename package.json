@@ -25,9 +25,7 @@
     "node": "^22.19.0 || >=24.0.0"
   },
   "scripts": {
-    "test": "node tests/check-package.mjs && node tests/smoke.mjs && node tests/check-example.mjs && node tests/check-counts.mjs && node tests/check-i18n.mjs && node tests/contract.mjs && node tests/check-imports.mjs && node tests/check-schema.mjs && node tests/check-sync-parser.mjs && node tests/dom-smoke.mjs",
-    "check:upstream": "node scripts/sync-upstream.mjs --check",
-    "sync:upstream": "node scripts/sync-upstream.mjs --write"
+    "test": "node tests/check-package.mjs && node tests/smoke.mjs && node tests/check-example.mjs && node tests/check-counts.mjs && node tests/check-i18n.mjs && node tests/contract.mjs && node tests/check-imports.mjs && node tests/check-schema.mjs && node tests/dom-smoke.mjs"
   },
   "publishConfig": {
     "access": "public"
