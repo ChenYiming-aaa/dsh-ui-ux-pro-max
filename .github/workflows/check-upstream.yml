@@ -1,0 +1,25 @@
+name: Check upstream data
+
+on:
+  schedule:
+    # Weekly on Monday 03:00 UTC. Adjust to daily if you want tighter freshness.
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Exits 0 when data matches upstream; exits 1 and prints the diff when behind.
+      # This job intentionally does NOT write data or push commits: a human reviews
+      # the diff, runs `npm run sync:upstream`, updates docs, and opens a PR.
+      - name: Compare bundled data with upstream
+        run: npm run check:upstream

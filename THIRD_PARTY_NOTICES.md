@@ -29,27 +29,28 @@ and `data/meta.json`:
 | Field | Value |
 |---|---|
 | `upstream` | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` (original project) |
-| `upstreamRef` | `137597b02fc3c8689059af899bffef76ee6ae15c` (upstream commit, 2026-07-03) |
-| `upstreamDataPath` | `cli/assets/data/` (upstream data directory used for verification) |
-| `sourcePath` | `opencode/skills/ui-ux-pro-max/data/` (transcode path recorded by the snapshot) |
-| `syncedAt` | `2026-08-19T09:37:40.268Z` (transcode time; content corresponds to the upstream commit above) |
+| `upstreamRef` | `56ea9cf174ed86786187daa9de0e6247cb0747e4` (upstream commit, 2026-10-15) |
+| `upstreamRefDate` | `2026-10-15T09:04:34+07:00` |
+| `upstreamDataPath` | `cli/assets/data/` (upstream data directory) |
+| `sourcePath` | `cli/assets/data/` (direct sync path since 1.3.0) |
+| `syncedAt` | `2026-10-18T03:59:34.490Z` (direct sync time) |
 | `lineageVerifiedAt` | `2026-10-18` (row/column comparison against upstream) |
 
-The original upstream is **nextlevelbuilder/ui-ux-pro-max-skill**. The snapshot
-was transcoded from the `opencode/skills/ui-ux-pro-max/data/` copy, whose data
-matches upstream commit `137597b` row-for-row and column-for-column: all 11
-domain tables (style/color/chart/landing/product/ux/typography/icons/gsap/react/web),
-the 161 reasoning rows, all 22 stack tables and all 1,923 Google Fonts rows were
-compared field-by-field. The only differences are 186 cells across 8 tables
-where internal double quotes were stripped during CSV transcoding
-(`icons` 100, `shadcn` 38, `nuxt-ui` 25, `javafx` 15, `nuxtjs` 5, `web` 1,
-`wpf` 1, `uno` 1); no rows were added, removed, or replaced. That quote-stripping
-is a transcode artifact, not a different data source, and should be repaired on
-the next upstream sync.
+The original upstream is **nextlevelbuilder/ui-ux-pro-max-skill**. Since 1.3.0
+the bundled data is synced directly from its `cli/assets/data/` CSVs with
+`scripts/sync-upstream.mjs` (built-in CSV parser; no lossy transcode). The
+current snapshot matches upstream `56ea9cf` row-for-row and column-for-column:
 
-Both the original upstream and the transcode path are recorded so the MIT
-attribution chain can be traced; see `docs/UPSTREAM-SYNC.md` for the verification
-method and sync procedure.
+- 88 style rows, 119 UX guidelines, 192 reasoning profiles;
+- 22 stack tables (1,271 guideline rows) and 1,934 Google Fonts rows;
+- all 11 domain tables match their upstream CSV columns and values.
+
+The earlier 1.2.0 snapshot (`137597b`, transcoded via
+`opencode/skills/ui-ux-pro-max/data/`) had 186 cells with stripped internal
+double quotes; the 1.3.0 direct sync repaired that by parsing the upstream CSV
+with a proper quoted-field parser.
+
+See `docs/UPSTREAM-SYNC.md` for the verification method and sync procedure.
 
 ## Google Fonts metadata
 

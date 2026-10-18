@@ -9,8 +9,8 @@
 > UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**, adapted and
 > optimized from the open-source project
 > [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
-> (MIT License). Bundles **84 design styles, 192 color palettes, 74 font pairings,
-> 99 UX guidelines, 25 chart types** across **22 technology stacks** plus 1900+
+> (MIT License). Bundles **88 design styles, 192 color palettes, 74 font pairings,
+> 119 UX guidelines, 25 chart types** across **22 technology stacks** plus 1900+
 > Google Fonts records — fully offline, zero network, Chinese-first structured output.
 >
 > 中文说明见 [README.md](README.md)。
@@ -31,12 +31,12 @@ when and how to use each tool. The plugin is **host-only** (no client UI).
 
 ### Plugin market / npm (recommended)
 
-Published on npm as `dsh-ui-ux-pro-max@1.2.0`. Install from the **DSH Desktop
+Published on npm as `dsh-ui-ux-pro-max@1.3.0`. Install from the **DSH Desktop
 plugin market**, or with the CLI:
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.2.0   # DSH Desktop
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.2.0   # dsh web
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.3.0   # DSH Desktop
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.3.0   # dsh web
 ```
 
 > 💡 Note: DSH Desktop does not put the `dsh` command on PATH — open a **new
@@ -134,14 +134,14 @@ mistakes that would otherwise only fail inside the host runtime.
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — layers, dependency rules, where to add code
 - [docs/DSH-COMPAT.md](docs/DSH-COMPAT.md) — verified hosts, SchemaSpec dialect, degradation contract
-- [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md) — upstream sync SOP and diff board
+- [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md) — upstream sync SOP (`npm run check:upstream` / `sync:upstream`) and diff board
 
 ## Credits
 
 - **Upstream**: [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
   (MIT) — data, search, and design-system logic ported and optimized for the DSH
   plugin form (pure JS, offline, Chinese-first, structured tool output).
-- **Data snapshot**: upstream commit `137597b` (2026-07-03), transcoded 2026-08-19;
+- **Data snapshot**: upstream commit `56ea9cf` (2026-10-15), synced 2026-10-18;
   row/column lineage verification is documented in
   [docs/UPSTREAM-SYNC.md](docs/UPSTREAM-SYNC.md).
 - Plugin patterns inspired by `zhaiyateng/dsh-design-skills`, `Viger1/dsh-design`,

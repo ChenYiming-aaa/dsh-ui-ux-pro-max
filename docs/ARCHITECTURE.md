@@ -120,8 +120,15 @@ tools/design-search
 | `tests/contract.mjs` | schema ↔ execute 返回值一致 |
 | `tests/check-imports.mjs` | 分层、无环、data 路径唯一、宿主 API 边界 |
 | `tests/check-schema.mjs` | SchemaSpec 方言 + 负例 |
+| `tests/check-sync-parser.mjs` | 上游同步 CSV 解析器（引号/转义/换行/BOM） |
 
-## 8. 有意保留的决策
+## 8. 上游同步工具
+
+`scripts/sync-upstream.mjs` 不进入发布包（不在 `files[]`），只用于维护数据：
+`--check` 比较当前数据与上游，`--write` 重新生成 `data/*.json`。完整 SOP 与
+“实时同步”方案评估见 [UPSTREAM-SYNC.md](UPSTREAM-SYNC.md)。
+
+## 9. 有意保留的决策
 
 - **顶层目录仍叫 `lib/`**：`files[]`、安装脚本、README、SKILL.md 都引用它；改名收益低、风险高。
 - **examples 保持单文件自包含**：共享片段用测试守卫，不引入构建链。

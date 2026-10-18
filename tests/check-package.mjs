@@ -104,6 +104,8 @@ for (const file of dataFiles) {
 }
 const meta = readJson('data/meta.json')
 const index = readJson('data/index.json')
+const fonts = readJson('data/fonts.json')
+assert(fonts.googleFonts?.length === meta.counts.googleFonts, `googleFonts 行数一致 (${meta.counts.googleFonts})`)
 for (const [key, count] of Object.entries(meta.counts)) {
   if (key.startsWith('stack:')) {
     const stack = key.slice(6)
@@ -127,7 +129,7 @@ for (const [name, data] of [['data/index.json', index], ['data/meta.json', meta]
     assert(typeof data[key] === 'string' && data[key].trim().length > 0, `${name}.${key} 非空`)
   }
   assert(/^[0-9a-f]{40}$/.test(data.upstreamRef), `${name}.upstreamRef 是完整 commit SHA`)
-  assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(data.upstreamRefDate), `${name}.upstreamRefDate 是 ISO 时间`)
+  assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/.test(data.upstreamRefDate), `${name}.upstreamRefDate 是 ISO 时间`)
   assert(/^\d{4}-\d{2}-\d{2}$/.test(data.lineageVerifiedAt), `${name}.lineageVerifiedAt 是核对日期`)
   assert(data.upstreamRefKind === 'commit', `${name}.upstreamRefKind = commit`)
 }

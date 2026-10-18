@@ -6,6 +6,40 @@
 > 说明：本文件自 1.0.4 起建立。1.0.0–1.0.3 的历史条目未随浅克隆保留，
 > 如需完整历史请从仓库全量 clone 回填。
 
+## [1.3.0] - 2026-10-18
+
+### 数据同步
+
+- **快照更新到上游 `56ea9cf`（2026-10-15）**，直接读取 `cli/assets/data/` CSV：
+  - 风格 **84 → 88**、UX 规范 **99 → 119**、推理规则 **161 → 192**
+  - 动效 **16 → 17**、移动端接口 **30 → 32**、Google 字体 **1923 → 1934**
+  - 技术栈规范合计 **1221 → 1271**，数据总行数 **4200 → 4319**
+- 使用新的 `scripts/sync-upstream.mjs` 内置 CSV 解析器（支持引号、`""` 转义、
+  字段内换行），修复了 1.2.0 快照中 186 个单元格丢失内部双引号的转码瑕疵。
+- 新增 `npm run check:upstream` / `npm run sync:upstream` 两个非生命周期脚本。
+
+### 检索行为
+
+- `style` / `stacks` 默认排除 `Status=deprecated` 条目；查询显式包含
+  `legacy` / `deprecated` 时保留（与上游一致）。
+- 检索列/输出列同步上游新增字段：`Style ID` / `Aliases` / `Status` /
+  `Preferred Mode` / `Accessibility Risk` / `Pattern ID` / `Semantic Role` /
+  `Allowed Contexts` / stack `Applies To` / `Status` / `Verified At`。
+- 中文标签补齐上述新字段。
+
+### 文档 / 工具
+
+- `docs/UPSTREAM-SYNC.md` 增加：
+  - 1.3.0 同步结果与差异看板（与 `56ea9cf` 全量对齐）
+  - `check:upstream` / `sync:upstream` 的 SOP
+  - 「实时同步」方案评估：不推荐运行时拉取；推荐定时检查 + PR
+- README（中英）、SKILL.md、package.json、THIRD_PARTY_NOTICES 能力数字与溯源同步。
+
+### 说明
+
+- 本次只同步数据与检索列，不改变三个工具的名称/参数/输出结构/SKILL.md 语义。
+- 版本号 1.3.0；未推送远程、未发布 npm。
+
 ## [1.2.0] - 2026-10-18
 
 ### 变更（架构，对外行为等价）
