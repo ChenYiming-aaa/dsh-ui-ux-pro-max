@@ -34,3 +34,6 @@ tests/register-loader.mjs
 tests/validate-*.mjs
 tests/verify-market-install.mjs
 scripts/clean-market-cache.ps1
+
+# 临时截图 / 探针脚本（CDP），不入库
+.tmp/

@@ -15,6 +15,8 @@ const BASE = (process.env.SHOWCASE_BASE || '').trim();
 
 export const SHOWCASE_BASE = BASE;
 
+export const GITHUB = 'https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max';
+
 /** 出站到图鉴的链接：默认同域同级目录，设了 SHOWCASE_BASE 就走绝对 URL */
 export const showcaseUrl = (p = '') => {
   const rest = String(p).replace(/^\/+/, '');
@@ -57,6 +59,7 @@ function topbar(active, counts) {
     <nav class="nav" aria-label="域导航">${links}</nav>
     <div class="top-r">
       <a class="top-link top-link--x" href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}" title="另一个站点：${GALLERY.name}，${GALLERY_LINE}"><span class="tl-full">${GALLERY.name}</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+      <a class="top-link top-link--gh" href="${GITHUB}" target="_blank" rel="noopener" title="插件源码与数据"><span class="tl-full">GitHub</span><span class="tl-short" aria-hidden="true">GH</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>`;
@@ -65,8 +68,8 @@ function topbar(active, counts) {
 export function footer() {
   return `<footer class="foot">
   <div class="foot-in">
-    <p><strong>${HANDBOOK.name}</strong> · 同一知识库的${OTHER_VIEW} <a href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}">${GALLERY.name}</a>（${GALLERY_LINE}），数据来自插件内置的 4319 行设计知识库。</p>
-    <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
+    <p><strong>${HANDBOOK.name}</strong> · 同一知识库的${OTHER_VIEW} <a href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}">${GALLERY.name}</a>（${GALLERY_LINE}）</p>
+    <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <a href="${GITHUB}" target="_blank" rel="noopener">GitHub ↗</a> · <span id="foot-build"></span></p>
   </div>
 </footer>`;
 }
@@ -86,7 +89,7 @@ export function footer() {
  */
 export function pageShell({ title, desc, active, body, side = '', head = '', scripts = '', pageClass = '', hero = '', counts = null, intro = null }) {
   return `<!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-pnav>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

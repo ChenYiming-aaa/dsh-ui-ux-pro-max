@@ -85,9 +85,9 @@ export function indexPage(a) {
 
   const body = `
 <section class="hero-b" data-rise>
-  <p class="hero-k">六个域 · 同一套数据源 · ${OTHER_VIEW}</p>
+  <p class="hero-k">六个域 · 同一份数据源</p>
   <h1 class="hero-t">图鉴讲「<em>长什么样</em>」，<br>这里讲「<em>怎么定</em>」。</h1>
-  <p class="hero-l">同一份 4319 行设计知识库的${OTHER_VIEW}：配色、字体、图表、落地页、规范、配方，六个域互相引用。</p>
+  <p class="hero-l">4319 行设计知识库的另一半：配色、字体、图表、落地页、规范、配方，互相引用。</p>
   <div class="hero-a">
     <a class="btn" href="./compose.html">打开配方生成器</a>
     <a class="btn btn--ghost" href="./palettes.html">浏览 ${s.palettes} 套配色</a>
@@ -115,12 +115,12 @@ ${statStrip(
 <section class="sect">
   <div class="sect-h"><h2>六个域</h2><a href="./about.html">字段说明</a></div>
   <div class="entry">
-    ${entry('./palettes.html', '01', '语义配色库', s.palettes, '16 个语义令牌，直接渲染成按钮、输入框、卡片与焦点环')}
-    ${entry('./pairings.html', '02', '字体配对', s.pairings, `${s.fontFamilies} 个字族已本地化，标题与正文成对展示真实排印`)}
-    ${entry('./charts.html', '03', '图表选型', s.charts, '按数据类型反查该用什么图、什么量级换 Canvas')}
-    ${entry('./landing.html', '04', '落地页模式', s.landings, '把分区顺序画成线框，标出 CTA 位置与配色策略')}
-    ${entry('./practices.html', '05', '交互与工程规范', s.practices, 'UX / React / Web 三表合并，正确与错误代码左右对照')}
-    ${entry('./recipes.html', '06', '产品配方', s.recipes, '选一个类型，给出风格、配色、字体、落地页与决策规则')}
+    ${entry('./palettes.html', '01', '语义配色库', s.palettes, '16 个语义令牌，渲染成真实界面')}
+    ${entry('./pairings.html', '02', '字体配对', s.pairings, `${s.fontFamilies} 个字族本地化，成对展示真实排印`)}
+    ${entry('./charts.html', '03', '图表选型', s.charts, '按数据类型反查该用什么图')}
+    ${entry('./landing.html', '04', '落地页模式', s.landings, '分区顺序画成线框，标出 CTA')}
+    ${entry('./practices.html', '05', '交互与工程规范', s.practices, 'UX / React / Web 三表合并，代码左右对照')}
+    ${entry('./recipes.html', '06', '产品配方', s.recipes, '一个类型，一份完整决策记录')}
   </div>
 </section>
 
@@ -257,15 +257,14 @@ export function palettesPage(a) {
 ${sideBlock('主色相', chips('hue', hues.map((h) => ({ value: h, label: h, count: a.palettes.filter((p) => p.hueName === h).length }))))}
 ${sideBlock(
   '说明',
-  `<p class="side-note">每套都是 16 个语义令牌，不是一组色块。上方小样用真实令牌渲染，能直接看出按钮、卡片、焦点环的样子。</p>
-  <p class="side-note">点色块复制 HEX，展开可拿 CSS 变量、Tailwind 配置或 JSON。</p>
-  <p class="side-note">${a.stats.contrastClean}/${a.stats.palettes} 套的 7 组核心对比度全部达到 WCAG AA。</p>`,
+  `<p class="side-note">点色块复制 HEX；展开可拿 CSS / Tailwind / JSON。</p>
+  <p class="side-note">${a.stats.contrastClean}/${a.stats.palettes} 套的 7 组核心对比度达 WCAG AA。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '语义配色',
     title: '配色库',
-    lead: `按产品类型组织的 <strong>${a.palettes.length} 套</strong>配色。每套给出 primary / on-primary / card / muted / border / destructive / ring 等 16 个语义令牌，并用这些令牌渲染一个真实界面小样——不是看色块，是看它用起来什么样。`,
+    lead: `按产品类型组织的 <strong>${a.palettes.length} 套</strong>配色。每套 16 个语义令牌，并渲染成真实界面小样。`,
     meta: `<span>${a.palettes.length} 套</span><span>${a.stats.darkPalettes} 套深色</span><span>16 令牌</span><span>7 组对比度校验</span>`,
   })}
 ${toolbar({
@@ -306,45 +305,51 @@ ${emptyState('没有匹配的配色。试试清空搜索或切换筛选。')}
 const SPECIMENS = [
   {
     spec: 'Design is how it works',
-    sub: 'A pairing specimen from the typography table',
-    body: 'Typography is the craft of endowing human language with a durable visual form. A good pairing sets a clear hierarchy: the heading carries voice, the body carries the reading.',
+    body: 'A good pairing sets the hierarchy: the heading carries voice, the body carries the reading.',
   },
   {
     spec: 'Form follows feeling',
-    sub: 'Two families, one rhythm',
-    body: 'The heading face decides how the page sounds before a single sentence is read. The body face decides whether anyone finishes it. Contrast in weight, not in noise.',
+    body: 'Two families, one rhythm. Contrast comes from weight and width, not from decoration.',
   },
   {
     spec: 'Read, then remember',
-    sub: 'Hierarchy before decoration',
-    body: 'Set the body at a comfortable measure — somewhere between 60 and 75 characters — and let the heading do the shouting. Everything else is spacing.',
+    body: 'Set the body at a comfortable measure, then let the heading carry the tone.',
   },
 ];
 
 function pairCard(p, i) {
   const sp = SPECIMENS[i % SPECIMENS.length];
-  const headFamily = p.offline ? `'${p.heading}'` : 'var(--serif)';
-  const bodyFamily = p.offline ? `'${p.body}'` : 'var(--sans)';
-  return `<article class="pair" data-item style="--f-head:${esc(headFamily)};--f-body:${esc(bodyFamily)}"
-  data-cat="${esc(p.category.toLowerCase())}" data-search="${esc(`${p.name} ${p.category} ${p.heading} ${p.body} ${p.keywords.join(' ')} ${p.bestFor}`.toLowerCase())}"
+  // 样张变量：字体栈、字重、字号 / 字距 / 行高系数都按字族给（见 font-display.mjs）
+  const vars = [
+    `--f-head:'${p.heading}',${p.headFallback}`,
+    `--f-body:'${p.body}',${p.bodyFallback}`,
+    `--fw-head:${p.headWeight || 700}`,
+    `--f-k:${p.headTrim?.k ?? 1}`,
+    p.headTrim?.ls ? `--f-ls:${p.headTrim.ls}` : '',
+    p.headTrim?.lh ? `--f-lh:${p.headTrim.lh}` : '',
+    p.bodyTrim?.k ? `--f-bk:${p.bodyTrim.k}` : '',
+    p.bodyTrim?.lh ? `--f-blh:${p.bodyTrim.lh}` : '',
+  ]
+    .filter(Boolean)
+    .join(';');
+  return `<article class="pair" data-item data-cat="${esc(p.catZh)}" style="${esc(vars)}"
+  data-search="${esc(`${p.name} ${p.category} ${p.catZh} ${p.heading} ${p.body} ${p.keywords.join(' ')} ${p.bestFor}`.toLowerCase())}"
   data-sort-name="${esc(p.name.toLowerCase())}" data-sort-pop="${p.headPopularity || 9999}">
   <div class="pair-h">
     <span class="pair-n">${esc(p.name)}</span>
     <div class="sp">
-      <span class="tag">${esc(p.category)}</span>
-      ${p.offline ? '<span class="tag tag--ok">离线可用</span>' : '<span class="tag tag--warn">需联网</span>'}
+      <span class="tag">${esc(p.catZh)}</span>
+      ${p.multiScript ? '<span class="tag tag--acc" title="该配对面向日 / 韩 / 阿拉伯等文种；本站只内置 latin 子集">多语种</span>' : ''}
+      <span class="tag tag--ok">离线可用</span>
     </div>
   </div>
   <div class="pair-b">
     <p class="pair-spec">${esc(sp.spec)}</p>
-    <p class="pair-sub">${esc(sp.sub)}</p>
     <p class="pair-body">${esc(sp.body)}</p>
   </div>
   <div class="pair-f">
     <span>标题 <code>${esc(p.heading)}</code></span>
     <span>正文 <code>${esc(p.body)}</code></span>
-    <span class="sp"></span>
-    <span>${esc(p.bestFor.split(',')[0] || '')}</span>
   </div>
   <button type="button" class="pair-x" data-more aria-expanded="false" aria-controls="pd-${esc(p.key)}">细节与用法</button>
   <div class="pair-d" id="pd-${esc(p.key)}" hidden>
@@ -354,6 +359,7 @@ function pairCard(p, i) {
       <dt>标题字体</dt><dd>${esc(p.heading)}${p.headCategory ? ` · ${esc(p.headCategory)}` : ''}${p.headDesigner ? ` · ${esc(p.headDesigner)}` : ''}</dd>
       <dt>正文字体</dt><dd>${esc(p.body)}${p.bodyCategory ? ` · ${esc(p.bodyCategory)}` : ''}${p.bodyDesigner ? ` · ${esc(p.bodyDesigner)}` : ''}</dd>
       ${p.notes ? `<dt>备注</dt><dd>${esc(p.notes)}</dd>` : ''}
+      ${p.multiScript ? '<dt>说明</dt><dd>该配对面向日 / 韩 / 阿拉伯等文种排印；本站只内置 latin 子集，样张展示的是拉丁字形。</dd>' : ''}
       <dt>CSS</dt><dd><code>${esc(p.importCss || '—')}</code></dd>
       ${p.tailwind ? `<dt>Tailwind</dt><dd><code>${esc(p.tailwind)}</code></dd>` : ''}
     </dl>
@@ -362,31 +368,30 @@ function pairCard(p, i) {
 }
 
 export function pairingsPage(a) {
-  const cats = [...new Set(a.pairings.map((p) => p.category))];
+  const cats = [...new Set(a.pairings.map((p) => p.catZh))];
   const side = `${sideBlock(
     '组合类型',
     chips(
       'cat',
       cats
         .map((c) => ({
-          value: c.toLowerCase(),
-          label: c.length > 20 ? `${c.slice(0, 19)}…` : c,
-          count: a.pairings.filter((p) => p.category === c).length,
+          value: c,
+          label: c,
+          count: a.pairings.filter((p) => p.catZh === c).length,
         }))
         .sort((x, y) => y.count - x.count),
     ),
   )}
 ${sideBlock(
   '说明',
-  `<p class="side-note">样张里的英文才用配对字体渲染；中文说明走系统字体，因为这些都是拉丁字体。</p>
-  <p class="side-note">${a.stats.fontsOffline}/${a.stats.pairings} 对双字体都已本地化，共 ${a.stats.fontFamilies} 个字体族、${a.stats.fontFiles} 个文件、${(a.stats.fontBytes / 1024 / 1024).toFixed(2)} MB，全部离线可用。</p>
-  <p class="side-note">调上面的字号与行高，可以看同一套配对在不同密度下的表现。</p>`,
+  `<p class="side-note">样张里的英文用配对字体渲染，中文走系统字体——这些是拉丁字体。</p>
+  <p class="side-note">${a.stats.fontsOffline}/${a.stats.pairings} 对已本地化，零外部请求。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '排印',
     title: '字体配对',
-    lead: `<strong>${a.pairings.length} 组</strong>标题与正文的搭配。每个字体的 latin 子集都已下载进站点，所以这里看到的就是真实渲染，不是近似。拖动控件可以同时改变所有样张的字号与行高，观察同一套配对的疏密变化。`,
+    lead: `<strong>${a.pairings.length} 组</strong>标题与正文的搭配，用真实字体渲染。拖动控件可同时改变所有样张的字号与行高。`,
     meta: `<span>${a.pairings.length} 组</span><span>${a.stats.fontFamilies} 个字族</span><span>${(a.stats.fontBytes / 1024 / 1024).toFixed(2)} MB 本地字体</span><span>零外部请求</span>`,
   })}
 <div class="ctl">
@@ -394,7 +399,7 @@ ${sideBlock(
   <output class="ctl-o" data-out="fs">100%</output>
   <label class="ctl-l">行高 <input type="range" min="0.9" max="1.4" step="0.05" value="1" data-typo="lh"></label>
   <output class="ctl-o" data-out="lh">100%</output>
-  <span class="ctl-note">只影响本页样张，不改站点自身排版</span>
+  <span class="ctl-note">只影响本页样张</span>
 </div>
 ${toolbar({
   placeholder: '搜索配对名、字体、气质关键词…',
@@ -450,15 +455,13 @@ export function chartsPage(a) {
   )}
 ${sideBlock(
   '说明',
-  `<p class="side-note">入口是「你的数据长什么样」，不是「你会用哪个图」。先认数据类型，再看推荐图表与量级阈值。</p>
-  <p class="side-note">每张卡片的示意图是按类型手绘的，用来看形态，不是真实数据。</p>
-  <p class="side-note">「量级」一栏给出 SVG / Canvas 的分界，超过阈值就要考虑降采样或聚合。</p>`,
+  `<p class="side-note">按「数据长什么样」反查图表；示意图只表形态，不是真实数据。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '数据可视化',
     title: '图表选型',
-    lead: `<strong>${a.charts.length} 类</strong>数据类型，逐类给出最佳图表、备选方案、使用与禁用条件、数据量级阈值、无障碍风险与降级方案。做数据型产品时，先在这里对齐「该用什么图」。`,
+    lead: `<strong>${a.charts.length} 类</strong>数据类型：最佳图表、备选、使用条件、量级阈值与无障碍风险。`,
     meta: `<span>${a.charts.length} 类数据</span><span>25 张示意</span><span>含量级阈值</span><span>字段原文为英文</span>`,
   })}
 ${toolbar({ placeholder: '搜索数据类型、图表名、使用条件…' })}
@@ -513,14 +516,13 @@ export function landingPage(a) {
 ${sideBlock('模式索引', sideAnchors(a.landings.map((l) => ({ id: l.key, label: l.zh || l.name }))))}
 ${sideBlock(
   '说明',
-  `<p class="side-note">线框按 Section Order 逐区绘制，高度表示这一区大致占多少版面。橙色区块是 CTA，深色是导航。</p>
-  <p class="side-note">${a.landings.length} 种模式来自落地页表；产品配方里的「落地页」会链到这里的对应锚点。</p>`,
+  `<p class="side-note">线框高度表示区块占的版面；橙色是 CTA，深色是导航。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '页面结构',
     title: '落地页模式',
-    lead: `<strong>${a.landings.length} 种</strong>经过验证的落地页骨架。每种给出分区顺序、CTA 位置、配色策略、推荐效果与转化要点，并把它画成线框——先看骨架，再谈视觉。`,
+    lead: `<strong>${a.landings.length} 种</strong>落地页骨架：分区顺序、CTA 位置、配色策略与转化要点。`,
     meta: `<span>${a.landings.length} 种模式</span><span>${a.landings.reduce((x, l) => x + l.sections.length, 0)} 个区块</span><span>含 CTA 位置</span><span>字段原文为英文</span>`,
   })}
 ${toolbar({ placeholder: '搜索模式名、分区、转化要点…' })}
@@ -585,14 +587,13 @@ ${sideBlock(
 )}
 ${sideBlock(
   '说明',
-  `<p class="side-note">每条都配了「正确 / 错误」两段代码，左右对照看差异。列表按严重度从高到低排。</p>
-  <p class="side-note">来源是 UX 交互规范、React 写法、Web 平台三张表的合集。</p>`,
+  `<p class="side-note">列表按严重度从高到低排，可当作上线前的自检清单。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '交互与工程',
     title: '规范对照',
-    lead: `<strong>${a.practices.length} 条</strong>来自 UX / React / Web 的规范，每条都给出「该怎么做」与「别怎么做」，并附正确与错误的代码片段。按严重度、来源、平台筛选，当作上线前的自检清单。`,
+    lead: `<strong>${a.practices.length} 条</strong> UX / React / Web 规范，每条都有正确与错误的代码对照。`,
     meta: `<span>${a.practices.length} 条</span><span>致命 ${a.practices.filter((p) => p.severityRank === 0).length}</span><span>高 ${a.practices.filter((p) => p.severityRank === 1).length}</span><span>代码左右对照</span>`,
   })}
 ${toolbar({
@@ -704,14 +705,14 @@ function recipeCard(r, a) {
     </div>
     <aside class="rec-aside">
       ${r.colorFocus ? `<p class="rec-note"><strong>配色方向</strong><span class="en-badge" title="上游原文，未翻译">原文</span><br>${esc(r.colorFocus)}</p>` : ''}
-      ${r.colorMood ? `<p class="rec-note" style="margin-top:8px"><strong>色彩情绪</strong><span class="en-badge" title="上游原文，未翻译">原文</span><br>${esc(r.colorMood)}</p>` : ''}
-      ${r.typographyMood ? `<p class="rec-note" style="margin-top:8px"><strong>字体情绪</strong><span class="en-badge" title="上游原文，未翻译">原文</span><br>${esc(r.typographyMood)}</p>` : ''}
       ${r.antiPatterns ? `<p class="rec-anti"><strong>反模式</strong><span class="en-badge" title="上游原文，未翻译">原文</span><br>${esc(r.antiPatterns)}</p>` : ''}
     </aside>
   </div>
   <div class="rec-d" id="rd-${esc(r.key)}" hidden>
     <dl class="kv">
       ${r.considerations ? `<dt>关键考量</dt><dd>${esc(r.considerations)}</dd>` : ''}
+      ${r.colorMood ? `<dt>色彩情绪</dt><dd>${esc(r.colorMood)}</dd>` : ''}
+      ${r.typographyMood ? `<dt>字体情绪</dt><dd>${esc(r.typographyMood)}</dd>` : ''}
       ${r.dashboardStyle && !/^N\/A/i.test(r.dashboardStyle) ? `<dt>仪表盘</dt><dd>${esc(r.dashboardZh || r.dashboardStyle)}</dd>` : ''}
       ${r.keyEffects ? `<dt>关键效果</dt><dd>${esc(r.keyEffects)}</dd>` : ''}
       ${r.reasoningText ? `<dt>理由</dt><dd>${esc(r.reasoningText)}</dd>` : ''}
@@ -740,15 +741,14 @@ export function recipesPage(a) {
   )}
 ${sideBlock(
   '说明',
-  `<p class="side-note">每条配方由三张表合成：产品表给风格方向，配色表给 16 个令牌，决策表给规则与反模式。</p>
-  <p class="side-note">风格名可直接跳到图鉴的详情页看渲染效果；落地页链接到本手册的结构页。</p>
-  <p class="side-note">要按产品类型直接生成一份可复制的配方，去 <a href="./compose.html">生成器</a>。</p>`,
+  `<p class="side-note">风格名可跳到图鉴看渲染；落地页链到本手册的结构页。</p>
+  <p class="side-note">要按类型直接出配方，用 <a href="./compose.html">生成器</a>。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '决策',
     title: '产品配方',
-    lead: `<strong>${a.recipes.length} 类</strong>产品，每类给出主推风格、次选风格、落地页结构、配色方向、字体气质、决策规则与反模式。这不是灵感清单，是把六个域串起来的一份决策记录。`,
+    lead: `<strong>${a.recipes.length} 类</strong>产品的完整配方：主推与次选风格、落地页、配色、字体与决策规则。`,
     meta: `<span>${a.recipes.length} 类产品</span><span>${a.stats.styleRefs} 处风格引用</span><span>全部可跳转</span><span>含反模式</span>`,
   })}
 ${toolbar({
@@ -803,29 +803,20 @@ export function composePage(a) {
     styles: Object.fromEntries(a.styles.map((s) => [s.id, s.zh || s.name])),
     ruleKeys: RULE_KEYS,
     ruleTypes: RULE_TYPES,
+    // 出站到图鉴的前缀：构建时算好，避免脚本里写死 ../style/（会落到站根上 → 404）
+    sb: showcaseUrl(''),
   };
 
   const side = `${sideBlock(
     '怎么用',
-    `<p class="side-note">左边选产品类型，右边给出这一类的完整配方。可以在结果里切换导出格式，直接复制到项目里。</p>
-    <p class="side-note">配方是起点不是终点：风格名点开能看到具体长什么样，再决定要不要用。</p>`,
-  )}
-${sideBlock(
-  '结果包含',
-  `<ul class="side-list" style="font-size:13px;color:var(--ink-3)">
-    <li style="padding:4px 0">主推与次选风格</li>
-    <li style="padding:4px 0">16 个配色令牌</li>
-    <li style="padding:4px 0">字体配对</li>
-    <li style="padding:4px 0">落地页结构</li>
-    <li style="padding:4px 0">决策规则与反模式</li>
-    <li style="padding:4px 0">CSS / Tailwind / JSON 导出</li>
-  </ul>`,
-)}`;
+    `<p class="side-note">左侧选产品类型，右侧给出完整配方；切换格式即可复制。</p>
+    <p class="side-note">风格名可点开看实际渲染，再决定要不要用。</p>`,
+  )}`;
 
   const body = `${pageHead({
     kicker: '配方生成器',
     title: '选一个产品类型',
-    lead: `从 <strong>${a.recipes.length} 类</strong>产品里选一个，直接得到主推风格、16 个配色令牌、字体配对、落地页结构、决策规则与反模式，并可导出为 CSS 变量、Tailwind 配置或 JSON。`,
+    lead: `从 <strong>${a.recipes.length} 类</strong>产品里选一个，得到风格、配色、字体、落地页与决策规则，可导出为 CSS / Tailwind / JSON。`,
     meta: `<span>${a.recipes.length} 类产品</span><span>三种导出</span><span>可复制</span>`,
   })}
 <div class="cz">
@@ -842,7 +833,7 @@ ${sideBlock(
       .join('')}</div>
   </div>
   <div class="cz-out" data-cz-out aria-live="polite">
-    <div class="cz-hint">从左侧选一个产品类型，这里会生成对应的设计配方。</div>
+    <div class="cz-hint">从左侧选一个产品类型。</div>
   </div>
 </div>
 <script type="application/json" id="cz-data">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>`;
@@ -864,7 +855,7 @@ export function aboutPage(a) {
   const body = `${pageHead({
     kicker: '方法与溯源',
     title: '这些数据从哪来',
-    lead: '本手册不生产设计建议，只把插件内置的设计知识库重新组织成可查、可比的形状。所有判断都来自数据原字段，站点的加工只做三件事：解析、映射、渲染。',
+    lead: '本站不生产建议，只把插件内置的知识库重新组织成可查、可比的样子——加工只有三件事：解析、映射、渲染。',
   })}
 
 <section class="sect">
@@ -891,27 +882,27 @@ export function aboutPage(a) {
 <section class="sect">
   <div class="sect-h"><h2>加工了什么</h2></div>
   <div class="split">
-    <div class="mini"><h3>配色</h3><p>把 16 个语义令牌直接注入 CSS 变量渲染成界面小样；额外计算 7 组核心对比度（WCAG 相对亮度公式），并对 <code>rgba(255,255,255,0.08)</code> 这类半透明描边原样保留。</p></div>
-    <div class="mini"><h3>字体</h3><p>从 Google Fonts 下载 91 个字族的 latin 子集，本地 <code>@font-face</code> 引用，所以样张是真实渲染。中文说明文字仍走系统字体栈。</p></div>
-    <div class="mini"><h3>落地页</h3><p>把 <code>Section Order</code> 按 <code>&gt;</code> 拆成区块序列，按关键词判定区块类型（hero / feature / cta / footer…），据此决定线框高度与配色。</p></div>
-    <div class="mini"><h3>配方</h3><p>三张表按产品类型同名同序对齐；风格名经 <code>Style Category</code> / <code>Aliases</code> / <code>Style ID</code> 三级索引解析成图鉴链接。</p></div>
-    <div class="mini"><h3>字体推荐</h3><p><strong>这是启发式的</strong>：把 <code>Typography_Mood</code> 拆词后经人工同义表映射到字体标签，再按命中数打分。它给的是参考方向，不是官方结论。</p></div>
-    <div class="mini"><h3>落地页映射</h3><p><strong>这也有一层人工映射</strong>：产品表用的是概念描述（如「Storytelling-Driven」），落地页表用的是模式名（如「Scroll-Triggered Storytelling」），中间靠一张概念表连接。</p></div>
+    <div class="mini"><h3>配色</h3><p>16 个语义令牌注入 CSS 变量渲染成小样，另算 7 组 WCAG 对比度；<code>rgba()</code> 描边原样保留。</p></div>
+    <div class="mini"><h3>字体</h3><p>91 个字族的 latin 子集存到本地，<code>@font-face</code> 引用，所以样张是真实渲染。</p></div>
+    <div class="mini"><h3>落地页</h3><p><code>Section Order</code> 按 <code>&gt;</code> 拆成区块，按关键词判定类型，决定线框高度与配色。</p></div>
+    <div class="mini"><h3>配方</h3><p>三表按产品类型同名同序对齐；风格名经三级索引解析成图鉴链接。</p></div>
+    <div class="mini"><h3>字体推荐</h3><p><strong>启发式</strong>：<code>Typography_Mood</code> 拆词映射到字体标签后打分，只给方向。</p></div>
+    <div class="mini"><h3>落地页映射</h3><p><strong>有人工映射</strong>：产品表给概念描述，落地页表给模式名，中间靠一张概念表连接。</p></div>
   </div>
 </section>
 
 <section class="sect">
   <div class="sect-h"><h2>已知缺口</h2></div>
   <div class="split">
-    <div class="mini"><h3>${a.recipes.length - s.landingLinked} 个产品类型没有落地页对应</h3><p>其中 2 个原文就写着 <code>N/A</code>（仪表盘类产品没有独立落地页），其余是产品内界面（信息流、席位图、监控面板），34 种落地页模式里确实没有同类结构。页面按原文展示，不硬凑。</p></div>
-    <div class="mini"><h3>对比度只校验了 7 组核心配对</h3><p>${s.contrastClean}/${s.palettes} 套全部达标，但这不代表任意前景背景组合都安全。要验证自定义组合，请用真实工具。</p></div>
-    <div class="mini"><h3>字体样张是英文</h3><p>本地化的 91 个字体都只有 latin 子集，渲染中文会回退到系统字体。这不是缺陷，是「字体配对」本身讨论的是拉丁排印。</p></div>
+    <div class="mini"><h3>${a.recipes.length - s.landingLinked} 个产品类型没有落地页对应</h3><p>2 个原文即为 <code>N/A</code>，其余是产品内界面（信息流、席位图、监控面板）——34 种模式里确实没有同类结构，按原文展示，不硬凑。</p></div>
+    <div class="mini"><h3>对比度只校验了 7 组核心配对</h3><p>${s.contrastClean}/${s.palettes} 套达标，但不代表任意前后景组合都安全。</p></div>
+    <div class="mini"><h3>字体样张是英文</h3><p>91 个字体只有 latin 子集，中文会回退到系统字体——「字体配对」本身讨论的是拉丁排印。</p></div>
   </div>
 </section>
 
 <section class="sect">
   <div class="sect-h"><h2>许可</h2></div>
-  <p class="lead" style="margin:0">数据来自 <a href="${esc(m.upstream)}">ui-ux-pro-max-skill</a>（上游许可见其仓库）。字体文件来自 Google Fonts，按各自的 OFL / Apache 许可使用，仅取 latin 子集。本站由 <code>tools/atlas/build.mjs</code> 独立静态生成到 <code>handbook/</code>，不依赖其它站点，无运行时依赖。</p>
+  <p class="lead" style="margin:0">数据来自 <a href="${esc(m.upstream)}">ui-ux-pro-max-skill</a>；字体来自 Google Fonts，按各自许可仅取 latin 子集。本站由 <code>tools/atlas/build.mjs</code> 静态生成到 <code>handbook/</code>，无运行时依赖。</p>
 </section>`;
 
   return shell(a, {

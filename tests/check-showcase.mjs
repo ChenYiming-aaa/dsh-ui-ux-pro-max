@@ -134,4 +134,22 @@ const noFlag = ['gallery/index.html', 'gallery/guide.html', `gallery/style/${sty
 )
 assert(noFlag.length === 0, noFlag.length ? `这些页面缺到场判定: ${noFlag.join(', ')}` : '每个页面都在 head 里做到场判定')
 
+section('9. 顶部导航与分类跳转')
+const allPages = ['gallery/index.html', 'gallery/guide.html', 'gallery/404.html', `gallery/style/${styles[0]['Style ID']}.html`]
+for (const f of allPages) {
+  const src = readFileSync(p(f), 'utf8')
+  assert(src.includes('data-navset') && src.includes('class="nav-ind"'), `${f.split('/').slice(-1)[0]} 有滑动指示线容器`)
+  assert(/data-nav="all"/.test(src) && /data-nav="types"/.test(src) && /data-nav="guide"/.test(src), `${f.split('/').slice(-1)[0]} 三个入口都带标记`)
+}
+assert(/href="index\.html#types"/.test(indexHtml), '「分类」指向首页分类区')
+assert(/id="types"/.test(indexHtml), '首页存在 #types 分类区')
+assert(/<a href="guide\.html" data-nav="guide" aria-current="page">/.test(readFileSync(p('gallery/guide.html'), 'utf8')), '指南页默认高亮「阅读指南」')
+const gjs = readText('gallery/assets/app.js')
+assert(/function place\(a, instant\)/.test(gjs) && /is-nav-on/.test(gjs), '指示线按文字宽度定位并有高亮状态')
+assert(/typesEl\.scrollIntoView/.test(gjs) && /replaceState/.test(gjs), '点「分类」走页内平滑滚动，不重载页面')
+assert(/setActive\(en\.isIntersecting \? 'types' : 'all'\)/.test(gjs), '滚动到分类区时指示线自动跟过去')
+const gcss = readText('gallery/assets/site.css')
+assert(/\.nav-ind\s*\{[\s\S]*?transition: transform/.test(gcss), '指示线位移有过渡')
+assert(/\.nav \.nl\s*\{[\s\S]*?display: none/.test(gcss), '窄屏用短标签，三个入口都保留')
+
 finish('✅ 风格图鉴站点结构与数据一致。')

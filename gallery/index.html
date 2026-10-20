@@ -108,10 +108,13 @@ setTimeout(function(){el.remove()},2600)})()</script>
 <header class="site-head">
   <div class="wrap head-in">
     <a class="brand" href="index.html"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="brand-t">UI/UX Pro Max<em>风格图鉴</em></span></a>
-    <nav class="nav">
-      <a href="index.html" aria-current="page">全部风格</a>
-      <a href="index.html#types">分类</a>
-      <a href="guide.html">阅读指南</a>
+    <nav class="nav" aria-label="主导航">
+      <span class="nav-set" data-navset>
+        <a href="index.html" data-nav="all" aria-current="page"><span class="nl">全部风格</span><span class="ns">全部</span></a>
+        <a href="index.html#types" data-nav="types"><span class="nl">分类</span><span class="ns">分类</span></a>
+        <a href="guide.html" data-nav="guide"><span class="nl">阅读指南</span><span class="ns">指南</span></a>
+        <span class="nav-ind" aria-hidden="true"></span>
+      </span>
       <a class="nav-x" href="../handbook/" data-xnav="设计手册" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
@@ -121,7 +124,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
   <section class="hero wrap" data-rise>
     <p class="eyebrow">Style Atlas · 88 Styles</p>
     <h1>把设计风格<br><em>看清楚</em>再选。</h1>
-    <p class="lede">88 种风格由同一套组件骨架渲染，只换颜色、字体、圆角与材质——横向比较真实差别，不读形容词。</p>
+    <p class="lede">88 种风格由同一套骨架渲染，只换颜色、字体、圆角与材质。</p>
     <div class="hero-act">
       <a class="btn" href="#gallery">进入图鉴 <span aria-hidden="true">↓</span></a>
       <button class="btn btn-ghost" type="button" data-random>随便看一种</button>
@@ -179,7 +182,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
   <section id="gallery" class="wrap sec">
     <div class="sec-head">
       <h2>全部风格</h2>
-      <p>50 推荐 · 29 补充 · 9 已弃用（保留用于复刻旧项目）</p>
+      <p>50 推荐 · 29 补充 · 9 已弃用（仅用于复刻旧项目）</p>
     </div>
 
     <div class="filters" data-filters>
@@ -4092,13 +4095,12 @@ setTimeout(function(){el.remove()},2600)})()</script>
   <section class="wrap sec notes">
     <div class="note-card">
       <h2>这些预览是怎么来的？</h2>
-      <p>每个预览都由同一副组件骨架构成：品牌栏、标题、正文、主次按钮、指标卡与柱状图。生成时只替换该风格的设计令牌（颜色、字体、圆角、描边、阴影、材质与特效类），因此差异都来自风格本身。</p>
-      <p><a href="guide.html">阅读指南</a> 说明了字段含义、令牌推导方式，以及如何把这些风格用于真实项目。</p>
+      <p>同一副骨架（品牌栏、标题、正文、按钮、指标卡、柱状图），只替换该风格的令牌——差异全部来自风格本身。</p>
+      <p><a href="guide.html">阅读指南</a> 说明字段含义与令牌推导方式。</p>
     </div>
     <div class="note-card">
       <h2>为什么有「已弃用」？</h2>
-      <p>上游数据把 9 条风格标记为 <code>deprecated</code>，插件检索默认排除它们。图鉴仍然展示，便于复刻旧项目或理解设计史；标注只是提示「不要作为新项目的首选」。</p>
-      <p>同理，29 条 <code>supplemental</code> 是补充条目，通常作为主风格的变体或细分场景使用。</p>
+      <p>9 条 <code>deprecated</code> 仅提示「不要作为新项目首选」，插件检索默认排除；29 条 <code>supplemental</code> 是变体或细分场景。</p>
     </div>
   </section>
 </main>
@@ -4116,7 +4118,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
       <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>
   </div>
-  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT），针对 DeepSeek Harness 插件形态重写。页面为纯静态生成，无外部请求。</div>
+  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT）。纯静态生成，无外部请求。</div>
 </footer>
 <script src="assets/app.js" defer></script>
 </body>

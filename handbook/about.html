@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-pnav>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,6 +24,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
     <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a" href="./charts.html">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a></nav>
     <div class="top-r">
       <a class="top-link top-link--x" href="../gallery/index.html" data-xnav="风格图鉴" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+      <a class="top-link top-link--gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener" title="插件源码与数据"><span class="tl-full">GitHub</span><span class="tl-short" aria-hidden="true">GH</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>
@@ -34,7 +35,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 <header class="phead">
   <p class="kicker">方法与溯源</p>
   <h1 class="ph1">这些数据从哪来</h1>
-  <p class="lead">本手册不生产设计建议，只把插件内置的设计知识库重新组织成可查、可比的形状。所有判断都来自数据原字段，站点的加工只做三件事：解析、映射、渲染。</p>
+  <p class="lead">本站不生产建议，只把插件内置的知识库重新组织成可查、可比的样子——加工只有三件事：解析、映射、渲染。</p>
   
 </header>
 
@@ -57,34 +58,34 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 <section class="sect">
   <div class="sect-h"><h2>加工了什么</h2></div>
   <div class="split">
-    <div class="mini"><h3>配色</h3><p>把 16 个语义令牌直接注入 CSS 变量渲染成界面小样；额外计算 7 组核心对比度（WCAG 相对亮度公式），并对 <code>rgba(255,255,255,0.08)</code> 这类半透明描边原样保留。</p></div>
-    <div class="mini"><h3>字体</h3><p>从 Google Fonts 下载 91 个字族的 latin 子集，本地 <code>@font-face</code> 引用，所以样张是真实渲染。中文说明文字仍走系统字体栈。</p></div>
-    <div class="mini"><h3>落地页</h3><p>把 <code>Section Order</code> 按 <code>&gt;</code> 拆成区块序列，按关键词判定区块类型（hero / feature / cta / footer…），据此决定线框高度与配色。</p></div>
-    <div class="mini"><h3>配方</h3><p>三张表按产品类型同名同序对齐；风格名经 <code>Style Category</code> / <code>Aliases</code> / <code>Style ID</code> 三级索引解析成图鉴链接。</p></div>
-    <div class="mini"><h3>字体推荐</h3><p><strong>这是启发式的</strong>：把 <code>Typography_Mood</code> 拆词后经人工同义表映射到字体标签，再按命中数打分。它给的是参考方向，不是官方结论。</p></div>
-    <div class="mini"><h3>落地页映射</h3><p><strong>这也有一层人工映射</strong>：产品表用的是概念描述（如「Storytelling-Driven」），落地页表用的是模式名（如「Scroll-Triggered Storytelling」），中间靠一张概念表连接。</p></div>
+    <div class="mini"><h3>配色</h3><p>16 个语义令牌注入 CSS 变量渲染成小样，另算 7 组 WCAG 对比度；<code>rgba()</code> 描边原样保留。</p></div>
+    <div class="mini"><h3>字体</h3><p>91 个字族的 latin 子集存到本地，<code>@font-face</code> 引用，所以样张是真实渲染。</p></div>
+    <div class="mini"><h3>落地页</h3><p><code>Section Order</code> 按 <code>&gt;</code> 拆成区块，按关键词判定类型，决定线框高度与配色。</p></div>
+    <div class="mini"><h3>配方</h3><p>三表按产品类型同名同序对齐；风格名经三级索引解析成图鉴链接。</p></div>
+    <div class="mini"><h3>字体推荐</h3><p><strong>启发式</strong>：<code>Typography_Mood</code> 拆词映射到字体标签后打分，只给方向。</p></div>
+    <div class="mini"><h3>落地页映射</h3><p><strong>有人工映射</strong>：产品表给概念描述，落地页表给模式名，中间靠一张概念表连接。</p></div>
   </div>
 </section>
 
 <section class="sect">
   <div class="sect-h"><h2>已知缺口</h2></div>
   <div class="split">
-    <div class="mini"><h3>5 个产品类型没有落地页对应</h3><p>其中 2 个原文就写着 <code>N/A</code>（仪表盘类产品没有独立落地页），其余是产品内界面（信息流、席位图、监控面板），34 种落地页模式里确实没有同类结构。页面按原文展示，不硬凑。</p></div>
-    <div class="mini"><h3>对比度只校验了 7 组核心配对</h3><p>192/192 套全部达标，但这不代表任意前景背景组合都安全。要验证自定义组合，请用真实工具。</p></div>
-    <div class="mini"><h3>字体样张是英文</h3><p>本地化的 91 个字体都只有 latin 子集，渲染中文会回退到系统字体。这不是缺陷，是「字体配对」本身讨论的是拉丁排印。</p></div>
+    <div class="mini"><h3>5 个产品类型没有落地页对应</h3><p>2 个原文即为 <code>N/A</code>，其余是产品内界面（信息流、席位图、监控面板）——34 种模式里确实没有同类结构，按原文展示，不硬凑。</p></div>
+    <div class="mini"><h3>对比度只校验了 7 组核心配对</h3><p>192/192 套达标，但不代表任意前后景组合都安全。</p></div>
+    <div class="mini"><h3>字体样张是英文</h3><p>91 个字体只有 latin 子集，中文会回退到系统字体——「字体配对」本身讨论的是拉丁排印。</p></div>
   </div>
 </section>
 
 <section class="sect">
   <div class="sect-h"><h2>许可</h2></div>
-  <p class="lead" style="margin:0">数据来自 <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill">ui-ux-pro-max-skill</a>（上游许可见其仓库）。字体文件来自 Google Fonts，按各自的 OFL / Apache 许可使用，仅取 latin 子集。本站由 <code>tools/atlas/build.mjs</code> 独立静态生成到 <code>handbook/</code>，不依赖其它站点，无运行时依赖。</p>
+  <p class="lead" style="margin:0">数据来自 <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill">ui-ux-pro-max-skill</a>；字体来自 Google Fonts，按各自许可仅取 latin 子集。本站由 <code>tools/atlas/build.mjs</code> 静态生成到 <code>handbook/</code>，无运行时依赖。</p>
 </section>
   </main>
 </div>
 <footer class="foot">
   <div class="foot-in">
-    <p><strong>设计手册</strong> · 同一知识库的另一视图 <a href="../gallery/index.html" data-xnav="风格图鉴">风格图鉴</a>（看长什么样），数据来自插件内置的 4319 行设计知识库。</p>
-    <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
+    <p><strong>设计手册</strong> · 同一知识库的另一视图 <a href="../gallery/index.html" data-xnav="风格图鉴">风格图鉴</a>（看长什么样）</p>
+    <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">GitHub ↗</a> · <span id="foot-build"></span></p>
   </div>
 </footer>
 <script src="./assets/app.js" defer></script>

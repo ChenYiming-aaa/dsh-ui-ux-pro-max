@@ -8,6 +8,7 @@ import { parseColor, toHex, toCss, contrast, hueOf, saturationOf, isDark, hueNam
 import { moodKeywords, moodTokens } from './mood-map.mjs';
 import { chartSvg } from './svg.mjs';
 import { productZh as toProductZh, patternZh as toPatternZh, landingZh as toLandingZh } from './zh.mjs';
+import { fontTrim, fontFallback, pickWeight, isMultiScript, pairCatZh } from './font-display.mjs';
 import { STYLE_META } from '../showcase/theme-data.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
@@ -213,6 +214,7 @@ function buildPalettes(colorRows) {
 /** ---------- 字体配对 ---------- */
 function buildPairings(typographyRows, fontManifest) {
   const available = new Set((fontManifest?.families || []).map((f) => f.family.toLowerCase()));
+  const weightsByFamily = new Map((fontManifest?.families || []).map((f) => [f.family.toLowerCase(), f.weights || []]));
   const metaByFamily = new Map(
     (read('data/fonts.json').googleFonts || []).map((f) => [f.Family.toLowerCase(), f]),
   );
@@ -243,6 +245,15 @@ function buildPairings(typographyRows, fontManifest) {
       bodyDesigner: bodyMeta?.Designers || '',
       headPopularity: Number(headMeta?.['Popularity Rank'] || 0),
       bodyPopularity: Number(bodyMeta?.['Popularity Rank'] || 0),
+      // 样张渲染参数：字重按实际下载档位，字号 / 字距 / 行高按字族微调（见 font-display.mjs）
+      catZh: pairCatZh(row['Category']),
+      headWeight: pickWeight(head, weightsByFamily),
+      bodyWeight: 400,
+      headFallback: fontFallback(headMeta?.Category),
+      bodyFallback: fontFallback(bodyMeta?.Category),
+      headTrim: fontTrim(head),
+      bodyTrim: fontTrim(body),
+      multiScript: isMultiScript(head) || isMultiScript(body),
     };
   });
 }

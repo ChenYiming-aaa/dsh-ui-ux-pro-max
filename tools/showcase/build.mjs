@@ -457,10 +457,13 @@ const brand = `<span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i
 const header = (base = '', active = '') => `<header class="site-head">
   <div class="wrap head-in">
     <a class="brand" href="${base}index.html">${brand}<span class="brand-t">UI/UX Pro Max<em>风格图鉴</em></span></a>
-    <nav class="nav">
-      <a href="${base}index.html"${active === 'all' ? ' aria-current="page"' : ''}>全部风格</a>
-      <a href="${base}index.html#types">分类</a>
-      <a href="${base}guide.html"${active === 'guide' ? ' aria-current="page"' : ''}>阅读指南</a>
+    <nav class="nav" aria-label="主导航">
+      <span class="nav-set" data-navset>
+        <a href="${base}index.html" data-nav="all"${active === 'all' ? ' aria-current="page"' : ''}><span class="nl">全部风格</span><span class="ns">全部</span></a>
+        <a href="${base}index.html#types" data-nav="types"><span class="nl">分类</span><span class="ns">分类</span></a>
+        <a href="${base}guide.html" data-nav="guide"${active === 'guide' ? ' aria-current="page"' : ''}><span class="nl">阅读指南</span><span class="ns">指南</span></a>
+        <span class="nav-ind" aria-hidden="true"></span>
+      </span>
       <a class="nav-x" href="${base}../handbook/" data-xnav="${HANDBOOK.name}" title="${OTHER_VIEW}：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">${HANDBOOK.name}</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="${GH}" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
@@ -481,7 +484,7 @@ const footer = (base = '') => `<footer class="site-foot">
       <a href="${GH}/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>
   </div>
-  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT），针对 DeepSeek Harness 插件形态重写。页面为纯静态生成，无外部请求。</div>
+  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT）。纯静态生成，无外部请求。</div>
 </footer>
 <script src="${base}assets/app.js" defer></script>
 </body>
@@ -541,7 +544,7 @@ ${header('', 'all')}
   <section class="hero wrap" data-rise>
     <p class="eyebrow">Style Atlas · ${META.counts.style} Styles</p>
     <h1>把设计风格<br><em>看清楚</em>再选。</h1>
-    <p class="lede">${styles.length} 种风格由同一套组件骨架渲染，只换颜色、字体、圆角与材质——横向比较真实差别，不读形容词。</p>
+    <p class="lede">${styles.length} 种风格由同一套骨架渲染，只换颜色、字体、圆角与材质。</p>
     <div class="hero-act">
       <a class="btn" href="#gallery">进入图鉴 <span aria-hidden="true">↓</span></a>
       <button class="btn btn-ghost" type="button" data-random>随便看一种</button>
@@ -583,7 +586,7 @@ ${header('', 'all')}
   <section id="gallery" class="wrap sec">
     <div class="sec-head">
       <h2>全部风格</h2>
-      <p>${statusCounts.active} 推荐 · ${statusCounts.supplemental} 补充 · ${statusCounts.deprecated} 已弃用（保留用于复刻旧项目）</p>
+      <p>${statusCounts.active} 推荐 · ${statusCounts.supplemental} 补充 · ${statusCounts.deprecated} 已弃用（仅用于复刻旧项目）</p>
     </div>
 
     <div class="filters" data-filters>
@@ -625,13 +628,12 @@ ${header('', 'all')}
   <section class="wrap sec notes">
     <div class="note-card">
       <h2>这些预览是怎么来的？</h2>
-      <p>每个预览都由同一副组件骨架构成：品牌栏、标题、正文、主次按钮、指标卡与柱状图。生成时只替换该风格的设计令牌（颜色、字体、圆角、描边、阴影、材质与特效类），因此差异都来自风格本身。</p>
-      <p><a href="guide.html">阅读指南</a> 说明了字段含义、令牌推导方式，以及如何把这些风格用于真实项目。</p>
+      <p>同一副骨架（品牌栏、标题、正文、按钮、指标卡、柱状图），只替换该风格的令牌——差异全部来自风格本身。</p>
+      <p><a href="guide.html">阅读指南</a> 说明字段含义与令牌推导方式。</p>
     </div>
     <div class="note-card">
       <h2>为什么有「已弃用」？</h2>
-      <p>上游数据把 9 条风格标记为 <code>deprecated</code>，插件检索默认排除它们。图鉴仍然展示，便于复刻旧项目或理解设计史；标注只是提示「不要作为新项目的首选」。</p>
-      <p>同理，29 条 <code>supplemental</code> 是补充条目，通常作为主风格的变体或细分场景使用。</p>
+      <p>9 条 <code>deprecated</code> 仅提示「不要作为新项目首选」，插件检索默认排除；29 条 <code>supplemental</code> 是变体或细分场景。</p>
     </div>
   </section>
 </main>
@@ -717,7 +719,7 @@ ${header(base)}
           <div class="frame-body">${previewMarkup(s, 'hero')}</div>
         </div>
         ${specimenMarkup(s)}
-        <p class="cap">同一副骨架，演示色彩、字体、圆角、描边、阴影与材质。明暗切换展示该风格在两种模式下的令牌表现${
+        <p class="cap">同一副骨架，只换令牌。明暗切换对比两种模式${
           s.lightMode === 'not-recommended' || s.darkMode === 'not-recommended'
             ? `（数据标注：浅色 ${MODE_LABEL[s.lightMode] || s.lightMode}，深色 ${MODE_LABEL[s.darkMode] || s.darkMode}）`
             : ''
@@ -874,49 +876,46 @@ ${header('', 'guide')}
 <main class="wrap guide">
   <p class="eyebrow">How to read</p>
   <h1>阅读指南</h1>
-  <p class="lede">这份图鉴把插件内置的 ${styles.length} 条风格数据转成可看的界面。下面说明每个区块在讲什么，以及预览的边界在哪里。</p>
+  <p class="lede">每个区块在讲什么，以及预览的边界在哪里。</p>
 
   <section class="g-sec">
     <h2>1 · 预览不是截图</h2>
-    <p>所有预览都由同一副骨架实时渲染：品牌栏、标题、正文、主次按钮、标签、指标卡与柱状图。生成器只替换 <em>设计令牌</em> —— 背景、表面、文字、描边、强调色、圆角、字体族、字重、描边宽度，再叠加该风格的材质特效类（毛玻璃、硬阴影、扫描线、像素化、纸张噪点等）。</p>
-    <p>这样做的目的不是复刻某个真实产品，而是把「如果在这种风格下做一个界面，会是什么手感」压缩到一屏之内，让不同风格之间可以横向比较。同一段文案、同一组组件，差异全部来自风格本身。</p>
+    <p>所有预览都由同一副骨架实时渲染，只替换 <em>设计令牌</em>（颜色、字体、圆角、描边与材质特效），因此差异全部来自风格本身。目的不是复刻某个产品，而是让风格之间可以横向比较。</p>
     <div class="g-pair">
       ${previewMarkup(byId.get('minimalism-and-swiss-style'), 'mini')}
       ${previewMarkup(byId.get('neubrutalism'), 'mini')}
     </div>
-    <p class="cap">左：极简主义 / 瑞士风格；右：新粗野主义。同样的结构，完全不同的语气。</p>
+    <p class="cap">左：极简主义 / 瑞士风格；右：新粗野主义。同一副结构，两种语气。</p>
   </section>
 
   <section class="g-sec">
     <h2>2 · 字段说明</h2>
     <dl class="g-dl">
-      <dt>风格描述</dt><dd>中文导读，说明视觉机制与代价；原始英文的 Keywords、Effects & Animation 紧跟在下方，便于对照上游数据。</dd>
-      <dt>配色方案</dt><dd>从 Primary Colors / Secondary Colors / Design System Variables 中提取的 HEX 色板。若某风格只给语义描述（如平台设计系统），则使用该体系的品牌色作为可视化代理。</dd>
-      <dt>能力矩阵</dt><dd>浅色/深色模式支持度、移动适配、转化导向、渲染成本与无障碍风险，全部来自数据字段，不是评分。</dd>
-      <dt>实现要点</dt><dd>落地清单来自 Implementation Checklist；CSS 关键词来自 CSS/Technical Keywords；提示词可直接复制给模型使用。</dd>
-      <dt>状态</dt><dd><span class="badge b-active">推荐</span> 主推风格；<span class="badge b-supplemental">补充</span> 细分或变体；<span class="badge b-deprecated">已弃用</span> 插件默认不召回，保留用于复刻旧项目。</dd>
+      <dt>风格描述</dt><dd>中文导读；原始英文的 Keywords 与 Effects 紧随其后，便于对照。</dd>
+      <dt>配色方案</dt><dd>从原文色彩字段提取的 HEX 色板；只给语义描述时用该体系的品牌色代示。</dd>
+      <dt>能力矩阵</dt><dd>明暗模式、移动适配、转化导向、渲染成本与无障碍风险，均来自数据字段，不是评分。</dd>
+      <dt>实现要点</dt><dd>落地清单、CSS 关键词与可直接复制的提示词。</dd>
+      <dt>状态</dt><dd><span class="badge b-active">推荐</span> 主推；<span class="badge b-supplemental">补充</span> 变体；<span class="badge b-deprecated">已弃用</span> 默认不召回。</dd>
     </dl>
   </section>
 
   <section class="g-sec">
     <h2>3 · 明暗切换的含义</h2>
-    <p>详情页的「浅色 / 深色」切换演示同一套令牌在两种模式下的表现。原数据只标注了支持度（<code>supported</code> / <code>conditional</code> / <code>not-recommended</code>），并未给出两套完整色板，因此非默认模式由生成器按中性色推导，仅用于对比，不应直接当作生产配色。</p>
-    <p>如果数据标注某风格「不建议」某种模式，切换后仍会渲染，但页面会给出提示 —— 这比直接隐藏更能说明问题。</p>
+    <p>原数据只标注支持度（<code>supported</code> / <code>conditional</code> / <code>not-recommended</code>），没有两套完整色板；非默认模式由中性色推导，仅供对比，不要直接当生产配色。</p>
   </section>
 
   <section class="g-sec">
     <h2>4 · 在项目里使用</h2>
-    <p>图鉴本身是静态站点，可以直接部署到 GitHub Pages。真正的设计能力在插件里：安装后在对话中调用 <code>design_recommend</code> 生成完整设计系统，或用 <code>design_search</code> 按风格、配色、图表等域检索。</p>
+    <p>图鉴是静态站点；真正的设计能力在插件里：</p>
     <pre class="prompt">design_recommend("金融 SaaS 数据看板", projectName: "金融智控台", stack: "react", variance: 8)
 design_search("毛玻璃 深色", domain: "style")
 design_review("移动端登录表单", platform: "mobile")</pre>
-    <p>三个旋钮 <code>variance</code>（大胆度）、<code>motion</code>（动效强度）、<code>density</code>（密度）均为 1–10，不传则使用风格默认值。</p>
+    <p><code>variance</code>（大胆度）、<code>motion</code>（动效）、<code>density</code>（密度）取值 1–10。</p>
   </section>
 
   <section class="g-sec">
     <h2>5 · 数据与许可</h2>
-    <p>数据移植自 <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener">nextlevelbuilder/ui-ux-pro-max-skill</a>（commit <code>${esc(META.upstreamRef.slice(0, 7))}</code>，MIT），同步于 ${esc(META.syncedAt.slice(0, 10))}；本插件针对 DeepSeek Harness 形态重写了检索与生成逻辑。本站为纯静态页面，不加载任何外部字体、脚本或统计代码。</p>
-    <p>中文名称、导读与预览主题是为展示而人工编写的编辑内容，不改变上游的风格判定。发现描述偏差时，以 <code>data/index.json</code> 的原始字段为准。</p>
+    <p>数据移植自 <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener">nextlevelbuilder/ui-ux-pro-max-skill</a>（commit <code>${esc(META.upstreamRef.slice(0, 7))}</code>，MIT），同步于 ${esc(META.syncedAt.slice(0, 10))}。中文名称与导读为编辑内容，不改动上游判定。</p>
   </section>
 
   <p class="g-back"><a class="btn" href="index.html">返回图鉴</a></p>

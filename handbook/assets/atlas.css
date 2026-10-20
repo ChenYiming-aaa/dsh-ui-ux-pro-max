@@ -1,7 +1,7 @@
 /* ==========================================================================
    设计手册（atlas）
    1 令牌  2 骨架  3 页头  4 工具条  5 配色  6 字体  7 配方
-   8 图表  9 落地页  10 规范  11 生成器  12 首页  13 响应式  14 动效偏好
+   8 图表  9 落地页  10 规范  11 生成器  12 首页  13 过渡  14 响应式  15 动效偏好
    ========================================================================== */
 
 /* 1 令牌 ---------------------------------------------------------------- */
@@ -30,7 +30,7 @@
 
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none !important}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;background:var(--paper)}
 body{
   margin:0;background:var(--paper);color:var(--ink);
   font:400 15px/1.65 var(--sans);
@@ -66,7 +66,7 @@ dl,dd,dt{margin:0}
 .nav-a.is-on{color:var(--ink);font-weight:600;background:var(--paper-2);box-shadow:inset 0 -2px 0 var(--accent)}
 .nav-c{font:500 10.5px/1 var(--mono);color:var(--ink-3);background:var(--paper-2);padding:2px 4px;border-radius:2px}
 .nav-a.is-on .nav-c{background:var(--surface);color:var(--accent-ink)}
-.top-r{margin-left:auto;flex:none}
+.top-r{margin-left:auto;flex:none;display:flex;align-items:center;gap:8px}
 .top-link{font-size:13px;color:var(--ink-3);border:1px solid var(--rule);padding:5px 10px;border-radius:2px;white-space:nowrap}
 .top-link:hover{border-color:var(--ink-3);color:var(--ink);text-decoration:none}
 /* 姊妹站入口：常驻、高对比，避免「找不到另一个站点」 */
@@ -75,6 +75,12 @@ dl,dd,dt{margin:0}
 .top-link--x:hover{background:rgba(228,80,30,.15);border-color:var(--accent);color:var(--accent-ink)}
 .top-link--x span[aria-hidden]{color:var(--accent)}
 .tl-short{display:none}
+
+/* 源码入口：与图鉴导航同款的低调按钮 */
+.top-link--gh{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;
+  color:var(--ink-3);background:var(--surface)}
+.top-link--gh:hover{background:var(--paper-2);border-color:var(--ink-3);color:var(--ink)}
+.top-link--gh span[aria-hidden]{color:var(--ink-4)}
 
 .shell{max-width:var(--maxw);margin:0 auto;padding:32px 24px 96px;display:grid;grid-template-columns:236px minmax(0,1fr);gap:44px;align-items:start}
 .shell--wide{grid-template-columns:minmax(0,1fr)}
@@ -228,31 +234,26 @@ dl,dd,dt{margin:0}
 .pair-n{font-size:13.5px;font-weight:600}
 .pair-h .sp{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
 .pair-b{padding:20px 18px 18px}
+/* 样张：字号 / 字距 / 行高 / 字重都来自字体自身的度量（--f-k / --f-ls / --f-lh / --fw-head），
+   极宽展示体与小型手写体才不会撑破卡片或被切成碎词 */
 .pair-spec{
   font-family:var(--f-head),serif;
-  font-size:calc(34px * var(--fs,1));
-  line-height:calc(1.12 * var(--lh,1));
-  font-weight:var(--fw-head,600);
-  letter-spacing:-.02em;
-  margin:0 0 10px;
-  overflow-wrap:anywhere;
-}
-.pair-sub{
-  font-family:var(--f-head),serif;
-  font-size:calc(15px * var(--fs,1));
-  line-height:calc(1.4 * var(--lh,1));
-  font-weight:400;
-  color:var(--ink-2);
-  margin:0 0 14px;
+  font-size:calc(clamp(25px,3.1vw,36px) * var(--f-k,1) * var(--fs,1));
+  line-height:calc(1.14 * var(--f-lh,1) * var(--lh,1));
+  font-weight:var(--fw-head,700);
+  letter-spacing:var(--f-ls,-.02em);
+  margin:0 0 13px;
+  overflow-wrap:break-word;
+  text-wrap:balance;
 }
 .pair-body{
   font-family:var(--f-body),serif;
-  font-size:calc(14px * var(--fs,1));
-  line-height:calc(1.75 * var(--lh,1));
+  font-size:calc(clamp(13.5px,1.15vw,14.5px) * var(--f-bk,1) * var(--fs,1));
+  line-height:calc(1.75 * var(--f-blh,1) * var(--lh,1));
   font-weight:400;
   color:var(--ink-2);
   margin:0;
-  max-width:66ch;
+  max-width:62ch;
 }
 .pair-body em{font-style:italic}
 .pair-f{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 16px;border-top:1px solid var(--rule-2);background:var(--paper-2);font-size:11.5px;color:var(--ink-3)}
@@ -458,7 +459,14 @@ dl,dd,dt{margin:0}
 .factbar a{margin-left:auto;font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
 .mini code{font-size:11.5px;background:var(--paper-2);padding:1px 4px}
 
-/* 13 响应式 ------------------------------------------------------------- */
+/* 13 过渡 --------------------------------------------------------------- */
+/* 与两站共用的纸幕同一个缓动；只动 transform / opacity / height，不用 blur */
+@keyframes itemIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+[data-list].is-swap>[data-item]:not([hidden]){animation:itemIn 300ms cubic-bezier(.76,0,.24,1) both}
+@keyframes czIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cz-card{animation:czIn 320ms cubic-bezier(.76,0,.24,1) both}
+
+/* 14 响应式 ------------------------------------------------------------- */
 @media (max-width:1120px){
   .shell{grid-template-columns:200px minmax(0,1fr);gap:28px}
   .rec-b{grid-template-columns:minmax(0,1fr) 190px}
@@ -481,6 +489,7 @@ dl,dd,dt{margin:0}
 }
 @media (max-width:860px){
   .top-in{padding:0 16px;gap:14px}
+  .top-link--gh{display:none}
   .shell{padding:20px 16px 72px}
   .brand-s{display:none}
   .foot-in{padding:24px 16px}
@@ -512,7 +521,6 @@ dl,dd,dt{margin:0}
   .sw{grid-template-columns:repeat(4,1fr)}
   .pr-b{grid-template-columns:minmax(0,1fr)}
   .pr-c+.pr-c{border-left:0;border-top:1px solid var(--rule-2)}
-  .pair-spec{font-size:calc(26px * var(--fs,1))}
   .pair-b{padding:16px 14px}
   .kv{grid-template-columns:74px minmax(0,1fr)}
   .count{margin-left:0;width:100%}
@@ -520,7 +528,7 @@ dl,dd,dt{margin:0}
   .entry{grid-template-columns:minmax(0,1fr)}
 }
 
-/* 14 动效偏好 ----------------------------------------------------------- */
+/* 15 动效偏好 ----------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
@@ -560,3 +568,8 @@ html.xarrive .itro-c{display:none}
 html.xarrive [data-rise]{animation-delay:80ms}
 html.xarrive [data-rise="1"]{animation-delay:130ms}
 html.xarrive [data-rise="2"]{animation-delay:180ms}
+
+/* 站内切换：同一套纸幕，只把时长压到 60%（260ms），不印目的地名。
+   手册各域是独立文档，没有这层纸幕时点击像是「重新加载」；有了它只是一次短促的遮盖。 */
+.xnav.is-quick .xnav-p{transition-duration:260ms}
+.xnav.is-quick .xnav-p--b{transition-delay:16ms}

@@ -107,6 +107,101 @@
     Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
   }
 
+  /* --- 顶部导航指示线 --------------------------------------------------- */
+  /* 「全部风格 / 分类 / 阅读指南」共用一条 2px 的橙线：切换时用同一个缓动平移过去，
+     而不是换个粗体字；在首页滚到「按类别浏览」时，指示线自动跟到「分类」。 */
+  (function () {
+    var set = $('[data-navset]');
+    if (!set) return;
+    var ind = $('.nav-ind', set);
+    var links = $$('a[data-nav]', set);
+    if (!ind || !links.length) return;
+
+    var reduce = false;
+    try { reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches } catch (e) {}
+    var typesEl = $('#types');
+
+    function boxOf(a) {
+      // 量「文字」而不是「内边距盒子」，指示线才会正好落在两个字下面。
+      // jsdom 里 Range 没有 getBoundingClientRect，退回 offset 值。
+      try {
+        var r = document.createRange();
+        if (typeof r.getBoundingClientRect !== 'function') throw new Error('no rect');
+        r.selectNodeContents(a);
+        var b = r.getBoundingClientRect();
+        var ab = a.getBoundingClientRect();
+        return { x: b.left - ab.left + a.offsetLeft, w: b.width };
+      } catch (e) {
+        return { x: a.offsetLeft, w: a.offsetWidth };
+      }
+    }
+
+    function place(a, instant) {
+      if (!a) return;
+      var box = boxOf(a);
+      if (!box.w) return;
+      if (instant) ind.style.transition = 'none';
+      ind.style.width = Math.round(box.w) + 'px';
+      ind.style.transform = 'translate3d(' + Math.round(box.x) + 'px,0,0)';
+      if (instant) {
+        void ind.offsetWidth;
+        ind.style.transition = '';
+      }
+    }
+
+    function setActive(kind) {
+      var on = null;
+      links.forEach(function (a) {
+        var hit = a.getAttribute('data-nav') === kind;
+        a.classList.toggle('is-nav-on', hit);
+        if (hit) {
+          a.setAttribute('aria-current', kind === 'types' ? 'location' : 'page');
+          on = a;
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+      place(on);
+    }
+
+    var start = links.filter(function (a) { return a.getAttribute('aria-current') === 'page'; })[0] || links[0];
+    // 详情页 / 404 没有 aria-current，但指示线仍应落在「全部风格」上
+    start.classList.add('is-nav-on');
+    place(start, true);
+
+    links.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var kind = a.getAttribute('data-nav');
+        // 只在首页做页内定位；去指南页或从别处回来都走正常导航
+        if (!typesEl || kind === 'guide') return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        if (kind === 'types') {
+          typesEl.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          if (window.history.replaceState) window.history.replaceState(null, '', '#types');
+          setActive('types');
+        } else {
+          window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+          if (window.history.replaceState) window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          setActive('all');
+        }
+      });
+    });
+
+    if (typesEl && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (en) { setActive(en.isIntersecting ? 'types' : 'all'); });
+        },
+        { rootMargin: '-78px 0px -45% 0px', threshold: 0 }
+      );
+      io.observe(typesEl);
+    }
+
+    window.addEventListener('resize', function () { place(document.querySelector('a.is-nav-on') || start, true); });
+    window.addEventListener('load', function () { place(document.querySelector('a.is-nav-on') || start, true); });
+  })();
+
   /* --- 图鉴筛选 --------------------------------------------------------- */
   var grid = $('[data-grid]');
   if (!grid) return;

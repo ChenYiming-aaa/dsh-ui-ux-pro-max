@@ -53,6 +53,11 @@ html.xarrive .itro-c{display:none}
 html.xarrive [data-rise]{animation-delay:80ms}
 html.xarrive [data-rise="1"]{animation-delay:130ms}
 html.xarrive [data-rise="2"]{animation-delay:180ms}
+
+/* 站内切换：同一套纸幕，只把时长压到 60%（260ms），不印目的地名。
+   手册各域是独立文档，没有这层纸幕时点击像是「重新加载」；有了它只是一次短促的遮盖。 */
+.xnav.is-quick .xnav-p{transition-duration:260ms}
+.xnav.is-quick .xnav-p--b{transition-delay:16ms}
 `;
 }
 
@@ -72,7 +77,6 @@ export function xnavJs() {
 /* 跨站切换 —— 由 tools/xnav.mjs 在构建时追加，两站同一份实现，勿手改 */
 (function () {
   var links = document.querySelectorAll('a[${XNAV_ATTR}]');
-  if (!links.length) return;
   var reduce = false;
   try { reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches } catch (e) {}
   var busy = false;
@@ -81,9 +85,9 @@ export function xnavJs() {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function cover(label, href) {
+  function cover(label, href, quick) {
     var box = document.createElement('div');
-    box.className = 'xnav';
+    box.className = 'xnav' + (quick ? ' is-quick' : '');
     box.setAttribute('aria-hidden', 'true');
     box.innerHTML =
       '<i class="xnav-p xnav-p--t"></i><i class="xnav-p xnav-p--b">' +
@@ -93,10 +97,10 @@ export function xnavJs() {
     void box.offsetHeight; // 先让起始位移生效，否则两块幕布会从画面正中弹出
     box.classList.add('is-on');
     // 不依赖 animationend：标签页被挂起时它不会触发，时间到了照跳
-    window.setTimeout(function () { window.location.href = href; }, 400);
+    window.setTimeout(function () { window.location.href = href; }, quick ? 300 : 400);
   }
 
-  Array.prototype.forEach.call(links, function (a) {
+  if (links.length) Array.prototype.forEach.call(links, function (a) {
     a.addEventListener('click', function (e) {
       if (busy || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var href = a.getAttribute('href');
@@ -104,8 +108,39 @@ export function xnavJs() {
       e.preventDefault();
       try { sessionStorage.setItem('${XNAV_KEY}', '1') } catch (err) {}
       busy = true;
-      cover(a.getAttribute('${XNAV_ATTR}'), href);
+      cover(a.getAttribute('${XNAV_ATTR}'), href, false);
     });
+  });
+
+  /* 站内切换：站点声明了 data-pnav 才启用（目前只在设计手册）。
+     拦截同源 .html 链接，盖一层 260ms 的纸幕再跳，避免整页重载的顿感。
+     锚点、新窗口、跨站、修饰键一律放行给浏览器。 */
+  if (!document.documentElement.hasAttribute('data-pnav')) return;
+
+  function internal(a) {
+    if (a.hasAttribute('${XNAV_ATTR}') || a.hasAttribute('download') || a.target === '_blank') return null;
+    var href = a.getAttribute('href');
+    if (!href || href.charAt(0) === '#' || /^(mailto|tel|javascript):/i.test(href)) return null;
+    var url;
+    try { url = new URL(a.href, window.location.href) } catch (e) { return null; }
+    if (url.protocol !== window.location.protocol || url.host !== window.location.host) return null;
+    // 同一个地址（当前域导航再点一次）：不重载，也不做无意义的遮盖
+    if (url.pathname === window.location.pathname && url.search === window.location.search && !url.hash) return null;
+    if (url.pathname === window.location.pathname && url.hash) return null;
+    if (!/\\.html?$/.test(url.pathname)) return null;
+    return { href: href, url: url };
+  }
+
+  document.addEventListener('click', function (e) {
+    if (busy || e.defaultPrevented || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var hit = internal(a);
+    if (!hit || reduce) return;
+    e.preventDefault();
+    busy = true;
+    // 带锚点的跳转交给浏览器（换页后直接落在目标区块），其余只做遮盖
+    cover('', hit.href, true);
   });
 })();
 `;

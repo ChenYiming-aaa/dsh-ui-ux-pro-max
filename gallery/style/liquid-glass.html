@@ -20,10 +20,13 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 <header class="site-head">
   <div class="wrap head-in">
     <a class="brand" href="../index.html"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="brand-t">UI/UX Pro Max<em>风格图鉴</em></span></a>
-    <nav class="nav">
-      <a href="../index.html">全部风格</a>
-      <a href="../index.html#types">分类</a>
-      <a href="../guide.html">阅读指南</a>
+    <nav class="nav" aria-label="主导航">
+      <span class="nav-set" data-navset>
+        <a href="../index.html" data-nav="all"><span class="nl">全部风格</span><span class="ns">全部</span></a>
+        <a href="../index.html#types" data-nav="types"><span class="nl">分类</span><span class="ns">分类</span></a>
+        <a href="../guide.html" data-nav="guide"><span class="nl">阅读指南</span><span class="ns">指南</span></a>
+        <span class="nav-ind" aria-hidden="true"></span>
+      </span>
       <a class="nav-x" href="../../handbook/" data-xnav="设计手册" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
@@ -116,7 +119,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
     <div class="spec-i"><span class="spec-l">数值 / Numeric</span><span class="pv-num">1,284.50</span></div>
   </div>
 </div>
-        <p class="cap">同一副骨架，演示色彩、字体、圆角、描边、阴影与材质。明暗切换展示该风格在两种模式下的令牌表现。</p>
+        <p class="cap">同一副骨架，只换令牌。明暗切换对比两种模式。</p>
       </section>
 
       <section id="about" class="block">
@@ -378,7 +381,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
       <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>
   </div>
-  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT），针对 DeepSeek Harness 插件形态重写。页面为纯静态生成，无外部请求。</div>
+  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT）。纯静态生成，无外部请求。</div>
 </footer>
 <script src="../assets/app.js" defer></script>
 </body>

@@ -7,6 +7,43 @@
     var root = r && typeof r.querySelectorAll === 'function' ? r : document;
     return Array.prototype.slice.call(root.querySelectorAll(s));
   };
+  var REDUCE = false;
+  try { REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches; } catch (e) {}
+
+  /**
+   * 展开 / 收起面板：hidden 是瞬时开关，直接切会「啪」地出现。
+   * 这里先取消 hidden，再用 240ms 的高度 + 透明度过渡收放；不支持 WAAPI 或
+   * 用户要求减少动效时退回原来的瞬时切换（jsdom 里也走这条路）。
+   */
+  function slide(el, open) {
+    if (!el) return;
+    if (REDUCE || typeof el.animate !== 'function') {
+      el.hidden = !open;
+      return;
+    }
+    if (el._anim) { el._anim.cancel(); el._anim = null; }
+    var ease = 'cubic-bezier(.76,0,.24,1)';
+    if (open) {
+      el.hidden = false;
+      var h = el.scrollHeight;
+      el.style.overflow = 'hidden';
+      var a = el.animate(
+        [{ height: '0px', opacity: 0, paddingTop: '0px', paddingBottom: '0px' }, { height: h + 'px', opacity: 1 }],
+        { duration: 240, easing: ease }
+      );
+      el._anim = a;
+      a.onfinish = a.oncancel = function () { el.style.overflow = ''; el._anim = null; };
+    } else {
+      var h2 = el.scrollHeight;
+      el.style.overflow = 'hidden';
+      var b = el.animate(
+        [{ height: h2 + 'px', opacity: 1 }, { height: '0px', opacity: 0, paddingTop: '0px', paddingBottom: '0px' }],
+        { duration: 180, easing: ease }
+      );
+      el._anim = b;
+      b.onfinish = b.oncancel = function () { el.hidden = true; el.style.overflow = ''; el._anim = null; };
+    }
+  }
 
   /* ---------------- 复制 ---------------- */
   function copy(text) {
@@ -51,8 +88,19 @@
     var out = qs('[data-count-out]');
     var empty = qs('[data-empty]');
     var filters = {};
+    var swapTimer;
 
-    function apply() {
+    /** 结果变化时让新出现的条目轻微上浮，避免整片卡片瞬间替换 */
+    function fade() {
+      if (REDUCE) return;
+      list.classList.remove('is-swap');
+      void list.offsetWidth;
+      list.classList.add('is-swap');
+      clearTimeout(swapTimer);
+      swapTimer = setTimeout(function () { list.classList.remove('is-swap'); }, 320);
+    }
+
+    function apply(animate) {
       var q = search ? search.value.trim().toLowerCase() : '';
       var shown = 0;
       items.forEach(function (el) {
@@ -71,6 +119,7 @@
       });
       if (out) out.innerHTML = '显示 <b>' + shown + '</b> / ' + items.length + ' 条';
       if (empty) empty.hidden = shown !== 0;
+      if (animate) fade();
     }
 
     chips.forEach(function (chip) {
@@ -80,7 +129,7 @@
         qsa('.chip', chip.parentNode).forEach(function (c) { c.classList.remove('is-on'); });
         chip.classList.add('is-on');
         filters[group] = val;
-        apply();
+        apply(true);
       });
     });
 
@@ -88,7 +137,7 @@
       var t;
       search.addEventListener('input', function () {
         clearTimeout(t);
-        t = setTimeout(apply, 90);
+        t = setTimeout(function () { apply(true); }, 90);
       });
     }
 
@@ -105,6 +154,7 @@
         });
         if (key === 'ratio') sorted.reverse();
         sorted.forEach(function (el) { list.appendChild(el); });
+        fade();
       });
     }
 
@@ -204,7 +254,7 @@
           if (p) { renderPalDetail(detail, p); detail.setAttribute('data-ready', '1'); }
         }
         more.setAttribute('aria-expanded', String(!open));
-        detail.hidden = open;
+        slide(detail, !open);
         more.textContent = open ? '令牌与导出' : '收起';
       });
     });
@@ -225,7 +275,7 @@
       btn.addEventListener('click', function () {
         var open = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!open));
-        target.hidden = open;
+        slide(target, !open);
         var t = btn.getAttribute('data-t');
         if (!t) { btn.setAttribute('data-t', btn.textContent); t = btn.textContent; }
         btn.textContent = open ? t : '收起';
@@ -264,12 +314,14 @@
     data.recipes.forEach(function (r) { byKey[r.k] = r; });
     var currentKey = null;
     var exportKind = 'css';
+    // 图鉴前缀由构建器写入（默认 ../gallery/，可用 SHOWCASE_BASE 覆盖）
+    var SB = data.sb || '../gallery/';
 
     var styleLink = function (s) {
       var label = s.zh || s.name;
       var title = s.zh ? s.name : '';
       return s.id
-        ? '<a class="slink" href="../style/' + esc(s.id) + '.html"' + (title ? ' title="' + esc(title) + '"' : '') + '>' + esc(label) + ' <span aria-hidden="true">↗</span></a>'
+        ? '<a class="slink" href="' + esc(SB + 'style/' + s.id + '.html') + '" target="_blank" rel="noopener"' + (title ? ' title="' + esc(title) + '"' : '') + '>' + esc(label) + ' <span aria-hidden="true">↗</span></a>'
         : '<span class="slink slink--dead">' + esc(label) + '</span>';
     };
     var landLink = function (l) {
@@ -290,7 +342,7 @@
       var slug = s.slice(i + 1);
       var typeZh = (data.ruleTypes && data.ruleTypes[type]) || type;
       if (type === 'style' && data.styles && data.styles[slug]) {
-        return '<span class="rule-t">' + esc(typeZh) + '</span><a class="slink" href="../style/' + esc(slug) + '.html">' + esc(data.styles[slug]) + '</a>';
+        return '<span class="rule-t">' + esc(typeZh) + '</span><a class="slink" href="' + esc(SB + 'style/' + slug + '.html') + '" target="_blank" rel="noopener">' + esc(data.styles[slug]) + '</a>';
       }
       var label = type === 'mode' ? (slug === 'dark' ? '深色' : slug === 'light' ? '浅色' : slug) : slug.replace(/-/g, ' ');
       return '<span class="rule-t">' + esc(typeZh) + '</span>' + esc(label);
@@ -391,7 +443,7 @@
         '<div class="cz-sec"><h3>决策规则</h3>' + rules +
         (r.ap ? '<p class="rec-anti" style="margin-top:10px"><strong>反模式</strong><span class="en-badge" title="上游原文，未翻译">原文</span>' + esc(r.ap) + '</p>' : '') +
         (r.ke ? '<p class="rec-note" style="margin-top:8px"><strong>关键效果</strong><span class="en-badge" title="上游原文，未翻译">原文</span>' + esc(r.ke) + '</p>' : '') +
-        '<p class="cz-fine">※ 产品类型、推荐模式、风格名、决策规则已中文化；配色方向 / 反模式 / 关键效果等字段保留上游英文原文，便于与数据源对照。</p>' +
+        '<p class="cz-fine">带「原文」标记的字段保留上游英文，便于对照数据源。</p>' +
         '</div>' +
 
         '<div class="cz-sec"><h3>导出</h3><div class="cz-export">' +

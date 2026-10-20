@@ -94,6 +94,21 @@ const declared = new Set([...fontsCss.matchAll(/font-family:'([^']+)'/g)].map((m
 const notDeclared = [...usedFamilies].filter((f) => !declared.has(f))
 assert(notDeclared.length === 0, notDeclared.length ? `未声明 @font-face: ${notDeclared.join(', ')}` : `${usedFamilies.size} 个字族全部已本地声明`)
 
+// 样张微调：字重按实际档位、字号 / 字距按字族给，避免「极宽展示体撑破卡片」「单字重字体合成粗体」
+const pairStyles = [...pairHtml.matchAll(/<article class="pair"[^>]*style="([^"]*)"/g)].map((m) => m[1])
+assert(pairStyles.length === counts.pairings, `样张变量 ${pairStyles.length} 组`)
+assert(pairStyles.every((v) => v.includes("--f-head:'") && v.includes('--fw-head:')), '每张样张都带字体栈与字重变量')
+assert(pairStyles.every((v) => /--f-k:[\d.]+/.test(v)), '每张样张都带字号系数')
+const bebas = pairStyles.filter((v) => v.includes("Bebas Neue"))
+assert(bebas.length > 0 && bebas.every((v) => v.includes('--fw-head:400')), '单字重字体（Bebas Neue）不再硬上 600')
+const pixel = pairStyles.filter((v) => v.includes("'Press Start 2P'"))
+assert(pixel.length > 0 && pixel.every((v) => /--f-k:0\.[0-6]/.test(v)), '极宽展示体（Press Start 2P）压到 0.6 以下')
+assert(!/class="pair-sub"/.test(pairHtml), '样张不再堆副标题（一段标题 + 一段正文）')
+const multiTag = (pairHtml.match(/多语种/g) || []).length
+assert(multiTag >= 7, `多语种配对带标记（${multiTag} 处）`)
+const catZhTags = [...pairHtml.matchAll(/<span class="tag">([^<]*)<\/span>/g)].map((m) => m[1]).filter((t) => /[\u4e00-\u9fa5]/.test(t))
+assert(catZhTags.length >= counts.pairings, `组合类型已中文化（${catZhTags.length} 个中文标签）`)
+
 section('5. 图表 / 落地页 / 规范')
 const chHtml = html('charts.html')
 assert((chHtml.match(/<article class="ch"/g) || []).length === counts.charts, `图表卡 ${counts.charts} 张`)
@@ -175,7 +190,8 @@ assert(/\[hidden\]\{display:none/.test(css), 'hidden 属性被强制生效')
 section('8. 无障碍标记')
 for (const f of ['index.html', 'palettes.html', 'pairings.html', 'charts.html', 'landing.html', 'practices.html', 'recipes.html', 'compose.html']) {
   const src = html(f)
-  assert(/<html lang="zh-CN">/.test(src) && /class="skip"/.test(src) && /<main class="main" id="main"/.test(src), `${f} 具备 lang / 跳转链接 / main`)
+  assert(/<html lang="zh-CN"[^>]*data-pnav>/.test(src), `${f} 声明 lang 并启用站内切换`)
+  assert(/class="skip"/.test(src) && /<main class="main" id="main"/.test(src), `${f} 具备跳转链接 / main`)
 }
 assert(/aria-expanded="false"/.test(palHtml) && /aria-controls="d-/.test(palHtml), '展开按钮有无障碍状态')
 
@@ -200,6 +216,11 @@ if (cz) {
   assert(noPal.length === 0, noPal.length ? `${noPal.length} 条配方的配色键失效` : '配色键全部可解析')
   const noFont = cz.recipes.filter((r) => r.fm.some((k) => !cz.fonts[k]))
   assert(noFont.length === 0, noFont.length ? `${noFont.length} 条配方的字体键失效` : '字体键全部可解析')
+
+  // 风格详情页在图鉴（同级目录），前缀必须由构建器算好；
+  // 以前脚本里写死 ../style/，从 compose.html 解析到站点根 /style/ → 404
+  assert(cz.sb === '../gallery/', `生成器的图鉴前缀为 ../gallery/（实际 ${cz.sb}）`)
+  assert(!/'\.\.\/style\//.test(readText('handbook/assets/app.js')), '生成器脚本里没有写死的 ../style/ 路径')
 
   // 中文化：名称、推荐模式、风格名、规则键名都要有中文
   const noZh = cz.recipes.filter((r) => !r.zh)
@@ -303,7 +324,22 @@ assert(hbHome.includes('data-rise'), '首屏内容带入场位移')
 const introLeak = pages.filter((f) => f !== 'index.html' && html(f).includes('id="itro"'))
 assert(introLeak.length === 0, introLeak.length ? `过场只该在入口页: ${introLeak.join(', ')}` : '子页面不重复播过场')
 
-section('12. 跨站切换动效（手册 → 图鉴）')
+section('12. 外链与源码入口')
+const GH = 'https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max'
+const noGh = pages.filter((f) => !html(f).includes(GH))
+assert(noGh.length === 0, noGh.length ? `这些页面缺 GitHub 入口: ${noGh.join(', ')}` : '每页都有 GitHub 链接（顶栏 + 页脚）')
+assert(/class="top-link top-link--gh"/.test(html('index.html')), '顶栏有 GitHub 按钮')
+assert((html('index.html').match(/rel="noopener"/g) || []).length >= 2, '外链都带 rel=noopener')
+
+section('13. 站内切换（纸幕 260ms）')
+const atlasCssText = readText('handbook/assets/atlas.css')
+const atlasJsText = readText('handbook/assets/app.js')
+assert(/\.xnav\.is-quick \.xnav-p\{transition-duration:260ms\}/.test(atlasCssText), '站内切换使用更短的 260ms 纸幕')
+assert(/hasAttribute\('data-pnav'\)/.test(atlasJsText), '脚本只在声明 data-pnav 的站点启用站内切换')
+assert(/data-click|closest\('a\[href\]'\)/.test(atlasJsText), '站内链接走事件委托，动态生成的链接同样生效')
+assert(/function slide\(el, open\)/.test(atlasJsText), '展开面板有高度过渡')
+
+section('14. 跨站切换动效（手册 → 图鉴）')
 assert(readText('handbook/assets/atlas.css').endsWith(xnavCss()), '样式表末尾追加的切换动效与 tools/xnav.mjs 完全一致（与图鉴同一份）')
 assert(readText('handbook/assets/app.js').endsWith(xnavJs()), '脚本末尾追加的切换逻辑与 tools/xnav.mjs 完全一致（与图鉴同一份）')
 const hbMarks = [...hbHome.matchAll(/data-xnav="([^"]+)"/g)].map((m) => m[1])

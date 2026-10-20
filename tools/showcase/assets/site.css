@@ -218,6 +218,29 @@ em {
   font-size: 13.5px;
 }
 
+/* 三个入口共用一个指示线：位移与宽度都做过渡，切换时是「滑过去」而不是「跳过去」 */
+.nav-set {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-ind {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  border-radius: 2px;
+  background: var(--accent);
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.36s cubic-bezier(0.76, 0, 0.24, 1), width 0.36s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.nav .ns {
+  display: none;
+}
+
 .nav a {
   padding: 7px 11px;
   border-radius: 7px;
@@ -230,9 +253,14 @@ em {
   color: var(--ink);
 }
 
-.nav a[aria-current="page"] {
+.nav a[aria-current="page"],
+.nav a[aria-current="location"],
+.nav a.is-nav-on {
   color: var(--ink);
   font-weight: 600;
+}
+/* 无脚本时退回旧的静态下划线 */
+html:not(.js) .nav a[aria-current="page"] {
   box-shadow: inset 0 -2px 0 var(--accent);
   border-radius: 0;
 }
@@ -3206,19 +3234,23 @@ a.bhint:hover {
     font-size: 13.5px;
     gap: 6px;
     white-space: nowrap;
-  }
-  .brand-t em {
+  }  .brand-t em {
     display: none;
   }
   .nav {
     gap: 0;
+  }
+  .nav .nl {
+    display: none;
+  }
+  .nav .ns {
+    display: inline;
   }
   .nav a:not(.nav-gh) {
     padding: 6px 7px;
     font-size: 12.5px;
     white-space: nowrap;
   }
-  .nav a[href$="#types"],
   .nav-gh {
     display: none;
   }
@@ -3303,6 +3335,17 @@ a.bhint:hover {
 }
 
 /* 8 · 动效偏好 ------------------------------------------------------------ */
+
+/* 极窄屏：品牌只留标记，把宽度让给「全部 / 分类 / 指南」 */
+@media (max-width: 360px) {
+  .brand-t {
+    display: none;
+  }
+  .nav a:not(.nav-gh) {
+    padding: 6px 5px;
+    font-size: 12px;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
