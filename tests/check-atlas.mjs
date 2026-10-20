@@ -20,6 +20,7 @@
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { assert, section, finish, readJson, readText, p } from './_harness.mjs'
+import { xnavCss, xnavJs } from '../tools/xnav.mjs'
 
 const ATLAS = p('handbook')
 const pages = ['index.html', 'palettes.html', 'pairings.html', 'charts.html', 'landing.html', 'practices.html', 'recipes.html', 'compose.html', 'about.html', '404.html']
@@ -301,6 +302,13 @@ assert(/itro-meta">[^<]*192 套配色/.test(hbHome), '过场数据行取自本�
 assert(hbHome.includes('data-rise'), '首屏内容带入场位移')
 const introLeak = pages.filter((f) => f !== 'index.html' && html(f).includes('id="itro"'))
 assert(introLeak.length === 0, introLeak.length ? `过场只该在入口页: ${introLeak.join(', ')}` : '子页面不重复播过场')
+
+section('12. 跨站切换动效（手册 → 图鉴）')
+assert(readText('handbook/assets/atlas.css').endsWith(xnavCss()), '样式表末尾追加的切换动效与 tools/xnav.mjs 完全一致（与图鉴同一份）')
+assert(readText('handbook/assets/app.js').endsWith(xnavJs()), '脚本末尾追加的切换逻辑与 tools/xnav.mjs 完全一致（与图鉴同一份）')
+const hbMarks = [...hbHome.matchAll(/data-xnav="([^"]+)"/g)].map((m) => m[1])
+assert(hbMarks.length === 3 && hbMarks.every((x) => x === '风格图鉴'), '首页三处入口（顶栏 / 横幅 / 页脚）都带切换标记')
+assert((html('recipes.html').match(/data-xnav="风格图鉴"/g) || []).length === 2, '子页面两处入口（顶栏 / 页脚）都带切换标记')
 
 assert(stack, '数据源可读')
 

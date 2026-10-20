@@ -106,7 +106,7 @@ ${statStrip(
   '1',
 )}
 
-<a class="xbar" href="${showcaseUrl('index.html')}" data-rise="2">
+<a class="xbar" href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}" data-rise="2">
   <span class="xbar-k">${OTHER_VIEW} · ${GALLERY.name}</span>
   <span class="xbar-t">${GALLERY_LINE}：${s.styles} 种风格，全部真实渲染</span>
   <span class="xbar-go">去看看<span aria-hidden="true">→</span></span>

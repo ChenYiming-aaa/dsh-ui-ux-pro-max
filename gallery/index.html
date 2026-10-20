@@ -22,10 +22,9 @@
   background-size:25% 100%;will-change:transform;
   animation-duration:calc(560ms*var(--itro-k));animation-timing-function:var(--itro-e);
   animation-fill-mode:forwards}
-.itro-p--t{top:0;height:calc(50% + 1px);box-shadow:0 1px 0 rgba(20,22,26,.09);
-  animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
-.itro-p--b{bottom:0;height:calc(50% + 1px);animation-name:itroDown;
-  animation-delay:calc(890ms*var(--itro-k))}
+.itro-p--t{top:0;height:calc(50% + 1px);animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
+.itro-p--b{bottom:0;height:calc(50% + 1px);box-shadow:0 -1px 0 rgba(20,22,26,.09);
+  animation-name:itroDown;animation-delay:calc(890ms*var(--itro-k))}
 .itro-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:24px;text-align:center;
   animation-name:itroOff;animation-duration:calc(200ms*var(--itro-k));
@@ -85,7 +84,9 @@
 }
 </style><script>(function(){var d=document.documentElement,s=false;try{s=sessionStorage.getItem('ux-intro')==='1'}catch(e){}
 try{s=s||window.matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
-if(s)d.className+=' no-intro'})()</script>
+if(s)d.className+=' no-intro'})()</script><script>(function(){var d=document.documentElement,k='ux-xnav',go=false;
+try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}}catch(e){}
+if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </head>
 <body><div class="itro" id="itro" aria-hidden="true">
   <div class="itro-p itro-p--t"></div>
@@ -111,7 +112,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
       <a href="index.html" aria-current="page">全部风格</a>
       <a href="index.html#types">分类</a>
       <a href="guide.html">阅读指南</a>
-      <a class="nav-x" href="../handbook/" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
+      <a class="nav-x" href="../handbook/" data-xnav="设计手册" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
   </div>
@@ -135,7 +136,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
   </section>
 
   <section class="wrap xbar-w" data-rise="1">
-    <a class="xbar" href="../handbook/">
+    <a class="xbar" href="../handbook/" data-xnav="设计手册">
       <span class="xbar-k">另一视图 · 设计手册</span>
       <span class="xbar-t">定用什么：192 份产品配方，六个域互相引用</span>
       <span class="xbar-go">进入设计手册<span aria-hidden="true">→</span></span>
@@ -4110,7 +4111,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
     <div class="foot-links">
       <a href="index.html">风格图鉴</a>
       <a href="guide.html">阅读指南</a>
-      <a href="../handbook/">设计手册</a>
+      <a href="../handbook/" data-xnav="设计手册">设计手册</a>
       <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">源码</a>
       <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>

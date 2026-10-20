@@ -11,6 +11,7 @@ import path from 'node:path';
 import { loadAtlas } from './data.mjs';
 import * as P from './pages.mjs';
 import { favicon, SHOWCASE_BASE } from './layout.mjs';
+import { xnavCss, xnavJs } from '../xnav.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const OUT = path.join(ROOT, 'handbook');
@@ -76,7 +77,11 @@ function main() {
   }
 
   for (const f of ['atlas.css', 'app.js']) {
-    fs.copyFileSync(path.join(ASSETS, f), path.join(OUT, 'assets', f));
+    // 跨站切换动效与图鉴共用 tools/xnav.mjs，构建时追加，保证两站节奏一致
+    fs.writeFileSync(
+      path.join(OUT, 'assets', f),
+      fs.readFileSync(path.join(ASSETS, f), 'utf8') + (f.endsWith('.css') ? xnavCss() : xnavJs()),
+    );
   }
   fs.writeFileSync(path.join(OUT, 'assets', 'favicon.svg'), favicon, 'utf8');
   fs.copyFileSync(path.join(FONT_SRC, 'google.css'), path.join(OUT, 'assets', 'fonts.css'));

@@ -19,10 +19,9 @@
   background-size:25% 100%;will-change:transform;
   animation-duration:calc(560ms*var(--itro-k));animation-timing-function:var(--itro-e);
   animation-fill-mode:forwards}
-.itro-p--t{top:0;height:calc(50% + 1px);box-shadow:0 1px 0 rgba(20,22,26,.09);
-  animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
-.itro-p--b{bottom:0;height:calc(50% + 1px);animation-name:itroDown;
-  animation-delay:calc(890ms*var(--itro-k))}
+.itro-p--t{top:0;height:calc(50% + 1px);animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
+.itro-p--b{bottom:0;height:calc(50% + 1px);box-shadow:0 -1px 0 rgba(20,22,26,.09);
+  animation-name:itroDown;animation-delay:calc(890ms*var(--itro-k))}
 .itro-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:24px;text-align:center;
   animation-name:itroOff;animation-duration:calc(200ms*var(--itro-k));
@@ -82,7 +81,9 @@
 }
 </style><script>(function(){var d=document.documentElement,s=false;try{s=sessionStorage.getItem('ux-intro')==='1'}catch(e){}
 try{s=s||window.matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
-if(s)d.className+=' no-intro'})()</script>
+if(s)d.className+=' no-intro'})()</script><script>(function(){var d=document.documentElement,k='ux-xnav',go=false;
+try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}}catch(e){}
+if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </head>
 <body class="page-index"><div class="itro" id="itro" aria-hidden="true">
   <div class="itro-p itro-p--t"></div>
@@ -110,7 +111,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
     </a>
     <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a" href="./charts.html">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a></nav>
     <div class="top-r">
-      <a class="top-link top-link--x" href="../gallery/index.html" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+      <a class="top-link top-link--x" href="../gallery/index.html" data-xnav="风格图鉴" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>
@@ -131,7 +132,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
 
 <dl class="stats" data-rise="1"><div class="stat"><dt>配色方案</dt><dd>192</dd></div><div class="stat"><dt>字体配对</dt><dd>74</dd></div><div class="stat"><dt>产品配方</dt><dd>192</dd></div><div class="stat"><dt>图表选型</dt><dd>25</dd></div><div class="stat"><dt>落地页模式</dt><dd>34</dd></div><div class="stat"><dt>交互规范</dt><dd>195</dd></div></dl>
 
-<a class="xbar" href="../gallery/index.html" data-rise="2">
+<a class="xbar" href="../gallery/index.html" data-xnav="风格图鉴" data-rise="2">
   <span class="xbar-k">另一视图 · 风格图鉴</span>
   <span class="xbar-t">看长什么样：88 种风格，全部真实渲染</span>
   <span class="xbar-go">去看看<span aria-hidden="true">→</span></span>
@@ -193,7 +194,7 @@ setTimeout(function(){el.remove()},2600)})()</script>
 </div>
 <footer class="foot">
   <div class="foot-in">
-    <p><strong>设计手册</strong> · 同一知识库的另一视图 <a href="../gallery/index.html">风格图鉴</a>（看长什么样），数据来自插件内置的 4319 行设计知识库。</p>
+    <p><strong>设计手册</strong> · 同一知识库的另一视图 <a href="../gallery/index.html" data-xnav="风格图鉴">风格图鉴</a>（看长什么样），数据来自插件内置的 4319 行设计知识库。</p>
     <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
   </div>
 </footer>

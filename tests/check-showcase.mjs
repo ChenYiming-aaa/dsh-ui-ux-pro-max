@@ -15,6 +15,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { assert, section, finish, readJson, readText, p } from './_harness.mjs'
 import { STYLE_META } from '../tools/showcase/theme-data.mjs'
+import { xnavCss, xnavJs } from '../tools/xnav.mjs'
 
 const data = readJson('data/index.json')
 const styles = data.domains.style
@@ -115,5 +116,22 @@ assert(leaked.length === 0, leaked.length ? `过场不该出现在非入口页: 
 const gate = readText('index.html')
 assert(/http-equiv="refresh"/.test(gate) && /url=gallery\/index\.html/.test(gate), '根入口仍然自动跳转')
 assert(!/<(p|h1|h2|span class="box")[ >]/.test(gate), '根入口不再显示任何过场文字')
+
+section('8. 跨站切换动效（图鉴 → 手册）')
+// 两站的切换动效共用 tools/xnav.mjs，构建时追加到产物末尾；这里直接比对源码，防止两边慢慢走样
+assert(readText('gallery/assets/site.css').endsWith(xnavCss()), '样式表末尾追加的切换动效与 tools/xnav.mjs 完全一致')
+assert(readText('gallery/assets/app.js').endsWith(xnavJs()), '脚本末尾追加的切换逻辑与 tools/xnav.mjs 完全一致')
+const xnavCssText = readText('gallery/assets/site.css')
+assert(/html\.xarrive \.itro-p--t\{animation-delay:40ms\}/.test(xnavCssText), '到场形态：两块纸幕首帧即为合拢态')
+assert(/html\.xarrive \.itro-c\{display:none\}/.test(xnavCssText), '到场形态跳过品牌开场，只播开合')
+assert(/\.xnav-l\{[^}]*top:24px/.test(xnavCssText), '目的地标签挂在下幕上，随纸面升起')
+const marks = (f) => [...readFileSync(p(f), 'utf8').matchAll(/data-xnav="([^"]+)"/g)].map((m) => m[1])
+const homeMarks = marks('gallery/index.html')
+assert(homeMarks.length === 3 && homeMarks.every((x) => x === '设计手册'), '首页三处入口（导航 / 横幅 / 页脚）都带切换标记')
+assert(marks(`gallery/style/${styles[0]['Style ID']}.html`).length === 2, '详情页两处入口（导航 / 页脚）都带切换标记')
+const noFlag = ['gallery/index.html', 'gallery/guide.html', `gallery/style/${styles[0]['Style ID']}.html`, 'gallery/404.html'].filter(
+  (f) => !readFileSync(p(f), 'utf8').includes("sessionStorage.getItem(k)==='1'"),
+)
+assert(noFlag.length === 0, noFlag.length ? `这些页面缺到场判定: ${noFlag.join(', ')}` : '每个页面都在 head 里做到场判定')
 
 finish('✅ 风格图鉴站点结构与数据一致。')

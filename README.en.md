@@ -53,6 +53,11 @@ splits and the first screen settles into place. Transform / opacity / clip-path 
 (no GSAP, no third-party script), once per session, and skipped when the OS asks for reduced motion.
 See `tools/intro.mjs`.
 
+Switching between the two sites is one wipe of the same paper sheet: the current page closes in
+360ms (with the destination name printed on the sheet), then the target opens from that closed state
+in 560ms. Exit is faster than entry, and the easing curve is the one the opening already uses.
+See `tools/xnav.mjs`.
+
 ## Design Handbook: the other view of the same data
 
 The atlas browses by style, the handbook browses by decision — both read the same 4,319-row

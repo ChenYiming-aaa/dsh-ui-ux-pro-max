@@ -7,6 +7,7 @@
  */
 
 import { GALLERY, HANDBOOK, OTHER_VIEW, GALLERY_LINE } from '../site-names.mjs';
+import { xnavHead } from '../xnav.mjs';
 
 export { GALLERY, HANDBOOK };
 
@@ -55,7 +56,7 @@ function topbar(active, counts) {
     </a>
     <nav class="nav" aria-label="域导航">${links}</nav>
     <div class="top-r">
-      <a class="top-link top-link--x" href="${showcaseUrl('index.html')}" title="另一个站点：${GALLERY.name}，${GALLERY_LINE}"><span class="tl-full">${GALLERY.name}</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+      <a class="top-link top-link--x" href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}" title="另一个站点：${GALLERY.name}，${GALLERY_LINE}"><span class="tl-full">${GALLERY.name}</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>`;
@@ -64,7 +65,7 @@ function topbar(active, counts) {
 export function footer() {
   return `<footer class="foot">
   <div class="foot-in">
-    <p><strong>${HANDBOOK.name}</strong> · 同一知识库的${OTHER_VIEW} <a href="${showcaseUrl('index.html')}">${GALLERY.name}</a>（${GALLERY_LINE}），数据来自插件内置的 4319 行设计知识库。</p>
+    <p><strong>${HANDBOOK.name}</strong> · 同一知识库的${OTHER_VIEW} <a href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}">${GALLERY.name}</a>（${GALLERY_LINE}），数据来自插件内置的 4319 行设计知识库。</p>
     <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
   </div>
 </footer>`;
@@ -95,7 +96,7 @@ export function pageShell({ title, desc, active, body, side = '', head = '', scr
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
 <link rel="stylesheet" href="./assets/atlas.css">
-${head}${intro ? intro.head : ''}
+${head}${intro ? intro.head : ''}${xnavHead()}
 </head>
 <body class="${pageClass}">${intro ? intro.body : ''}
 <a class="skip" href="#main">跳到正文</a>

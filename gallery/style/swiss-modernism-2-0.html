@@ -12,7 +12,9 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/site.css">
 <link rel="stylesheet" href="../assets/themes.css">
-
+<script>(function(){var d=document.documentElement,k='ux-xnav',go=false;
+try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}}catch(e){}
+if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </head>
 <body>
 <header class="site-head">
@@ -22,7 +24,7 @@
       <a href="../index.html">全部风格</a>
       <a href="../index.html#types">分类</a>
       <a href="../guide.html">阅读指南</a>
-      <a class="nav-x" href="../../handbook/" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
+      <a class="nav-x" href="../../handbook/" data-xnav="设计手册" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
   </div>
@@ -374,7 +376,7 @@
     <div class="foot-links">
       <a href="../index.html">风格图鉴</a>
       <a href="../guide.html">阅读指南</a>
-      <a href="../../handbook/">设计手册</a>
+      <a href="../../handbook/" data-xnav="设计手册">设计手册</a>
       <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">源码</a>
       <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>

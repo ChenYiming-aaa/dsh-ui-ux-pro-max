@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { STYLE_META } from './theme-data.mjs';
 import { GALLERY, HANDBOOK, OTHER_VIEW, HANDBOOK_LINE } from '../site-names.mjs';
 import { introCss, introHead, introMarkup } from '../intro.mjs';
+import { xnavCss, xnavHead, xnavJs } from '../xnav.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -447,7 +448,7 @@ const head = ({ title, desc, base = '', extra = '', intro = null }) => `<!doctyp
 <link rel="icon" href="${base}assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${base}assets/site.css">
 <link rel="stylesheet" href="${base}assets/themes.css">
-${extra}${intro ? intro.head : ''}
+${extra}${intro ? intro.head : ''}${xnavHead()}
 </head>
 <body>${intro ? intro.body : ''}`;
 
@@ -460,7 +461,7 @@ const header = (base = '', active = '') => `<header class="site-head">
       <a href="${base}index.html"${active === 'all' ? ' aria-current="page"' : ''}>全部风格</a>
       <a href="${base}index.html#types">分类</a>
       <a href="${base}guide.html"${active === 'guide' ? ' aria-current="page"' : ''}>阅读指南</a>
-      <a class="nav-x" href="${base}../handbook/" title="${OTHER_VIEW}：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">${HANDBOOK.name}</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
+      <a class="nav-x" href="${base}../handbook/" data-xnav="${HANDBOOK.name}" title="${OTHER_VIEW}：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">${HANDBOOK.name}</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
       <a class="nav-gh" href="${GH}" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
     </nav>
   </div>
@@ -475,7 +476,7 @@ const footer = (base = '') => `<footer class="site-foot">
     <div class="foot-links">
       <a href="${base}index.html">风格图鉴</a>
       <a href="${base}guide.html">阅读指南</a>
-      <a href="${base}../handbook/">设计手册</a>
+      <a href="${base}../handbook/" data-xnav="${HANDBOOK.name}">设计手册</a>
       <a href="${GH}" target="_blank" rel="noopener">源码</a>
       <a href="${GH}/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>
@@ -555,7 +556,7 @@ ${header('', 'all')}
   </section>
 
   <section class="wrap xbar-w" data-rise="1">
-    <a class="xbar" href="../handbook/">
+    <a class="xbar" href="../handbook/" data-xnav="${HANDBOOK.name}">
       <span class="xbar-k">${OTHER_VIEW} · ${HANDBOOK.name}</span>
       <span class="xbar-t">${HANDBOOK_LINE}：${META.counts.product} 份产品配方，六个域互相引用</span>
       <span class="xbar-go">进入${HANDBOOK.name}<span aria-hidden="true">→</span></span>
@@ -979,6 +980,16 @@ fs.mkdirSync(path.join(SITE, 'assets'), { recursive: true });
 write('assets/themes.css', `/* 由 tools/showcase/build.mjs 自动生成，请勿手改 */\n${themeCss}\n`);
 write('assets/favicon.svg', favicon);
 copyDir(path.join(__dirname, 'assets'), path.join(SITE, 'assets'));
+
+// 跨站切换动效：源码只有一份（tools/xnav.mjs），构建时追加进样式表与脚本，
+// 既保证两站节奏完全一致，也不新增请求。
+for (const [file, extra] of [
+  ['site.css', xnavCss()],
+  ['app.js', xnavJs()],
+]) {
+  const dest = path.join(SITE, 'assets', file);
+  fs.writeFileSync(dest, fs.readFileSync(dest, 'utf8') + extra);
+}
 
 write('index.html', indexPage());
 write('guide.html', guidePage());

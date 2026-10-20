@@ -50,10 +50,9 @@ export function introCss() {
   background-size:25% 100%;will-change:transform;
   animation-duration:calc(560ms*var(--itro-k));animation-timing-function:var(--itro-e);
   animation-fill-mode:forwards}
-.itro-p--t{top:0;height:calc(50% + 1px);box-shadow:0 1px 0 rgba(20,22,26,.09);
-  animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
-.itro-p--b{bottom:0;height:calc(50% + 1px);animation-name:itroDown;
-  animation-delay:calc(890ms*var(--itro-k))}
+.itro-p--t{top:0;height:calc(50% + 1px);animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
+.itro-p--b{bottom:0;height:calc(50% + 1px);box-shadow:0 -1px 0 rgba(20,22,26,.09);
+  animation-name:itroDown;animation-delay:calc(890ms*var(--itro-k))}
 .itro-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:24px;text-align:center;
   animation-name:itroOff;animation-duration:calc(200ms*var(--itro-k));

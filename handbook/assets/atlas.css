@@ -532,3 +532,31 @@ dl,dd,dt{margin:0}
   .card,.pal,.pair,.rec,.ch,.ld,.pr{break-inside:avoid;box-shadow:none}
   body{background:#fff}
 }
+
+/* ==========================================================================
+   跨站切换 —— 由 tools/xnav.mjs 在构建时追加，两站同一份实现，勿手改
+   ========================================================================== */
+.xnav{position:fixed;inset:0;z-index:9500;pointer-events:none;overflow:hidden}
+.xnav-p{position:absolute;left:0;right:0;height:calc(50% + 1px);background:var(--paper,#f6f5f1);
+  background-image:linear-gradient(90deg,rgba(20,22,26,.07) 0 1px,transparent 1px);
+  background-size:25% 100%;will-change:transform;
+  transition:transform 360ms var(--itro-e,cubic-bezier(.76,0,.24,1))}
+.xnav-p--t{top:0;transform:translateY(-101%)}
+.xnav-p--b{bottom:0;transform:translateY(101%);box-shadow:0 -1px 0 rgba(20,22,26,.09);
+  transition-delay:24ms}
+.xnav.is-on .xnav-p--t,
+.xnav.is-on .xnav-p--b{transform:none}
+/* 标签挂在下幕上：幕布合拢时它随纸面一起升上来，永远落在纸上，不会浮在正文中间 */
+.xnav-l{position:absolute;left:0;right:0;top:24px;text-align:center;opacity:0;
+  transform:translateY(8px);white-space:nowrap;
+  font:500 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;letter-spacing:.2em;color:var(--accent,#e4501e);
+  transition:opacity 160ms ease-out 60ms,transform 300ms var(--itro-e,cubic-bezier(.76,0,.24,1)) 60ms}
+.xnav.is-on .xnav-l{opacity:1;transform:none}
+
+/* 到场：目标页首帧就是「幕布合拢」，跳过品牌开场，直接分开露出内容 */
+html.xarrive .itro-p--t{animation-delay:40ms}
+html.xarrive .itro-p--b{animation-delay:80ms}
+html.xarrive .itro-c{display:none}
+html.xarrive [data-rise]{animation-delay:80ms}
+html.xarrive [data-rise="1"]{animation-delay:130ms}
+html.xarrive [data-rise="2"]{animation-delay:180ms}

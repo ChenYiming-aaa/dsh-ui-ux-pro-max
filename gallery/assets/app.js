@@ -270,3 +270,43 @@
   readUrl();
   apply();
 })();
+
+/* 跨站切换 —— 由 tools/xnav.mjs 在构建时追加，两站同一份实现，勿手改 */
+(function () {
+  var links = document.querySelectorAll('a[data-xnav]');
+  if (!links.length) return;
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches } catch (e) {}
+  var busy = false;
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function cover(label, href) {
+    var box = document.createElement('div');
+    box.className = 'xnav';
+    box.setAttribute('aria-hidden', 'true');
+    box.innerHTML =
+      '<i class="xnav-p xnav-p--t"></i><i class="xnav-p xnav-p--b">' +
+      (label ? '<span class="xnav-l">→ ' + esc(label) + '</span>' : '') +
+      '</i>';
+    document.body.appendChild(box);
+    void box.offsetHeight; // 先让起始位移生效，否则两块幕布会从画面正中弹出
+    box.classList.add('is-on');
+    // 不依赖 animationend：标签页被挂起时它不会触发，时间到了照跳
+    window.setTimeout(function () { window.location.href = href; }, 400);
+  }
+
+  Array.prototype.forEach.call(links, function (a) {
+    a.addEventListener('click', function (e) {
+      if (busy || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var href = a.getAttribute('href');
+      if (!href || reduce) return;
+      e.preventDefault();
+      try { sessionStorage.setItem('ux-xnav', '1') } catch (err) {}
+      busy = true;
+      cover(a.getAttribute('data-xnav'), href);
+    });
+  });
+})();

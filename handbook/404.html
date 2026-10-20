@@ -9,7 +9,9 @@
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
 <link rel="stylesheet" href="./assets/atlas.css">
-
+<script>(function(){var d=document.documentElement,k='ux-xnav',go=false;
+try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}}catch(e){}
+if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </head>
 <body class="page-404">
 <a class="skip" href="#main">跳到正文</a>
@@ -21,7 +23,7 @@
     </a>
     <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a" href="./charts.html">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a></nav>
     <div class="top-r">
-      <a class="top-link top-link--x" href="../gallery/index.html" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
+      <a class="top-link top-link--x" href="../gallery/index.html" data-xnav="风格图鉴" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>
@@ -43,7 +45,7 @@
 </div>
 <footer class="foot">
   <div class="foot-in">
-    <p><strong>设计手册</strong> · 同一知识库的另一视图 <a href="../gallery/index.html">风格图鉴</a>（看长什么样），数据来自插件内置的 4319 行设计知识库。</p>
+    <p><strong>设计手册</strong> · 同一知识库的另一视图 <a href="../gallery/index.html" data-xnav="风格图鉴">风格图鉴</a>（看长什么样），数据来自插件内置的 4319 行设计知识库。</p>
     <p class="foot-meta"><a href="./about.html">方法与溯源</a> · <span id="foot-build"></span></p>
   </div>
 </footer>
