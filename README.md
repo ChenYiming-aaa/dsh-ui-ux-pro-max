@@ -27,7 +27,7 @@
 
 **每一张卡片都由同一套组件骨架渲染**，只替换设计令牌与材质特效类——所以看到的是真实界面，而不是一段形容词。支持按类别筛选、关键词搜索、按编号 / 名称 / 复杂度排序，桌面与移动端都能用。
 
-每个风格都有独立详情页。下面这页（[液态玻璃 ↗](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html)）是最能体现渲染引擎的一页：磨砂层叠、边缘高光、折射动画，全部由 CSS 令牌与材质类产出。
+每个风格都有独立详情页。以下面这页（[液态玻璃 ↗](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html)）为例：磨砂层叠、边缘高光、折射动画，全部由 CSS 令牌与材质类产出。
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/style/liquid-glass.html">
