@@ -47,16 +47,6 @@ A single page holds: editorial intro and original name, a **live preview with li
 palette with HEX, capability matrix, best-for and avoid lists, implementation checklist, a copyable
 AI prompt, and related styles. All 88 pages are static with zero external requests.
 
-Entering the site plays a ~1.4s opening: the four-tile mark converges from the corners → the
-wordmark rises character by character out of a mask → an orange rule sweeps out → the paper sheet
-splits and the first screen settles into place. Transform / opacity / clip-path only, pure CSS
-(no GSAP, no third-party script), once per session, and skipped when the OS asks for reduced motion.
-See `tools/intro.mjs`.
-
-Switching between the two sites is one wipe of the same paper sheet: the current page closes in
-360ms (with the destination name printed on the sheet), then the target opens from that closed state
-in 560ms. Exit is faster than entry, and the easing curve is the one the opening already uses.
-See `tools/xnav.mjs`.
 
 ## Design Handbook: the other view of the same data
 
