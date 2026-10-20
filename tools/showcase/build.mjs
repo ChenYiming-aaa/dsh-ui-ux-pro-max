@@ -11,7 +11,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { STYLE_META } from './theme-data.mjs';
-import { HANDBOOK, OTHER_VIEW, HANDBOOK_LINE } from '../site-names.mjs';
+import { GALLERY, HANDBOOK, OTHER_VIEW, HANDBOOK_LINE } from '../site-names.mjs';
+import { introCss, introHead, introMarkup } from '../intro.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -432,7 +433,7 @@ const specimenMarkup = (s) =>
 
 const GH = 'https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max';
 
-const head = ({ title, desc, base = '', extra = '' }) => `<!doctype html>
+const head = ({ title, desc, base = '', extra = '', intro = null }) => `<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
@@ -446,9 +447,9 @@ const head = ({ title, desc, base = '', extra = '' }) => `<!doctype html>
 <link rel="icon" href="${base}assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${base}assets/site.css">
 <link rel="stylesheet" href="${base}assets/themes.css">
-${extra}
+${extra}${intro ? intro.head : ''}
 </head>
-<body>`;
+<body>${intro ? intro.body : ''}`;
 
 const brand = `<span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>`;
 
@@ -521,13 +522,22 @@ const cardMarkup = (s) => `<article class="card" data-card data-id="${s.id}" dat
   </a>
 </article>`;
 
-const indexPage = () => `${head({
+const indexPage = () => {
+  const intro = {
+    head: `${introCss()}${introHead()}`,
+    body: introMarkup({
+      eyebrow: `${GALLERY.en} · ${styles.length} styles`,
+      meta: `${styles.length} 种风格 · ${META.counts.color} 套配色 · ${META.counts.typography} 组字体 · ${META.counts.ux} 条规范`
+    })
+  };
+  return `${head({
   title: 'UI/UX Pro Max · 88 种设计风格图鉴',
-  desc: `把 88 种设计风格一次性看全：每种风格都有真实渲染的效果示例、配色方案、字体与材质特征、适用场景与实现清单。`
+  desc: `把 88 种设计风格一次性看全：每种风格都有真实渲染的效果示例、配色方案、字体与材质特征、适用场景与实现清单。`,
+  intro
 })}
 ${header('', 'all')}
 <main>
-  <section class="hero wrap">
+  <section class="hero wrap" data-rise>
     <p class="eyebrow">Style Atlas · ${META.counts.style} Styles</p>
     <h1>把设计风格<br><em>看清楚</em>再选。</h1>
     <p class="lede">${styles.length} 种风格由同一套组件骨架渲染，只换颜色、字体、圆角与材质——横向比较真实差别，不读形容词。</p>
@@ -544,7 +554,7 @@ ${header('', 'all')}
     </dl>
   </section>
 
-  <section class="wrap xbar-w">
+  <section class="wrap xbar-w" data-rise="1">
     <a class="xbar" href="../handbook/">
       <span class="xbar-k">${OTHER_VIEW} · ${HANDBOOK.name}</span>
       <span class="xbar-t">${HANDBOOK_LINE}：${META.counts.product} 份产品配方，六个域互相引用</span>
@@ -625,6 +635,7 @@ ${header('', 'all')}
   </section>
 </main>
 ${footer('')}`;
+};
 
 /* ----------------------------------------------------------------------------
  * 详情页

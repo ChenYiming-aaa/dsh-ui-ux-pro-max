@@ -81,8 +81,9 @@ export function footer() {
  * @param {string} [o.scripts] 额外脚本
  * @param {string} [o.pageClass]
  * @param {string} [o.hero] 页头区 HTML
+ * @param {{head:string,body:string}} [o.intro] 进站过场（仅入口页传）
  */
-export function pageShell({ title, desc, active, body, side = '', head = '', scripts = '', pageClass = '', hero = '', counts = null }) {
+export function pageShell({ title, desc, active, body, side = '', head = '', scripts = '', pageClass = '', hero = '', counts = null, intro = null }) {
   return `<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -94,9 +95,9 @@ export function pageShell({ title, desc, active, body, side = '', head = '', scr
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
 <link rel="stylesheet" href="./assets/atlas.css">
-${head}
+${head}${intro ? intro.head : ''}
 </head>
-<body class="${pageClass}">
+<body class="${pageClass}">${intro ? intro.body : ''}
 <a class="skip" href="#main">跳到正文</a>
 ${topbar(active, counts)}
 ${hero}
@@ -165,8 +166,8 @@ export function pageHead({ kicker, title, lead, meta = '' }) {
 }
 
 /** 数值条（统计用） */
-export function statStrip(items) {
-  return `<dl class="stats">${items
+export function statStrip(items, rise = '') {
+  return `<dl class="stats"${rise ? ` data-rise="${rise}"` : ''}>${items
     .map((i) => `<div class="stat"><dt>${esc(i.label)}</dt><dd>${i.value}</dd></div>`)
     .join('')}</dl>`;
 }

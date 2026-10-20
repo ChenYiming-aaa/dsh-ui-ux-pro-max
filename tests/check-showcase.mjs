@@ -100,4 +100,20 @@ const wrongRel = ['gallery/index.html', 'gallery/guide.html', ...styles.map((s) 
 )
 assert(wrongRel.length === 0, wrongRel.length ? `这些页面用了错误的 handbook/ 相对路径: ${wrongRel.slice(0, 3).join(', ')}` : '没有指向 gallery/handbook/ 的错误路径')
 
+section('7. 进站过场（入口页）')
+assert(indexHtml.includes('id="itro"') && indexHtml.includes('class="itro-p itro-p--t"'), '首页有过场覆盖层与上下两块幕布')
+assert(indexHtml.includes("sessionStorage.getItem('ux-intro')"), '过场在 head 里做会话级跳过判定')
+assert(indexHtml.includes('prefers-reduced-motion'), '尊重「减弱动效」设置')
+assert(/\.itro-ch\{[^}]*overflow:hidden/.test(indexHtml), '站名逐字从遮罩后升起')
+assert(indexHtml.includes('@keyframes itroUp') && indexHtml.includes('@keyframes itroDown'), '上下幕布各自位移')
+assert(indexHtml.includes('data-rise'), '首屏内容带入场位移')
+const leaked = ['gallery/guide.html', 'gallery/404.html', ...[...styles].slice(0, 6).map((s) => `gallery/style/${s['Style ID']}.html`)].filter(
+  (f) => readFileSync(p(f), 'utf8').includes('id="itro"'),
+)
+assert(leaked.length === 0, leaked.length ? `过场不该出现在非入口页: ${leaked.join(', ')}` : '其它页面没有过场，纯二次加载不重复播')
+// 站根跳转页：只留一张与过场首帧同色的纸，不再有「正在进入…」这种过场文字
+const gate = readText('index.html')
+assert(/http-equiv="refresh"/.test(gate) && /url=gallery\/index\.html/.test(gate), '根入口仍然自动跳转')
+assert(!/<(p|h1|h2|span class="box")[ >]/.test(gate), '根入口不再显示任何过场文字')
+
 finish('✅ 风格图鉴站点结构与数据一致。')

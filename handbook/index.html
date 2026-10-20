@@ -9,9 +9,98 @@
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
 <link rel="stylesheet" href="./assets/atlas.css">
-
+<style>
+:root{--itro-k:1;--itro-e:cubic-bezier(.76,0,.24,1);--itro-e2:cubic-bezier(.16,1,.3,1);
+  --itro-paper:var(--paper,#f6f5f1);--itro-ink:var(--ink,#14161a);--itro-acc:var(--accent,#e4501e)}
+@media (max-width:760px){:root{--itro-k:.8}}
+.itro{position:fixed;inset:0;z-index:9000;pointer-events:none}
+.itro-p{position:absolute;left:0;right:0;background:var(--itro-paper);
+  background-image:linear-gradient(90deg,rgba(20,22,26,.07) 0 1px,transparent 1px);
+  background-size:25% 100%;will-change:transform;
+  animation-duration:calc(560ms*var(--itro-k));animation-timing-function:var(--itro-e);
+  animation-fill-mode:forwards}
+.itro-p--t{top:0;height:calc(50% + 1px);box-shadow:0 1px 0 rgba(20,22,26,.09);
+  animation-name:itroUp;animation-delay:calc(850ms*var(--itro-k))}
+.itro-p--b{bottom:0;height:calc(50% + 1px);animation-name:itroDown;
+  animation-delay:calc(890ms*var(--itro-k))}
+.itro-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;
+  animation-name:itroOff;animation-duration:calc(200ms*var(--itro-k));
+  animation-delay:calc(780ms*var(--itro-k));animation-timing-function:ease-in;animation-fill-mode:forwards}
+.itro-mark{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:38px;height:38px;padding:3px;
+  background:var(--itro-ink);border-radius:9px;margin-bottom:28px}
+.itro-mark i{display:block;border-radius:1px;background:var(--itro-acc);
+  animation-name:itroTile;animation-duration:calc(380ms*var(--itro-k));
+  animation-delay:calc(var(--i)*45ms*var(--itro-k));animation-timing-function:var(--itro-e2);
+  animation-fill-mode:both}
+.itro-mark i:nth-child(1){--i:0;--tx:-11px;--ty:-11px;background:var(--itro-acc)}
+.itro-mark i:nth-child(2){--i:1;--tx:11px;--ty:-11px;background:var(--itro-paper)}
+.itro-mark i:nth-child(3){--i:2;--tx:-11px;--ty:11px;background:#8a8f98}
+.itro-mark i:nth-child(4){--i:3;--tx:11px;--ty:11px;background:var(--itro-acc)}
+.itro-eyebrow{margin:0 0 16px;font:500 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--itro-acc);
+  animation-name:itroFade;animation-duration:calc(300ms*var(--itro-k));
+  animation-delay:calc(240ms*var(--itro-k));animation-timing-function:ease-out;animation-fill-mode:both}
+.itro-name{display:flex;flex-wrap:wrap;justify-content:center;margin:0;color:var(--itro-ink);
+  font-size:clamp(30px,5.6vw,54px);font-weight:600;letter-spacing:-.035em;line-height:1.04}
+.itro-ch{display:inline-block;overflow:hidden;vertical-align:top}
+.itro-ch i{display:inline-block;font-style:normal;
+  animation-name:itroRise;animation-duration:calc(460ms*var(--itro-k));
+  animation-delay:calc((120ms + var(--i)*16ms)*var(--itro-k));animation-timing-function:var(--itro-e2);
+  animation-fill-mode:both}
+.itro-rule{display:block;width:min(300px,46vw);height:2px;margin:30px 0 18px;background:var(--itro-acc);
+  transform-origin:left center;animation-name:itroRule;animation-duration:calc(380ms*var(--itro-k));
+  animation-delay:calc(420ms*var(--itro-k));animation-timing-function:var(--itro-e2);animation-fill-mode:both}
+.itro-meta{margin:0;font:400 12px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;letter-spacing:.04em;color:var(--itro-ink);opacity:.72;
+  animation-name:itroWipe;animation-duration:calc(320ms*var(--itro-k));
+  animation-delay:calc(540ms*var(--itro-k));animation-timing-function:ease-out;animation-fill-mode:both}
+@keyframes itroUp{to{transform:translateY(-101%)}}
+@keyframes itroDown{to{transform:translateY(101%)}}
+@keyframes itroOff{to{opacity:0;transform:translateY(-10px)}}
+@keyframes itroTile{from{transform:translate(var(--tx),var(--ty)) scale(.4);opacity:0}to{transform:none;opacity:1}}
+@keyframes itroRise{from{transform:translateY(112%)}to{transform:none}}
+@keyframes itroRule{from{transform:scaleX(0)}to{transform:none}}
+@keyframes itroFade{from{opacity:0;transform:translateY(9px)}}
+@keyframes itroWipe{from{opacity:0;clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+[data-rise]{animation-name:itroIn;animation-duration:calc(520ms*var(--itro-k));
+  animation-delay:calc(980ms*var(--itro-k));animation-timing-function:var(--itro-e2);animation-fill-mode:both}
+[data-rise="1"]{animation-delay:calc(1050ms*var(--itro-k))}
+[data-rise="2"]{animation-delay:calc(1120ms*var(--itro-k))}
+/* 正文只用位移、不改透明度：幕布拉开时下面是「已经长好的页面」，只是还在缓缓就位。
+   如果这里同时淡入，拉开瞬间会看到半透明的文字，反而像没加载完。 */
+@keyframes itroIn{from{transform:translateY(16px)}}
+.no-intro .itro{display:none}
+.no-intro [data-rise]{animation:none}
+@media (prefers-reduced-motion:reduce){
+  .itro{display:none}
+  [data-rise]{animation:none}
+}
+@media (max-width:520px){
+  .itro-meta{display:none}
+  .itro-rule{margin:20px 0 0}
+  .itro-mark{width:32px;height:32px;margin-bottom:22px}
+}
+</style><script>(function(){var d=document.documentElement,s=false;try{s=sessionStorage.getItem('ux-intro')==='1'}catch(e){}
+try{s=s||window.matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
+if(s)d.className+=' no-intro'})()</script>
 </head>
-<body class="page-index">
+<body class="page-index"><div class="itro" id="itro" aria-hidden="true">
+  <div class="itro-p itro-p--t"></div>
+  <div class="itro-p itro-p--b"></div>
+  <div class="itro-c">
+    <span class="itro-mark"><i></i><i></i><i></i><i></i></span>
+    <p class="itro-eyebrow">Design Handbook · 6 domains</p>
+    <p class="itro-name"><span class="itro-ch"><i style="--i:0">U</i></span><span class="itro-ch"><i style="--i:1">I</i></span><span class="itro-ch"><i style="--i:2">/</i></span><span class="itro-ch"><i style="--i:3">U</i></span><span class="itro-ch"><i style="--i:4">X</i></span><span class="itro-ch"><i style="--i:5">&nbsp;</i></span><span class="itro-ch"><i style="--i:6">P</i></span><span class="itro-ch"><i style="--i:7">r</i></span><span class="itro-ch"><i style="--i:8">o</i></span><span class="itro-ch"><i style="--i:9">&nbsp;</i></span><span class="itro-ch"><i style="--i:10">M</i></span><span class="itro-ch"><i style="--i:11">a</i></span><span class="itro-ch"><i style="--i:12">x</i></span></p>
+    <span class="itro-rule"></span>
+    <p class="itro-meta">192 套配色 · 74 组字体 · 25 类图表 · 192 份配方</p>
+  </div>
+</div>
+<script>(function(){var el=document.getElementById('itro');if(!el)return;
+if(window.getComputedStyle(el).display==='none'){el.remove();return}
+try{sessionStorage.setItem('ux-intro','1')}catch(e){}
+/* animationend 会从子元素冒泡，只认最后一块幕布（下幕）的结束，否则标记格播完就会误删整层 */
+el.addEventListener('animationend',function(e){if(e.target.className.indexOf('itro-p--b')>-1)el.remove()});
+setTimeout(function(){el.remove()},2600)})()</script>
 <a class="skip" href="#main">跳到正文</a>
 <header class="top">
   <div class="top-in">
@@ -30,7 +119,7 @@
   
   <main class="main" id="main">
 
-<section class="hero-b">
+<section class="hero-b" data-rise>
   <p class="hero-k">六个域 · 同一套数据源 · 另一视图</p>
   <h1 class="hero-t">图鉴讲「<em>长什么样</em>」，<br>这里讲「<em>怎么定</em>」。</h1>
   <p class="hero-l">同一份 4319 行设计知识库的另一视图：配色、字体、图表、落地页、规范、配方，六个域互相引用。</p>
@@ -40,9 +129,9 @@
   </div>
 </section>
 
-<dl class="stats"><div class="stat"><dt>配色方案</dt><dd>192</dd></div><div class="stat"><dt>字体配对</dt><dd>74</dd></div><div class="stat"><dt>产品配方</dt><dd>192</dd></div><div class="stat"><dt>图表选型</dt><dd>25</dd></div><div class="stat"><dt>落地页模式</dt><dd>34</dd></div><div class="stat"><dt>交互规范</dt><dd>195</dd></div></dl>
+<dl class="stats" data-rise="1"><div class="stat"><dt>配色方案</dt><dd>192</dd></div><div class="stat"><dt>字体配对</dt><dd>74</dd></div><div class="stat"><dt>产品配方</dt><dd>192</dd></div><div class="stat"><dt>图表选型</dt><dd>25</dd></div><div class="stat"><dt>落地页模式</dt><dd>34</dd></div><div class="stat"><dt>交互规范</dt><dd>195</dd></div></dl>
 
-<a class="xbar" href="../gallery/index.html">
+<a class="xbar" href="../gallery/index.html" data-rise="2">
   <span class="xbar-k">另一视图 · 风格图鉴</span>
   <span class="xbar-t">看长什么样：88 种风格，全部真实渲染</span>
   <span class="xbar-go">去看看<span aria-hidden="true">→</span></span>

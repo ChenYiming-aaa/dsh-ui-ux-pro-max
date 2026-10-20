@@ -293,6 +293,15 @@ if (!JSDOM) {
   assert(hitEn.length >= 1, `dom: 英文原名仍可搜（命中 ${hitEn.length} 条）`)
 }
 
+section('11. 进站过场（入口页）')
+const hbHome = html('index.html')
+assert(hbHome.includes('id="itro"') && hbHome.includes('itro-p--b'), '首页有过场覆盖层与上下幕布')
+assert(hbHome.includes('Design Handbook · 6 domains'), '眉标用的是本站英文名')
+assert(/itro-meta">[^<]*192 套配色/.test(hbHome), '过场数据行取自本页统计')
+assert(hbHome.includes('data-rise'), '首屏内容带入场位移')
+const introLeak = pages.filter((f) => f !== 'index.html' && html(f).includes('id="itro"'))
+assert(introLeak.length === 0, introLeak.length ? `过场只该在入口页: ${introLeak.join(', ')}` : '子页面不重复播过场')
+
 assert(stack, '数据源可读')
 
 finish('✅ 设计手册站点结构与数据一致。')

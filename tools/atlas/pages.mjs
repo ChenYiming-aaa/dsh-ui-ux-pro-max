@@ -15,6 +15,7 @@ import {
   showcaseUrl,
 } from './layout.mjs';
 import { RULE_KEYS, RULE_TYPES } from './zh.mjs';
+import { introCss, introHead, introMarkup } from '../intro.mjs';
 import { GALLERY, HANDBOOK, OTHER_VIEW, GALLERY_LINE } from '../site-names.mjs';
 
 const MODE_ZH = { light: '浅色', dark: '深色' };
@@ -83,7 +84,7 @@ export function indexPage(a) {
 </a>`;
 
   const body = `
-<section class="hero-b">
+<section class="hero-b" data-rise>
   <p class="hero-k">六个域 · 同一套数据源 · ${OTHER_VIEW}</p>
   <h1 class="hero-t">图鉴讲「<em>长什么样</em>」，<br>这里讲「<em>怎么定</em>」。</h1>
   <p class="hero-l">同一份 4319 行设计知识库的${OTHER_VIEW}：配色、字体、图表、落地页、规范、配方，六个域互相引用。</p>
@@ -93,16 +94,19 @@ export function indexPage(a) {
   </div>
 </section>
 
-${statStrip([
-  { label: '配色方案', value: `${s.palettes}` },
-  { label: '字体配对', value: `${s.pairings}` },
-  { label: '产品配方', value: `${s.recipes}` },
-  { label: '图表选型', value: `${s.charts}` },
-  { label: '落地页模式', value: `${s.landings}` },
-  { label: '交互规范', value: `${s.practices}` },
-])}
+${statStrip(
+  [
+    { label: '配色方案', value: `${s.palettes}` },
+    { label: '字体配对', value: `${s.pairings}` },
+    { label: '产品配方', value: `${s.recipes}` },
+    { label: '图表选型', value: `${s.charts}` },
+    { label: '落地页模式', value: `${s.landings}` },
+    { label: '交互规范', value: `${s.practices}` },
+  ],
+  '1',
+)}
 
-<a class="xbar" href="${showcaseUrl('index.html')}">
+<a class="xbar" href="${showcaseUrl('index.html')}" data-rise="2">
   <span class="xbar-k">${OTHER_VIEW} · ${GALLERY.name}</span>
   <span class="xbar-t">${GALLERY_LINE}：${s.styles} 种风格，全部真实渲染</span>
   <span class="xbar-go">去看看<span aria-hidden="true">→</span></span>
@@ -143,6 +147,13 @@ ${statStrip([
     active: 'index',
     pageClass: 'page-index',
     body,
+    intro: {
+      head: `${introCss()}${introHead()}`,
+      body: introMarkup({
+        eyebrow: `${HANDBOOK.en} · 6 domains`,
+        meta: `${s.palettes} 套配色 · ${s.pairings} 组字体 · ${s.charts} 类图表 · ${s.recipes} 份配方`,
+      }),
+    },
   });
 }
 
