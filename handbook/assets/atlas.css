@@ -59,11 +59,19 @@ dl,dd,dt{margin:0}
   box-shadow:0 0 0 1px var(--accent), 7px 7px 0 -3px var(--ink)}
 .brand-t{font-weight:600;font-size:15px;letter-spacing:.01em}
 .brand-s{font:500 11px/1 var(--mono);color:var(--ink-3);text-transform:uppercase;letter-spacing:.12em}
-.nav{display:flex;gap:2px;margin-left:8px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.nav{position:relative;display:flex;gap:2px;margin-left:8px;min-width:0;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav-a{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;color:var(--ink-2);font-size:13.5px;border-radius:2px;white-space:nowrap}
 .nav-a:hover{background:var(--paper-2);color:var(--ink);text-decoration:none}
 .nav-a.is-on{color:var(--ink);font-weight:600;background:var(--paper-2);box-shadow:inset 0 -2px 0 var(--accent)}
+/* 当前域的 2px 橙线：不写在链接上，而是独立一条，
+   换页时由 View Transition 补间两次测量的位置差，视觉上就是「滑过去」（与图鉴同款） */
+.nav-ind{display:none;position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);pointer-events:none;
+  transform:translate3d(0,0,0);
+  transition:transform .36s cubic-bezier(.76,0,.24,1),width .36s cubic-bezier(.76,0,.24,1)}
+/* 脚本量好位置后再接管；没有脚本就一直是链接自己的静态下划线 */
+html.has-ind .nav-ind{display:block}
+html.has-ind .nav-a.is-on{box-shadow:none}
 .nav-c{font:500 10.5px/1 var(--mono);color:var(--ink-3);background:var(--paper-2);padding:2px 4px;border-radius:2px}
 .nav-a.is-on .nav-c{background:var(--surface);color:var(--accent-ink)}
 .top-r{margin-left:auto;flex:none;display:flex;align-items:center;gap:8px}
@@ -461,8 +469,6 @@ dl,dd,dt{margin:0}
 
 /* 13 过渡 --------------------------------------------------------------- */
 /* 与两站共用的纸幕同一个缓动；只动 transform / opacity / height，不用 blur */
-@keyframes itemIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-[data-list].is-swap>[data-item]:not([hidden]){animation:itemIn 300ms cubic-bezier(.76,0,.24,1) both}
 @keyframes czIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .cz-card{animation:czIn 320ms cubic-bezier(.76,0,.24,1) both}
 
@@ -569,7 +575,25 @@ html.xarrive [data-rise]{animation-delay:80ms}
 html.xarrive [data-rise="1"]{animation-delay:130ms}
 html.xarrive [data-rise="2"]{animation-delay:180ms}
 
-/* 站内切换：同一套纸幕，只把时长压到 60%（260ms），不印目的地名。
-   手册各域是独立文档，没有这层纸幕时点击像是「重新加载」；有了它只是一次短促的遮盖。 */
-.xnav.is-quick .xnav-p{transition-duration:260ms}
-.xnav.is-quick .xnav-p--b{transition-delay:16ms}
+/* 站内换页：跨文档 View Transition，让「内容本体」自己挪一小段，不铺任何遮罩。
+   位移只有 28px、再加淡入淡出，所以看起来是「换了一块」而不是「翻了一页」；
+   方向由导航顺序决定：往后跳，新内容从右侧 28px 滑入、旧内容往左退；往回跳则相反。
+   两段共用一条缓动（cubic-bezier(.22,.61,.36,1)，与列表换位、指示线同一套）。
+   页头整块命名 → 原地不动，只有内容在动。
+   没有方向信息时（页脚链接、浏览器前进后退）退化为轻上浮。 */
+::view-transition-old(root){animation:vtOutY 170ms cubic-bezier(.4,0,.2,1) both}
+::view-transition-new(root){animation:vtInY 340ms cubic-bezier(.22,.61,.36,1) both}
+html[data-vtdir="fwd"]::view-transition-old(root){animation:vtOutX 170ms cubic-bezier(.4,0,.2,1) both}
+html[data-vtdir="fwd"]::view-transition-new(root){animation:vtInRight 340ms cubic-bezier(.22,.61,.36,1) both}
+html[data-vtdir="back"]::view-transition-old(root){animation:vtOutRight 170ms cubic-bezier(.4,0,.2,1) both}
+html[data-vtdir="back"]::view-transition-new(root){animation:vtInX 340ms cubic-bezier(.22,.61,.36,1) both}
+@keyframes vtOutY{to{opacity:0;transform:translateY(-8px)}}
+@keyframes vtInY{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes vtOutX{to{opacity:0;transform:translateX(-22px)}}
+@keyframes vtOutRight{to{opacity:0;transform:translateX(22px)}}
+@keyframes vtInRight{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+@keyframes vtInX{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+.top,.site-head{view-transition-name:site-head}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none !important}
+}

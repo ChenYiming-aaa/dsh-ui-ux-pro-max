@@ -152,4 +152,13 @@ const gcss = readText('gallery/assets/site.css')
 assert(/\.nav-ind\s*\{[\s\S]*?transition: transform/.test(gcss), '指示线位移有过渡')
 assert(/\.nav \.nl\s*\{[\s\S]*?display: none/.test(gcss), '窄屏用短标签，三个入口都保留')
 
+section('10. 整站兜底与部署形状')
+const root404 = readFileSync(p('404.html'), 'utf8')
+assert(/风格图鉴/.test(root404) && /设计手册/.test(root404), '根 404 页给出两个入口')
+assert(/data-to="gallery\/"/.test(root404) && /data-to="handbook\/"/.test(root404), '404 页链接按站点根现算，不写死相对路径（地址栏仍是缺失路径）')
+assert(/location\.pathname\.split/.test(root404), '404 页用第一段路径推站点根')
+const wf = readFileSync(p('.github', 'workflows', 'pages.yml'), 'utf8')
+assert(/cp index\.html dist\/index\.html/.test(wf) && /cp 404\.html dist\/404\.html/.test(wf), 'Pages 产物含根跳转页与 404 页')
+assert(/cp -r gallery\/\. dist\/gallery\//.test(wf) && /cp -r handbook\/\. dist\/handbook\//.test(wf), '两站同级部署，相对路径与本地一致')
+
 finish('✅ 风格图鉴站点结构与数据一致。')

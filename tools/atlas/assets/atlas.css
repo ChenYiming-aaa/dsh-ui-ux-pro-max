@@ -59,11 +59,19 @@ dl,dd,dt{margin:0}
   box-shadow:0 0 0 1px var(--accent), 7px 7px 0 -3px var(--ink)}
 .brand-t{font-weight:600;font-size:15px;letter-spacing:.01em}
 .brand-s{font:500 11px/1 var(--mono);color:var(--ink-3);text-transform:uppercase;letter-spacing:.12em}
-.nav{display:flex;gap:2px;margin-left:8px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.nav{position:relative;display:flex;gap:2px;margin-left:8px;min-width:0;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav-a{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;color:var(--ink-2);font-size:13.5px;border-radius:2px;white-space:nowrap}
 .nav-a:hover{background:var(--paper-2);color:var(--ink);text-decoration:none}
 .nav-a.is-on{color:var(--ink);font-weight:600;background:var(--paper-2);box-shadow:inset 0 -2px 0 var(--accent)}
+/* 当前域的 2px 橙线：不写在链接上，而是独立一条，
+   换页时由 View Transition 补间两次测量的位置差，视觉上就是「滑过去」（与图鉴同款） */
+.nav-ind{display:none;position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);pointer-events:none;
+  transform:translate3d(0,0,0);
+  transition:transform .36s cubic-bezier(.76,0,.24,1),width .36s cubic-bezier(.76,0,.24,1)}
+/* 脚本量好位置后再接管；没有脚本就一直是链接自己的静态下划线 */
+html.has-ind .nav-ind{display:block}
+html.has-ind .nav-a.is-on{box-shadow:none}
 .nav-c{font:500 10.5px/1 var(--mono);color:var(--ink-3);background:var(--paper-2);padding:2px 4px;border-radius:2px}
 .nav-a.is-on .nav-c{background:var(--surface);color:var(--accent-ink)}
 .top-r{margin-left:auto;flex:none;display:flex;align-items:center;gap:8px}
@@ -461,8 +469,6 @@ dl,dd,dt{margin:0}
 
 /* 13 过渡 --------------------------------------------------------------- */
 /* 与两站共用的纸幕同一个缓动；只动 transform / opacity / height，不用 blur */
-@keyframes itemIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-[data-list].is-swap>[data-item]:not([hidden]){animation:itemIn 300ms cubic-bezier(.76,0,.24,1) both}
 @keyframes czIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .cz-card{animation:czIn 320ms cubic-bezier(.76,0,.24,1) both}
 

@@ -190,7 +190,7 @@ assert(/\[hidden\]\{display:none/.test(css), 'hidden 属性被强制生效')
 section('8. 无障碍标记')
 for (const f of ['index.html', 'palettes.html', 'pairings.html', 'charts.html', 'landing.html', 'practices.html', 'recipes.html', 'compose.html']) {
   const src = html(f)
-  assert(/<html lang="zh-CN"[^>]*data-pnav>/.test(src), `${f} 声明 lang 并启用站内切换`)
+  assert(/<html lang="zh-CN"[^>]*>/.test(src) && src.includes('id="vt-optin"'), `${f} 声明 lang 并启用站内换页动效`)
   assert(/class="skip"/.test(src) && /<main class="main" id="main"/.test(src), `${f} 具备跳转链接 / main`)
 }
 assert(/aria-expanded="false"/.test(palHtml) && /aria-controls="d-/.test(palHtml), '展开按钮有无障碍状态')
@@ -221,6 +221,17 @@ if (cz) {
   // 以前脚本里写死 ../style/，从 compose.html 解析到站点根 /style/ → 404
   assert(cz.sb === '../gallery/', `生成器的图鉴前缀为 ../gallery/（实际 ${cz.sb}）`)
   assert(!/'\.\.\/style\//.test(readText('handbook/assets/app.js')), '生成器脚本里没有写死的 ../style/ 路径')
+
+  // 逐个核对：配方里出现的每个风格，图鉴里都要真有这个详情页（否则点进去 404）
+  const stylePages = new Set(readdirSync(p('gallery', 'style')).map((f) => f.replace(/\.html$/, '')))
+  const linked = [...new Set(cz.recipes.flatMap((r) => [...r.sp, ...r.ss]).map((x) => x.id).filter(Boolean))]
+  const dead = linked.filter((id) => !stylePages.has(id))
+  assert(dead.length === 0, dead.length ? `这些风格 id 没有详情页: ${dead.slice(0, 6).join(', ')}` : `${linked.length} 个风格全部有详情页`)
+  // 链接必须是 ../gallery/style/<id>.html，从 handbook/compose.html 解析到 /gallery/style/…
+  const prefix = cz.sb.replace(/\/$/, '')
+  const sample = prefix + '/style/' + linked[0] + '.html'
+  assert(/^\.\.\/gallery\/style\/[a-z0-9-]+\.html$/.test(sample), `风格链接形如 ${sample}`)
+  assert(existsSync(p('gallery', 'style', linked[0] + '.html')), '链接目标在磁盘上存在')
 
   // 中文化：名称、推荐模式、风格名、规则键名都要有中文
   const noZh = cz.recipes.filter((r) => !r.zh)
@@ -331,13 +342,28 @@ assert(noGh.length === 0, noGh.length ? `这些页面缺 GitHub 入口: ${noGh.j
 assert(/class="top-link top-link--gh"/.test(html('index.html')), '顶栏有 GitHub 按钮')
 assert((html('index.html').match(/rel="noopener"/g) || []).length >= 2, '外链都带 rel=noopener')
 
-section('13. 站内切换（纸幕 260ms）')
+section('13. 站内换页：滑动而不是遮罩')
 const atlasCssText = readText('handbook/assets/atlas.css')
 const atlasJsText = readText('handbook/assets/app.js')
-assert(/\.xnav\.is-quick \.xnav-p\{transition-duration:260ms\}/.test(atlasCssText), '站内切换使用更短的 260ms 纸幕')
-assert(/hasAttribute\('data-pnav'\)/.test(atlasJsText), '脚本只在声明 data-pnav 的站点启用站内切换')
-assert(/data-click|closest\('a\[href\]'\)/.test(atlasJsText), '站内链接走事件委托，动态生成的链接同样生效')
+// 换页动效 = 内容本体的位移；不能再有铺满屏幕的纸幕（那是跨站才用的「换场」）
+assert(/\.xnav\.is-quick/.test(atlasCssText) === false, '站内换页不再使用纸幕遮罩')
+assert(/<style id="vt-optin">@view-transition\{navigation:auto\}<\/style>/.test(html('index.html')), '页面声明跨文档 View Transition')
+assert(/::view-transition-new\(root\)\{animation:vtInY/.test(atlasCssText), '默认方向：新内容轻上浮')
+assert(/data-vtdir="fwd"\]::view-transition-new\(root\)\{animation:vtInRight 340ms cubic-bezier\(\.22,\.61,\.36,1\)/.test(atlasCssText), '往后跳：新内容从右侧滑入（同一条缓动）')
+assert(/data-vtdir="back"\]::view-transition-new\(root\)\{animation:vtInX 340ms/.test(atlasCssText), '往回跳：方向取反')
+assert(/@keyframes vtInRight\{from\{opacity:0;transform:translateX\(22px\)\}/.test(atlasCssText), '位移只有 22px：换了一块，不是翻了一页')
+assert(/\.top,\.site-head\{view-transition-name:site-head\}/.test(atlasCssText), '页头单独成组，换页时原地不动')
+assert(/ux-vtdir/.test(atlasJsText), '按导航顺序记下前进 / 后退方向')
 assert(/function slide\(el, open\)/.test(atlasJsText), '展开面板有高度过渡')
+
+section('13b. 导航指示线')
+for (const f of ['index.html', 'palettes.html', 'pairings.html', 'charts.html', 'compose.html']) {
+  const src = html(f)
+  assert(/<nav class="nav"[^>]*>[\s\S]*?class="nav-ind"/.test(src), `${f} 的域导航带指示线`)
+}
+assert(/html\.has-ind \.nav-ind\{display:block\}/.test(atlasCssText), '脚本就绪后才接管指示线')
+assert(/transition:transform \.36s cubic-bezier\(\.76,0,\.24,1\)/.test(atlasCssText), '指示线与图鉴同一条缓动、同样 360ms')
+assert(/selectNodeContents\(a\)/.test(atlasJsText), '按文字宽度定位，而不是内边距盒子')
 
 section('14. 跨站切换动效（手册 → 图鉴）')
 assert(readText('handbook/assets/atlas.css').endsWith(xnavCss()), '样式表末尾追加的切换动效与 tools/xnav.mjs 完全一致（与图鉴同一份）')

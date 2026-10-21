@@ -84,8 +84,10 @@
 }
 </style><script>(function(){var d=document.documentElement,s=false;try{s=sessionStorage.getItem('ux-intro')==='1'}catch(e){}
 try{s=s||window.matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
-if(s)d.className+=' no-intro'})()</script><script>(function(){var d=document.documentElement,k='ux-xnav',go=false;
-try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}}catch(e){}
+if(s)d.className+=' no-intro'})()</script><style id="vt-optin">@view-transition{navigation:auto}</style>
+<script>(function(){var d=document.documentElement,k='ux-xnav',go=false,dir='';
+try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}dir=sessionStorage.getItem('ux-vtdir')||'';sessionStorage.removeItem('ux-vtdir')}catch(e){}
+if(dir==='fwd'||dir==='back')d.setAttribute('data-vtdir',dir);
 if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </head>
 <body><div class="itro" id="itro" aria-hidden="true">

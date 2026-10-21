@@ -56,7 +56,7 @@ function topbar(active, counts) {
       <span class="brand-mark" aria-hidden="true"></span>
       <span class="brand-t">${HANDBOOK.name}</span>
     </a>
-    <nav class="nav" aria-label="域导航">${links}</nav>
+    <nav class="nav" aria-label="域导航">${links}<span class="nav-ind" aria-hidden="true"></span></nav>
     <div class="top-r">
       <a class="top-link top-link--x" href="${showcaseUrl('index.html')}" data-xnav="${GALLERY.name}" title="另一个站点：${GALLERY.name}，${GALLERY_LINE}"><span class="tl-full">${GALLERY.name}</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
       <a class="top-link top-link--gh" href="${GITHUB}" target="_blank" rel="noopener" title="插件源码与数据"><span class="tl-full">GitHub</span><span class="tl-short" aria-hidden="true">GH</span><span aria-hidden="true">↗</span></a>
@@ -89,7 +89,7 @@ export function footer() {
  */
 export function pageShell({ title, desc, active, body, side = '', head = '', scripts = '', pageClass = '', hero = '', counts = null, intro = null }) {
   return `<!doctype html>
-<html lang="zh-CN" data-pnav>
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

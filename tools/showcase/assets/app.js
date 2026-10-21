@@ -217,6 +217,47 @@
 
   var COMPLEX = { Low: 1, Medium: 2, High: 3 };
   var STATUS_ORDER = { active: 0, supplemental: 1, deprecated: 2 };
+  var EASE = 'cubic-bezier(.22,.61,.36,1)';
+  var NO_MOTION = false;
+  try { NO_MOTION = window.matchMedia('(prefers-reduced-motion:reduce)').matches } catch (e) {}
+
+  /* 卡片换位用 FLIP：先记旧位置，改完 DOM 再量一次，用 transform 把差值抹平。
+     这样筛选 / 排序时是卡片「走过去」，而不是整片瞬间重排。 */
+  function layoutMap() {
+    var m = new Map();
+    cards.forEach(function (c) { if (!c.hidden) m.set(c, c.getBoundingClientRect()); });
+    return m;
+  }
+
+  function flip(before) {
+    if (!before) return;
+    var vh = window.innerHeight;
+    cards.forEach(function (c) {
+      if (c.hidden || typeof c.animate !== 'function') return;
+      var now = c.getBoundingClientRect();
+      if (now.bottom < -240 || now.top > vh + 400) return; // 屏幕外的卡不参与，省帧
+      var was = before.get(c);
+      if (!was) {
+        c.animate(
+          [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 320, easing: EASE }
+        );
+        return;
+      }
+      var dx = was.left - now.left;
+      var dy = was.top - now.top;
+      if (!dx && !dy) return;
+      // 跨了几屏的位移看不清，硬动反而像在飞：远距离直接淡入落位
+      if (Math.abs(dx) > window.innerWidth * 1.2 || Math.abs(dy) > vh * 1.2) {
+        c.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: EASE });
+        return;
+      }
+      c.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }], {
+        duration: 420,
+        easing: EASE,
+      });
+    });
+  }
 
   function readUrl() {
     var p = new URLSearchParams(window.location.search);
@@ -238,7 +279,8 @@
     return q.toLowerCase().split(/\s+/).filter(Boolean);
   }
 
-  function apply() {
+  function apply(animate) {
+    var before = animate && !NO_MOTION ? layoutMap() : null;
     var tokens = tokenize(state.q);
     var shown = 0;
 
@@ -282,13 +324,15 @@
       t.classList.toggle('on', on);
       t.setAttribute('aria-selected', String(on));
     });
+
+    if (before) flip(before);
   }
 
   tabs.forEach(function (tab) {
     tab.addEventListener('click', function () {
       state.family = tab.getAttribute('data-family');
       writeUrl();
-      apply();
+      apply(true);
     });
   });
 
@@ -299,7 +343,7 @@
       if (searchInput) searchInput.value = '';
       if (statusSel) { state.status = 'all'; statusSel.value = 'all'; }
       writeUrl();
-      apply();
+      apply(true);
       var target = $('#gallery');
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -308,14 +352,14 @@
   if (statusSel) {
     statusSel.addEventListener('change', function () {
       state.status = statusSel.value;
-      apply();
+      apply(true);
     });
   }
 
   if (sortSel) {
     sortSel.addEventListener('change', function () {
       state.sort = sortSel.value;
-      apply();
+      apply(true);
     });
   }
 
@@ -326,14 +370,14 @@
       var v = searchInput.value;
       timer = setTimeout(function () {
         state.q = v.trim();
-        apply();
+        apply(true);
       }, 90);
     });
     searchInput.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         searchInput.value = '';
         state.q = '';
-        apply();
+        apply(true);
         searchInput.blur();
       }
     });

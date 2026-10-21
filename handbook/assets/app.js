@@ -10,6 +10,66 @@
   var REDUCE = false;
   try { REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches; } catch (e) {}
 
+  /* 顶部域导航的滑动橙线 --------------------------------------------------
+     和图鉴那条「全部风格 / 分类 / 阅读指南」的指示线是同一套：量文字宽度、
+     用同一条缓动平移。手册七个域是七个文档，换页时浏览器会把这条线从前一页的
+     位置补间到新页的位置（View Transition 里它单独成组），所以看起来是滑过去的。 */
+  (function () {
+    var nav = qs('.nav');
+    var ind = nav ? qs('.nav-ind', nav) : null;
+    if (!ind) return;
+    var links = qsa('.nav-a', nav);
+    if (!links.length) return;
+
+    function boxOf(a) {
+      // 量「文字 + 计数」的内容宽度，和无脚本时的内嵌下划线一样长
+      try {
+        var r = document.createRange();
+        if (typeof r.getBoundingClientRect !== 'function') throw new Error('no rect');
+        r.selectNodeContents(a);
+        var b = r.getBoundingClientRect();
+        var ab = a.getBoundingClientRect();
+        return { x: b.left - ab.left + a.offsetLeft, w: b.width };
+      } catch (e) {
+        var pad = parseFloat(getComputedStyle(a).paddingLeft) || 0;
+        return { x: a.offsetLeft + pad, w: Math.max(0, a.offsetWidth - pad * 2) };
+      }
+    }
+
+    function place(a, instant) {
+      if (!a) return;
+      var box = boxOf(a);
+      if (!box.w) return;
+      if (instant) ind.style.transition = 'none';
+      ind.style.width = Math.round(box.w) + 'px';
+      ind.style.transform = 'translate3d(' + Math.round(box.x) + 'px,0,0)';
+      if (instant) {
+        void ind.offsetWidth;
+        ind.style.transition = '';
+      }
+    }
+
+    var on = null;
+    links.forEach(function (a) { if (a.classList.contains('is-on')) on = a; });
+    // 方法与溯源、404 这类页面不属于任何域，就不画线
+    if (!on) return;
+    place(on, true);
+    document.documentElement.classList.add('has-ind');
+
+    // 窄屏时导航是横向滚动的：把当前域滚到可见范围里，别让用户以为「生成器」不存在
+    if (nav.scrollWidth > nav.clientWidth + 2) {
+      var left = on.offsetLeft - (nav.clientWidth - on.offsetWidth) / 2;
+      var max = nav.scrollWidth - nav.clientWidth;
+      nav.scrollLeft = Math.max(0, Math.min(max, left));
+    }
+
+    function remeasure() { place(on, true); }
+    window.addEventListener('resize', remeasure);
+    window.addEventListener('load', remeasure);
+    // 中文回退字体在不同系统下宽度不同，字体就绪后再量一次
+    try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure); } catch (e) {}
+  })();
+
   /**
    * 展开 / 收起面板：hidden 是瞬时开关，直接切会「啪」地出现。
    * 这里先取消 hidden，再用 240ms 的高度 + 透明度过渡收放；不支持 WAAPI 或
@@ -88,19 +148,46 @@
     var out = qs('[data-count-out]');
     var empty = qs('[data-empty]');
     var filters = {};
-    var swapTimer;
 
-    /** 结果变化时让新出现的条目轻微上浮，避免整片卡片瞬间替换 */
-    function fade() {
-      if (REDUCE) return;
-      list.classList.remove('is-swap');
-      void list.offsetWidth;
-      list.classList.add('is-swap');
-      clearTimeout(swapTimer);
-      swapTimer = setTimeout(function () { list.classList.remove('is-swap'); }, 320);
+    /* 结果变化时用 FLIP 让卡片「走」到新位置：先记旧矩形，改完 hidden / 排序再量一次，
+       用 transform 把差值补回去。比整片淡入更像真的在移动。 */
+    function layoutMap() {
+      var m = new Map();
+      items.forEach(function (el) { if (!el.hidden) m.set(el, el.getBoundingClientRect()); });
+      return m;
+    }
+
+    function flip(before) {
+      var vh = window.innerHeight;
+      items.forEach(function (el) {
+        if (el.hidden || typeof el.animate !== 'function') return;
+        var now = el.getBoundingClientRect();
+        if (now.bottom < -240 || now.top > vh + 400) return; // 屏幕外不参与，省帧
+        var was = before.get(el);
+        if (!was) {
+          el.animate(
+            [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }],
+            { duration: 320, easing: 'cubic-bezier(.22,.61,.36,1)' }
+          );
+          return;
+        }
+        var dx = was.left - now.left;
+        var dy = was.top - now.top;
+        if (!dx && !dy) return;
+        // 跨了几屏的位移看不清，硬动反而像在飞：远距离直接淡入落位
+        if (Math.abs(dx) > window.innerWidth * 1.2 || Math.abs(dy) > vh * 1.2) {
+          el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
+          return;
+        }
+        el.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }], {
+          duration: 420,
+          easing: 'cubic-bezier(.22,.61,.36,1)'
+        });
+      });
     }
 
     function apply(animate) {
+      var before = animate && !REDUCE ? layoutMap() : null;
       var q = search ? search.value.trim().toLowerCase() : '';
       var shown = 0;
       items.forEach(function (el) {
@@ -119,7 +206,7 @@
       });
       if (out) out.innerHTML = '显示 <b>' + shown + '</b> / ' + items.length + ' 条';
       if (empty) empty.hidden = shown !== 0;
-      if (animate) fade();
+      if (before) flip(before);
     }
 
     chips.forEach(function (chip) {
@@ -153,8 +240,9 @@
           return av.localeCompare(bv, 'zh-Hans-CN');
         });
         if (key === 'ratio') sorted.reverse();
+        var before = REDUCE ? null : layoutMap();
         sorted.forEach(function (el) { list.appendChild(el); });
-        fade();
+        if (before) flip(before);
       });
     }
 
@@ -321,7 +409,7 @@
       var label = s.zh || s.name;
       var title = s.zh ? s.name : '';
       return s.id
-        ? '<a class="slink" href="' + esc(SB + 'style/' + s.id + '.html') + '" target="_blank" rel="noopener"' + (title ? ' title="' + esc(title) + '"' : '') + '>' + esc(label) + ' <span aria-hidden="true">↗</span></a>'
+        ? '<a class="slink" href="' + esc(SB + 'style/' + s.id + '.html') + '"' + (title ? ' title="' + esc(title) + '"' : '') + '>' + esc(label) + ' <span aria-hidden="true">↗</span></a>'
         : '<span class="slink slink--dead">' + esc(label) + '</span>';
     };
     var landLink = function (l) {
@@ -342,7 +430,7 @@
       var slug = s.slice(i + 1);
       var typeZh = (data.ruleTypes && data.ruleTypes[type]) || type;
       if (type === 'style' && data.styles && data.styles[slug]) {
-        return '<span class="rule-t">' + esc(typeZh) + '</span><a class="slink" href="' + esc(SB + 'style/' + slug + '.html') + '" target="_blank" rel="noopener">' + esc(data.styles[slug]) + '</a>';
+        return '<span class="rule-t">' + esc(typeZh) + '</span><a class="slink" href="' + esc(SB + 'style/' + slug + '.html') + '">' + esc(data.styles[slug]) + '</a>';
       }
       var label = type === 'mode' ? (slug === 'dark' ? '深色' : slug === 'light' ? '浅色' : slug) : slug.replace(/-/g, ' ');
       return '<span class="rule-t">' + esc(typeZh) + '</span>' + esc(label);
@@ -476,6 +564,8 @@
       qsa('.cz-i').forEach(function (b) {
         b.classList.toggle('is-on', b.getAttribute('data-cz-pick') === key);
       });
+      // 写进 hash：跳去图鉴后按后退，仍是同一个产品类型
+      if (window.history.replaceState) window.history.replaceState(null, '', '#' + key);
     }
 
     qsa('.cz-i').forEach(function (b) {
@@ -549,9 +639,9 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function cover(label, href, quick) {
+  function cover(label, href) {
     var box = document.createElement('div');
-    box.className = 'xnav' + (quick ? ' is-quick' : '');
+    box.className = 'xnav';
     box.setAttribute('aria-hidden', 'true');
     box.innerHTML =
       '<i class="xnav-p xnav-p--t"></i><i class="xnav-p xnav-p--b">' +
@@ -561,8 +651,23 @@
     void box.offsetHeight; // 先让起始位移生效，否则两块幕布会从画面正中弹出
     box.classList.add('is-on');
     // 不依赖 animationend：标签页被挂起时它不会触发，时间到了照跳
-    window.setTimeout(function () { window.location.href = href; }, quick ? 300 : 400);
+    window.setTimeout(function () { window.location.href = href; }, 400);
   }
+
+  /* 站内翻页前先记下方向：当前高亮项在导航里的位置 vs 被点项的位置。
+     两站每页都是同一份导航，顺序一致，所以这个比较在两个方向上都会正确。 */
+  var navBar = document.querySelector('.nav, .top .nav, .site-head .nav');
+  if (navBar) document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a || !navBar.contains(a) || a.hasAttribute('data-xnav')) return;
+    var items = Array.prototype.slice.call(navBar.querySelectorAll('a[href]'));
+    var to = items.indexOf(a);
+    var from = items.findIndex(function (x) {
+      return x.hasAttribute('aria-current') || x.classList.contains('is-nav-on') || x.classList.contains('is-on');
+    });
+    if (from < 0 || to < 0 || to === from) return;
+    try { sessionStorage.setItem('ux-vtdir', to > from ? 'fwd' : 'back') } catch (err) {}
+  }, true);
 
   if (links.length) Array.prototype.forEach.call(links, function (a) {
     a.addEventListener('click', function (e) {
@@ -571,39 +676,12 @@
       if (!href || reduce) return;
       e.preventDefault();
       try { sessionStorage.setItem('ux-xnav', '1') } catch (err) {}
+      // 跨站是「换场」，不要叠加站内的 View Transition
+      var opt = document.getElementById('vt-optin');
+      if (opt && opt.parentNode) opt.parentNode.removeChild(opt);
       busy = true;
-      cover(a.getAttribute('data-xnav'), href, false);
+      cover(a.getAttribute('data-xnav'), href);
     });
   });
 
-  /* 站内切换：站点声明了 data-pnav 才启用（目前只在设计手册）。
-     拦截同源 .html 链接，盖一层 260ms 的纸幕再跳，避免整页重载的顿感。
-     锚点、新窗口、跨站、修饰键一律放行给浏览器。 */
-  if (!document.documentElement.hasAttribute('data-pnav')) return;
-
-  function internal(a) {
-    if (a.hasAttribute('data-xnav') || a.hasAttribute('download') || a.target === '_blank') return null;
-    var href = a.getAttribute('href');
-    if (!href || href.charAt(0) === '#' || /^(mailto|tel|javascript):/i.test(href)) return null;
-    var url;
-    try { url = new URL(a.href, window.location.href) } catch (e) { return null; }
-    if (url.protocol !== window.location.protocol || url.host !== window.location.host) return null;
-    // 同一个地址（当前域导航再点一次）：不重载，也不做无意义的遮盖
-    if (url.pathname === window.location.pathname && url.search === window.location.search && !url.hash) return null;
-    if (url.pathname === window.location.pathname && url.hash) return null;
-    if (!/\.html?$/.test(url.pathname)) return null;
-    return { href: href, url: url };
-  }
-
-  document.addEventListener('click', function (e) {
-    if (busy || e.defaultPrevented || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-    if (!a) return;
-    var hit = internal(a);
-    if (!hit || reduce) return;
-    e.preventDefault();
-    busy = true;
-    // 带锚点的跳转交给浏览器（换页后直接落在目标区块），其余只做遮盖
-    cover('', hit.href, true);
-  });
 })();

@@ -17,6 +17,7 @@ on:
       - 'gallery/**'
       - 'handbook/**'
       - 'index.html'
+      - '404.html'
       - 'data/index.json'
       - 'data/meta.json'
       - 'data/fonts.json'
@@ -68,6 +69,7 @@ jobs:
           cp -r gallery/. dist/gallery/
           cp -r handbook/. dist/handbook/
           cp index.html dist/index.html
+          cp 404.html dist/404.html
           ls -1 dist
 
       - uses: actions/configure-pages@v5
