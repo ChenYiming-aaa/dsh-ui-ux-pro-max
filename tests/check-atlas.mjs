@@ -354,6 +354,7 @@ assert(/data-vtdir="back"\]::view-transition-new\(root\)\{animation:vtInX 340ms/
 assert(/@keyframes vtInRight\{from\{opacity:0;transform:translateX\(22px\)\}/.test(atlasCssText), '位移只有 22px：换了一块，不是翻了一页')
 assert(/\.top,\.site-head\{view-transition-name:site-head\}/.test(atlasCssText), '页头单独成组，换页时原地不动')
 assert(/ux-vtdir/.test(atlasJsText), '按导航顺序记下前进 / 后退方向')
+assert(/pathname\.indexOf\(siteRoot\) === 0/.test(atlasJsText), '离开本站根的链接先撤掉 View Transition（避免两张页头互相变形）')
 assert(/function slide\(el, open\)/.test(atlasJsText), '展开面板有高度过渡')
 
 section('13b. 导航指示线')

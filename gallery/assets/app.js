@@ -436,6 +436,25 @@
     window.setTimeout(function () { window.location.href = href; }, 400);
   }
 
+  /* 跨站（/gallery/ ↔ /handbook/）不能走 View Transition：两站外壳完全不同，
+     同名的 site-head 会被浏览器相互变形，看起来像两张页头黏在一起。
+     所以凡是「离开本站根目录」的链接，先撤掉 opt-in，回到普通的直接换页。 */
+  var siteRoot = '/' + (window.location.pathname.split('/')[1] || '') + '/';
+  document.addEventListener(
+    'click',
+    function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var url;
+      try { url = new URL(a.getAttribute('href'), window.location.href); } catch (err) { return; }
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname.indexOf(siteRoot) === 0) return;
+      var opt = document.getElementById('vt-optin');
+      if (opt && opt.parentNode) opt.parentNode.removeChild(opt);
+    },
+    true
+  );
+
   /* 站内翻页前先记下方向：当前高亮项在导航里的位置 vs 被点项的位置。
      两站每页都是同一份导航，顺序一致，所以这个比较在两个方向上都会正确。 */
   var navBar = document.querySelector('.nav, .top .nav, .site-head .nav');
