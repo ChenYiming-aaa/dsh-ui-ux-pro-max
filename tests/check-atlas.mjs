@@ -21,6 +21,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { assert, section, finish, readJson, readText, p } from './_harness.mjs'
 import { xnavCss, xnavJs } from '../tools/xnav.mjs'
+import { squircleCss, squircleJs } from '../tools/squircle.mjs'
 
 const ATLAS = p('handbook')
 const pages = ['index.html', 'palettes.html', 'pairings.html', 'charts.html', 'landing.html', 'practices.html', 'recipes.html', 'compose.html', 'about.html', '404.html']
@@ -367,8 +368,8 @@ assert(/transition:transform \.36s cubic-bezier\(\.76,0,\.24,1\)/.test(atlasCssT
 assert(/selectNodeContents\(a\)/.test(atlasJsText), '按文字宽度定位，而不是内边距盒子')
 
 section('14. 跨站切换动效（手册 → 图鉴）')
-assert(readText('handbook/assets/atlas.css').endsWith(xnavCss()), '样式表末尾追加的切换动效与 tools/xnav.mjs 完全一致（与图鉴同一份）')
-assert(readText('handbook/assets/app.js').endsWith(xnavJs()), '脚本末尾追加的切换逻辑与 tools/xnav.mjs 完全一致（与图鉴同一份）')
+assert(readText('handbook/assets/atlas.css').endsWith(xnavCss() + squircleCss()), '样式表末尾追加的切换动效与曲率圆角，与 tools/xnav.mjs + tools/squircle.mjs 完全一致（与图鉴同一份）')
+assert(readText('handbook/assets/app.js').endsWith(xnavJs() + squircleJs()), '脚本末尾追加的切换逻辑与曲率圆角，与 tools/xnav.mjs + tools/squircle.mjs 完全一致（与图鉴同一份）')
 const hbMarks = [...hbHome.matchAll(/data-xnav="([^"]+)"/g)].map((m) => m[1])
 assert(hbMarks.length === 3 && hbMarks.every((x) => x === '风格图鉴'), '首页三处入口（顶栏 / 横幅 / 页脚）都带切换标记')
 assert((html('recipes.html').match(/data-xnav="风格图鉴"/g) || []).length === 2, '子页面两处入口（顶栏 / 页脚）都带切换标记')

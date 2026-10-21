@@ -70,3 +70,24 @@ declared as peer dependencies and resolved from the host runtime:
 
 All search, ranking (BM25), and design-system generation logic in `lib/` is an
 independent reimplementation in plain JavaScript with no third-party code.
+
+## Squircle corner geometry (tools/squircle.runtime.js)
+
+The curvature-continuous rounded-corner math embedded in the two generated
+sites (`gallery/`, `handbook/`) is ported from the **figma-squircle** npm
+package:
+
+- **Upstream:** [phamfoo/figma-squircle](https://github.com/phamfoo/figma-squircle)
+  — "Figma's corner smoothing as an SVG path", MIT License.
+- **Original implementation:**
+  [MartinRGB/Figma_Squircles_Approximation](https://github.com/MartinRGB/Figma_Squircles_Approximation)
+  (JS reference for Figma's
+  ["Desperately Seeking Squircles"](https://www.figma.com/blog/desperately-seeking-squircles/)
+  geometry), MIT License.
+- **What we did:** vendored the corner-parameter formulas (`p = (1+s)·R`,
+  arc-platform chord, Bézier control distances a/b/c/d) into
+  `tools/squircle.runtime.js` as a self-contained ES5 runtime; added a
+  computed-style scanner that applies the path via `clip-path`, redraws 1px
+  gradient borders and relocates box-shadows to a `drop-shadow` wrapper.
+  Distributed under MIT accordingly; the file header carries the same
+  attribution.

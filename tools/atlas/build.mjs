@@ -12,6 +12,7 @@ import { loadAtlas } from './data.mjs';
 import * as P from './pages.mjs';
 import { favicon, SHOWCASE_BASE } from './layout.mjs';
 import { xnavCss, xnavJs } from '../xnav.mjs';
+import { squircleCss, squircleJs } from '../squircle.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const OUT = path.join(ROOT, 'handbook');
@@ -77,10 +78,12 @@ function main() {
   }
 
   for (const f of ['atlas.css', 'app.js']) {
-    // 跨站切换动效与图鉴共用 tools/xnav.mjs，构建时追加，保证两站节奏一致
+    // 跨站切换动效与曲率连续圆角与图鉴共用 tools/xnav.mjs / tools/squircle.mjs，
+    // 构建时追加，保证两站节奏一致
     fs.writeFileSync(
       path.join(OUT, 'assets', f),
-      fs.readFileSync(path.join(ASSETS, f), 'utf8') + (f.endsWith('.css') ? xnavCss() : xnavJs()),
+      fs.readFileSync(path.join(ASSETS, f), 'utf8') +
+        (f.endsWith('.css') ? xnavCss() + squircleCss() : xnavJs() + squircleJs()),
     );
   }
   fs.writeFileSync(path.join(OUT, 'assets', 'favicon.svg'), favicon, 'utf8');

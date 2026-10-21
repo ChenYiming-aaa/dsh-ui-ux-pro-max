@@ -8,6 +8,24 @@
 
 ## [Unreleased]
 
+### 曲率连续圆角（iOS 式 G2 squircle）
+
+- **换掉 border-radius**：两站所有统一的圆角不再是「直边直接接 1/4 圆弧」的 G1 切线
+  （曲率在接点从 0 跳到 1/R，小圆角 + 细描边时折点肉眼可见），改为五段式曲率连续圆角：
+  直边 → 贝塞尔过渡（曲率 0 → 1/R 平滑爬升）→ 圆弧平台（曲率恒定的真圆弧，不牺牲圆度）
+  → 贝塞尔过渡（对称回落）→ 直边。起弯点 s₀ = 1.45R，落在 1.00R–1.49R 区间上部（iOS 观感）；
+  两站共用同一平滑度，所有圆角视觉上同源。几何移植自 figma-squircle（MIT，见
+  THIRD_PARTY_NOTICES），来源是 Figma 博客《Desperately Seeking Squircles》。
+- **实现**：`tools/squircle.mjs` + `tools/squircle.runtime.js`，与跨站动效同一套
+  「构建时追加、两站唯一来源」模式。运行时按元素实测尺寸生成 SVG path 用 `clip-path`
+  应用（不设 border-radius）；带 1px 描边的元素重画「顶部亮 / 底部弱」的连续渐变描边叠层；
+  带投影的元素把 box-shadow 搬到外层壳的 `drop-shadow`（轮廓跟随裁形）。hover 换边框色、
+  明暗切换换令牌时自动重取色；ResizeObserver / MutationObserver 跟随尺寸与新增节点。
+- **刻意保留原样的**：正圆与胶囊（本身处处等曲率，iOS 也保持胶囊）；手绘风的椭圆 /
+  非对称圆角（那是风格的一部分）；内阴影、虚线边框、定位元素带投影等无法无损处理的；
+  < 2.5px 的装饰角（曲率跳变低于半像素，肉眼不可辨）。无 JS 或不支持 `clip-path: path()`
+  的浏览器保留原生 border-radius，自动降级。
+
 ### 交互与排版打磨
 
 - **站内切换**：手册的七个域是七个独立文档，点「配色 / 字体 / 图表」原本是一次整页重载。

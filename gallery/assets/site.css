@@ -3415,3 +3415,16 @@ html[data-vtdir="back"]::view-transition-new(root){animation:vtInX 340ms cubic-b
 @media (prefers-reduced-motion:reduce){
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none !important}
 }
+
+/* ==========================================================================
+   曲率连续圆角 —— 由 tools/squircle.mjs 在构建时追加，两站同一份实现，勿手改
+   运行时把统一圆角换成五段式 G2 路径（clip-path 应用）：
+   data-sq="clip" 纯裁形；data-sq="stroke" 另有 1px 渐变描边叠层（原 border 透明化）；
+   .sq-wrap 承接被 clip-path 裁掉的投影（drop-shadow 跟随裁形轮廓）。
+   无 JS / 不支持 clip-path:path() 时以上规则均不生效，保留原生 border-radius。
+   ========================================================================== */
+[data-sq]{border-radius:0}
+[data-sq="stroke"],[data-sq="stroke"]:hover,[data-sq="stroke"]:focus{border-color:transparent !important}
+[data-sq]:focus-visible{outline-offset:-2px !important}
+.sq-stroke{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border:0;border-radius:0}
+.sq-wrap{display:block}

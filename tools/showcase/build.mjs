@@ -14,6 +14,7 @@ import { STYLE_META } from './theme-data.mjs';
 import { GALLERY, HANDBOOK, OTHER_VIEW, HANDBOOK_LINE } from '../site-names.mjs';
 import { introCss, introHead, introMarkup } from '../intro.mjs';
 import { xnavCss, xnavHead, xnavJs } from '../xnav.mjs';
+import { squircleCss, squircleJs } from '../squircle.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -980,11 +981,11 @@ write('assets/themes.css', `/* 由 tools/showcase/build.mjs 自动生成，请�
 write('assets/favicon.svg', favicon);
 copyDir(path.join(__dirname, 'assets'), path.join(SITE, 'assets'));
 
-// 跨站切换动效：源码只有一份（tools/xnav.mjs），构建时追加进样式表与脚本，
-// 既保证两站节奏完全一致，也不新增请求。
+// 跨站切换动效与曲率连续圆角：源码各只有一份（tools/xnav.mjs / tools/squircle.mjs），
+// 构建时追加进样式表与脚本，既保证两站节奏完全一致，也不新增请求。
 for (const [file, extra] of [
-  ['site.css', xnavCss()],
-  ['app.js', xnavJs()],
+  ['site.css', xnavCss() + squircleCss()],
+  ['app.js', xnavJs() + squircleJs()],
 ]) {
   const dest = path.join(SITE, 'assets', file);
   fs.writeFileSync(dest, fs.readFileSync(dest, 'utf8') + extra);

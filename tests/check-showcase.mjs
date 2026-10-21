@@ -16,6 +16,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { assert, section, finish, readJson, readText, p } from './_harness.mjs'
 import { STYLE_META } from '../tools/showcase/theme-data.mjs'
 import { xnavCss, xnavJs } from '../tools/xnav.mjs'
+import { squircleCss, squircleJs } from '../tools/squircle.mjs'
 
 const data = readJson('data/index.json')
 const styles = data.domains.style
@@ -119,8 +120,8 @@ assert(!/<(p|h1|h2|span class="box")[ >]/.test(gate), '根入口不再显示任�
 
 section('8. 跨站切换动效（图鉴 → 手册）')
 // 两站的切换动效共用 tools/xnav.mjs，构建时追加到产物末尾；这里直接比对源码，防止两边慢慢走样
-assert(readText('gallery/assets/site.css').endsWith(xnavCss()), '样式表末尾追加的切换动效与 tools/xnav.mjs 完全一致')
-assert(readText('gallery/assets/app.js').endsWith(xnavJs()), '脚本末尾追加的切换逻辑与 tools/xnav.mjs 完全一致')
+assert(readText('gallery/assets/site.css').endsWith(xnavCss() + squircleCss()), '样式表末尾追加的切换动效与曲率圆角，与 tools/xnav.mjs + tools/squircle.mjs 完全一致')
+assert(readText('gallery/assets/app.js').endsWith(xnavJs() + squircleJs()), '脚本末尾追加的切换逻辑与曲率圆角，与 tools/xnav.mjs + tools/squircle.mjs 完全一致')
 const xnavCssText = readText('gallery/assets/site.css')
 assert(/html\.xarrive \.itro-p--t\{animation-delay:40ms\}/.test(xnavCssText), '到场形态：两块纸幕首帧即为合拢态')
 assert(/html\.xarrive \.itro-c\{display:none\}/.test(xnavCssText), '到场形态跳过品牌开场，只播开合')
