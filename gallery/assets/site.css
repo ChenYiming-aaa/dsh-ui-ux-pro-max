@@ -878,48 +878,6 @@ html:not(.js) .nav a[aria-current="page"] {
   color: var(--muted);
 }
 
-.notes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  padding-bottom: 20px;
-}
-
-.note-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  padding: 24px;
-}
-
-.note-card h2 {
-  font-size: 17px;
-  margin-bottom: 10px;
-  letter-spacing: -0.015em;
-}
-
-.note-card p {
-  font-size: 13.5px;
-  line-height: 1.75;
-  color: var(--ink-2);
-}
-
-.note-card p + p {
-  margin-top: 10px;
-}
-
-.note-card code {
-  font-size: 12px;
-  background: var(--paper-2);
-  padding: 1px 5px;
-  border-radius: 4px;
-}
-
-.note-card a {
-  color: var(--accent);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-}
-
 /* 4 · 详情页 -------------------------------------------------------------- */
 
 .detail {
@@ -3199,9 +3157,6 @@ a.bhint:hover {
   }
   .d-aside {
     padding-top: 0;
-  }
-  .notes {
-    grid-template-columns: 1fr;
   }
   .matrix {
     grid-template-columns: repeat(2, minmax(0, 1fr));

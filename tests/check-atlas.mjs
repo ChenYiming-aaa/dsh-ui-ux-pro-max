@@ -47,9 +47,9 @@ const counts = {
   landings: data.domains.landing.length,
   practices: data.domains.ux.length + data.domains.react.length + data.domains.web.length,
 }
-assert(counts.palettes === 192 && counts.pairings === 74 && counts.recipes === 192, `配色 ${counts.palettes} / 字体 ${counts.pairings} / 配方 ${counts.recipes}`)
+assert(counts.palettes === data.counts.color && counts.pairings === data.counts.typography && counts.recipes === data.counts.product, `配色 ${counts.palettes} / 字体 ${counts.pairings} / 配方 ${counts.recipes}`)
 assert(counts.charts === 25 && counts.landings === 34, `图表 ${counts.charts} / 落地页 ${counts.landings}`)
-assert(counts.practices === 195, `规范 ${counts.practices}`)
+assert(counts.practices === data.counts.ux + data.counts.react + data.counts.web, `规范 ${counts.practices}`)
 
 section('3. 配色卡')
 const palHtml = html('palettes.html')
@@ -286,7 +286,8 @@ if (!JSDOM) {
   const darkChip = [...document.querySelectorAll('[data-filter="mode"] .chip')].find((c) => c.textContent.includes('深色'))
   darkChip.click()
   const visibleAfter = [...document.querySelectorAll('.pal')].filter((el) => !el.hidden)
-  assert(visibleAfter.length === 43, `dom: 深色筛选后剩 ${visibleAfter.length} 条`)
+  const darkTotal = [...document.querySelectorAll('.pal[data-mode="dark"]')].length
+  assert(visibleAfter.length === darkTotal && darkTotal > 0, `dom: 深色筛选后剩 ${visibleAfter.length} 条`)
   assert(visibleAfter.every((el) => el.getAttribute('data-mode') === 'dark'), 'dom: 筛选结果全部为深色')
 
   const search = document.querySelector('[data-search]')
@@ -331,7 +332,7 @@ section('11. 进站过场（入口页）')
 const hbHome = html('index.html')
 assert(hbHome.includes('id="itro"') && hbHome.includes('itro-p--b'), '首页有过场覆盖层与上下幕布')
 assert(hbHome.includes('Design Handbook · 6 domains'), '眉标用的是本站英文名')
-assert(/itro-meta">[^<]*192 套配色/.test(hbHome), '过场数据行取自本页统计')
+assert(hbHome.includes(`itro-meta">${counts.palettes} 套配色`), '过场数据行取自本页统计')
 assert(hbHome.includes('data-rise'), '首屏内容带入场位移')
 const introLeak = pages.filter((f) => f !== 'index.html' && html(f).includes('id="itro"'))
 assert(introLeak.length === 0, introLeak.length ? `过场只该在入口页: ${introLeak.join(', ')}` : '子页面不重复播过场')

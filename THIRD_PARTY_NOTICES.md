@@ -29,21 +29,21 @@ and `data/meta.json`:
 | Field | Value |
 |---|---|
 | `upstream` | `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` (original project) |
-| `upstreamRef` | `56ea9cf174ed86786187daa9de0e6247cb0747e4` (upstream commit, 2026-10-15) |
-| `upstreamRefDate` | `2026-10-15T09:04:34+07:00` |
+| `upstreamRef` | `6ec2bb58334ca3014573c4cbd4834ee3a40afd9d` (upstream commit, 2026-11-22) |
+| `upstreamRefDate` | `2026-11-22T11:08:26+07:00` |
 | `upstreamDataPath` | `cli/assets/data/` (upstream data directory) |
 | `sourcePath` | `cli/assets/data/` (data source path) |
-| `syncedAt` | `2026-10-18T03:59:34.490Z` (data generation time) |
+| `syncedAt` | `2026-11-22T04:26:14.481Z` (data generation time) |
 | `lineageVerifiedAt` | `2026-10-18` (row/column comparison against upstream) |
 
 The original upstream is **nextlevelbuilder/ui-ux-pro-max-skill**. Since 1.3.0
 the bundled data was generated directly from its `cli/assets/data/` CSVs with a
 quoted-field parser (no lossy transcode). The plugin itself does **not** fetch or
 sync data at runtime or on a schedule. The current snapshot matches upstream
-`56ea9cf` row-for-row and column-for-column:
+`6ec2bb5` row-for-row and column-for-column:
 
-- 88 style rows, 119 UX guidelines, 192 reasoning profiles;
-- 22 stack tables (1,271 guideline rows) and 1,934 Google Fonts rows;
+- 89 style rows, 141 UX guidelines, 194 reasoning profiles;
+- 22 stack tables (1,278 guideline rows) and 1,934 Google Fonts rows;
 - all 11 domain tables match their upstream CSV columns and values.
 
 The earlier 1.2.0 snapshot (`137597b`, transcoded via

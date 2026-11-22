@@ -87,7 +87,7 @@ export function indexPage(a) {
 <section class="hero-b" data-rise>
   <p class="hero-k">六个域 · 同一份数据源</p>
   <h1 class="hero-t">图鉴讲「<em>长什么样</em>」，<br>这里讲「<em>怎么定</em>」。</h1>
-  <p class="hero-l">4319 行设计知识库的另一半：配色、字体、图表、落地页、规范、配方，互相引用。</p>
+  <p class="hero-l">配色、字体、图表、落地页、规范、配方——选一个域开始。</p>
   <div class="hero-a">
     <a class="btn" href="./compose.html">打开配方生成器</a>
     <a class="btn btn--ghost" href="./palettes.html">浏览 ${s.palettes} 套配色</a>
@@ -124,26 +124,12 @@ ${statStrip(
   </div>
 </section>
 
-<section class="sect">
-  <div class="sect-h"><h2>两条路径</h2></div>
-  <div class="split">
-    <div class="mini">
-      <h3>已知产品</h3>
-      <p>用<a href="./compose.html">配方生成器</a>：选类型 → 拿配方 → 复制令牌。</p>
-    </div>
-    <div class="mini">
-      <h3>只缺一块</h3>
-      <p>去<a href="./palettes.html">配色库</a>、<a href="./pairings.html">字体配对</a>或<a href="./charts.html">图表选型</a>，各域可单独使用。</p>
-    </div>
-  </div>
-</section>
-
 <p class="factbar"><span>三表同名同序</span><span>${s.styleRefs} 处风格引用全部可解析</span><span>落地页 ${Math.round((s.landingLinked / s.recipes) * 100)}% 可映射</span><a href="./about.html#lineage">溯源</a></p>
 `;
 
   return shell(a, {
     title: '设计手册 · 配色 / 字体 / 图表 / 落地页 / 规范 / 配方',
-    desc: 'dsh-ui-ux-pro-max 的设计手册站点：192 套语义配色、74 组字体配对、25 类图表选型、34 种落地页结构、195 条交互规范与 192 份产品配方。',
+    desc: `设计手册：${s.palettes} 套配色、${s.pairings} 组字体配对、${s.charts} 类图表、${s.landings} 种落地页、${s.practices} 条规范、${s.recipes} 份配方。`,
     active: 'index',
     pageClass: 'page-index',
     body,
@@ -254,12 +240,7 @@ export function palettesPage(a) {
       { value: 'dark', label: '深色', count: a.palettes.filter((p) => p.mode === 'dark').length },
     ]),
   )}
-${sideBlock('主色相', chips('hue', hues.map((h) => ({ value: h, label: h, count: a.palettes.filter((p) => p.hueName === h).length }))))}
-${sideBlock(
-  '说明',
-  `<p class="side-note">点色块复制 HEX；展开可拿 CSS / Tailwind / JSON。</p>
-  <p class="side-note">${a.stats.contrastClean}/${a.stats.palettes} 套的 7 组核心对比度达 WCAG AA。</p>`,
-)}`;
+${sideBlock('主色相', chips('hue', hues.map((h) => ({ value: h, label: h, count: a.palettes.filter((p) => p.hueName === h).length }))))}`;
 
   const body = `${pageHead({
     kicker: '语义配色',
@@ -293,7 +274,7 @@ ${emptyState('没有匹配的配色。试试清空搜索或切换筛选。')}
 
   return shell(a, {
     title: `配色库 · ${a.palettes.length} 套语义配色 · 设计手册`,
-    desc: `192 套按产品类型组织的语义配色，含 16 个语义令牌、真实界面小样与 WCAG 对比度校验，可导出 CSS / Tailwind / JSON。`,
+    desc: `${a.palettes.length} 套按产品类型组织的语义配色，含 16 个语义令牌、真实界面小样与 WCAG 对比度校验，可导出 CSS / Tailwind / JSON。`,
     active: 'palettes',
     side,
     body,
@@ -384,14 +365,13 @@ export function pairingsPage(a) {
   )}
 ${sideBlock(
   '说明',
-  `<p class="side-note">样张里的英文用配对字体渲染，中文走系统字体——这些是拉丁字体。</p>
-  <p class="side-note">${a.stats.fontsOffline}/${a.stats.pairings} 对已本地化，零外部请求。</p>`,
+  `<p class="side-note">样张仅示拉丁字形。</p>`,
 )}`;
 
   const body = `${pageHead({
     kicker: '排印',
     title: '字体配对',
-    lead: `<strong>${a.pairings.length} 组</strong>标题与正文的搭配，用真实字体渲染。拖动控件可同时改变所有样张的字号与行高。`,
+    lead: `<strong>${a.pairings.length} 组</strong>标题与正文的搭配，真实字体渲染。`,
     meta: `<span>${a.pairings.length} 组</span><span>${a.stats.fontFamilies} 个字族</span><span>${(a.stats.fontBytes / 1024 / 1024).toFixed(2)} MB 本地字体</span><span>零外部请求</span>`,
   })}
 <div class="ctl">
@@ -413,7 +393,7 @@ ${emptyState('没有匹配的配对。')}`;
 
   return shell(a, {
     title: `字体配对 · ${a.pairings.length} 组真实渲染 · 设计手册`,
-    desc: '74 组标题与正文的字体搭配，全部字体的 latin 子集已本地化，离线可看真实排印效果，可调字号与行高。',
+    desc: `${a.pairings.length} 组标题与正文的字体搭配，latin 子集本地化，离线可看真实排印，可调字号与行高`,
     active: 'pairings',
     side,
     body,
@@ -455,7 +435,7 @@ export function chartsPage(a) {
   )}
 ${sideBlock(
   '说明',
-  `<p class="side-note">按「数据长什么样」反查图表；示意图只表形态，不是真实数据。</p>`,
+  `<p class="side-note">示意图仅表形态。</p>`,
 )}`;
 
   const body = `${pageHead({
@@ -470,7 +450,7 @@ ${emptyState('没有匹配的图表类型。')}`;
 
   return shell(a, {
     title: `图表选型 · ${a.charts.length} 类数据类型 · 设计手册`,
-    desc: '25 类数据类型的图表选型指南：最佳图表、备选、使用条件、数据量阈值、无障碍风险与降级方案。',
+    desc: `${a.charts.length} 类图表的选型指南：最佳/备选图表、使用条件、数据量阈值与无障碍风险`,
     active: 'charts',
     side,
     body,
@@ -516,7 +496,7 @@ export function landingPage(a) {
 ${sideBlock('模式索引', sideAnchors(a.landings.map((l) => ({ id: l.key, label: l.zh || l.name }))))}
 ${sideBlock(
   '说明',
-  `<p class="side-note">线框高度表示区块占的版面；橙色是 CTA，深色是导航。</p>`,
+  `<p class="side-note">高度=占比 · 橙=CTA · 深=导航</p>`,
 )}`;
 
   const body = `${pageHead({
@@ -531,7 +511,7 @@ ${emptyState('没有匹配的落地页模式。')}`;
 
   return shell(a, {
     title: `落地页模式 · ${a.landings.length} 种结构 · 设计手册`,
-    desc: '34 种落地页结构：分区顺序线框、CTA 位置、配色策略、推荐效果与转化优化要点。',
+    desc: `${a.landings.length} 种落地页结构：分区顺序线框、CTA 位置与配色策略`,
     active: 'landing',
     side,
     body,
@@ -584,10 +564,6 @@ ${sideBlock(
     { value: 'medium', label: '中', count: a.practices.filter((p) => p.severityRank === 3).length },
     { value: 'low', label: '低', count: a.practices.filter((p) => p.severityRank >= 4).length },
   ]),
-)}
-${sideBlock(
-  '说明',
-  `<p class="side-note">列表按严重度从高到低排，可当作上线前的自检清单。</p>`,
 )}`;
 
   const body = `${pageHead({
@@ -608,7 +584,7 @@ ${emptyState('没有匹配的规范。')}`;
 
   return shell(a, {
     title: `规范对照 · ${a.practices.length} 条 · 设计手册`,
-    desc: '195 条 UX / React / Web 交互与工程规范，含正确与错误代码对照，按严重度与平台筛选。',
+    desc: `${a.practices.length} 条 UX / React / Web 规范，含正确/错误代码对照，按严重度筛选`,
     active: 'practices',
     side,
     body,
@@ -738,12 +714,7 @@ export function recipesPage(a) {
   const side = `${sideBlock(
     '主推风格',
     chips('style', topStyles.slice(0, 10).map(([name, o]) => ({ value: name, label: o.zh, count: o.count }))),
-  )}
-${sideBlock(
-  '说明',
-  `<p class="side-note">风格名可跳到图鉴看渲染；落地页链到本手册的结构页。</p>
-  <p class="side-note">要按类型直接出配方，用 <a href="./compose.html">生成器</a>。</p>`,
-)}`;
+  )}`;
 
   const body = `${pageHead({
     kicker: '决策',
@@ -760,7 +731,7 @@ ${emptyState('没有匹配的配方。')}`;
 
   return shell(a, {
     title: `产品配方 · ${a.recipes.length} 类产品 · 设计手册`,
-    desc: '192 类产品的完整设计配方：主推与次选风格、落地页结构、配色方向、字体气质、决策规则与反模式。',
+    desc: `${a.recipes.length} 类产品的设计配方：风格、落地页、配色、字体、决策规则与反模式`,
     active: 'recipes',
     side,
     body,
@@ -807,11 +778,8 @@ export function composePage(a) {
     sb: showcaseUrl(''),
   };
 
-  const side = `${sideBlock(
-    '怎么用',
-    `<p class="side-note">左侧选产品类型，右侧给出完整配方；切换格式即可复制。</p>
-    <p class="side-note">风格名可点开看实际渲染，再决定要不要用。</p>`,
-  )}`;
+  const side = ``;
+
 
   const body = `${pageHead({
     kicker: '配方生成器',
@@ -855,7 +823,7 @@ export function aboutPage(a) {
   const body = `${pageHead({
     kicker: '方法与溯源',
     title: '这些数据从哪来',
-    lead: '本站不生产建议，只把插件内置的知识库重新组织成可查、可比的样子——加工只有三件事：解析、映射、渲染。',
+    lead: '插件内置知识库的另一种组织方式：解析、映射、渲染。',
   })}
 
 <section class="sect">

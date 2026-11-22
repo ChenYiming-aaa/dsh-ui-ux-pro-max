@@ -537,5 +537,11 @@ export const STYLE_META = {
     tag: 'Creative Cloud · 新一代 Adobe 界面',
     desc: 'Spectrum 的进化版：更灵活的语义主题、更强对比与个性化，加入表现力插图与自适应动效。',
     theme: { bg: '#FFFFFF', surface: '#F5F5F5', surface2: '#EBEBEB', text: '#2C2C2C', muted: '#616161', border: '#DADADA', accent: '#2680EB', accent2: '#9B59B6', radius: 10, font: 'sans', fx: ['soft', 'grad'] }
+  },
+  'apple-native-experience': {
+    zh: 'Apple 原生体验',
+    tag: 'iOS / macOS 应用 · 设置与表单 · 系统工具',
+    desc: '系统字体与语义色优先，8pt 间距、分组列表与平台化导航，明暗自动适配、克制而有目的的过渡。强调内容层级与无障碍，而非液态玻璃或装饰性模糊。',
+    theme: { bg: '#F2F2F7', surface: '#FFFFFF', surface2: '#E5E5EA', text: '#1C1C1E', muted: '#6E6E73', border: 'rgba(60,60,67,0.18)', accent: '#007AFF', accent2: '#34C759', radius: 12, font: 'sans', fx: ['soft'] }
   }
 };

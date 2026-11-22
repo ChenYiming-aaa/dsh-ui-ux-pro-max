@@ -1,8 +1,8 @@
 # dsh-ui-ux-pro-max
 
 > UI/UX design intelligence plugin for **DeepSeek Harness (DSH)**:
-> **88 design styles**, **192 color palettes**, **74 font pairings**, **119 UX guidelines**,
-> **25 chart types** and **192 product recipes** — 195 interface rules in total, fully offline,
+> **89 design styles**, **194 color palettes**, **74 font pairings**, **141 UX guidelines**,
+> **25 chart types** and **194 product recipes** — 141 UX rules in total, fully offline,
 > Chinese-first.
 >
 > The most direct way in is not this document: it is the two hosted sites —
@@ -15,15 +15,15 @@
 
 | Site | In one line | Open |
 | --- | --- | --- |
-| **Style Atlas** ★ | 88 design styles, each rendered for real and comparable side by side | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
+| **Style Atlas** ★ | 89 design styles, each rendered for real and comparable side by side | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
 | **Design Handbook** (the other view of the same corpus) | Six domains: palettes, type, charts, landing pages, practices, recipes | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
 | Recipe composer | Pick a product type, get the whole recipe | [handbook/compose.html](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html) |
 
-## ★ Style Atlas: see 88 styles before you pick one
+## ★ Style Atlas: see 89 styles before you pick one
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/">
-    <img src="docs/images/gallery-home.png" alt="Style Atlas home: 88 design styles, browsable by category" width="900" />
+    <img src="docs/images/gallery-home.png" alt="Style Atlas home: 89 design styles, browsable by category" width="900" />
   </a>
 </p>
 
@@ -45,7 +45,7 @@ by CSS tokens plus material classes.
 
 A single page holds: editorial intro and original name, a **live preview with light/dark toggle**,
 palette with HEX, capability matrix, best-for and avoid lists, implementation checklist, a copyable
-AI prompt, and related styles. All 88 pages are static with zero external requests.
+AI prompt, and related styles. All 89 pages are static with zero external requests.
 
 
 ## Design Handbook: the other view of the same data
@@ -61,15 +61,15 @@ corpus, so they are two views of one thing rather than two separate sites.
 
 | Domain | Content |
 | --- | --- |
-| Palettes | 192 sets × 16 semantic tokens, rendered as real buttons / inputs / cards / focus rings, with 7 WCAG contrast checks and CSS / Tailwind / JSON export |
+| Palettes | 194 sets × 16 semantic tokens, rendered as real buttons / inputs / cards / focus rings, with 7 WCAG contrast checks and CSS / Tailwind / JSON export |
 | Type | 74 heading + body pairings with **91 latin subsets self-hosted (~2.9 MB)** — real rendering |
 | Charts | 25 data types: best chart, alternatives, when to avoid, SVG/Canvas thresholds, a11y risk |
 | Landing | 34 page skeletons with section order drawn as wireframes, CTA placement and color strategy |
-| Practices | 195 UX / React / Web rules with good/bad code side by side, filterable by severity |
-| Recipes | 192 product types: primary and secondary styles, 16 tokens, type, landing pattern, decision rules and anti-patterns |
+| Practices | 141 UX / React / Web rules with good/bad code side by side, filterable by severity |
+| Recipes | 194 product types: primary and secondary styles, 16 tokens, type, landing pattern, decision rules and anti-patterns |
 
 The **recipe composer** aligns three tables (product / color / reasoning) by the same product keys,
-so one pick yields the whole recipe. All 192 product types, 88 recommended patterns, 34 landing
+so one pick yields the whole recipe. All 194 product types, 89 recommended patterns, 34 landing
 patterns, 36 decision-rule keys and every style name are localized to Chinese, and search matches
 both languages. All 764 style references resolve to atlas detail pages — no dangling links.
 
@@ -91,14 +91,14 @@ both languages. All 764 style references resolve to atlas detail pages — no da
 
 ## Install
 
-Pick one of the three options. Current version **1.4.1**; use whatever is actually published
+Pick one of the three options. Current version **1.5.0**; use whatever is actually published
 on [npm](https://www.npmjs.com/package/dsh-ui-ux-pro-max).
 
 ### Plugin market / npm
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.1
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.1
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.5.0
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.5.0
 ```
 
 > DSH Desktop does not put `dsh` on PATH — open a new terminal afterwards. If the command is
@@ -185,16 +185,16 @@ All dials are integers from 1 to 10 and default to the value implied by the chos
 
 | Category | Content |
 |---|---|
-| Design assets | Styles **88** · Palettes **192** · Font pairings **74** · Charts **25** · Landing patterns **34** |
+| Design assets | Styles **89** · Palettes **194** · Font pairings **74** · Charts **25** · Landing patterns **34** |
 | Components / motion | Icons **105** · GSAP presets **17** |
-| Review rules | UX guidelines **119** · React performance **44** · Mobile interface **32** · Reasoning profiles **192** |
-| Retrieval support | Product types **192** · Stacks **22** · Google Fonts **1934** (lazy-loaded) |
+| Review rules | UX guidelines **141** · React performance **44** · Mobile interface **32** · Reasoning profiles **194** |
+| Retrieval support | Product types **194** · Stacks **22** · Google Fonts **1934** (lazy-loaded) |
 
-9 of the 88 styles are `deprecated` and excluded from search by default (79 searchable).
+All 89 styles are searchable (the old 9 `deprecated` entries were removed in the new snapshot).
 Deprecated rows (styles and stack guidelines) follow one rule: excluded by default, kept when
 the query explicitly mentions `legacy` / `deprecated`.
 
-Data is ported from `nextlevelbuilder/ui-ux-pro-max-skill@56ea9cf` (2026-10-15).
+Data is ported from `nextlevelbuilder/ui-ux-pro-max-skill@6ec2bb5` (2026-11-22).
 
 ## Building & deploying the sites
 
@@ -250,7 +250,7 @@ Check, in order: `dsh` points at the right profile; the profile's `cordis.patch.
 Install a published version explicitly, or use the source install:
 
 ```powershell
-dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.1
+dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.5.0
 ```
 
 **Does it need network access?**

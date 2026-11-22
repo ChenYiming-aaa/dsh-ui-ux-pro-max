@@ -200,6 +200,8 @@ export const PRODUCT_ZH = {
   'Telemedicine Platform': '互联网医疗',
   'Testimonial & Social Proof Widget': '口碑 / 社会证明组件',
   'Ticketing / Box Office': '票务 / 售票',
+  'GIS / Web Map Dashboard': 'GIS / Web 地图仪表盘',
+  'Earth Observation / Satellite Imagery Viewer': '地球观测 / 卫星影像查看器',
 };
 
 /** 推荐模式（Recommended_Pattern）的片段词表：按 + 拆分后逐段翻译 */

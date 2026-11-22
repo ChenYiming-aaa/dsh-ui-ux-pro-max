@@ -475,7 +475,7 @@ const footer = (base = '') => `<footer class="site-foot">
   <div class="wrap foot-in">
     <div>
       <p class="foot-brand">${brand} dsh-ui-ux-pro-max</p>
-      <p class="foot-note">88 种设计风格 · 完全离线的 UI/UX 设计智能库 · MIT License</p>
+      <p class="foot-note">${styles.length} 种风格 · 离线 · MIT</p>
     </div>
     <div class="foot-links">
       <a href="${base}index.html">风格图鉴</a>
@@ -485,7 +485,6 @@ const footer = (base = '') => `<footer class="site-foot">
       <a href="${GH}/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
     </div>
   </div>
-  <div class="wrap foot-fine">数据移植自 nextlevelbuilder/ui-ux-pro-max-skill（MIT）。纯静态生成，无外部请求。</div>
 </footer>
 <script src="${base}assets/app.js" defer></script>
 </body>
@@ -536,16 +535,15 @@ const indexPage = () => {
     })
   };
   return `${head({
-  title: 'UI/UX Pro Max · 88 种设计风格图鉴',
-  desc: `把 88 种设计风格一次性看全：每种风格都有真实渲染的效果示例、配色方案、字体与材质特征、适用场景与实现清单。`,
+  title: `UI/UX Pro Max · ${styles.length} 种设计风格图鉴`,
+  desc: `把 ${styles.length} 种设计风格一次性看全：真实渲染的效果示例、配色、字体与适用场景。`,
   intro
 })}
 ${header('', 'all')}
 <main>
   <section class="hero wrap" data-rise>
-    <p class="eyebrow">Style Atlas · ${META.counts.style} Styles</p>
     <h1>把设计风格<br><em>看清楚</em>再选。</h1>
-    <p class="lede">${styles.length} 种风格由同一套骨架渲染，只换颜色、字体、圆角与材质。</p>
+    <p class="lede">同一套骨架，${styles.length} 种真实风格。</p>
     <div class="hero-act">
       <a class="btn" href="#gallery">进入图鉴 <span aria-hidden="true">↓</span></a>
       <button class="btn btn-ghost" type="button" data-random>随便看一种</button>
@@ -562,7 +560,7 @@ ${header('', 'all')}
   <section class="wrap xbar-w" data-rise="1">
     <a class="xbar" href="../handbook/" data-xnav="${HANDBOOK.name}">
       <span class="xbar-k">${OTHER_VIEW} · ${HANDBOOK.name}</span>
-      <span class="xbar-t">${HANDBOOK_LINE}：${META.counts.product} 份产品配方，六个域互相引用</span>
+      <span class="xbar-t">${META.counts.product} 份配方 · 配色 / 字体 / 图表 / 规范</span>
       <span class="xbar-go">进入${HANDBOOK.name}<span aria-hidden="true">→</span></span>
     </a>
   </section>
@@ -587,7 +585,7 @@ ${header('', 'all')}
   <section id="gallery" class="wrap sec">
     <div class="sec-head">
       <h2>全部风格</h2>
-      <p>${statusCounts.active} 推荐 · ${statusCounts.supplemental} 补充 · ${statusCounts.deprecated} 已弃用（仅用于复刻旧项目）</p>
+      <p>${statusCounts.active} 推荐 · ${statusCounts.supplemental} 补充 · ${statusCounts.deprecated} 已弃用</p>
     </div>
 
     <div class="filters" data-filters>
@@ -623,20 +621,9 @@ ${header('', 'all')}
     <div class="grid" data-grid>
       ${styles.map(cardMarkup).join('\n')}
     </div>
-    <p class="empty" data-empty hidden>没有匹配的风格，换个关键词试试。</p>
+    <p class="empty" data-empty hidden>没有匹配项</p>
   </section>
 
-  <section class="wrap sec notes">
-    <div class="note-card">
-      <h2>这些预览是怎么来的？</h2>
-      <p>同一副骨架（品牌栏、标题、正文、按钮、指标卡、柱状图），只替换该风格的令牌——差异全部来自风格本身。</p>
-      <p><a href="guide.html">阅读指南</a> 说明字段含义与令牌推导方式。</p>
-    </div>
-    <div class="note-card">
-      <h2>为什么有「已弃用」？</h2>
-      <p>9 条 <code>deprecated</code> 仅提示「不要作为新项目首选」，插件检索默认排除；29 条 <code>supplemental</code> 是变体或细分场景。</p>
-    </div>
-  </section>
 </main>
 ${footer('')}`;
 };
@@ -701,7 +688,7 @@ ${header(base)}
         <code>${s.id}</code>
         <button class="copy" type="button" data-copy="${s.id}" aria-label="复制 Style ID">复制</button>
       </div>
-      <p class="id-hint">在插件中检索：<code>design_search("${esc(s.keywords[0] || s.zh)}", domain: "style")</code></p>
+      <p class="id-hint"><code>design_search("${esc(s.keywords[0] || s.zh)}")</code></p>
     </aside>
   </section>
 
@@ -720,18 +707,15 @@ ${header(base)}
           <div class="frame-body">${previewMarkup(s, 'hero')}</div>
         </div>
         ${specimenMarkup(s)}
-        <p class="cap">同一副骨架，只换令牌。明暗切换对比两种模式${
+        ${
           s.lightMode === 'not-recommended' || s.darkMode === 'not-recommended'
-            ? `（数据标注：浅色 ${MODE_LABEL[s.lightMode] || s.lightMode}，深色 ${MODE_LABEL[s.darkMode] || s.darkMode}）`
+            ? `<p class="cap">浅色 ${MODE_LABEL[s.lightMode] || s.lightMode} · 深色 ${MODE_LABEL[s.darkMode] || s.darkMode}</p>`
             : ''
-        }。</p>
+        }
       </section>
 
       <section id="about" class="block">
-        <div class="block-head"><h2>风格描述</h2></div>
-        <div class="prose">
-          <p>${esc(s.desc)}</p>
-        </div>
+        <div class="block-head"><h2>设计语言</h2></div>
         <h3 class="sub">关键词</h3>
         <div class="chips">${chipList(s.keywords)}</div>
         ${s.aliases.length ? `<h3 class="sub">别名</h3><div class="chips">${chipList(s.aliases)}</div>` : ''}
@@ -751,7 +735,7 @@ ${header(base)}
       </section>
 
       <section id="palette" class="block">
-        <div class="block-head"><h2>配色方案</h2><span class="bhint">色值取自风格数据，不足时补充主题令牌</span></div>
+        <div class="block-head"><h2>配色方案</h2></div>
         <div class="sw-grid">
           ${s.paletteItems
             .slice(0, 8)
@@ -838,7 +822,7 @@ ${header(base)}
     <aside class="toc" aria-label="本页目录">
       <p class="toc-t">本页</p>
       <a href="#preview">效果示例</a>
-      <a href="#about">风格描述</a>
+      <a href="#about">设计语言</a>
       <a href="#palette">配色方案</a>
       <a href="#usage">适用场景</a>
       <a href="#matrix">能力矩阵</a>
@@ -877,7 +861,6 @@ ${header('', 'guide')}
 <main class="wrap guide">
   <p class="eyebrow">How to read</p>
   <h1>阅读指南</h1>
-  <p class="lede">每个区块在讲什么，以及预览的边界在哪里。</p>
 
   <section class="g-sec">
     <h2>1 · 预览不是截图</h2>
@@ -932,7 +915,7 @@ ${header('', '')}
 <main class="wrap nf">
   <p class="eyebrow">404</p>
   <h1>这一页不在图鉴里。</h1>
-  <p class="lede">链接可能已经变化。回到首页，或用分类与搜索重新定位。</p>
+  <p class="lede">链接可能已变化。</p>
   <p><a class="btn" href="index.html">返回图鉴</a></p>
 </main>
 ${footer('')}`;

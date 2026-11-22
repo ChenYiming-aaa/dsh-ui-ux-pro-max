@@ -1,6 +1,6 @@
 # dsh-ui-ux-pro-max
 
-> DeepSeek Harness（DSH）的 UI/UX 设计智能库插件——内置 **88 种设计风格、192 个调色板、74 组字体搭配、195 条交互规范、25 种图表类型与 192 份产品配方**，完全离线、中文优先。
+> DeepSeek Harness（DSH）的 UI/UX 设计智能库插件——内置 **89 种设计风格、194 个调色板、74 组字体搭配、141 条 UX 规范、25 种图表类型与 194 份产品配方**，完全离线、中文优先。
 >
 > 最直观的入口不是文档，而是两个在线站点：**[风格图鉴](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/)** 与 **[设计手册](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/)**。
 
@@ -13,15 +13,15 @@
 
 | 站点 | 一句话 | 打开 |
 | --- | --- | --- |
-| **风格图鉴** ★ | 88 种设计风格逐页真实渲染，可横向比较差异 | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
+| **风格图鉴** ★ | 89 种设计风格逐页真实渲染，可横向比较差异 | [chenyiming-aaa.github.io/…/gallery/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/) |
 | **设计手册**（同一套数据的另一视图） | 配色 / 字体 / 图表 / 落地页 / 规范 / 配方六个域 | [chenyiming-aaa.github.io/…/handbook/](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/) |
 | 配方生成器 | 选一个产品类型，直接拿到完整设计配方 | [handbook/compose.html](https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html) |
 
-## ★ 风格图鉴：把 88 种风格看清楚再选
+## ★ 风格图鉴：把 89 种风格看清楚再选
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/gallery/">
-    <img src="docs/images/gallery-home.png" alt="风格图鉴首页：88 种设计风格，按类别浏览" width="900" />
+    <img src="docs/images/gallery-home.png" alt="风格图鉴首页：89 种设计风格，按类别浏览" width="900" />
   </a>
 </p>
 
@@ -35,12 +35,12 @@
   </a>
 </p>
 
-一页之内包含：中文导读与英文原名、**可切换浅色 / 深色的实时预览**、配色板与 HEX、能力矩阵、适用与规避场景、落地清单、可复制的 AI 提示词、相关风格。88 个页面全部纯静态、零外部请求。
+一页之内包含：中文导读与英文原名、**可切换浅色 / 深色的实时预览**、配色板与 HEX、能力矩阵、适用与规避场景、落地清单、可复制的 AI 提示词、相关风格。89 个页面全部纯静态、零外部请求。
 
 
 ## 设计手册：同一套数据的另一视图
 
-图鉴按「风格」翻，手册按「决策」翻——两者共用同一份 4319 行知识库，不是两个独立站点。选好风格之后，剩下的「怎么定」在这里。
+图鉴按「风格」翻，手册按「决策」翻——两者共用同一份 4355 行知识库，不是两个独立站点。选好风格之后，剩下的「怎么定」在这里。
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/">
@@ -50,14 +50,14 @@
 
 | 域 | 内容 |
 | --- | --- |
-| 配色 | 192 套 × 16 个语义令牌，直接渲染成按钮 / 输入框 / 卡片 / 焦点环，附 7 组 WCAG 对比度与 CSS / Tailwind / JSON 导出 |
+| 配色 | 194 套 × 16 个语义令牌，直接渲染成按钮 / 输入框 / 卡片 / 焦点环，附 7 组 WCAG 对比度与 CSS / Tailwind / JSON 导出 |
 | 字体 | 74 组标题 + 正文配对，**91 个字族的 latin 子集已本地化（约 2.9 MB）**，看到的是真实排印 |
 | 图表 | 25 类数据类型的选型表：最佳图表、备选、禁用条件、SVG/Canvas 阈值、无障碍风险 |
 | 落地页 | 34 种页面骨架，把分区顺序画成线框并标出 CTA 与配色策略 |
-| 规范 | 195 条 UX / React / Web 规范，「正确 / 错误」代码对照，按严重度筛选 |
-| 配方 | 192 类产品：主推与次选风格、16 个令牌、字体、落地页、决策规则与反模式 |
+| 规范 | 141 条 UX / React / Web 规范，「正确 / 错误」代码对照，按严重度筛选 |
+| 配方 | 194 类产品：主推与次选风格、16 个令牌、字体、落地页、决策规则与反模式 |
 
-**配方生成器**把三张表（product / color / reasoning）按产品类型同名同序对齐，选一个类型即得整份配方；192 个产品类型、88 种推荐模式、34 种落地页模式全部中文，中英文都能搜。764 处风格引用全部解析到图鉴详情页，没有悬空链接。
+**配方生成器**把三张表（product / color / reasoning）按产品类型同名同序对齐，选一个类型即得整份配方；194 个产品类型、89 种推荐模式、34 种落地页模式全部中文，中英文都能搜。764 处风格引用全部解析到图鉴详情页，没有悬空链接。
 
 <p align="center">
   <a href="https://chenyiming-aaa.github.io/dsh-ui-ux-pro-max/handbook/compose.html">
@@ -68,20 +68,20 @@
 ## 特性
 
 - **三个工具**：生成设计系统、审查 UX、按领域或技术栈检索。
-- **数据完全内置**：4319 行设计数据库随包发布，零网络、零 Python、零第三方运行时依赖。
+- **数据完全内置**：4355 行设计数据库随包发布，零网络、零 Python、零第三方运行时依赖。
 - **中文优先**：全中文输出，400+ 中文术语映射 + CJK 二元分词；单字查询按领域兜底。
 - **设计旋钮**：`variance` 大胆度 / `motion` 动效强度（附 GSAP 方案）/ `density` 密度，均为 1-10。
 - **纯 JavaScript**：BM25 检索引擎 + 设计系统生成器，Node `^22.19 || >=24`。
 
 ## 安装
 
-三种方式任选其一。当前版本 **1.4.1**；以 [npm 包页](https://www.npmjs.com/package/dsh-ui-ux-pro-max) 实际发布的版本为准。
+三种方式任选其一。当前版本 **1.5.0**；以 [npm 包页](https://www.npmjs.com/package/dsh-ui-ux-pro-max) 实际发布的版本为准。
 
 ### 从插件市场 / npm
 
 ```powershell
-dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.4.1
-dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.4.1
+dsh plugin --profile desktop add --save-exact dsh-ui-ux-pro-max@1.5.0
+dsh plugin --profile web     add --save-exact dsh-ui-ux-pro-max@1.5.0
 ```
 
 > DSH Desktop 不把 `dsh` 加入 PATH，安装后请新开一个终端；若仍提示找不到命令，先执行 `npm install -g @deepseek-ai/dsh`。
@@ -157,14 +157,14 @@ design_search("金融 信任蓝", domain: "color")
 
 | 类别 | 内容 |
 |---|---|
-| 设计素材 | 风格 **88** · 调色板 **192** · 字体搭配 **74** · 图表 **25** · 落地页模式 **34** |
+| 设计素材 | 风格 **89** · 调色板 **194** · 字体搭配 **74** · 图表 **25** · 落地页模式 **34** |
 | 组件与动效 | 图标 **105** · GSAP 动效 **17** |
-| 审查规范 | UX 规范 **119** · React 性能 **44** · 移动端接口 **32** · 推理规则 **192** |
-| 检索支撑 | 产品类型 **192** · 技术栈 **22** · Google 字体 **1934**（懒加载） |
+| 审查规范 | UX 规范 **141** · React 性能 **44** · 移动端接口 **32** · 推理规则 **194** |
+| 检索支撑 | 产品类型 **194** · 技术栈 **22** · Google 字体 **1934**（懒加载） |
 
-88 种风格中有 9 条标记为 `deprecated`，默认不参与检索（实际可检索 79 条）。风格与技术栈的废弃条目采用同一策略：默认排除，查询中显式包含 `legacy` / `deprecated` 时保留，便于复刻旧项目。
+89 种风格全部参与检索（新快照已移除旧的 9 条 `deprecated` 分类）。技术栈的废弃条目仍采用默认排除策略，查询中显式包含 `legacy` / `deprecated` 时保留，便于复刻旧项目。
 
-数据移植自 `nextlevelbuilder/ui-ux-pro-max-skill@56ea9cf`（2026-10-15）。
+数据移植自 `nextlevelbuilder/ui-ux-pro-max-skill@6ec2bb5`（2026-11-22）。
 
 ## 站点的构建与部署
 
@@ -212,7 +212,7 @@ npm run serve:gallery     # 只跑图鉴，挂在根路径
 直接指定已发布版本安装，或改用源码安装：
 
 ```powershell
-dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.4.1
+dsh plugin --profile desktop add dsh-ui-ux-pro-max@1.5.0
 ```
 
 **需要联网吗？**

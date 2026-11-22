@@ -26,7 +26,7 @@ assert(typeof data.description === 'string' && data.description.length > 40, 'de
 assert(typeof data.whenToUse === 'string' && data.whenToUse.length > 0, 'whenToUse 非空')
 assert(!body.startsWith('---'), '正文不含 frontmatter 分隔线')
 assert(!body.includes('\nname: ui-ux-pro-max'), '正文不含 frontmatter name')
-assert(body.includes('88 种设计风格') && body.includes('119 条 UX 规范') && body.includes('22 个技术栈'),
+assert(body.includes('89 种设计风格') && body.includes('141 条 UX 规范') && body.includes('22 个技术栈'),
   '正文保留能力数字')
 
 section('2. 三个工具')

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>字体配对 · 74 组真实渲染 · 设计手册</title>
-<meta name="description" content="74 组标题与正文的字体搭配，全部字体的 latin 子集已本地化，离线可看真实排印效果，可调字号与行高。">
+<meta name="description" content="74 组标题与正文的字体搭配，latin 子集本地化，离线可看真实排印，可调字号与行高">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
@@ -23,7 +23,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
       <span class="brand-mark" aria-hidden="true"></span>
       <span class="brand-t">设计手册</span>
     </a>
-    <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a is-on" href="./pairings.html" aria-current="page">字体<span class="nav-c">74</span></a><a class="nav-a" href="./charts.html">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a><span class="nav-ind" aria-hidden="true"></span></nav>
+    <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">194</span></a><a class="nav-a is-on" href="./pairings.html" aria-current="page">字体<span class="nav-c">74</span></a><a class="nav-a" href="./charts.html">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">217</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">194</span></a><a class="nav-a" href="./compose.html">生成器</a><span class="nav-ind" aria-hidden="true"></span></nav>
     <div class="top-r">
       <a class="top-link top-link--x" href="../gallery/index.html" data-xnav="风格图鉴" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
       <a class="top-link top-link--gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener" title="插件源码与数据"><span class="tl-full">GitHub</span><span class="tl-short" aria-hidden="true">GH</span><span aria-hidden="true">↗</span></a>
@@ -32,22 +32,21 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </header>
 
 <div class="shell">
-  <aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选与说明</summary><div class="side-in"><div class="side-blk">
+  <aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选</summary><div class="side-in"><div class="side-blk">
   <h2 class="side-h">组合类型</h2>
   <div class="chips" data-filter="cat" role="group"><button type="button" class="chip is-on" data-v="">全部</button><button type="button" class="chip" data-v="无衬线 + 无衬线" data-n="25">无衬线 + 无衬线<em>25</em></button><button type="button" class="chip" data-v="衬线 + 无衬线" data-n="13">衬线 + 无衬线<em>13</em></button><button type="button" class="chip" data-v="展示体 + 无衬线" data-n="10">展示体 + 无衬线<em>10</em></button><button type="button" class="chip" data-v="衬线 + 衬线" data-n="2">衬线 + 衬线<em>2</em></button><button type="button" class="chip" data-v="等宽 + 无衬线" data-n="2">等宽 + 无衬线<em>2</em></button><button type="button" class="chip" data-v="等宽 + 等宽" data-n="2">等宽 + 等宽<em>2</em></button><button type="button" class="chip" data-v="展示体 + 衬线" data-n="1">展示体 + 衬线<em>1</em></button><button type="button" class="chip" data-v="花体 + 无衬线" data-n="1">花体 + 无衬线<em>1</em></button><button type="button" class="chip" data-v="花体 + 衬线" data-n="1">花体 + 衬线<em>1</em></button><button type="button" class="chip" data-v="展示体 + 等宽" data-n="1">展示体 + 等宽<em>1</em></button><button type="button" class="chip" data-v="几何无衬线 · 单字重" data-n="1">几何无衬线 · 单字重<em>1</em></button><button type="button" class="chip" data-v="衬线 + 衬线 + 等宽" data-n="1">衬线 + 衬线 + 等宽<em>1</em></button><button type="button" class="chip" data-v="无衬线 + 等宽" data-n="1">无衬线 + 等宽<em>1</em></button><button type="button" class="chip" data-v="展示衬线 + 无衬线 + 等宽" data-n="1">展示衬线 + 无衬线 + 等宽<em>1</em></button><button type="button" class="chip" data-v="等宽 · 同族" data-n="1">等宽 · 同族<em>1</em></button><button type="button" class="chip" data-v="几何无衬线 · 单一主字体" data-n="1">几何无衬线 · 单一主字体<em>1</em></button><button type="button" class="chip" data-v="无衬线 · 系统默认" data-n="1">无衬线 · 系统默认<em>1</em></button><button type="button" class="chip" data-v="几何无衬线 · 仅粗体" data-n="1">几何无衬线 · 仅粗体<em>1</em></button><button type="button" class="chip" data-v="无衬线 + 展示衬线 + 等宽" data-n="1">无衬线 + 展示衬线 + 等宽<em>1</em></button><button type="button" class="chip" data-v="衬线 + 书籍衬线 + 刻字体" data-n="1">衬线 + 书籍衬线 + 刻字体<em>1</em></button><button type="button" class="chip" data-v="科技展示 + 等宽" data-n="1">科技展示 + 等宽<em>1</em></button><button type="button" class="chip" data-v="几何无衬线 + 无衬线 + 等宽" data-n="1">几何无衬线 + 无衬线 + 等宽<em>1</em></button><button type="button" class="chip" data-v="圆润展示 + 几何无衬线" data-n="1">圆润展示 + 几何无衬线<em>1</em></button><button type="button" class="chip" data-v="几何无衬线 · 同族" data-n="1">几何无衬线 · 同族<em>1</em></button><button type="button" class="chip" data-v="手写体 ×2" data-n="1">手写体 ×2<em>1</em></button><button type="button" class="chip" data-v="几何无衬线 · 系统回退" data-n="1">几何无衬线 · 系统回退<em>1</em></button></div>
   
 </div>
 <div class="side-blk">
   <h2 class="side-h">说明</h2>
-  <p class="side-note">样张里的英文用配对字体渲染，中文走系统字体——这些是拉丁字体。</p>
-  <p class="side-note">74/74 对已本地化，零外部请求。</p>
+  <p class="side-note">样张仅示拉丁字形。</p>
   
 </div></div></details></aside>
   <main class="main" id="main">
 <header class="phead">
   <p class="kicker">排印</p>
   <h1 class="ph1">字体配对</h1>
-  <p class="lead"><strong>74 组</strong>标题与正文的搭配，用真实字体渲染。拖动控件可同时改变所有样张的字号与行高。</p>
+  <p class="lead"><strong>74 组</strong>标题与正文的搭配，真实字体渲染。</p>
   <div class="pmeta"><span>74 组</span><span>91 个字族</span><span>2.89 MB 本地字体</span><span>零外部请求</span></div>
 </header>
 <div class="ctl">

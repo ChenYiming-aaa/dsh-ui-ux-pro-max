@@ -10,8 +10,8 @@
 |---|---|
 | 原始上游 | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT） |
 | 数据目录 | `cli/assets/data/` |
-| 当前快照 ref | `56ea9cf174ed86786187daa9de0e6247cb0747e4`（2026-10-15T09:04:34+07:00） |
-| 快照时间 | `2026-10-18T03:59:34.490Z`（`generated` / `syncedAt`） |
+| 当前快照 ref | `6ec2bb58334ca3014573c4cbd4834ee3a40afd9d`（2026-11-22T11:08:26+07:00） |
+| 快照时间 | `2026-11-22T04:26:14.481Z`（`generated` / `syncedAt`） |
 | 溯源字段 | `upstream` / `upstreamRef` / `upstreamRefKind` / `upstreamRefDate` / `upstreamDataPath` / `sourcePath` / `syncedAt` / `lineageVerifiedAt` |
 | 守卫 | `tests/check-package.mjs` 断言字段非空、ref 为 40 位 commit、两份数据一致 |
 
@@ -19,32 +19,31 @@
 
 | 域 | 条数 |
 |---|---:|
-| style（设计风格） | 88 |
-| color（调色板） | 192 |
+| style（设计风格） | 89 |
+| color（调色板） | 194 |
 | chart（图表） | 25 |
 | landing（落地页模式） | 34 |
-| product（产品类型） | 192 |
-| ux（UX 规范） | 119 |
+| product（产品类型） | 194 |
+| ux（UX 规范） | 141 |
 | typography（字体搭配） | 74 |
 | icons（图标） | 105 |
 | gsap（动效预设） | 17 |
 | react（React 性能） | 44 |
 | web（移动端接口） | 32 |
-| reasoning（推理规则） | 192 |
+| reasoning（推理规则） | 194 |
 | stacks（技术栈） | 22 |
-| stackGuidelines（技术栈规范合计） | 1271 |
+| stackGuidelines（技术栈规范合计） | 1278 |
 | googleFonts | 1934 |
-| **totalRows** | **4319** |
+| **totalRows** | **4355** |
 
 ## 3. 口径与已知差异
 
-- `styles.csv` 共 88 行，其中 `active` 50、`supplemental` 29、`deprecated` 9。
-  检索默认排除 `deprecated`（9 条），因此可检索风格为 79 条；
+- `styles.csv` 共 89 行，新快照已移除 `deprecated` 分类，89 条全部可检索；
   查询显式包含 `legacy` / `deprecated` 时，风格与技术栈检索都会保留废弃条目（同一套判定，见 `lib/search/retriever.js` 的 `deprecatedFilter`）。
 - 1.2.0 的快照来自上游 `137597b`，经 opencode 路径转码，曾有 186 个单元格
   丢失内部双引号；1.3.0 直接从上游 CSV 重新生成，该问题已修复。
 - 上游 CSV 含引号内换行；计数必须以 CSV 解析器为准，不能按行 `split` 或 `wc -l`。
-- 上游 `main` 持续变化；本文件的数字是 `56ea9cf` 这一时点的快照，不是实时值。
+- 上游 `main` 持续变化；本文件的数字是 `6ec2bb5` 这一时点的快照，不是实时值。
 
 ## 4. 代码层血缘
 

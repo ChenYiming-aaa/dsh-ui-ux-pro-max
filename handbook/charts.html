@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>图表选型 · 25 类数据类型 · 设计手册</title>
-<meta name="description" content="25 类数据类型的图表选型指南：最佳图表、备选、使用条件、数据量阈值、无障碍风险与降级方案。">
+<meta name="description" content="25 类图表的选型指南：最佳/备选图表、使用条件、数据量阈值与无障碍风险">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/fonts.css">
@@ -23,7 +23,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
       <span class="brand-mark" aria-hidden="true"></span>
       <span class="brand-t">设计手册</span>
     </a>
-    <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">192</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a is-on" href="./charts.html" aria-current="page">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">195</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">192</span></a><a class="nav-a" href="./compose.html">生成器</a><span class="nav-ind" aria-hidden="true"></span></nav>
+    <nav class="nav" aria-label="域导航"><a class="nav-a" href="./palettes.html">配色<span class="nav-c">194</span></a><a class="nav-a" href="./pairings.html">字体<span class="nav-c">74</span></a><a class="nav-a is-on" href="./charts.html" aria-current="page">图表<span class="nav-c">25</span></a><a class="nav-a" href="./landing.html">落地页<span class="nav-c">34</span></a><a class="nav-a" href="./practices.html">规范<span class="nav-c">217</span></a><a class="nav-a" href="./recipes.html">配方<span class="nav-c">194</span></a><a class="nav-a" href="./compose.html">生成器</a><span class="nav-ind" aria-hidden="true"></span></nav>
     <div class="top-r">
       <a class="top-link top-link--x" href="../gallery/index.html" data-xnav="风格图鉴" title="另一个站点：风格图鉴，看长什么样"><span class="tl-full">风格图鉴</span><span class="tl-short">图鉴</span><span aria-hidden="true">↗</span></a>
       <a class="top-link top-link--gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener" title="插件源码与数据"><span class="tl-full">GitHub</span><span class="tl-short" aria-hidden="true">GH</span><span aria-hidden="true">↗</span></a>
@@ -32,14 +32,14 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
 </header>
 
 <div class="shell">
-  <aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选与说明</summary><div class="side-in"><div class="side-blk">
+  <aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选</summary><div class="side-in"><div class="side-blk">
   <h2 class="side-h">按无障碍风险</h2>
   <div class="chips" data-filter="risk" role="group"><button type="button" class="chip is-on" data-v="">全部</button><button type="button" class="chip" data-v="low" data-n="8">低<em>8</em></button><button type="button" class="chip" data-v="medium" data-n="0">中<em>0</em></button><button type="button" class="chip" data-v="high" data-n="6">高<em>6</em></button></div>
   
 </div>
 <div class="side-blk">
   <h2 class="side-h">说明</h2>
-  <p class="side-note">按「数据长什么样」反查图表；示意图只表形态，不是真实数据。</p>
+  <p class="side-note">示意图仅表形态。</p>
   
 </div></div></details></aside>
   <main class="main" id="main">
@@ -148,7 +148,7 @@ if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
   <p class="ch-sec">备选：Geographic Heat Map</p>
   <p class="ch-note">有地理位置才用地图；区域面积悬殊会让读图失真。</p>
   <p class="ch-txt"><b>用：</b>Data has a regional/location dimension; spatial distribution is the core insight for the user</p>
-  <p class="ch-txt ch-bad"><b>不用：</b>Regions have very different sizes making visual comparison misleading (use bar); mobile-primary context</p>
+  <p class="ch-txt ch-bad"><b>不用：</b>Regions have very different sizes making visual comparison misleading (use bar); raw counts or totals on a choropleth (normalize to a rate or use proportional symbols); mobile-primary context</p>
   <p class="ch-txt"><b>量级：</b>&lt;1000 regions: SVG; ≥1000: Canvas/WebGL (Deck.gl); global maps: tile-based rendering</p>
   <div class="ch-foot">
     <span class="tag">交互 Pan + Zoom + Drill</span>

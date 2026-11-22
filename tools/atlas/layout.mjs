@@ -106,7 +106,7 @@ ${head}${intro ? intro.head : ''}${xnavHead()}
 ${topbar(active, counts)}
 ${hero}
 <div class="shell${side ? '' : ' shell--wide'}">
-  ${side ? `<aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选与说明</summary><div class="side-in">${side}</div></details></aside>` : ''}
+  ${side ? `<aside class="side" id="side"><details class="side-d" open><summary class="side-sum">筛选</summary><div class="side-in">${side}</div></details></aside>` : ''}
   <main class="main" id="main">
 ${body}
   </main>

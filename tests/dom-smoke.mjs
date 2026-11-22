@@ -110,8 +110,10 @@ if (existsSync(TARGETS[0])) {
   ok(d.errors.length === 0, d.errors.length ? `脚本报错: ${d.errors.join(' | ')}` : '脚本在真实 DOM 中无运行时错误')
 
   const total = d.$$('[data-card]').length
-  ok(total === 88, `渲染 ${total} 张风格卡（应为 88）`)
-  ok(d.$('[data-count]')?.textContent.includes('显示 88 / 88'), `计数文案：${d.$('[data-count]')?.textContent.trim()}`)
+  const { readFileSync: rfs } = await import('node:fs')
+  const expected = JSON.parse(rfs('data/index.json', 'utf8')).domains.style.length
+  ok(total === expected, `渲染 ${total} 张风格卡（应为 ${expected}）`)
+  ok(d.$('[data-count]')?.textContent.includes(`显示 ${expected} / ${expected}`), `计数文案：${d.$('[data-count]')?.textContent.trim()}`)
 
   // 分类筛选
   const chip = d.$$('[data-family]').find((b) => b.getAttribute('data-family') !== 'all' && b.tagName === 'BUTTON')

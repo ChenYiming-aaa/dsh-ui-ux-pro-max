@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apple 原生体验 · Apple Native Experience — 风格图鉴</title>
+<meta name="description" content="系统字体与语义色优先，8pt 间距、分组列表与平台化导航，明暗自动适配、克制而有目的的过渡。强调内容层级与无障碍，而非液态玻璃或装饰性模糊。 适用：iOS / macOS 应用 · 设置与表单 · 系统工具。">
+<meta name="theme-color" content="#F6F5F1">
+<meta property="og:title" content="Apple 原生体验 · Apple Native Experience — 风格图鉴">
+<meta property="og:description" content="系统字体与语义色优先，8pt 间距、分组列表与平台化导航，明暗自动适配、克制而有目的的过渡。强调内容层级与无障碍，而非液态玻璃或装饰性模糊。 适用：iOS / macOS 应用 · 设置与表单 · 系统工具。">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/themes.css">
+<style id="vt-optin">@view-transition{navigation:auto}</style>
+<script>(function(){var d=document.documentElement,k='ux-xnav',go=false,dir='';
+try{if(sessionStorage.getItem(k)==='1'){go=true;sessionStorage.removeItem(k)}dir=sessionStorage.getItem('ux-vtdir')||'';sessionStorage.removeItem('ux-vtdir')}catch(e){}
+if(dir==='fwd'||dir==='back')d.setAttribute('data-vtdir',dir);
+if(go){d.classList.remove('no-intro');d.className+=' xarrive'}})()</script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="../index.html"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="brand-t">UI/UX Pro Max<em>风格图鉴</em></span></a>
+    <nav class="nav" aria-label="主导航">
+      <span class="nav-set" data-navset>
+        <a href="../index.html" data-nav="all"><span class="nl">全部风格</span><span class="ns">全部</span></a>
+        <a href="../index.html#types" data-nav="types"><span class="nl">分类</span><span class="ns">分类</span></a>
+        <a href="../guide.html" data-nav="guide"><span class="nl">阅读指南</span><span class="ns">指南</span></a>
+        <span class="nav-ind" aria-hidden="true"></span>
+      </span>
+      <a class="nav-x" href="../../handbook/" data-xnav="设计手册" title="另一视图：知道该长什么样之后，定配色 / 字体 / 图表 / 落地页 / 规范 / 配方"><span class="nx-full">设计手册</span><span class="nx-short">手册</span><span aria-hidden="true">→</span></a>
+      <a class="nav-gh" href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">GitHub<span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</header>
+<main class="detail wrap">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="../index.html">风格图鉴</a><span>/</span>
+    <a href="../index.html?family=platform#gallery">平台规范</a><span>/</span>
+    <span>Apple 原生体验</span>
+  </nav>
+
+  <section class="d-head">
+    <div class="d-head-main">
+      <div class="d-meta"><span class="chip chip-type">Platform/System</span><span class="badge b-active">推荐</span></div>
+      <h1>Apple 原生体验<span class="d-en">Apple Native Experience</span></h1>
+      <p class="lede">系统字体与语义色优先，8pt 间距、分组列表与平台化导航，明暗自动适配、克制而有目的的过渡。强调内容层级与无障碍，而非液态玻璃或装饰性模糊。</p>
+      <p class="d-tag"><span>典型场景</span>iOS / macOS 应用 · 设置与表单 · 系统工具</p>
+      <div class="d-facts">
+        <span><em>编号</em>90</span>
+        <span><em>年代</em>Apple Human Interface Guidelines, 2007-present</span>
+        <span><em>复杂度</em>Medium</span>
+        <span><em>默认模式</em>自动</span>
+      </div>
+    </div>
+    <aside class="d-aside">
+      <div class="pal-strip"><i style="background:#007aff" title="#007aff"></i><i style="background:#34c759" title="#34c759"></i><i style="background:#1c1c1e" title="#1c1c1e"></i><i style="background:#e5e5ea" title="#e5e5ea"></i><i style="background:#f2f2f7" title="#f2f2f7"></i></div>
+      <div class="id-box">
+        <span class="id-label">Style ID</span>
+        <code>apple-native-experience</code>
+        <button class="copy" type="button" data-copy="apple-native-experience" aria-label="复制 Style ID">复制</button>
+      </div>
+      <p class="id-hint"><code>design_search("apple native experience")</code></p>
+    </aside>
+  </section>
+
+  <div class="d-layout">
+    <div class="d-main">
+      <section id="preview" class="block">
+        <div class="block-head">
+          <h2>效果示例</h2>
+          <div class="seg" role="group" aria-label="预览明暗模式">
+            <button type="button" class="on" data-set-mode="light">浅色</button>
+            <button type="button" data-set-mode="dark">深色</button>
+          </div>
+        </div>
+        <div class="frame">
+          <div class="frame-bar"><i></i><i></i><i></i><span>preview / apple-native-experience</span></div>
+          <div class="frame-body"><div class="pv pv--hero t-apple-native-experience fx-soft" data-mode="light" data-preview>
+  <div class="pv-bg" aria-hidden="true"></div>
+  <div class="pv-shell">
+    <div class="pv-top">
+      <span class="pv-brand"><i class="pv-logo"></i>Nova</span>
+      <span class="pv-links"><span>产品</span><span>方案</span><span>定价</span></span>
+      <span class="pv-pill">开始使用</span>
+    </div>
+    <div class="pv-body">
+      <div class="pv-copy">
+        <p class="pv-kicker">Design System</p>
+        <h3 class="pv-title">同一套组件<br>不同的性格</h3>
+        <p class="pv-desc">色彩、字体、圆角与材质，决定了界面的气质。</p>
+        <div class="pv-actions"><span class="pv-btn">主要操作</span><span class="pv-btn pv-btn--ghost">次要操作</span></div>
+        <div class="pv-chips"><span>标签 A</span><span>标签 B</span><span>+12</span></div>
+      </div>
+      <div class="pv-card">
+        <div class="pv-cardhead"><span>月度增长</span><i class="pv-dot"></i></div>
+        <div class="pv-metric">+24.8<small>%</small></div>
+        <div class="pv-bars" aria-hidden="true"><i style="--h:44%"></i><i style="--h:62%"></i><i style="--h:38%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i style="--h:88%"></i><i style="--h:70%"></i></div>
+        <div class="pv-rows">
+          <div><span>转化率</span><b>4.2%</b></div>
+          <div><span>客单价</span><b>¥328</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-foot">
+      <span class="pv-swatches"><i style="background:#007aff" title="#007aff"></i><i style="background:#34c759" title="#34c759"></i><i style="background:#1c1c1e" title="#1c1c1e"></i><i style="background:#e5e5ea" title="#e5e5ea"></i><i style="background:#f2f2f7" title="#f2f2f7"></i></span>
+      <span class="pv-type">Aa Bb Cc 0123</span>
+    </div>
+  </div>
+</div></div>
+        </div>
+        <div class="pv pv--spec t-apple-native-experience fx-soft" data-mode="light" data-preview>
+  <div class="pv-bg" aria-hidden="true"></div>
+  <div class="spec">
+    <div class="spec-i"><span class="spec-l">按钮 / Button</span><span class="spec-row"><span class="pv-btn">Primary</span><span class="pv-btn pv-btn--ghost">Ghost</span></span></div>
+    <div class="spec-i"><span class="spec-l">输入 / Input</span><span class="pv-input">name@example.com</span></div>
+    <div class="spec-i"><span class="spec-l">标签 / Chip</span><span class="pv-chips"><span>已选中</span><span>默认</span><span>+8</span></span></div>
+    <div class="spec-i"><span class="spec-l">进度 / Progress</span><span class="pv-progress"><i></i></span></div>
+    <div class="spec-i"><span class="spec-l">开关 / Switch</span><span class="pv-switch"><i></i></span></div>
+    <div class="spec-i"><span class="spec-l">数值 / Numeric</span><span class="pv-num">1,284.50</span></div>
+  </div>
+</div>
+        
+      </section>
+
+      <section id="about" class="block">
+        <div class="block-head"><h2>设计语言</h2></div>
+        <h3 class="sub">关键词</h3>
+        <div class="chips"><span class="chip ">apple native experience</span><span class="chip ">native app</span><span class="chip ">iOS</span><span class="chip ">iPadOS</span><span class="chip ">macOS</span><span class="chip ">SwiftUI</span><span class="chip ">UIKit</span><span class="chip ">AppKit</span><span class="chip ">Human Interface Guidelines</span><span class="chip ">platform-aware</span><span class="chip ">adaptive</span><span class="chip ">semantic UI</span><span class="chip ">system typography</span><span class="chip ">native navigation</span></div>
+        <h3 class="sub">别名</h3><div class="chips"><span class="chip ">Apple Native</span><span class="chip ">Native Apple UI</span><span class="chip ">iOS-inspired interface</span></div>
+        <h3 class="sub">效果与动效</h3>
+        <p class="body-text">Content-first hierarchy, system typography roles, 8pt-aligned spacing, restrained borders and shadows, platform-appropriate corner radii, SF Symbols-style consistent icons, adaptive light/dark appearance, purposeful 150-300ms transitions, reduced-motion and reduced-transparency fallbacks</p>
+        <h3 class="sub">设计系统变量</h3>
+        <div class="tok-table">
+          <div class="tok"><code>--color-bg</code><span>semantic system background</span></div><div class="tok"><code>--color-surface</code><span>grouped surface</span></div><div class="tok"><code>--color-label-primary</code><span>semantic primary label</span></div><div class="tok"><code>--color-label-secondary</code><span>semantic secondary label</span></div><div class="tok"><code>--color-accent</code><span>platform accent</span></div><div class="tok"><code>--color-separator</code><span>semantic separator</span></div><div class="tok"><code>--font-body</code><span>system-ui</span></div><div class="tok"><code>--space-unit</code><span>4px</span></div><div class="tok"><code>--radius-control</code><span>10px</span></div><div class="tok"><code>--touch-target</code><span>44px</span></div><div class="tok"><code>--motion-duration</code><span>150-300ms</span></div><div class="tok"><code>--focus-ring</code><span>2px</span></div>
+        </div>
+      </section>
+
+      <section id="palette" class="block">
+        <div class="block-head"><h2>配色方案</h2></div>
+        <div class="sw-grid">
+          <button class="sw" type="button" data-copy="#007aff" title="点击复制 #007aff">
+            <span class="sw-c" style="background:#007aff"></span>
+            <span class="sw-t"><b>#007AFF</b><i>强调色</i></span>
+          </button><button class="sw" type="button" data-copy="#34c759" title="点击复制 #34c759">
+            <span class="sw-c" style="background:#34c759"></span>
+            <span class="sw-t"><b>#34C759</b><i>辅助色</i></span>
+          </button><button class="sw" type="button" data-copy="#1c1c1e" title="点击复制 #1c1c1e">
+            <span class="sw-c" style="background:#1c1c1e"></span>
+            <span class="sw-t"><b>#1C1C1E</b><i>文字令牌</i></span>
+          </button><button class="sw" type="button" data-copy="#e5e5ea" title="点击复制 #e5e5ea">
+            <span class="sw-c" style="background:#e5e5ea"></span>
+            <span class="sw-t"><b>#E5E5EA</b><i>表面令牌</i></span>
+          </button><button class="sw" type="button" data-copy="#f2f2f7" title="点击复制 #f2f2f7">
+            <span class="sw-c" style="background:#f2f2f7"></span>
+            <span class="sw-t"><b>#F2F2F7</b><i>底色令牌</i></span>
+          </button>
+        </div>
+        <div class="pal-cols">
+          <div><h3 class="sub">主色 / Primary</h3><p class="body-text">Adaptive system backgrounds and grouped surfaces; semantic accent, label, separator, fill, and destructive colors; avoid hard-coded appearance assumptions</p></div>
+          <div><h3 class="sub">辅色 / Secondary</h3><p class="body-text">Secondary and tertiary labels, grouped content surfaces, control fills, accessible accent states, light/dark semantic mapping</p></div>
+        </div>
+        <p class="cap">强调色在页面底色上的对比度约 <b>3.6:1</b>，适合大字与图形，正文需另配深色。</p>
+      </section>
+
+      <section id="usage" class="block">
+        <div class="block-head"><h2>适用场景</h2></div>
+        <div class="use-grid">
+          <div class="use good">
+            <h3>适合 / Best For</h3>
+            <ul><li>Native-feeling phone</li><li>tablet</li><li>and desktop apps</li><li>productivity tools</li><li>settings</li><li>forms</li><li>lists</li><li>media and utility products</li><li>responsive web apps adopting platform-aware behavior</li></ul>
+          </div>
+          <div class="use bad">
+            <h3>避开 / Do Not Use For</h3>
+            <ul><li>Liquid Glass as the defining visual treatment</li><li>visionOS spatial interfaces</li><li>decorative blur or gradients</li><li>dense dashboards needing unrelated platform conventions</li><li>or web layouts that must behave identically on every platform</li></ul>
+          </div>
+        </div>
+        <h3 class="sub">框架兼容</h3>
+        <div class="chips"><span class="chip ">swiftui</span><span class="chip ">uikit</span><span class="chip ">appkit</span><span class="chip ">react-native</span><span class="chip ">custom</span></div>
+      </section>
+
+      <section id="matrix" class="block">
+        <div class="block-head"><h2>能力矩阵</h2></div>
+        <div class="matrix">
+          <div class="mcell"><span class="mlabel">浅色模式</span><strong>支持</strong></div>
+          <div class="mcell"><span class="mlabel">深色模式</span><strong>支持</strong></div>
+          <div class="mcell"><span class="mlabel">移动适配</span><strong>原生适配</strong></div>
+          <div class="mcell"><span class="mlabel">转化导向</span><strong>中</strong><span class="mhint">Medium</span></div>
+          <div class="mcell"><span class="mlabel">渲染成本</span><strong>中</strong><span class="mhint">animation</span></div>
+          <div class="mcell"><span class="mlabel">无障碍风险</span><strong>低</strong><span class="mhint">contrast-text-4.5 / keyboard / visible-focus / reduced-motion / semantic-controls / 44px-targets</span></div>
+        </div>
+      </section>
+
+      <section id="build" class="block">
+        <div class="block-head"><h2>实现要点</h2></div>
+        <h3 class="sub">落地清单</h3>
+        <ul class="check"><li>Use semantic roles for navigation bars, tab bars, sidebars, toolbars, buttons, segmented controls, toggles, text/search fields, sheets, popovers, menus, alerts, lists, and grouped content</li><li>preserve safe areas</li><li>provide keyboard and screen-reader semantics</li><li>verify light/dark contrast</li><li>test phone, tablet, desktop, reduced motion, and reduced transparency</li></ul>
+        <h3 class="sub">CSS / 技术关键词</h3>
+        <p class="body-text mono-text">system-ui, -apple-system, BlinkMacSystemFont, SF Pro, SF Symbols, semantic color tokens, color-scheme: light dark, env(safe-area-inset-*), :focus-visible, @media (prefers-reduced-motion), @media (prefers-contrast), min-width: 44px, border-radius: 10-16px, transition: 150-300ms ease-out</p>
+        
+        
+      </section>
+
+      <section id="prompt" class="block">
+        <div class="block-head"><h2>AI 提示词</h2><button class="copy" type="button" data-copy="Design an Apple Native Experience interface with system typography, semantic adaptive colors, platform-aware navigation, accessible controls, grouped lists, sheets, popovers, purposeful transitions, and responsive behavior across phone, tablet, desktop, and web. Do not require Liquid Glass, blur, or gradients.">复制</button></div>
+        <pre class="prompt">Design an Apple Native Experience interface with system typography, semantic adaptive colors, platform-aware navigation, accessible controls, grouped lists, sheets, popovers, purposeful transitions, and responsive behavior across phone, tablet, desktop, and web. Do not require Liquid Glass, blur, or gradients.</pre>
+      </section>
+
+      <nav class="pager" aria-label="上一种 / 下一种">
+        <a href="../style/spectrum-2.html"><span>上一种 · 89</span><strong>Adobe Spectrum 2</strong></a>
+        <a class="pager-next" href="../style/minimalism-and-swiss-style.html"><span>下一种 · 01</span><strong>极简主义 / 瑞士风格</strong></a>
+      </nav>
+    </div>
+
+    <aside class="toc" aria-label="本页目录">
+      <p class="toc-t">本页</p>
+      <a href="#preview">效果示例</a>
+      <a href="#about">设计语言</a>
+      <a href="#palette">配色方案</a>
+      <a href="#usage">适用场景</a>
+      <a href="#matrix">能力矩阵</a>
+      <a href="#build">实现要点</a>
+      <a href="#prompt">AI 提示词</a>
+      <a href="#related">相关风格</a>
+    </aside>
+  </div>
+
+  <section id="related" class="block related">
+    <div class="block-head"><h2>相关风格</h2><a class="bhint" href="../index.html?family=platform#gallery">查看全部 平台规范 →</a></div>
+    <div class="rel-grid">
+      <a class="rel" href="../style/liquid-glass.html">
+        <span class="rel-thumb"><div class="pv pv--mini t-liquid-glass fx-mesh fx-glass fx-gloss" data-mode="light" data-preview>
+  <div class="pv-bg" aria-hidden="true"></div>
+  <div class="pv-shell">
+    <div class="pv-top">
+      <span class="pv-brand"><i class="pv-logo"></i>Nova</span>
+      <span class="pv-links"><span>产品</span><span>方案</span><span>定价</span></span>
+      <span class="pv-pill">开始使用</span>
+    </div>
+    <div class="pv-body">
+      <div class="pv-copy">
+        <p class="pv-kicker">Design System</p>
+        <h3 class="pv-title">同一套组件<br>不同的性格</h3>
+        <p class="pv-desc">色彩、字体、圆角与材质，决定了界面的气质。</p>
+        <div class="pv-actions"><span class="pv-btn">主要操作</span><span class="pv-btn pv-btn--ghost">次要操作</span></div>
+        <div class="pv-chips"><span>标签 A</span><span>标签 B</span><span>+12</span></div>
+      </div>
+      <div class="pv-card">
+        <div class="pv-cardhead"><span>月度增长</span><i class="pv-dot"></i></div>
+        <div class="pv-metric">+24.8<small>%</small></div>
+        <div class="pv-bars" aria-hidden="true"><i style="--h:44%"></i><i style="--h:62%"></i><i style="--h:38%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i style="--h:88%"></i><i style="--h:70%"></i></div>
+        <div class="pv-rows">
+          <div><span>转化率</span><b>4.2%</b></div>
+          <div><span>客单价</span><b>¥328</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-foot">
+      <span class="pv-swatches"><i style="background:#0071e3" title="#0071e3"></i><i style="background:#7c3aed" title="#7c3aed"></i><i style="background:#0b1220" title="#0b1220"></i><i style="background:#e9f1ff" title="#e9f1ff"></i></span>
+      <span class="pv-type">Aa Bb Cc 0123</span>
+    </div>
+  </div>
+</div></span>
+        <span class="rel-body"><strong>液态玻璃</strong><em>Liquid Glass</em><span>iOS / macOS 应用 · 系统级控件</span></span>
+      </a><a class="rel" href="../style/fluent-2.html">
+        <span class="rel-thumb"><div class="pv pv--mini t-fluent-2 fx-soft fx-a11y" data-mode="light" data-preview>
+  <div class="pv-bg" aria-hidden="true"></div>
+  <div class="pv-shell">
+    <div class="pv-top">
+      <span class="pv-brand"><i class="pv-logo"></i>Nova</span>
+      <span class="pv-links"><span>产品</span><span>方案</span><span>定价</span></span>
+      <span class="pv-pill">开始使用</span>
+    </div>
+    <div class="pv-body">
+      <div class="pv-copy">
+        <p class="pv-kicker">Design System</p>
+        <h3 class="pv-title">同一套组件<br>不同的性格</h3>
+        <p class="pv-desc">色彩、字体、圆角与材质，决定了界面的气质。</p>
+        <div class="pv-actions"><span class="pv-btn">主要操作</span><span class="pv-btn pv-btn--ghost">次要操作</span></div>
+        <div class="pv-chips"><span>标签 A</span><span>标签 B</span><span>+12</span></div>
+      </div>
+      <div class="pv-card">
+        <div class="pv-cardhead"><span>月度增长</span><i class="pv-dot"></i></div>
+        <div class="pv-metric">+24.8<small>%</small></div>
+        <div class="pv-bars" aria-hidden="true"><i style="--h:44%"></i><i style="--h:62%"></i><i style="--h:38%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i style="--h:88%"></i><i style="--h:70%"></i></div>
+        <div class="pv-rows">
+          <div><span>转化率</span><b>4.2%</b></div>
+          <div><span>客单价</span><b>¥328</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-foot">
+      <span class="pv-swatches"><i style="background:#0078d4" title="#0078d4"></i><i style="background:#8764b8" title="#8764b8"></i><i style="background:#242424" title="#242424"></i><i style="background:#f0f0f0" title="#f0f0f0"></i><i style="background:#e0e0e0" title="#e0e0e0"></i></span>
+      <span class="pv-type">Aa Bb Cc 0123</span>
+    </div>
+  </div>
+</div></span>
+        <span class="rel-body"><strong>Fluent 2</strong><em>Fluent 2</em><span>Microsoft 365 · Windows 应用 · 企业产品</span></span>
+      </a><a class="rel" href="../style/shopify-polaris.html">
+        <span class="rel-thumb"><div class="pv pv--mini t-shopify-polaris fx-soft fx-dense" data-mode="light" data-preview>
+  <div class="pv-bg" aria-hidden="true"></div>
+  <div class="pv-shell">
+    <div class="pv-top">
+      <span class="pv-brand"><i class="pv-logo"></i>Nova</span>
+      <span class="pv-links"><span>产品</span><span>方案</span><span>定价</span></span>
+      <span class="pv-pill">开始使用</span>
+    </div>
+    <div class="pv-body">
+      <div class="pv-copy">
+        <p class="pv-kicker">Design System</p>
+        <h3 class="pv-title">同一套组件<br>不同的性格</h3>
+        <p class="pv-desc">色彩、字体、圆角与材质，决定了界面的气质。</p>
+        <div class="pv-actions"><span class="pv-btn">主要操作</span><span class="pv-btn pv-btn--ghost">次要操作</span></div>
+        <div class="pv-chips"><span>标签 A</span><span>标签 B</span><span>+12</span></div>
+      </div>
+      <div class="pv-card">
+        <div class="pv-cardhead"><span>月度增长</span><i class="pv-dot"></i></div>
+        <div class="pv-metric">+24.8<small>%</small></div>
+        <div class="pv-bars" aria-hidden="true"><i style="--h:44%"></i><i style="--h:62%"></i><i style="--h:38%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i style="--h:88%"></i><i style="--h:70%"></i></div>
+        <div class="pv-rows">
+          <div><span>转化率</span><b>4.2%</b></div>
+          <div><span>客单价</span><b>¥328</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-foot">
+      <span class="pv-swatches"><i style="background:#008060" title="#008060"></i><i style="background:#2c6ecb" title="#2c6ecb"></i><i style="background:#303030" title="#303030"></i><i style="background:#f7f7f7" title="#f7f7f7"></i><i style="background:#e1e3e5" title="#e1e3e5"></i></span>
+      <span class="pv-type">Aa Bb Cc 0123</span>
+    </div>
+  </div>
+</div></span>
+        <span class="rel-body"><strong>Shopify Polaris</strong><em>Shopify Polaris</em><span>电商后台 · 商家管理 · 运营工具</span></span>
+      </a><a class="rel" href="../style/spectrum-design-system.html">
+        <span class="rel-thumb"><div class="pv pv--mini t-spectrum-design-system fx-soft" data-mode="light" data-preview>
+  <div class="pv-bg" aria-hidden="true"></div>
+  <div class="pv-shell">
+    <div class="pv-top">
+      <span class="pv-brand"><i class="pv-logo"></i>Nova</span>
+      <span class="pv-links"><span>产品</span><span>方案</span><span>定价</span></span>
+      <span class="pv-pill">开始使用</span>
+    </div>
+    <div class="pv-body">
+      <div class="pv-copy">
+        <p class="pv-kicker">Design System</p>
+        <h3 class="pv-title">同一套组件<br>不同的性格</h3>
+        <p class="pv-desc">色彩、字体、圆角与材质，决定了界面的气质。</p>
+        <div class="pv-actions"><span class="pv-btn">主要操作</span><span class="pv-btn pv-btn--ghost">次要操作</span></div>
+        <div class="pv-chips"><span>标签 A</span><span>标签 B</span><span>+12</span></div>
+      </div>
+      <div class="pv-card">
+        <div class="pv-cardhead"><span>月度增长</span><i class="pv-dot"></i></div>
+        <div class="pv-metric">+24.8<small>%</small></div>
+        <div class="pv-bars" aria-hidden="true"><i style="--h:44%"></i><i style="--h:62%"></i><i style="--h:38%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i style="--h:88%"></i><i style="--h:70%"></i></div>
+        <div class="pv-rows">
+          <div><span>转化率</span><b>4.2%</b></div>
+          <div><span>客单价</span><b>¥328</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-foot">
+      <span class="pv-swatches"><i style="background:#0265dc" title="#0265dc"></i><i style="background:#d7373f" title="#d7373f"></i><i style="background:#2c2c2c" title="#2c2c2c"></i><i style="background:#f0f0f0" title="#f0f0f0"></i><i style="background:#e1e1e1" title="#e1e1e1"></i></span>
+      <span class="pv-type">Aa Bb Cc 0123</span>
+    </div>
+  </div>
+</div></span>
+        <span class="rel-body"><strong>Adobe Spectrum</strong><em>Adobe Spectrum</em><span>创意软件 · 专业工具 · 跨端套件</span></span>
+      </a>
+    </div>
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="wrap foot-in">
+    <div>
+      <p class="foot-brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span> dsh-ui-ux-pro-max</p>
+      <p class="foot-note">89 种风格 · 离线 · MIT</p>
+    </div>
+    <div class="foot-links">
+      <a href="../index.html">风格图鉴</a>
+      <a href="../guide.html">阅读指南</a>
+      <a href="../../handbook/" data-xnav="设计手册">设计手册</a>
+      <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max" target="_blank" rel="noopener">源码</a>
+      <a href="https://github.com/ChenYiming-aaa/dsh-ui-ux-pro-max/blob/main/docs/DATA-PROVENANCE.md" target="_blank" rel="noopener">数据来源</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body>
+</html>

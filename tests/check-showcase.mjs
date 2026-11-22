@@ -24,7 +24,7 @@ const ids = styles.map((s) => s['Style ID'])
 const metaKeys = Object.keys(STYLE_META)
 
 section('1. 中文元数据')
-assert(styles.length === 88, `风格数 ${styles.length}`)
+assert(styles.length === data.counts.style, `风格数 ${styles.length}`)
 assert(ids.every((id) => STYLE_META[id]), '每条风格都有中文名称 / 描述 / 主题')
 assert(metaKeys.every((id) => ids.includes(id)), '没有多余的元数据条目')
 for (const s of styles) {
@@ -49,17 +49,17 @@ assert(existsSync(p('gallery/assets/favicon.svg')), 'favicon 已产出')
 
 const indexHtml = readText('gallery/index.html')
 assert(indexHtml.includes('<meta name="viewport"'), '首页声明 viewport')
-assert((indexHtml.match(/data-card/g) || []).length === 88, '首页渲染 88 张卡片')
+assert((indexHtml.match(/data-card/g) || []).length === styles.length, `首页渲染 ${styles.length} 张卡片`)
 assert(ids.every((id) => indexHtml.includes(`href="style/${id}.html"`)), '首页链接到全部风格页')
 
 const themesCss = readText('gallery/assets/themes.css')
-assert((themesCss.match(/\[data-mode="dark"\]/g) || []).length === 88, '每种风格都有深色令牌')
+assert((themesCss.match(/\[data-mode="dark"\]/g) || []).length === styles.length, '每种风格都有深色令牌')
 
 section('4. 详情页内容')
 const missingPages = ids.filter((id) => !existsSync(p('gallery/style', `${id}.html`)))
-assert(missingPages.length === 0, `88 个详情页齐全${missingPages.length ? `（缺 ${missingPages.slice(0, 3).join(', ')}）` : ''}`)
+assert(missingPages.length === 0, `${styles.length} 个详情页齐全${missingPages.length ? `（缺 ${missingPages.slice(0, 3).join(', ')}）` : ''}`)
 
-const REQUIRED = ['效果示例', '风格描述', '配色方案', '适用场景', '能力矩阵', '实现要点', 'AI 提示词', '相关风格']
+const REQUIRED = ['效果示例', '设计语言', '配色方案', '适用场景', '能力矩阵', '实现要点', 'AI 提示词', '相关风格']
 const problems = []
 for (const s of styles) {
   const id = s['Style ID']

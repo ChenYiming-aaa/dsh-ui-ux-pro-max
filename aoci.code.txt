@@ -1,0 +1,243 @@
+#AOCI-CODE-VOLUME: 1
+
+===/<repository>/===
+.gitattributes[FG6T]: F:强制所有文本按 LF 检出、二进制自动判定，使 AOCI 基线与两站源码在任何平台字节一致。 | R:- | A:* text=auto eol=lf | S:Windows 默认 autocrlf 会把树刷成 CRLF，令 aoci 基线与 check-showcase/check-atlas 的字节级比对全红；这条覆盖它，是跨平台的硬前提。
+.gitignore[FG6T]: F:声明不入库路径：依赖锁、构建产物、本机验证脚本、.tmp 探针现场与 .host-compat 隔离目录。 | R:- | A:- | S:data/ 与 .env 类密钥不在本仓库数据范围；.host-compat/ 与 tests/validate-*.mjs 是机器相关的本地宿主验证，不随仓库分发，可移植替代见 tests/host/。
+404.html[EV4T]: F:设计手册站内 404 兜底页，按当前地址推站点根拼回首页链接。 | R:code:tools/atlas/build.mjs | A:- | S:由 build.mjs 生成、勿手改；整站层另有根 404.html 兜底，本页只管手册站内。
+AGENTS.md[SG7S]: F:给宿主 Agent 的本仓库 AOCI 认知与收尾规则：如何建立、读取、维护索引及不可自越的停点。 | R:code:aoci.txt | A:按 aoci_rules → aoci_overview → aoci_maintain → aoci_update_entry 顺序使用 | S:本区块由 aoci init 生成；Prompt 与静态文档不能覆盖机器事实，改它不改变工具行为。
+CHANGELOG.md[SV4L]: F:按语义化版本与 Keep a Changelog 记录新增/改进/修复，是人读的版本历史来源。 | R:code:package.json | A:- | S:自 1.0.4 起建立，1.0.0–1.0.3 历史未随浅克隆保留；版本号变动须发对应 GitHub Release，说明取本文件对应段落。
+README.md[SG8M]: F:项目中文门面：能力数字、两个在线站点入口、安装用法、目录与已知限制。 | R:code:README.en.md | A:- | S:tests/check-counts.mjs 依赖正文里『数字 + 词』组合（如 119 UX guidelines），改文案别只写英文单词；README 只讲能力、站点与用法，不写动效实现细节。
+README.en.md[SG8M]: F:项目英文门面，与中文 README 平行，面向英文读者介绍同一套能力与站点。 | R:code:README.md | A:- | S:能力数字必须与 README.md、data/meta.json 一致；tests/check-counts.mjs 同样校验这里的数字+词组合。
+THIRD_PARTY_NOTICES.md[SV5T]: F:第三方声明：上游 ui-ux-pro-max-skill 的 MIT 血缘、移植内容与本地化改动说明。 | R:code:docs/DATA-PROVENANCE.md | A:- | S:说明本项目把上游 CSV 数据转成内置 JSON、用纯 JS 重写检索/生成逻辑；squircle 几何移植自 figma-squircle 也在此登记。
+cordis.patch.yml[FE6T]: F:DSH bundle 补丁：注册 ui-ux-pro-max 插件与三个模型工具，并声明默认配置。 | R:code:package.json | A:config 默认 maxResults=3、reviewRules=8、skill=true | S:在 @deepseek-ai/dsh-base 之后应用，后者已挂载工具/技能注册表与 harness seam；省略 config 等价于使用三项默认值。
+index.html[EG5T]: F:站点根入口：只画与过场首帧一致的纸面并立刻跳到 gallery/，不写任何文字。 | R:code:tools/intro.mjs | A:meta refresh 0;url=gallery/、canonical 指 gallery/index.html | S:两站同级目录，手册用 ../gallery/ 指回，local file:// 与线上相对路径一致；跳转由 gallery 开场动画接手，两帧对齐使跳转不可见。
+index.js[EG8T]: F:插件薄入口：只重导出 name/inject/Config/apply/buildTools，实现分层在 lib/。 | R:code:lib/plugin/index.js, code:lib/plugin/config.js | A:export name、inject、Config、apply、buildTools | S:数据完全内置（data/index.json + data/fonts.json），零网络依赖；本文件不写业务逻辑，新增能力应落到 lib/ 对应层。
+install.ps1[OV7S]: F:Windows 安装脚本：按 package.json files[] 白名单复制发布物、幂等追加 profile 的 cordis.patch.yml、打印重启提示。 | R:code:package.json, code:cordis.patch.yml | A:-ProfileDir/-ProfileName/-Force、-WhatIf 预览 | S:默认自动探测 desktop/web profile；不再整目录复制，只按 files[] 白名单；补丁 insert 幂等，重复安装不重复注册。
+package.json[FV7T]: F:包元数据与脚本入口：名称/版本/exports/files 白名单、Node 引擎、测试与校验脚本、宿主 peerDependencies。 | R:code:index.js, code:CHANGELOG.md | A:npm test、npm run verify:host 等 scripts | S:type=module、无运行时依赖、engines 为 ^22.19||>=24；files[] 白名单决定发布物，不含 gallery/handbook/tools；version 与 CHANGELOG 版本号须一致。
+LICENSE[SZ3T]: F:MIT 许可全文：允许使用、修改、分发，须保留版权声明，不提供任何担保。 | R:- | A:- | S:-
+
+===/<repository>/.github/workflows/===
+ci.yml[OV7T]: F:CI 工作流：push main 与 PR 时跑全量测试、jsdom 真实 DOM 冒烟与三档宿主兼容矩阵。 | R:- | A:npm test、tests/dom-smoke.mjs、npm run verify:host | S:jsdom 装在 $RUNNER_TEMP 隔离目录、不进插件 peerDependencies；宿主矩阵用 DSH_MODULE_ROOT 改道 import，逐段验 peerDependencies 三档区间。
+pages.yml[OV5T]: F:push main 时用 gallery/ 与 handbook/ 两份产物拼装 GitHub Pages 静态站，根路径放跳转页。 | R:- | A:paths 过滤器限定 gallery/handbook/data/assets/tools/tests/workflow 变更才触发 | S:两站代码与产物完全脱钩、目录同级，local file:// 与线上相对路径一致；Pages Source 必须在仓库设置里选 GitHub Actions。
+
+===/<repository>/assets/atlas-fonts/===
+google.css[FG7S]: F:本地化 Google Fonts latin 子集的 @font-face 样式，供设计手册字体样张离线渲染。 | R:code:assets/atlas-fonts/manifest.json | A:- | S:由 tools/atlas/fetch-fonts.mjs 生成、勿手改；只取 latin 子集，中文说明走系统字体栈，保证零网络依赖。
+manifest.json[FD6L]: F:字体清单：74 组配对涉及字体的 family/slug/分类/字重/woff2 文件与 unicode 范围。 | R:code:tools/atlas/fetch-fonts.mjs, code:assets/atlas-fonts/google.css | A:- | S:由 fetch-fonts.mjs 生成；清单与 google.css 必须同步，改字体需重跑生成器而非手改。
+
+===/<repository>/data/===
+meta.json[DB8T]: F:内置能力数字与领域/技术栈清单的单一源：style/color/ux/typography/stack 等各域条数与生成时间。 | R:code:lib/repo/stats.js, code:docs/DATA-PROVENANCE.md | A:counts、domains、stacks | S:工具描述、SKILL_DESCRIPTION 与文档一致性测试都派生/核对这里，不在代码里硬编码；改计数须同步 data/index.json。
+
+===/<repository>/docs/===
+ARCHITECTURE.md[SG7S]: F:贡献者向架构说明：L0–L5 分层、依赖方向、五条铁律与目录职责。 | R:code:tests/check-imports.mjs | A:§分层、§五条铁律 | S:约束优先级 DSH 宿主契约 > 发布形态 > 离线零依赖 > 目录整洁；依赖只能 plugin→tools→presentation/domain→search/repo→i18n→config，由 check-imports.mjs 守卫。
+DATA-PROVENANCE.md[SD6T]: F:数据血缘与统计口径：上游项目、快照 commit ref、同步时间与各域当前计数。 | R:code:data/meta.json | A:§数据血缘、§当前计数 | S:插件不含运行时拉取或自动更新；data/*.json 是随包静态文件；tests/check-package.mjs 断言溯源字段非空且 ref 为 40 位 commit。
+DSH-COMPAT.md[SD7S]: F:DSH 宿主兼容矩阵与适配说明：哪些宿主线验证过、分别验了什么、三态定义。 | R:code:.github/workflows/ci.yml, code:lib/config.js | A:§宿主线验证记录 | S:⚠️仅声明覆盖不可当支持承诺；验证以实际加载插件的那份 @deepseek-ai/* 为准，本机多份运行时不要混用；cordis 独立发版、peer 声明保持 *。
+optimization-report.md[SA6M]: F:优化评估报告（1.4.0 基线）：识别 12 项可落地优化，指出瓶颈在原生 DSH 契约而非内部检索。 | R:code:docs/remediation-plan.md | A:§评估口径、12 项结论 | S:只把公开契约当『原生 DSH 行为』依据；工作树根 node_modules 是 0.0.1-rc.1 仅供本机 import，三条 peer 线靠 .host-compat/ 实跑。
+refactor-plan.md[SW6L]: F:彻底优化方案：目标目录树 + 分阶段任务清单，每项标原因/影响范围/预期收益。 | R:code:docs/DATA-PROVENANCE.md | A:§0 项目假设、分阶段清单 | S:完全保留 DSH 插件形态；与实不符处标 ❓需确认；1.3.0 起自动/定时同步工具未保留，计数以 DATA-PROVENANCE.md 为准。
+remediation-plan.md[SW6L]: F:可实施优化方案 S1–S10：按原生 DSH 契约分 A/B/C 批落地，每项独立可回滚。 | R:code:docs/optimization-report.md | A:§执行总览、验收命令 | S:原则先纠错、再补契约、最后体验；每批完成都要跑 npm test、三条 DSH_MODULE_ROOT verify:host 与 npm pack --dry-run。
+
+===/<repository>/references/===
+quick-reference.md[SU7T]: F:交付前人工/模型自查的检查清单：视觉、交互、深浅色、布局、无障碍、性能、表单、导航八节与按症状查。 | R:code:lib/domain/checklist.js | A:§1–§8、按症状查、查询策略提示 | S:本清单与 design_review 工具输出对应；与 lib/domain/checklist.js 镜像，由 tests/smoke.mjs 防漂移，改一处须同步另一处。
+
+===/<repository>/skills/ui-ux-pro-max/===
+SKILL.md[SE8S]: F:内置技能正文：先选对工具、使用流程、结果解读、常见误用、通用规则与交付前检查。 | R:code:lib/plugin/skill.js, code:lib/plugin/skill-body.js | A:frontmatter(name/description/whenToUse) + Markdown 正文 | S:原生 SkillDefinition.content 要求去掉 provider 元数据的正文，frontmatter 由 skill-body.js 拆分；正文能力数字从 data/meta.json 派生，勿硬编码。
+
+===/<repository>/lib/===
+config.js[CC6T]: F:插件配置面（L5，零 DSH API/零第三方）：配置校验 normalizeConfig 与工具默认值应用。 | R:code:lib/plugin/index.js | A:DEFAULT_CONFIG、normalizeConfig、applyToolDefaults、Config | S:只暴露 maxResults/reviewRules/skill 三个低风险字段；用 Standard Schema 供宿主校验。
+
+===/<repository>/lib/domain/===
+checklist.js[DB6T]: F:交付前通用检查清单（L3 纯数据单源），供 design_review 输出与 references 镜像共用。 | R:code:references/quick-reference.md | A:QUICK_REFERENCE_CHECKLIST | S:工具输出与 references/quick-reference.md 镜像由 tests/smoke.mjs 防漂移，改一处须同步另一处。
+colors.js[KB5T]: F:配色令牌组装（L3 纯函数）：把 color 领域命中行转为结构化 HEX 令牌与 CSS 变量。 | R:- | A:buildColors | S:缺失字段回退到默认色板；与生成流程分离以便独立单测。
+design-system.js[AB8M]: F:设计系统生成流程（L3 业务层）：产品搜索定类别、选风格、配字体色板、收集 UX 规则、应用推理规则与旋钮。 | R:code:lib/domain/reasoning.js, code:lib/domain/dials.js | A:generateDesignSystem、summarizeDesignSystem | S:移植自上游 design_system.py；采样与条数受 RENDER 预算约束，超长笔记按配置截断。
+dials.js[DB4T]: F:三个 1–10 设计旋钮（variance/motion/density）的档位表与解析函数。 | R:code:lib/domain/design-system.js | A:DIAL_TIERS、resolveDial | S:数据与生成流程分离，改档位只动本文件。
+reasoning.js[KB6T]: F:推理规则匹配（L3 纯函数）：按产品类别匹配 ui-reasoning 规则，解析为决策规则/风格优先级/反模式。 | R:code:lib/domain/design-system.js | A:findReasoningRule、applyReasoning | S:从 design-system.js 拆出，可独立单测、不依赖 DSH。
+review.js[DA5S]: F:UX 审查结果 Markdown 渲染（L3）。 | R:code:lib/domain/review.js | A:formatReview | S:严重度文案与 labels.js 的中文标签同口径。
+
+===/<repository>/lib/i18n/===
+aliases.zh.js[LD7L]: F:中文术语→英文关键词词典（L1 纯数据），供中文查询映射到英文语料。 | R:code:lib/i18n/query.js | A:ZH_ALIASES | S:约 364 行纯数据与检索逻辑分离，本模块不 import 任何其他模块；tests/check-i18n.mjs 断言源文件键数==运行时键数。
+index.js[CG2T]: F:中文优先层公共出口（L1），重导出 labels/aliases/short/query。 | R:- | A:- | S:本层是纯数据与纯函数，不依赖上层业务。
+labels.js[LD7M]: F:中文标签与本地化（L1）：领域/技术栈/严重度/优先级/输出列标签与 localizeRow。 | R:- | A:DOMAIN_LABELS、STACK_LABELS、SEVERITY_LABELS、SEVERITY_ORDER、PRIORITY_LABELS、FIELD_LABELS、localizeRow | S:本模块不 import 任何其他 lib 模块，保持 L1 最底层。
+query.js[CA6T]: F:中文查询扩展（L1 纯函数）：把中文产品/风格/场景词映射为英文语料关键词，使 BM25 命中英文为主的数据库。 | R:code:lib/i18n/aliases.zh.js, code:lib/i18n/short.zh.js | A:expandQuery | S:逻辑与词典分离，词典在 aliases.zh.js；单字兜底在 short.zh.js，仅整串无命中时才用。
+short.zh.js[LD4T]: F:中文单字兜底别名（L1 纯数据），仅当整串查询无命中时按单字补救。 | R:code:lib/i18n/query.js | A:ZH_SHORT_ALIASES | S:不并入 aliases.zh.js——主词典按『查询包含该词』匹配，单字键会污染所有含该字的查询并破坏键数守卫。
+
+===/<repository>/lib/plugin/===
+config.js[CC6T]: F:插件配置面（L5，零 DSH API/零第三方）：配置校验 normalizeConfig 与工具默认值应用。 | R:code:lib/plugin/index.js | A:DEFAULT_CONFIG、normalizeConfig、applyToolDefaults、Config | S:只暴露 maxResults/reviewRules/skill 三个低风险字段；用 Standard Schema 供宿主校验。
+dialect.js[KA7M]: F:SchemaSpec 方言校验（L5）：遍历 schema 节点、校验值、列出必填违规。 | R:code:lib/plugin/schema.js | A:walkSchemaNode、validateSpecValue、requiredFieldViolations | S:把方言约束固化成可执行断言，避免写错只有宿主运行时才报错；不 import DSH API。
+index.js[EI8T]: F:宿主适配层（L5）：唯一 import @deepseek-ai/* 处，把 tools 普通规格套 defineTool、注册内置技能与三个模型工具。 | R:code:lib/tools/index.js, code:lib/plugin/skill.js | A:buildTools、apply | S:宿主 API 只出现在 plugin/；缺依赖时优雅降级为无注入模式。
+meta.js[CG2T]: F:插件元信息（L5），不 import DSH API，供根入口直接重导出。 | R:code:index.js | A:name、inject | S:保持最小，仅暴露身份与注入标记。
+skill.js[EI7S]: F:内置技能注册定义（L5，唯一认识 dsh-skill API 处）：技能路径/正文/调用方式/候选与 provider。 | R:code:lib/plugin/skill-body.js, code:skills/ui-ux-pro-max/SKILL.md | A:SKILL_NAME、SKILL_BODY_URL、SKILL_PATH、DEFAULT_WHEN_TO_USE、SKILL_DESCRIPTION、skillProvider | S:SKILL.md 路径集中于此；能力数字从 meta.json 派生避免手工漂移；正文由 skill-body.js 去 frontmatter 后返回。
+schema.js[CG6T]: F:SchemaSpec 方言构造助手（L4）：text/integer/stringEnum/array/object 等只产出普通对象。 | R:code:lib/plugin/schema.js | A:sevEnum、nullableObject、text、integer、stringEnum、array、object | S:不 import DSH API；方言合规校验在 lib/plugin/schema.js，由 CI 守卫。
+skill-body.js[CC5T]: F:SKILL.md frontmatter 拆分（L5，零依赖）：只解析 name/description/whenToUse 标量并返回正文。 | R:code:lib/plugin/skill.js | A:splitFrontmatter | S:原生 SkillDefinition.content 要求去掉 provider 元数据的正文；不引入 YAML 解析器以守零依赖约束。
+
+===/<repository>/lib/presentation/===
+design-system.js[DA7S]: F:设计系统 Markdown 渲染（L3 展示层）：把 domain 产出的结构化对象渲染成可读 Markdown。 | R:code:lib/domain/design-system.js, code:lib/presentation/markdown.js | A:formatDesignSystem、formatTokenSummary | S:输入是生成流程的结构化对象，只读不写。
+index.js[CG2T]: F:展示层公共出口（L3），重导出 design-system/review/search/markdown 四个格式化器。 | R:- | A:- | S:展示层只读结构化数据、不写业务。
+review.js[DA5T]: F:UX 审查结果 Markdown 渲染（L3）。 | R:code:lib/domain/review.js | A:formatReview | S:严重度文案与 labels.js 的中文标签同口径。
+search.js[DA5T]: F:检索结果 Markdown 渲染（L3）。 | R:code:lib/presentation/markdown.js | A:formatSearchResult | S:复用 markdown.js 的表格与截断工具。
+markdown.js[CG5T]: F:Markdown 渲染公共小工具（L3）：表格生成、文本截断与预算钳制。 | R:- | A:markdownTable、truncateText、clampMarkdown | S:只做纯文本生成，无副作用、不 import 业务层。
+
+===/<repository>/lib/repo/===
+domains.js[DB7T]: F:领域配置与检测词表（L2 纯数据）：领域列配置、检测关键词与预编译匹配器。 | R:code:lib/search/retriever.js | A:DOMAIN_CONFIG、DOMAIN_KEYS、DOMAIN_KEYWORDS、DOMAIN_MATCHERS | S:与检索算法分离，本模块不 import 任何其他 lib 模块；正则匹配器预编译避免逐次构造。
+stacks.js[DB4T]: F:技术栈清单与检索/输出列定义（L2 纯数据）。 | R:- | A:STACKS、STACK_SEARCH_COLS、STACK_OUTPUT_COLS | S:本模块不 import 任何其他 lib 模块。
+stats.js[DA6T]: F:能力数字派生（L2）：从 data/meta.json 取数，产出中英文能力摘要。 | R:code:data/meta.json | A:getStats、capabilitySummaryZh、capabilitySummaryEn | S:能力数字单一源是 meta.json，工具描述/SKILL_DESCRIPTION/文档一致性都派生核对这里，不硬编码（历史上手工修过过期数字）。
+store.js[PD6T]: F:内置数据访问唯一入口（L2）：惰性单例加载 index.json/fonts.json，按域取行。 | R:code:data/meta.json | A:getDb、getDomainRows、getStackRows、getReasoningRows、getFontRows | S:全仓唯一出现 data/*.json 路径处；将来换数据源只改本文件。
+
+===/<repository>/lib/search/===
+bm25.js[KA8S]: F:BM25 文本检索引擎：分词、词权重与 fit/score 打分排序。 | R:- | A:tokenize、tokenWeights、BM25 | S:移植自上游 core.py 纯标准库实现并增强——对连续 CJK 片段做二元切分使中文可检索；保持 k1=1.5/b=0.75 与 IDF 公式一致。
+retriever.js[AA8S]: F:BM25 检索门面（L2）：屏蔽领域配置+引擎+存储协作，提供 search/searchStack/detectDomain 与按行缓存索引。 | R:code:lib/search/bm25.js, code:lib/repo/domains.js | A:buildQueryTerms、search、searchStack、detectDomain | S:中文查询先 aliases 扩展、单字兜底；deprecated 行按需过滤；两字词走 bigram 命中。
+
+===/<repository>/lib/tools/===
+design-recommend.js[TA7T]: F:design_recommend 工具定义（L4）：参数、输出 schema、execute、render 与卡片呈现。 | R:code:lib/tools/schema.js, code:lib/domain/design-system.js | A:designRecommendTool | S:只声明宿主无关规格；DSH 的 defineTool 由 plugin/index.js 统一套用，宿主 API 不出现在本层。
+design-review.js[TA7S]: F:design_review 工具定义（L4）：按严重度审查 UX 问题的参数、schema、execute 与呈现。 | R:code:lib/tools/schema.js, code:lib/domain/review.js | A:designReviewTool | S:只声明宿主无关规格，defineTool 由 plugin/index.js 统一套用。
+design-search.js[TA7S]: F:design_search 工具定义（L4）：领域/技术栈检索的参数、schema、execute 与紧凑行标签。 | R:code:lib/tools/schema.js, code:lib/search/retriever.js | A:designSearchTool | S:maxResults 未显式传时用 config 默认值（1–8）；只声明宿主无关规格。
+index.js[CA4T]: F:工具注册表（L4）：汇总三个工具规格与工具名。 | R:code:lib/tools/design-recommend.js, code:lib/tools/design-review.js, code:lib/tools/design-search.js | A:toolSpecs、toolNames | S:新增工具只改这里加一行并新建工具文件。
+contracts.js[FG5T]: F:三个工具的输入/输出契约单一源（L4），仅 JSDoc typedef 不产生运行时依赖。 | R:code:lib/tools/schema.js | A:- | S:output.schema 与 presentation 格式化器共用这些类型；tests/contract.mjs 校验 schema 声明与 execute 实际返回一致。
+schema.js[CG6T]: F:SchemaSpec 方言构造助手（L4）：text/integer/stringEnum/array/object 等只产出普通对象。 | R:code:lib/plugin/schema.js | A:sevEnum、nullableObject、text、integer、stringEnum、array、object | S:不 import DSH API；方言合规校验在 lib/plugin/schema.js，由 CI 守卫。
+
+===/<repository>/tools/===
+intro.mjs[XU5S]: F:进站过场（两入口页共用）：内联 CSS 动画实现纸面+发丝竖线的一次性入场。 | R:code:index.html | A:INTRO_KEY、introHead、introCss、introMarkup | S:不用 GSAP/barba/swup——纯 CSS 只动 transform/opacity/clip-path，3KB 内联、零请求、禁 JS 也能跑完；每页每会话只播一次、随 prefers-reduced-motion。
+serve.mjs[OR6S]: F:本地预览服务器（只读）：模拟 GitHub Pages 静态行为，两站挂 /gallery/ 与 /handbook/。 | R:- | A:--root=gallery|handbook、--port（默认 4173） | S:两站用 ./ 与 ../ 相对路径、布局与部署一致，但 file:// 会因 CSP/模块加载差异出问题，故需此服务验证真实静态行为。
+site-names.mjs[CS4T]: F:两个站点名称的唯一来源：GALLERY/HANDBOOK 及展示行与『另一视图』文案。 | R:- | A:GALLERY、HANDBOOK、GALLERY_LINE、HANDBOOK_LINE、OTHER_VIEW | S:全站文案、<title>、导航、脚注、README 的站名都从这里取；换名只改本文件再重建。
+squircle.mjs[XU5T]: F:曲率连续圆角（iOS 式 G2 squircle）构建期注入器：产出 squircleCss 与 squircleJs。 | R:code:tools/squircle.runtime.js | A:SMOOTHNESS、squircleCss、squircleJs | S:不用 border-radius（G1 切线连续、接点曲率跳变可见），改五段式曲率连续；起弯点 s0≈1.45R 落 iOS 观感区间；构建时追加到两站，唯一来源避免走样。
+squircle.runtime.js[CU7L]: F:曲率连续圆角运行时（纯浏览器脚本）：按元素实测尺寸生成 SVG path 用 clip-path 应用，跟随尺寸/节点/配色重算。 | R:code:tools/squircle.mjs | A:sqCorner、sqRectPath、sqRadius、sqApply、sqScan 等 | S:构建时由 squircle.mjs 内联进两站 app.js 末尾；无外部请求无依赖；不支持 clip-path:path() 或无 JS 时保留原生 border-radius；带描边/投影元素重画渐变描边与 drop-shadow。
+xnav.mjs[XU7S]: F:页面切换动效（两站共用）：站内用跨文档 View Transition 滑动换页、跨站用纸幕擦除换场。 | R:- | A:XNAV_ATTR、XNAV_KEY、xnavCss、xnavHead、xnavJs | S:站内不铺遮罩——内容本体 170ms 出/340ms 进、位移淡入，页头单独成组原地不动；方向经 sessionStorage 判定；动效偏好/锚点/外链/新窗口放行，不支持浏览器直接换页。构建时追加到两站样式与脚本末尾。
+
+===/<repository>/tools/atlas/assets/===
+app.js[EU7L]: F:设计手册前端交互（无依赖）：域导航滑动线、调色板/字体/配方展示、复制、导出、FLIP 换位与明暗切换。 | R:code:tools/atlas/assets/atlas.css | A:boxOf、place、slide、flip、apply、setupPals、setupTypo、setupCompose 等 | S:尊重 prefers-reduced-motion；列表换位走 FLIP（先量旧矩形再补差），跨屏远距离改短淡入；跨文档 View Transition 换页，页头指示线单独成组。
+atlas.css[CU7L]: F:设计手册样式（生成物）：令牌、站点骨架、六域页面与预览组件的样式。 | R:code:tools/atlas/build.mjs | A:- | S:由 tools/atlas/build.mjs 生成、勿手改；配色/圆角等令牌与图鉴同源，改样式须改生成器。
+
+===/<repository>/tools/atlas/===
+build.mjs[OV8S]: F:风格图鉴静态站点生成器：从 data/index.json 与主题元数据生成 gallery/ 首页、详情、指南与 404。 | R:code:tools/showcase/theme-data.mjs, code:tools/showcase/assets/site.css | A:indexPage、detailPage、guidePage、themeVars、previewMarkup、build 等 | S:每个预览由同一套组件骨架渲染、只换令牌，故可横向比较风格差异；汇总指令与数据一致性检查由 tests/check-showcase.mjs 守卫。
+color.mjs[KA6S]: F:颜色工具：解析、格式转换、混合、WCAG 对比度、色相/饱和度、明暗判定。 | R:code:tools/atlas/data.mjs | A:parseColor、toHex、toCss、relLuminance、contrast、mix、hueName、wcagLevel | S:支持 #RGB/#RRGGBB/#RRGGBBAA/rgb()/rgba()；对比度按 WCAG 公式，供配色卡的达标判定。
+data.mjs[DB8L]: F:派生数据层：把 index.json 原始行整理成页面可渲染结构（风格/调色板/字体配对/落地页/图表/规范/配方）。 | R:code:tools/atlas/color.mjs, code:tools/atlas/mood-map.mjs, code:tools/atlas/svg.mjs, code:tools/atlas/font-display.mjs | A:slugify、loadAtlas、buildStyleIndex、buildPalettes、buildPairings 等 | S:只做解析、归一化、匹配与校验，不产出任何 HTML；英文产品/模式名经 zh.mjs 映射为中文。
+fetch-fonts.mjs[OD7M]: F:字体下载器：下载 74 组字体配对涉及字体（去重 91 个）的 latin 子集 woff2，生成离线 @font-face 与清单。 | R:code:assets/atlas-fonts/manifest.json, code:assets/atlas-fonts/google.css | A:--limit N 调试 | S:只取 latin 子集——样张用英文排印、中文说明走系统字体栈；已存在文件跳过可重复跑；产物是生成物勿手改。
+font-display.mjs[DA6S]: F:字体样张展示微调：字号/字距/字重/回退栈参数，修正特殊字体在统一展示参数下的排版问题。 | R:code:tools/atlas/data.mjs | A:FONT_TRIM、fontTrim、fontFallback、pickWeight、isMultiScript、pairCatZh | S:展示体字幅宽、手写体 x-height 小、等宽体需特殊处理——这些微调集中在工具里，不要给 CSS 单字体写例外；改完须用 CDP 量卡片行数与溢出。
+layout.mjs[CU7S]: F:页面外壳与通用组件：顶栏、页脚、pageShell、sideBlock、chips、toolbar、statStrip、emptyState。 | R:code:tools/atlas/build.mjs | A:SHOWCASE_BASE、showcaseUrl、pageShell、footer、sideAnchors 等 | S:手册产物在 handbook/、图鉴在 gallery/，两者同级（源码与部署布局一致）；站内 ./、跨站 ../gallery/，本地 file:// 直接打开解析一致。
+mood-map.mjs[DA5S]: F:情绪词→字体关键词同义映射：把 reasoning 的自然语言 Mood 对齐 typography 标签集合。 | R:code:tools/atlas/data.mjs | A:MOOD_MAP、moodTokens、moodKeywords | S:两个表无共同主键、字面重合仅约三成，故补人工映射；键是归一化情绪词、值是字体标签同义词，未收录词忽略。
+pages.mjs[EU8L]: F:设计手册页面渲染：首页/调色板/字体/图表/落地页/规范/配方/生成器/关于/404 各页返回完整 HTML。 | R:code:tools/atlas/layout.mjs, code:tools/atlas/data.mjs | A:indexPage、palettesPage、pairingsPage、chartsPage、landingPage、practicesPage、recipesPage、composePage 等 | S:所有函数返回完整页面字符串、由 build.mjs 落盘；配方生成器规则值展示用 ruleValueHtml，中文适配在 zh.mjs。
+svg.mjs[DU6M]: F:25 类图表的手绘 SVG 示意（120×80），供图表页展示。 | R:code:tools/atlas/pages.mjs | A:chartSvg | S:目标不是画真图而是让人一眼认出『这类图长什么样』；纯静态字符串、零依赖。
+zh.mjs[LD7M]: F:配方生成器中文适配层：产品类型/推荐模式/决策规则键名的中英映射与规则值切分。 | R:code:tools/atlas/pages.mjs | A:PRODUCT_ZH、RULE_KEYS、RULE_TYPES、landingZh、productZh、patternZh、ruleKeyZh、splitRuleValue | S:只做『人能读懂』的最小映射——名称类全量人工翻译，自由长句保留英文并明确标注，避免半中半英的机器翻译腔。
+
+===/<repository>/tools/showcase/assets/===
+app.js[EU7L]: F:设计手册站点交互脚本（生成物）：域导航滑动线、调色板/字体/配方展示、复制、导出、FLIP 换位与明暗切换。 | R:code:tools/atlas/assets/app.js | A:- | S:由 build.mjs 复制生成，勿手改；跨文档 View Transition 换页、页头指示线单独成组。
+site.css[CU7L]: F:风格图鉴样式源（生成器输入）：站点骨架、首页/详情/指南、预览组件与风格特效、响应式与动效偏好。 | R:code:tools/showcase/build.mjs | A:- | S:由 build.mjs 复制到 gallery/assets/；圆角/动效令牌与手册同源；改样式改这里再重建。
+
+===/<repository>/tools/showcase/===
+build.mjs[OV8L]: F:风格图鉴静态站点生成器：从 data/index.json 与主题元数据生成 gallery/ 首页、详情、指南与 404。 | R:code:tools/showcase/theme-data.mjs, code:tools/showcase/assets/site.css | A:indexPage、detailPage、guidePage、themeVars、previewMarkup、build 等 | S:每个预览由同一套组件骨架渲染、只换令牌，故可横向比较风格差异；汇总指令与数据一致性检查由 tests/check-showcase.mjs 守卫。
+theme-data.mjs[DB8L]: F:风格图鉴人工策划的中文元数据与预览主题：每风格的 zh/tag/desc 与设计令牌。 | R:code:tools/showcase/build.mjs | A:STYLE_META | S:theme 只写与默认推导不同的部分，缺失字段由 build.mjs 从 index.json 自动补全；改元数据后须重建并跑 check-showcase。
+
+===/<repository>/gallery/style/===
+3d-and-hyperrealism.html[ZU4M]: F:用真实光照、多层阴影与景深制造物理存在感，常配 WebGL 或高质量渲染图。视觉说服力强，但资源开销大，需要降级方案。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：产品发布 · 硬件展示 · 品牌官网。本页由 theme-data.mjs 令牌生成，勿手改。
+3d-product-preview.html[ZU4M]: F:可拖拽旋转、缩放、换材质的产品模型，配中性背景与柔和投影。让用户在购买前「转一圈」，加载与降级是主要挑战。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：电商 · 汽车/家具配置器 · 硬件。本页由 theme-data.mjs 令牌生成，勿手改。
+academia-scholarly-mobile.html[ZU4M]: F:深胡桃木底、羊皮纸文字、黄铜与深红点缀，拱形图框与首字下沉，衬线字体贯穿。沉静、博学，加载与可读性需权衡。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：阅读/研究应用 · 出版 · 高等教育。本页由 theme-data.mjs 令牌生成，勿手改。
+accessible-and-ethical.html[ZU4M]: F:以 WCAG 增强级对比度为硬约束：正文 7:1、最小字号 16px、3–4px 焦点环、44px 触控区。视觉克制，但可用性优先于风格表达。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：公共服务 · 医疗教育 · 政企系统。本页由 theme-data.mjs 令牌生成，勿手改。
+ai-native-ui.html[ZU4M]: F:以对话与生成为核心：流式输出、打字指示、上下文卡片、建议追问。界面需要表达「正在思考」与「可被修正」，而非假装即时准确。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：AI 助手 · Copilot · 生成式工具。本页由 theme-data.mjs 令牌生成，勿手改。
+anti-polish-raw-aesthetic.html[ZU4M]: F:保留草稿感：手绘边框、纸张纹理、胶带与马克笔标注，甚至故意的不对齐。真实、可亲，但不适合需要精确感的工具。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：独立工作室 · 手工品牌 · 纪录片。本页由 theme-data.mjs 令牌生成，勿手改。
+aurora-ui.html[ZU4M]: F:大尺度流动渐变色带缓慢呼吸，像极光一样在深底上晕开；常用 screen 混合与 8–12s 循环。氛围强，务必给文字留纯色衬底。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：AI 产品 · 品牌落地页 · 发布会。本页由 theme-data.mjs 令牌生成，勿手改。
+bauhaus.html[ZU4M]: F:红黄蓝三原色 + 黑白，圆形/三角/方形构成，硬边阴影与无圆角，机械式按下反馈。形式服从功能，几何感强烈。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：文化机构 · 设计展览 · 教育产品。本页由 theme-data.mjs 令牌生成，勿手改。
+bento-box-grid.html[ZU4M]: F:大小不一的圆角卡片拼成紧密网格，每格承载一个独立信息点。靠尺寸对比而非分割线组织内容，移动端需重排为单列。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：产品官网 · 功能总览 · 个人主页。本页由 theme-data.mjs 令牌生成，勿手改。
+bento-grids.html[ZU4M]: F:初代便当布局：等大圆角卡片 + 柔和阴影，对比度与排版弹性弱于新版 Bento Box Grid。保留用于复刻旧项目。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：旧版产品官网（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+biomimetic-organic-2-0.html[ZU4M]: F:细胞形态、流体形变与呼吸节律，颜色取自生物发光与叶绿素。生长感强，适合表达「活的系统」。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：生物科技 · 未来材料 · 实验品牌。本页由 theme-data.mjs 令牌生成，勿手改。
+bitcoin-defi-mobile.html[ZU4M]: F:深空黑 + 比特币橙金渐变，等宽数字、发光胶囊按钮与账本时间线。强调精确与资产安全感。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：加密钱包 · 交易应用 · Web3。本页由 theme-data.mjs 令牌生成，勿手改。
+bold-typography-mobile-poster.html[ZU4M]: F:48–72px 标题、-1.5px 字距、贴边排版与大量纵向留白，强调色只用于下划线 CTA。像一张会滚动的海报。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：时尚品牌 · 展览 · 内容型应用。本页由 theme-data.mjs 令牌生成，勿手改。
+brutalism.html[ZU4M]: F:裸露的结构、纯色块、粗黑描边与巨大字号，拒绝一切修饰。冲击力优先于精致度，适合表达态度，不适合需要信任感的企业界面。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：艺术项目 · 独立品牌 · 实验性页面。本页由 theme-data.mjs 令牌生成，勿手改。
+chromatic-aberration-rgb-split.html[ZU4M]: F:红绿蓝通道错位叠印，产生 CRT 与镜头色散般的重影，配噪点与扫描线。作为点缀极有张力，大段文字会不可读。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：实验视觉 · 音乐封面 · 故障艺术。本页由 theme-data.mjs 令牌生成，勿手改。
+claymorphism-mobile.html[ZU4M]: F:大圆角、多层黏土阴影与粉紫渐变按钮，配缓慢漂浮的光斑。柔软友好，触控目标大，适合低压力场景。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：儿童/教育 App · 冥想 · 生活服务。本页由 theme-data.mjs 令牌生成，勿手改。
+claymorphism.html[ZU4M]: F:厚圆角、内阴影加外投影，让元素像软陶一样鼓起来；配色以粉彩为主，动效带回弹。亲和力极高，但占空间、难承载高密度信息。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：儿童教育 · 消费级 App · 品牌活动。本页由 theme-data.mjs 令牌生成，勿手改。
+comparative-analysis-dashboard.html[ZU4M]: F:同屏并列两组数据：主序列蓝、对照橙/紫，差值用箭头与徽章标注。避免双 Y 轴误导，差异要能被颜色和方向同时读出。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：竞品分析 · A/B 实验 · 期间对比。本页由 theme-data.mjs 令牌生成，勿手改。
+conversion-optimized.html[ZU4M]: F:一切为下一步动作让路：单一高对比 CTA、短表单、紧迫感提示与信任背书紧贴决策点。适合投放页，不适合内容型站点。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：注册落地页 · 电商促销（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+cyberpunk-mobile-hud.html[ZU4M]: F:45° 切角、HUD 角标、扫描线与霓虹脉冲，终端式输入框。信息以仪表读数的形式呈现，氛围优先。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：游戏伴侣 · 加密应用 · 潮流工具。本页由 theme-data.mjs 令牌生成，勿手改。
+cyberpunk-ui.html[ZU4M]: F:近黑底 + 荧光绿/品红，扫描线、故障抖动、等宽字体与格栅叠加。氛围极强，需严格控制动效频率以免干扰信息读取。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：游戏 HUD · 黑客主题 · 音乐产品。本页由 theme-data.mjs 令牌生成，勿手改。
+dark-mode-oled.html[ZU4M]: F:纯黑底配高亮强调色，利用 OLED 像素熄灭实现真正省电与无限对比。层次靠 #121212 级的微亮面而非阴影，白色文字需降亮避免眩光。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：夜间工具 · 开发者产品 · 移动端。本页由 theme-data.mjs 令牌生成，勿手改。
+data-dense-dashboard.html[ZU4M]: F:在有限屏幕内塞入尽可能多的指标：12–14px 字号、36px 行高、8px 栅格、细分割线取代卡片阴影。效率优先，牺牲呼吸感。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：运营后台 · 监控中心 · 内部工具。本页由 theme-data.mjs 令牌生成，勿手改。
+dimensional-layering.html[ZU4M]: F:用四级阴影、模糊与 translateZ 建立清晰的 Z 轴秩序，悬停时图层浮起。层次可读但不过度装饰，适合复杂工作台。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：设计工具 · 空间型后台 · 卡片流。本页由 theme-data.mjs 令牌生成，勿手改。
+drill-down-analytics.html[ZU4M]: F:用面包屑、层级缩进与上下文条记录「我在哪一层」，点击图表即进入明细。关键是保持筛选条件可见、可回退。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：BI 平台 · 财务分析 · 用户增长。本页由 theme-data.mjs 令牌生成，勿手改。
+e-ink-paper.html[ZU4M]: F:纸白底、墨黑字、衬线正文、近乎为零的动效，配轻微纸张噪点。为长时间阅读与低干扰而生。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：阅读应用 · 笔记工具 · 慢科技产品。本页由 theme-data.mjs 令牌生成，勿手改。
+editorial-grid-magazine.html[ZU4M]: F:非对称分栏、首字下沉、引文与图注构成印刷式阅读节奏；标题用粗黑无衬线，正文用衬线。适合有真实内容量的站点。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：媒体 · 长报道 · 品牌内容站。本页由 theme-data.mjs 令牌生成，勿手改。
+enterprise-saas-mobile.html[ZU4M]: F:靛蓝到紫的渐变主色、白卡片 + 极浅彩色投影、底部全宽 CTA 与骨架屏。专业、稳重，强调流程完整性。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：企业移动办公 · CRM · 审批流。本页由 theme-data.mjs 令牌生成，勿手改。
+exaggerated-minimalism.html[ZU4M]: F:只留超大字号与巨量留白，单一强调色，字距收紧到 -0.05em。气场强，但信息承载量极低，必须依附强内容。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：作品集 · 高端品牌 · 概念发布。本页由 theme-data.mjs 令牌生成，勿手改。
+executive-dashboard.html[ZU4M]: F:第一屏只留 4–6 个核心 KPI 与趋势，细节藏进下钻页。数字大、说明少、结论前置，配合红绿状态与倒计时提醒。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：经营驾驶舱 · 投后管理。本页由 theme-data.mjs 令牌生成，勿手改。
+feature-rich-showcase.html[ZU4M]: F:用卡片矩阵把功能、收益与截图铺开，靠图标色与留白分组。信息完整但容易冗长，需严格控制每组卡片数量与文案长度。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：B2B SaaS 官网 · 功能对比页（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+financial-dashboard.html[ZU4M]: F:金额对齐、千分位、正负色与等宽数字是底线；同比/环比与预算差异并列呈现。红色需按财务语义使用，避免与品牌红冲突。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：财务系统 · 交易终端 · 预算管理。本页由 theme-data.mjs 令牌生成，勿手改。
+flat-design-mobile-touch-first.html[ZU4M]: F:零阴影、纯色块、48px 触控区与即时按压反馈，用整块颜色分区代替卡片堆叠。上手快、性能好、老少皆宜。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：工具类 App · 教育应用 · 轻量服务。本页由 theme-data.mjs 令牌生成，勿手改。
+flat-design.html[ZU4M]: F:去掉渐变、阴影与高光，只用纯色、几何图形和清晰的字重区分层级。渲染成本最低、跨端一致，缺点是容易显得缺乏层次。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：工具应用 · 后台系统 · 跨端产品。本页由 theme-data.mjs 令牌生成，勿手改。
+fluent-2.html[ZU4M]: F:微软设计系统：8px 圆角、层级化中性色、克制的深度与流畅转场，强调可访问性与跨平台一致。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：Microsoft 365 · Windows 应用 · 企业产品。本页由 theme-data.mjs 令牌生成，勿手改。
+gen-z-chaos-maximalism.html[ZU4M]: F:故意冲突的荧光色、贴纸堆叠、抖动与跑马灯，拒绝统一网格。像信息爆炸的社交媒体信息流，适合短时高频刺激。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：潮流社区 · 快闪活动 · 亚文化内容。本页由 theme-data.mjs 令牌生成，勿手改。
+glassmorphism.html[ZU4M]: F:半透明面板叠加背景模糊，用 1px 亮边勾出玻璃厚度。层次感强、氛围轻盈，但文字对比度依赖背景，正文密集处需谨慎。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：SaaS 后台 · 音乐/媒体应用 · 仪表盘浮层。本页由 theme-data.mjs 令牌生成，勿手改。
+gradient-mesh-aurora-evolved.html[ZU4M]: F:多点渐变相互渗透，形成无方向的光雾底部，色彩可在 10s 内缓慢迁移。适合作为背景层，前景必须加实色遮罩。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：AI 产品 · Web3 · 品牌视觉。本页由 theme-data.mjs 令牌生成，勿手改。
+heat-map-and-heatmap-style.html[ZU4M]: F:用冷—暖连续色阶编码数值密度，读者一眼看出热点与空白。需要清晰的色阶图例，并避免用红绿单独承载正负含义。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：行为分析 · 资源调度 · 排班。本页由 theme-data.mjs 令牌生成，勿手改。
+hero-centric-design.html[ZU4M]: F:整屏交给一个主张：超大标题 + 主视觉 + 唯一 CTA，其余内容下沉。转化路径最短，但对文案与视觉质量要求极高。数据标注为已弃用，建议改用 Storytelling 或 Feature-Rich。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：品牌落地页 · 产品发布（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+hud-sci-fi-fui.html[ZU4M]: F:虚构飞行器界面语言：细线框、角标、扫描光、等宽读数与网格坐标。信息密度极高，真实产品中多作为装饰层。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：游戏界面 · 数据大屏 · 影视概念。本页由 theme-data.mjs 令牌生成，勿手改。
+inclusive-design.html[ZU4M]: F:不依赖单一颜色或精细动作传达信息：符号 + 文字 + 图案多重编码，提供动效开关、语音与键盘路径。是规范约束，而非视觉流派。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：公共服务 · 医疗健康 · 老龄用户产品。本页由 theme-data.mjs 令牌生成，勿手改。
+interactive-cursor-design.html[ZU4M]: F:光标成为界面的一部分：放大、磁吸、形变、拖尾与混合模式反色。趣味性强，但必须保留原生光标可用性与触屏降级。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：创意工作室 · 互动作品集 · 展览。本页由 theme-data.mjs 令牌生成，勿手改。
+interactive-product-demo.html[ZU4M]: F:让用户在页面里直接操作真实产品片段，或以分步引导回放关键流程。说服力强，但加载成本与实现复杂度都高。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：开发者工具 · 试用页（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+kinetic-brutalism-mobile.html[ZU4M]: F:酸性黄 + 纯黑、2px 硬边、0 圆角，无限跑马灯与按下反色。冲击力极强，适合短时浏览的潮流场景。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：潮流电商 · 音乐/球鞋 · 活动应用。本页由 theme-data.mjs 令牌生成，勿手改。
+kinetic-typography.html[ZU4M]: F:文字本身即主角：逐字入场、可变字重、渐变填充、跟随滚动的位移。冲击力强，需保证 reduced-motion 下静态可读。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：品牌片头 · 活动页 · 音乐视觉。本页由 theme-data.mjs 令牌生成，勿手改。
+liquid-glass.html[ZU4M]: F:比毛玻璃更进一步：材质随底层内容取色，边缘出现镜面折射与流动形变，转场如液体般连贯。对平台能力依赖强，需准备不透明降级。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：iOS / macOS 应用 · 系统级控件。本页由 theme-data.mjs 令牌生成，勿手改。
+material-you-md3-mobile.html[ZU4M]: F:动态取色生成同族色板，用表面色调而非阴影表达层级；胶囊按钮、状态层与强调缓动。规范完整，易于规模化。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：Android 应用 · 系统工具 · 跨端设计系统。本页由 theme-data.mjs 令牌生成，勿手改。
+memphis-design.html[ZU4M]: F:80 年代米兰设计运动：几何色块、波点、锯齿与故意错位的旋转。活泼喧闹，适合小面积与年轻受众。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：活动视觉 · 儿童产品 · 创意工作室。本页由 theme-data.mjs 令牌生成，勿手改。
+micro-interactions.html[ZU4M]: F:在 50–100ms 内用颜色、位移与形变回应用户：按钮回弹、输入校验、加载骨架、手势反馈。单点改动小，累积起来决定产品的手感。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：表单流程 · 移动应用 · 高频操作工具。本页由 theme-data.mjs 令牌生成，勿手改。
+minimal-and-direct.html[ZU4M]: F:单列 680px 内容宽度、18px 正文、几乎无装饰，只保留一个 CTA。阅读体验最好，适合一句话就能说清的产品。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：单页产品 · 个人作品（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+minimalism-and-swiss-style.html[ZU4M]: F:以网格、留白和字号层级建立秩序，只用黑白灰加一个强调色。信息密度可控、装饰为零，适合需要长期阅读与高频操作的专业界面。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：企业后台 · 文档站 · 专业工具。本页由 theme-data.mjs 令牌生成，勿手改。
+minimalist-monochrome.html[ZU4M]: F:只有黑白，没有阴影与圆角，靠 1/2/4px 的黑线分级，按下即反色。极致的克制带来极强的排版存在感。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：阅读应用 · 高级时装 · 编辑型产品。本页由 theme-data.mjs 令牌生成，勿手改。
+modern-dark-cinema-mobile.html[ZU4M]: F:近黑分层（#020203→#0a0a0c）+ 微弱环境光斑，标题用 Inter 紧字距，主色 #5E6AD2。像影院一样把内容推到前景。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：流媒体 · 高端移动应用 · 内容社区。本页由 theme-data.mjs 令牌生成，勿手改。
+motion-driven.html[ZU4M]: F:把滚动、悬停与转场当作主要叙事手段：视差分层、入场编排、状态连续过渡。观感流畅，但要为 reduced-motion 与低端设备准备静态版本。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：品牌官网 · 产品发布 · 互动叙事。本页由 theme-data.mjs 令牌生成，勿手改。
+nature-distilled.html[ZU4M]: F:陶土、沙色、橄榄绿与奶油白，低饱和、哑光、粗颗粒，圆角柔和。传达手工与土地的质感，配色需避免脏灰。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：香氛 · 家居 · 慢生活品牌。本页由 theme-data.mjs 令牌生成，勿手改。
+neo-brutalism-mobile.html[ZU4M]: F:奶油底 + 4px 黑边 + 硬偏移阴影，卡片轻微倾斜，按下位移模拟物理按键。俏皮但保持可读。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：消费品牌 · 社交应用 · 年轻向活动。本页由 theme-data.mjs 令牌生成，勿手改。
+neubrutalism.html[ZU4M]: F:粗黑描边 + 硬阴影 + 高饱和色块，按下时位移抵消阴影，机械感十足。性格鲜明，但大面积使用会压迫阅读。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：年轻品牌 · 创作者工具 · 活动页。本页由 theme-data.mjs 令牌生成，勿手改。
+neumorphism-mobile.html[ZU4M]: F:单一 #E0E5EC 底色上做凸起与凹陷，紫罗兰作为唯一强调色。柔和统一，但需谨慎处理对比度与边界识别。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：智能硬件 App · 车载控制 · 概念稿。本页由 theme-data.mjs 令牌生成，勿手改。
+neumorphism.html[ZU4M]: F:控件从同色底板中「挤」出来：左上受光、右下投影，按下则反过来凹陷。柔和无描边，适合小面积的开关、旋钮与播放控制，不适合大面积正文。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：智能家居 · 控制面板 · 概念原型。本页由 theme-data.mjs 令牌生成，勿手改。
+organic-biophilic.html[ZU4M]: F:森林绿、泥土棕与天空蓝，配合不规则圆角、流动曲线与自然纹理。降低压力感，适合长时间停留的陪伴型产品。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：健康 · 农业 · 可持续品牌。本页由 theme-data.mjs 令牌生成，勿手改。
+parallax-storytelling.html[ZU4M]: F:多层背景以不同速度滚动，配合固定与黏性定位形成纵深，按章节推进叙事。沉浸感强，移动端需降级为静态分层。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：品牌故事 · 年度报告 · 展览页面。本页由 theme-data.mjs 令牌生成，勿手改。
+pixel-art.html[ZU4M]: F:低分辨率网格、有限调色板、硬边与逐帧动画。所有尺寸必须是像素单位的整数倍，否则会被浏览器插值破坏。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：独立游戏 · 复古社区 · 彩蛋页面。本页由 theme-data.mjs 令牌生成，勿手改。
+predictive-analytics.html[ZU4M]: F:历史实线 + 预测虚线 + 置信区间带，异常点高亮。必须标注模型版本与不确定性，否则容易被误读为确定结论。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：需求预测 · 风险管理 · 增长建模。本页由 theme-data.mjs 令牌生成，勿手改。
+real-time-monitoring.html[ZU4M]: F:数据流持续更新：状态灯、脉冲告警、流式曲线与最新值并列。深色底降低眩光，颜色语义必须严格区分正常/警告/严重。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：运维大屏 · IoT · 交易风控。本页由 theme-data.mjs 令牌生成，勿手改。
+retro-futurism.html[ZU4M]: F:80 年代对未来的想象：霓虹青与品红、CRT 扫描线、轻微故障抖动。情绪浓烈，适合短时沉浸，长时间阅读会疲劳。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：游戏 · 音乐发行 · 潮流品牌。本页由 theme-data.mjs 令牌生成，勿手改。
+saas-mobile-high-tech-boutique.html[ZU4M]: F:电光蓝渐变按钮 + 纯白卡片 + 克制的弹簧动效，悬浮 FAB 与玻璃导航条。精致、可信，适合高频业务操作。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：移动端 SaaS · 金融科技 · 效率工具。本页由 theme-data.mjs 令牌生成，勿手改。
+sales-intelligence-dashboard.html[ZU4M]: F:按阶段呈现管道金额与赢单率，配合排行榜、配额进度与预测准确度。个人与团队视图要能一键切换。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：CRM · 销售管理 · 业绩复盘。本页由 theme-data.mjs 令牌生成，勿手改。
+shopify-polaris.html[ZU4M]: F:为长时间运营工作设计：中性灰底、8px 圆角、清晰的状态色与帮助性文案，信息密度与可扫读性平衡。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：电商后台 · 商家管理 · 运营工具。本页由 theme-data.mjs 令牌生成，勿手改。
+sketch-hand-drawn-mobile.html[ZU4M]: F:每个角圆度都不同、虚线描边、硬偏移阴影，配马克笔红与圆珠笔蓝。像写在便签上的界面，亲切但精度低。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：教育 · 手账/笔记 · 创意工具。本页由 theme-data.mjs 令牌生成，勿手改。
+skeuomorphism.html[ZU4M]: F:木纹、皮革、金属与多层渐变还原真实材质，控件通过高光和倒角提示可按下。识别成本低但风格年代感强，现代产品多用于局部点缀。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：怀旧产品 · 教育演示 · 品牌彩蛋。本页由 theme-data.mjs 令牌生成，勿手改。
+social-proof-focused.html[ZU4M]: F:把用户评价、客户 Logo、评分与数字指标放在首屏附近，用他人的选择降低决策风险。需要真实素材，否则反噬信任。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：课程/工具落地页 · 订阅转化（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+soft-ui-evolution.html[ZU4M]: F:新拟态的可用性改良版：保留柔和投影与圆角，但把对比度提到 4.5:1 以上，阴影更浅、层级更明确。温和而不牺牲可读性。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：SaaS 后台 · 健康应用 · 现代消费产品。本页由 theme-data.mjs 令牌生成，勿手改。
+spatial-ui-visionos.html[ZU4M]: F:悬浮的半透明窗口、深度阴影与视线悬停反馈，材质随环境光变化。布局从平面转向空间层级，注重舒适观看距离。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：空间计算 · AR/VR · 沉浸式应用。本页由 theme-data.mjs 令牌生成，勿手改。
+spectrum-2.html[ZU4M]: F:Spectrum 的进化版：更灵活的语义主题、更强对比与个性化，加入表现力插图与自适应动效。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：Creative Cloud · 新一代 Adobe 界面。本页由 theme-data.mjs 令牌生成，勿手改。
+spectrum-design-system.html[ZU4M]: F:Adobe 设计系统：语义色 + 中性灰阶、克制的层次与专业动效，优先保证复杂工具中的可读与可预期。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：创意软件 · 专业工具 · 跨端套件。本页由 theme-data.mjs 令牌生成，勿手改。
+storytelling-driven.html[ZU4M]: F:按章节推进：每屏一个情绪节点，用滚动触发揭示、配图与渐变过渡串联。适合讲一个完整故事，需要强内容策划支撑。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：品牌官网 · 公益传播（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+swiss-modernism-2-0.html[ZU4M]: F:在经典网格上做现代化处理：12 栏、8px 基准单位、非对称排版、单一强调色。理性、克制、可无限扩展。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：设计工作室 · 文化机构 · 产品官网。本页由 theme-data.mjs 令牌生成，勿手改。
+tactile-digital-deformable-ui.html[ZU4M]: F:元素像软胶一样可压、可拉、可回弹，材质高光随位移变化，配合触觉反馈。手感极佳，但性能与可用性风险都高。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：实验性产品 · 品牌互动 · 移动端彩蛋。本页由 theme-data.mjs 令牌生成，勿手改。
+terminal-cli-mobile.html[ZU4M]: F:矩阵绿单色文字、等宽字体、扫描线与块状光标，输入即命令。信息密度高、风格极强，移动端需放大触控目标。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：开发者工具 · 运维应用 · 极客彩蛋。本页由 theme-data.mjs 令牌生成，勿手改。
+trust-and-authority.html[ZU4M]: F:深蓝与灰建立专业感，用资质徽章、合规声明、数据背书与客户 Logo 消除疑虑。视觉保守，但每一项装饰都服务于可信度。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：金融 · 医疗 · 企业采购（已弃用）。本页由 theme-data.mjs 令牌生成，勿手改。
+user-behavior-analytics.html[ZU4M]: F:以漏斗、路径图与同期群表格还原用户旅程：每级流失率、分支权重、留存曲线。强化「从哪掉、为什么掉」而非堆砌指标。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：增长分析 · 漏斗优化 · 留存。本页由 theme-data.mjs 令牌生成，勿手改。
+vaporwave.html[ZU4M]: F:粉紫青三色霓虹、网格地平线、VHS 噪点与日文排版。情绪浓度高，适合作为活动皮肤而非长期界面。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：音乐视觉 · 潮流联名 · 亚文化社区。本页由 theme-data.mjs 令牌生成，勿手改。
+vibrant-and-block-based.html[ZU4M]: F:用 4–6 种高饱和纯色切成大色块，靠面积与对比而非渐变制造节奏。区块间距大、字号大，滚动像翻阅海报。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：创意机构 · 活动页 · 年轻向产品。本页由 theme-data.mjs 令牌生成，勿手改。
+vintage-analog-retro-film.html[ZU4M]: F:低饱和暖调、颗粒、漏光与轻微褪色，边缘暗角模拟老镜头。适合有影像素材的品牌，纯 UI 使用会显得疲软。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：摄影 · 咖啡/餐饮 · 独立出版。本页由 theme-data.mjs 令牌生成，勿手改。
+voice-first-multimodal.html[ZU4M]: F:以波形、聆听脉冲与状态色表达「在听 / 在想 / 在说」，屏幕只做辅助确认。需要处理无视觉、弱网与打断等边界。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：语音助手 · 车载 · 无障碍产品。本页由 theme-data.mjs 令牌生成，勿手改。
+y2k-aesthetic.html[ZU4M]: F:银色金属渐变、果冻质感、亮粉与青色霓虹，配像素化与气泡图形。怀旧且高辨识度，仅适合短周期营销场景。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：潮流品牌 · 音乐视觉 · 限定活动。本页由 theme-data.mjs 令牌生成，勿手改。
+zero-interface.html[ZU4M]: F:界面退到幕后：系统基于上下文预测意图，用户用语音、手势或一句话完成任务，只在必要时露出最少的控件。设计重心从屏幕转向流程与信任。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/风格描述/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：智能助手 · 语音设备 · 自动化流程。本页由 theme-data.mjs 令牌生成，勿手改。
+apple-native-experience.html[ZU4M]: F:系统字体与语义色优先，8pt 间距、分组列表与平台化导航，明暗自动适配、克制而有目的的过渡。强调内容层级与无障碍，而非液态玻璃或装饰性模糊。 | R:code:tools/showcase/theme-data.mjs | A:效果示例/设计语言/配色方案/适用场景/能力矩阵五段展示 | S:适用场景：iOS / macOS 应用 · 设置与表单 · 系统工具。本页由 theme-data.mjs 令牌生成，勿手改。
+
+===/<repository>/gallery/===
+404.html[EV4T]: F:设计手册站内 404 兜底页，按当前地址推站点根拼回首页链接。 | R:code:tools/atlas/build.mjs | A:- | S:由 build.mjs 生成、勿手改；整站层另有根 404.html 兜底，本页只管手册站内。
+guide.html[DU6S]: F:图鉴阅读指南：字段含义、预览生成方式、令牌推导规则与在 DSH 中使用风格的方法。 | R:code:tools/showcase/build.mjs | A:- | S:由 build.mjs 生成、勿手改；解释风格页五段展示与各字段口径。
+index.html[EU7L]: F:设计手册首页（生成物）：六域导航入口——192 配色/74 字体配对/25 图表/34 落地页/195 规范/192 配方。 | R:code:tools/atlas/build.mjs | A:- | S:由 build.mjs 生成、勿手改；能力数字派生自 data/meta.json，与 README 同源。
+
+===/<repository>/gallery/assets/===
+app.js[EU7L]: F:设计手册站点交互脚本（生成物）：域导航滑动线、调色板/字体/配方展示、复制、导出、FLIP 换位与明暗切换。 | R:code:tools/atlas/assets/app.js | A:- | S:由 build.mjs 复制生成，勿手改；跨文档 View Transition 换页、页头指示线单独成组。
+site.css[CU7L]: F:风格图鉴站点样式（生成物）：站点骨架、首页/详情/指南、预览组件与风格特效。 | R:code:tools/showcase/assets/site.css | A:- | S:由 build.mjs 复制生成，勿手改；改样式改 tools/showcase/assets/site.css 再重建。
+themes.css[CU8S]: F:88 种风格的预览主题令牌（生成物）：每风格一套 --bg/--text/--accent/--radius 等变量与明暗两档。 | R:code:tools/showcase/theme-data.mjs | A:- | S:由 build.mjs 从 theme-data.mjs 生成，勿手改；所有风格共用同一套组件骨架，只换令牌以便横向比较。
+
+===/<repository>/handbook/===
+404.html[EV4T]: F:设计手册站内 404 兜底页，按当前地址推站点根拼回首页链接。 | R:code:tools/atlas/build.mjs | A:- | S:由 build.mjs 生成、勿手改；整站层另有根 404.html 兜底，本页只管手册站内。
+about.html[SU5T]: F:设计手册『方法与溯源』页：数据来源、加工方式、启发式成分与已知缺口说明。 | R:code:tools/atlas/pages.mjs, code:docs/DATA-PROVENANCE.md | A:- | S:由 pages.mjs 生成、勿手改；讲清数据血缘与人工映射的边界，避免读者把启发式当权威。
+charts.html[EU7L]: F:图表选型页：25 类数据类型的推荐/备选图表、使用条件、数据量阈值、无障碍风险与降级方案。 | R:code:tools/atlas/pages.mjs, code:tools/atlas/svg.mjs | A:- | S:由 pages.mjs 生成、勿手改；图表示意为手绘 SVG（chartSvg），目标是认出类型而非画真图。
+compose.html[EU8T]: F:配方生成器页：选产品类型出风格/配色/字体/落地页结构/决策规则/反模式的完整配方，导出 CSS/Tailwind/JSON。 | R:code:tools/atlas/pages.mjs, code:tools/atlas/zh.mjs | A:- | S:由 pages.mjs 生成、勿手改；英文规则键名与产品名经 zh.mjs 中文化，自由长句保留英文并标注。
+index.html[EU7S]: F:设计手册首页（生成物）：六域导航入口——192 配色/74 字体配对/25 图表/34 落地页/195 规范/192 配方。 | R:code:tools/atlas/build.mjs | A:- | S:由 build.mjs 生成、勿手改；能力数字派生自 data/meta.json，与 README 同源。
+landing.html[EU7L]: F:落地页模式页：34 种结构的分区顺序线框、CTA 位置、配色策略与转化优化要点。 | R:code:tools/atlas/pages.mjs | A:- | S:由 pages.mjs 生成、勿手改；名称由 zh.mjs 中文化。
+pairings.html[EU7L]: F:字体配对页：74 组标题/正文搭配，latin 子集已本地化，离线看真实排印、可调字号与行高。 | R:code:tools/atlas/pages.mjs, code:tools/atlas/font-display.mjs | A:- | S:由 pages.mjs 生成、勿手改；展示参数集中在 font-display.mjs，不给单字体写 CSS 例外。
+practices.html[EU7L]: F:规范对照页：195 条 UX/React/Web 规范的正确/错误代码对照，按严重度与平台筛选。 | R:code:tools/atlas/pages.mjs | A:- | S:由 pages.mjs 生成、勿手改；严重度文案与 data 领域口径一致。
+recipes.html[EU7L]: F:产品配方页：192 类产品的主推/次选风格、落地页结构、配色方向、字体气质、决策规则与反模式。 | R:code:tools/atlas/pages.mjs | A:- | S:由 pages.mjs 生成、勿手改；规则值展示用 ruleValueHtml，由 zh.mjs 中文化。
+
+===/<repository>/handbook/assets/===
+app.js[EU7L]: F:设计手册站点交互脚本（生成物）：域导航滑动线、调色板/字体/配方展示、复制、导出、FLIP 换位与明暗切换。 | R:code:tools/atlas/assets/app.js | A:- | S:由 build.mjs 复制生成，勿手改；跨文档 View Transition 换页、页头指示线单独成组。
+atlas.css[CU7L]: F:设计手册站点样式（生成物）：令牌、站点骨架、六域页面与预览组件样式。 | R:code:tools/atlas/assets/atlas.css | A:- | S:由 build.mjs 复制生成，勿手改；改样式改 tools/atlas/assets/atlas.css 再重建。
+fonts.css[FG7S]: F:设计手册字体样张的本地 @font-face 样式（生成物），供离线渲染 74 组配对的 latin 排印。 | R:code:assets/atlas-fonts/google.css | A:- | S:由字体下载流程生成、勿手改；字体文件在 assets/atlas-fonts/，样张展示参数由 font-display.mjs 微调。
